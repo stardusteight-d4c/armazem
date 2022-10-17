@@ -8,6 +8,9 @@ module.exports = {
       poppins: 'Poppins, sans-serif',
     },
     colors: {
+      transparent: 'transparent',
+      white: '#FFFFFF',
+      black: '#000000',
       primary: {
         main: '#4D3BC9',
         shade: {
@@ -17,6 +20,7 @@ module.exports = {
         matte: {
           XE: '#20232C',
           XS: '#232336',
+          XZ: '#242731',
           YE: '#362F7A',
           YS: '#4336A0',
         },
@@ -36,6 +40,8 @@ module.exports = {
             400: '#34363D',
           },
           matte: {
+            YA: '#737581',
+            YS: '#2c2f38',
             XE: '#1D2026',
             XS: '#1C1F25',
           },
