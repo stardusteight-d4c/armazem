@@ -35,7 +35,7 @@ const ANiStorageSlice = createSlice({
 
 export const store = configureStore({
   reducer: {
-    netflix: ANiStorageSlice.reducer,
+    anistorage: ANiStorageSlice.reducer,
   },
 })
 

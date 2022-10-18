@@ -20,7 +20,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         <i className="ri-user-add-line absolute text-2xl top-0 right-0"></i>
         <h1 className="text-4xl font-semibold">Sign up</h1>
         <div className="flex items-center space-x-4 font-medium text-sm pt-5 pb-4">
-          <span className="text-[#a7a7a7]">Already a user?</span>
+          <span className="text-[#3e3e3e] dark:text-[#a7a7a7]">Already a user?</span>
           <span
             onClick={() => setSignIn(!signIn)}
             className="text-secondary-shade-400 cursor-pointer p-1 hover:underline"
@@ -32,7 +32,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
           <div>
             <label
               htmlFor="firstName"
-              className="text-[#a7a7a7] text-sm w-full block font-semibold"
+              className="text-[#3e3e3e] dark:text-[#a7a7a7] text-sm w-full block font-semibold"
             >
               First Name
             </label>
@@ -40,14 +40,14 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               type="text"
               id="firstName"
               placeholder="First name"
-              className="w-full p-4 mt-4 bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
+              className="w-full p-4 mt-4 bg-[#f0f0f0] dark:bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
             />
           </div>
 
           <div>
             <label
               htmlFor="lastName"
-              className="text-[#a7a7a7] text-sm w-full block font-semibold"
+              className="text-[#3e3e3e] dark:text-[#a7a7a7] text-sm w-full block font-semibold"
             >
               Last Name
             </label>
@@ -55,7 +55,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               type="text"
               id="lastName"
               placeholder="Last name"
-              className="w-full p-4 mt-4 bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
+              className="w-full p-4 mt-4 bg-[#f0f0f0] dark:bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
             />
           </div>
         </div>
@@ -63,7 +63,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="text-[#a7a7a7] text-sm w-full block font-semibold"
+              className="text-[#3e3e3e] dark:text-[#a7a7a7] text-sm w-full block font-semibold"
             >
               Username
             </label>
@@ -71,14 +71,14 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               type="text"
               id="username"
               placeholder="Choose a username"
-              className="w-full p-4 mt-4 bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
+              className="w-full p-4 mt-4 bg-[#f0f0f0] dark:bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="text-[#a7a7a7] text-sm w-full block font-semibold"
+              className="text-[#3e3e3e] dark:text-[#a7a7a7] text-sm w-full block font-semibold"
             >
               Password
             </label>
@@ -86,7 +86,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               type="password"
               id="password"
               placeholder="•••••••••••••"
-              className="w-full p-4 mt-4 bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
+              className="w-full p-4 mt-4 bg-[#f0f0f0] dark:bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
             />
           </div>
         </div>
@@ -95,7 +95,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         title="Continue"
         className="mt-2 bg-[#4D3BC9]"
       />
-      <span className="text-[#a7a7a7] block my-4 font-medium">
+      <span className="text-[#3e3e3e] dark:text-[#a7a7a7] block my-4 font-medium">
         Sign up by Open ID
       </span>
       <Button title="Google" className="bg-[#4b8ef3]" />
@@ -104,6 +104,6 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
 }
 
 const style = {
-  wrapper: `w-full md:min-w-[400px] xl:min-w-[550px] 2xl:min-w-[650px] relative max-h-fit z-10 p-12 bg-[#242731]`,
+  wrapper: `w-full md:min-w-[400px] xl:min-w-[550px] 2xl:min-w-[650px] relative max-h-fit z-10 p-12 bg-white dark:bg-[#242731]`,
 }
 
