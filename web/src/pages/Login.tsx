@@ -3,6 +3,7 @@ import background from '../assets/background.jpg'
 import { SignIn, SignUp } from '../components'
 import { AnimatePresence } from 'framer-motion'
 import { Card } from '../components/login/Card'
+import { SwitchTheme } from '../components/SwitchTheme'
 
 interface Props {}
 
@@ -18,7 +19,7 @@ export const Login = (props: Props) => {
     <div className={style.wrapper}>
       <section className="sm:grid grid-cols-2 xl:grid-cols-5 tem origin-center text-[#E1E1E6] relative">
         <span className="absolute hidden sm:block bottom-1 left-1 text-sm text-primary-shade-100 z-10">
-          Artist: The Magnetic Cat
+          Artist: The Magnetic Cat <SwitchTheme />
         </span>
         <div className="col-span-1 hidden xl:col-span-3 relative h-screen sm:flex pl-5 flex-col justify-center items-start">
           <img
@@ -62,5 +63,5 @@ export const Login = (props: Props) => {
 }
 
 const style = {
-  wrapper: `w-screen relative min-h-screen overflow-x-hidden bg-[#242731]`,
+  wrapper: `w-screen relative min-h-screen overflow-x-hidden bg-white dark:bg-[#242731]`,
 }

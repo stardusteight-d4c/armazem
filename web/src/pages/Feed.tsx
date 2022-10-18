@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { SwitchTheme } from '../components/SwitchTheme'
 
 interface Props {}
 
 export const Feed = (props: Props) => {
   const navigate = useNavigate()
-  const session = false
+  const session = true
 
   useEffect(() => {
     !session && navigate('/login')
@@ -14,7 +15,7 @@ export const Feed = (props: Props) => {
   return (
     <>
       {session ? (
-        <div className="min-h-screen">Feed</div>
+        <div className="min-h-screen bg-white dark:bg-black"><SwitchTheme /></div>
       ) : (
         <div>Loading...</div>
       )}
