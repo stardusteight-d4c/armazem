@@ -19,41 +19,25 @@ module.exports = {
       transparent: 'transparent',
       white: '#FFFFFF',
       black: '#000000',
-      primary: {
-        main: '#4D3BC9',
-        shade: {
-          100: '#CEC8FB',
-          400: '#777392',
-        },
-        matte: {
-          XE: '#20232C',
-          XS: '#232336',
-          XZ: '#242731',
-          YE: '#362F7A',
-          YS: '#4336A0',
-        },
+      prime: {
+        purple: '#4D3BC9',
+        blue: '#4B8EF3',
       },
-      secondary: {
-        main: '#0249C7',
-        shade: {
-          100: '#9DD5E9',
-          400: '#4B8BEC',
-        },
+      dusk: {
+        main: '#3E3E3E',
+        weak: '#A7A7A7',
       },
-      dark: {
-        gray: {
-          main: '#1B1C20',
-          shade: {
-            100: '#7E7C8D',
-            400: '#34363D',
-          },
-          matte: {
-            YA: '#737581',
-            YS: '#2c2f38',
-            XE: '#1D2026',
-            XS: '#1C1F25',
-          },
-        },
+      dawn: {
+        main: '#E1E1E1',
+        weak: '#888888',
+      },
+      fill: {
+        strong: '#242731',
+        weak: '#FFFFFF',
+      },
+      layer: {
+        heavy: '#2D3039',
+        light: '#F0F0F0',
       },
     },
   },

@@ -8,12 +8,11 @@ interface Props {}
 
 export const App = (props: Props) => {
   const dispatch = useAppDispatch()
-  const [mounted, setMounted] = useState(false)
 
    // After mounting, we have access to the theme in localStorage
   useEffect(() => {
     dispatch(handleSwitchTheme())
-  }, [mounted])
+  }, [])
 
   return (
     <BrowserRouter>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../Button'
 import { motion } from 'framer-motion'
 
@@ -8,6 +8,23 @@ interface Props {
 }
 
 export const SignUp = ({ signIn, setSignIn }: Props) => {
+  const [showPassword, setShowPassword] = useState(false)
+  const [registerValues, setRegisterValues] = useState({
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+  })
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setRegisterValues({
+      ...registerValues,
+      [event.target.id]: event.target.value,
+    })
+  }
+
+  console.log(registerValues)
+
   return (
     <motion.form
       initial={{ opacity: 0, x: 200 }}
@@ -20,10 +37,12 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         <i className="ri-user-add-line absolute text-2xl top-0 right-0"></i>
         <h1 className="text-4xl font-semibold">Sign up</h1>
         <div className="flex items-center space-x-4 font-medium text-sm pt-5 pb-4">
-          <span className="text-[#3e3e3e] dark:text-[#a7a7a7]">Already a user?</span>
+          <span className="text-dawn-weak dark:text-dusk-weak">
+            Already a user?
+          </span>
           <span
             onClick={() => setSignIn(!signIn)}
-            className="text-secondary-shade-400 cursor-pointer p-1 hover:underline"
+            className="text-prime-blue cursor-pointer p-1 hover:underline"
           >
             Login now
           </span>
@@ -32,7 +51,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
           <div>
             <label
               htmlFor="firstName"
-              className="text-[#3e3e3e] dark:text-[#a7a7a7] text-sm w-full block font-semibold"
+              className="text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold"
             >
               First Name
             </label>
@@ -40,14 +59,15 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               type="text"
               id="firstName"
               placeholder="First name"
-              className="w-full p-4 mt-4 bg-[#f0f0f0] dark:bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
+              onChange={(e) => handleChange(e)}
+              className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
             />
           </div>
 
           <div>
             <label
               htmlFor="lastName"
-              className="text-[#3e3e3e] dark:text-[#a7a7a7] text-sm w-full block font-semibold"
+              className="text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold"
             >
               Last Name
             </label>
@@ -55,7 +75,8 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               type="text"
               id="lastName"
               placeholder="Last name"
-              className="w-full p-4 mt-4 bg-[#f0f0f0] dark:bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
+              onChange={(e) => handleChange(e)}
+              className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
             />
           </div>
         </div>
@@ -63,7 +84,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="text-[#3e3e3e] dark:text-[#a7a7a7] text-sm w-full block font-semibold"
+              className="text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold"
             >
               Username
             </label>
@@ -71,39 +92,54 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               type="text"
               id="username"
               placeholder="Choose a username"
-              className="w-full p-4 mt-4 bg-[#f0f0f0] dark:bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
+              onChange={(e) => handleChange(e)}
+              className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="text-[#3e3e3e] dark:text-[#a7a7a7] text-sm w-full block font-semibold"
+              className="text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold"
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="•••••••••••••"
-              className="w-full p-4 mt-4 bg-[#f0f0f0] dark:bg-[#2d3039] text-sm placeholder:text-[#a7a7a7] outline-none focus:ring-[2px] focus:ring-secondary-main rounded-lg"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                placeholder="•••••••••••••"
+                onChange={(e) => handleChange(e)}
+                className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+              />
+              {registerValues.password.trim() && (
+                <>
+                  {showPassword ? (
+                    <i
+                      onClick={() => setShowPassword(false)}
+                      className="ri-eye-2-line text-lg cursor-pointer absolute right-5 top-[50%] translate-y-[-20%] p-1 text-dusk-main dark:text-dawn-main"
+                    ></i>
+                  ) : (
+                    <i
+                      onClick={() => setShowPassword(true)}
+                      className="ri-eye-close-line text-lg cursor-pointer absolute right-5 top-[50%] translate-y-[-20%] p-1 text-dusk-main dark:text-dawn-main"
+                    ></i>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <Button
-        title="Continue"
-        className="mt-2 bg-[#4D3BC9]"
-      />
-      <span className="text-[#3e3e3e] dark:text-[#a7a7a7] block my-4 font-medium">
+      <Button title="Continue" className="mt-2 bg-prime-purple" />
+      <span className="text-dawn-weak dark:text-dusk-weak block my-4 font-medium">
         Sign up by Open ID
       </span>
-      <Button title="Google" className="bg-[#4b8ef3]" />
+      <Button title="Google" className="bg-prime-blue" />
     </motion.form>
   )
 }
 
 const style = {
-  wrapper: `w-full md:min-w-[400px] xl:min-w-[550px] 2xl:min-w-[650px] relative max-h-fit z-10 p-12 bg-white dark:bg-[#242731]`,
+  wrapper: `w-full md:min-w-[400px] xl:min-w-[550px] 2xl:min-w-[650px] relative max-h-fit z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
 }
-
