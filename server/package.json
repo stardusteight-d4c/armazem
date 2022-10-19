@@ -5,7 +5,7 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "nodemon --watch './' --exec 'ts-node-esm index.ts' -e ts",
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,12 +17,8 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^6.6.5",
+    "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20"
   },
-  "devDependencies": {
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.14",
-    "@types/node": "^18.11.2",
-    "typescript": "^4.8.4"
-  }
+  "devDependencies": {}
 }

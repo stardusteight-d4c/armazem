@@ -17,7 +17,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
       className={style.wrapper}
     >
       <div className="relative">
-        <i className="ri-user-shared-line absolute text-2xl top-0 right-0"></i>
+        <i className="ri-user-shared-line absolute text-2xl top-0 right-0" />
         <h1 className="text-4xl font-bold">Sign in</h1>
         <div className="flex items-center space-x-4 font-medium text-sm pt-5 pb-4">
           <span className="text-dawn-weak dark:text-dusk-weak">New user?</span>
@@ -56,10 +56,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
             className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
           />
         </div>
-        <Button
-          title="Continue"
-          className="mt-2 bg-prime-purple"
-        />
+        <Button title="Continue" className="mt-2 bg-prime-purple" />
         <span className="text-dawn-weak dark:text-dusk-weak block my-4 font-medium">
           Or continue with
         </span>

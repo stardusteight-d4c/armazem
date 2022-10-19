@@ -19,6 +19,7 @@ module.exports = {
       transparent: 'transparent',
       white: '#FFFFFF',
       black: '#000000',
+      red: '#E44242',
       prime: {
         purple: '#4D3BC9',
         blue: '#4B8EF3',

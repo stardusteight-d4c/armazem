@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { ButtonHTMLAttributes } from 'react'
 
-interface Props {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   title: string
-  className?: string
+  className: string
 }
 
-export const Button = ({ title, className }: Props) => {
+export const Button = ({ title, className, ...props }: Props) => {
   return (
     <button
-      className={`rounded-xl font-semibold text-white w-full py-4 transition-all duration-200 hover:brightness-125 ${className}`}
+      {...props}
+      className={`rounded-xl disabled:cursor-not-allowed disabled:brightness-75 font-semibold text-white w-full py-4 transition-all duration-200 hover:brightness-125 ${className}`}
     >
       {title}
     </button>

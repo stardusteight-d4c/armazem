@@ -1,3 +1,2 @@
-
-export const hostServer = import.meta.env.VITE_HOST_SERVER
+export const hostServer = 'http://localhost:5000'
 export const registerRoute = `${hostServer}/api/auth/register`
