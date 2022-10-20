@@ -17,9 +17,11 @@ interface Props {
 
 export const SignUp = ({ signIn, setSignIn }: Props) => {
   const [showPassword, setShowPassword] = useState(false)
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState(undefined)
+  const [userToken, setUserToken] = useState('')
   const [loading, setLoading] = useState(false)
   const [proceedToConfirmEmail, setProceedToConfirmEmail] = useState(false)
+  const [] = useState()
   const dispatch = useAppDispatch()
   const registerValues = useAppSelector(
     (state) => state.anistorage.registerValues
@@ -77,12 +79,20 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     }
   }
 
-  const verifyToken = async () => {
-    const isTokenValid = bcryptjs.compareSync('USYCMAEXS1uLr39ajdswMZR9', token)
-    console.log('isTokenValid', isTokenValid)
-    console.log('token', token)
-
-    return isTokenValid
+  const verifyToken = async (userToken: string) => {
+    console.log('confirmando token', token)
+    
+    if (token) {
+      const isTokenValid = bcryptjs.compareSync(
+        userToken,
+        token
+      )
+      if (!isTokenValid) {
+        error('Token is invalid')
+      } else {
+        success('Email successfully confirmed')
+      }
+    }
   }
 
   const handleValidation = () => {
@@ -121,7 +131,6 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )
   }
-
   console.log(registerValues)
   // console.log(registerValues.firstName + ' ' + registerValues.lastName);
 
@@ -131,19 +140,44 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     handleConfirmEmail: handleConfirmEmail,
     loading: loading,
     setProceedToConfirmEmail: setProceedToConfirmEmail,
-  }
+  }  
 
   return (
     <AnimatePresence>
       {proceedToConfirmEmail ? (
         <>
-          <div
-            className="z-[9999] w-9 h-9 bg-black"
-            onClick={() => verifyToken()}
-          >
-            VERIFYYYY
-          </div>
-          <ConfirmEmail {...confirmEmail} />
+          {token ? (
+            <motion.div
+              initial={{ opacity: 0, x: 200 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              exit={{ opacity: 0 }}
+              className=" bg-fill-weak dark:bg-fill-strong w-[30vw]"
+            >
+              <Toaster position="top-left" />
+              <label
+                htmlFor="token"
+                className="text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold"
+              >
+                Confirm email
+              </label>
+              <input
+                type="text"
+                id="token"
+                required
+                onChange={(e) => setUserToken(e.target.value)}
+                placeholder="Paste token"
+                className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+              />
+              <Button
+                onClick={() => verifyToken(userToken)}
+                title="Confirm email"
+                className="mt-2 bg-prime-purple"
+              />
+            </motion.div>
+          ) : (
+            <ConfirmEmail {...confirmEmail} />
+          )}
         </>
       ) : (
         <motion.form
