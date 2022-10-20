@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js",

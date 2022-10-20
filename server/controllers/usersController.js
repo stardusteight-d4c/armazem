@@ -23,8 +23,8 @@ async function SendEmailVerification(email, name, token) {
 
   // SEND EMAIL WITH DEFINED TRANSPORT OBJECT
   let info = await transporter.sendMail({
-    subject: 'ANiStorage - Email Verification',
-    from: '"Gabriel Sena 👻" <stardusteight.d4cc@gmail.com>', // sender address
+    subject: 'ANiStorage',
+    from: '"Gabriel Sena developer at ANiStorage 👻" <stardusteight.d4cc@gmail.com>', // sender address
     to: email,
     text: `Email Confirmation - Hello, ${name}! Thank you for subscribing. Here is your confirmation code: ${token}`, // plain text body
     html: `
@@ -32,7 +32,7 @@ async function SendEmailVerification(email, name, token) {
       <h2>Email Confirmation</h2>
       <p>Hello, ${name}!</p>
       <p>Thank you for subscribing. Here is your confirmation code:</p>
-      <h3 style="color:black;text-align:center;">${token}</h3>
+      <h3 style="color:black;">${token}</h3>
       </div>`, // html body
   })
 }

@@ -1,8 +1,16 @@
 import { configureStore, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+
 // import { } from '../Types'
 
 const initialState = {
   theme: 'dark',
+  registerValues: {
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+    email: '<empty>',
+  },
 }
 
 const saveThemeToLocalStorage = (themeState: any) => {
@@ -14,7 +22,7 @@ const saveThemeToLocalStorage = (themeState: any) => {
 }
 
 const ANiStorageSlice = createSlice({
-  name: 'Netflix',
+  name: 'ANiStorageSlice',
   initialState,
   reducers: {
     handleSwitchTheme: (state) => {
@@ -30,6 +38,15 @@ const ANiStorageSlice = createSlice({
         saveThemeToLocalStorage(state.theme)
       }
     },
+    handleChangeRegisterValues: (state, action) => {
+      state.registerValues = {
+        ...state.registerValues,
+        [action.payload.target.id]: action.payload.target.value,
+      }
+    },
+    clearRegisterValuesEntries: (state) => {
+      state.registerValues = initialState.registerValues
+    },
   },
 })
 
@@ -37,9 +54,16 @@ export const store = configureStore({
   reducer: {
     anistorage: ANiStorageSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['ANiStorageSlice/handleChangeRegisterValues'],
+      },
+    }),
 })
 
-export const { handleSwitchTheme } = ANiStorageSlice.actions
+export const { handleSwitchTheme, handleChangeRegisterValues, clearRegisterValuesEntries } =
+  ANiStorageSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

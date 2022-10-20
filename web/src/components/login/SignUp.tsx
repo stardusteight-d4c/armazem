@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
-import { error, success } from '../toasters'
+import { error, success } from '../Toasters'
 import { ConfirmEmail } from './ConfirmEmail'
 import axios from 'axios'
 import { emailConfirmation } from '../../utils/api-routes'
 import bcryptjs from 'bcryptjs'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { handleChangeRegisterValues } from '../../store'
 
 interface Props {
   signIn: boolean
@@ -16,16 +18,12 @@ interface Props {
 export const SignUp = ({ signIn, setSignIn }: Props) => {
   const [showPassword, setShowPassword] = useState(false)
   const [token, setToken] = useState('')
-  // const [loading, setLoading] = useState(false)
-
+  const [loading, setLoading] = useState(false)
   const [proceedToConfirmEmail, setProceedToConfirmEmail] = useState(false)
-  const [registerValues, setRegisterValues] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    password: '',
-    email: 'null',
-  })
+  const dispatch = useAppDispatch()
+  const registerValues = useAppSelector(
+    (state) => state.anistorage.registerValues
+  )
 
   // AO CLICAR EM 'CONTINUE', TROCAR O COMPONENTE E SOLICITAR A INSERSÃO DO EMAIL PARA RECUPERAÇÃO DE SENHA
   // ADICIONAR O EMAIL EM 'REGISTERVALUES' E ENVIAR O EMAIL PARA ROTA DE REGISTRO,
@@ -58,7 +56,8 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   const handleConfirmEmail = async (event: React.FormEvent) => {
     event.preventDefault()
     if (handleValidation()) {
-      console.log('in validation', confirmEmail)
+      setLoading(true)
+      // console.log('in validation', confirmEmail)
       const { email, firstName, lastName } = registerValues
       const name = firstName + ' ' + lastName
       const { data } = await axios.post(emailConfirmation, {
@@ -67,9 +66,11 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
       })
       console.log(data)
       if (data.status === false) {
+        setLoading(false)
         error(data.msg)
       }
       if (data.status === true) {
+        setLoading(false)
         setToken(data.token)
         success(data.msg)
       }
@@ -79,8 +80,8 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   const verifyToken = async () => {
     const isTokenValid = bcryptjs.compareSync('USYCMAEXS1uLr39ajdswMZR9', token)
     console.log('isTokenValid', isTokenValid)
-    console.log('token', token);
-    
+    console.log('token', token)
+
     return isTokenValid
   }
 
@@ -98,19 +99,12 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     } else if (password.length < 8) {
       error('Password must contain at least 8 characters')
       return false
-    } else if (email !== 'null' && !validateEmail(email)) {
+    } else if (email !== '<empty>' && !validateEmail(email)) {
       error('Enter a valid email address')
       return false
     }
     setProceedToConfirmEmail(true)
     return true
-  }
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setRegisterValues({
-      ...registerValues,
-      [event.target.id]: event.target.value,
-    })
   }
 
   const disableButton = () => {
@@ -133,16 +127,22 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
 
   const confirmEmail = {
     handleSubmit: handleSubmit,
-    handleChange: handleChange,
     disableButton: disableButton,
     handleConfirmEmail: handleConfirmEmail,
+    loading: loading,
+    setProceedToConfirmEmail: setProceedToConfirmEmail,
   }
 
   return (
     <AnimatePresence>
       {proceedToConfirmEmail ? (
         <>
-          <div className='z-[9999] w-9 h-9 bg-black' onClick={() => verifyToken()}>VERIFYYYY</div>
+          <div
+            className="z-[9999] w-9 h-9 bg-black"
+            onClick={() => verifyToken()}
+          >
+            VERIFYYYY
+          </div>
           <ConfirmEmail {...confirmEmail} />
         </>
       ) : (
@@ -182,7 +182,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                   id="firstName"
                   required
                   placeholder="First name"
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e) => dispatch(handleChangeRegisterValues(e))}
                   className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                 />
               </div>
@@ -199,7 +199,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                   id="lastName"
                   required
                   placeholder="Last name"
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e) => dispatch(handleChangeRegisterValues(e))}
                   className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                 />
               </div>
@@ -217,7 +217,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                   id="username"
                   required
                   placeholder="Choose a username"
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e) => dispatch(handleChangeRegisterValues(e))}
                   className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                 />
               </div>
@@ -235,7 +235,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                     id="password"
                     required
                     placeholder="•••••••••••••"
-                    onChange={(e) => handleChange(e)}
+                    onChange={(e) => dispatch(handleChangeRegisterValues(e))}
                     className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                   />
                   {registerValues.password.trim() && (

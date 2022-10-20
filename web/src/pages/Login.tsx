@@ -43,7 +43,7 @@ export const Login = (props: Props) => {
             </div>
           </div>
         </div>
-        <div className="col-span-1 xl:col-span-2 flex justify-center mx-auto items-center">
+        <div className="col-span-1 w-full relative xl:col-span-2 flex justify-center mx-auto items-center">
           <AnimatePresence>
             {signIn ? <SignIn {...switchForm} /> : <SignUp {...switchForm} />}
           </AnimatePresence>
