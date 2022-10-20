@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
@@ -6,6 +6,7 @@ import { error, success } from '../toasters'
 import { ConfirmEmail } from './ConfirmEmail'
 import axios from 'axios'
 import { emailConfirmation } from '../../utils/api-routes'
+import bcryptjs from 'bcryptjs'
 
 interface Props {
   signIn: boolean
@@ -14,6 +15,7 @@ interface Props {
 
 export const SignUp = ({ signIn, setSignIn }: Props) => {
   const [showPassword, setShowPassword] = useState(false)
+  const [token, setToken] = useState('')
   // const [loading, setLoading] = useState(false)
 
   const [proceedToConfirmEmail, setProceedToConfirmEmail] = useState(false)
@@ -68,9 +70,18 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         error(data.msg)
       }
       if (data.status === true) {
+        setToken(data.token)
         success(data.msg)
       }
     }
+  }
+
+  const verifyToken = async () => {
+    const isTokenValid = bcryptjs.compareSync('USYCMAEXS1uLr39ajdswMZR9', token)
+    console.log('isTokenValid', isTokenValid)
+    console.log('token', token);
+    
+    return isTokenValid
   }
 
   const handleValidation = () => {
@@ -130,7 +141,10 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   return (
     <AnimatePresence>
       {proceedToConfirmEmail ? (
-        <ConfirmEmail {...confirmEmail} />
+        <>
+          <div className='z-[9999] w-9 h-9 bg-black' onClick={() => verifyToken()}>VERIFYYYY</div>
+          <ConfirmEmail {...confirmEmail} />
+        </>
       ) : (
         <motion.form
           onSubmit={(e) => handleSubmit(e)}

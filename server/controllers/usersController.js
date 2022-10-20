@@ -10,18 +10,16 @@ for (let i = 0; i < 25; i++) {
 }
 
 // NODEMAILER CONFIGURATION
-async function SendEmailVerification(email, name) {
-  console.log(email, name);
-  
+async function SendEmailVerification(email, name, token) {
+  console.log(email, name)
 
   var transporter = nodemailer.createTransport({
-    service: "Gmail",
+    service: 'Gmail',
     auth: {
-        user: "stardusteight.d4cc@gmail.com",
-        pass: "gtrqgsupsmiogwcv"
-    }
-});
-
+      user: 'stardusteight.d4cc@gmail.com',
+      pass: 'gtrqgsupsmiogwcv',
+    },
+  })
 
   // SEND EMAIL WITH DEFINED TRANSPORT OBJECT
   let info = await transporter.sendMail({
@@ -37,10 +35,15 @@ async function SendEmailVerification(email, name) {
       <h3 style="color:black;text-align:center;">${token}</h3>
       </div>`, // html body
   })
-  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
 }
 
 export const emailConfirmation = async (req, res, next) => {
+  const characters =
+    '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  let token = ''
+  for (let i = 0; i < 25; i++) {
+    token += characters[Math.floor(Math.random() * characters.length)]
+  }
   try {
     const { name, email } = req.body
     const emailCheck = await User.findOne({ email })
@@ -48,8 +51,9 @@ export const emailConfirmation = async (req, res, next) => {
     if (emailCheck) {
       return res.json({ msg: 'Email is already in use', status: false })
     }
-    await SendEmailVerification(email, name).catch(console.error)
-    return res.json({ msg: `Email sent to ${email}`, status: true })
+    await SendEmailVerification(email, name, token).catch(console.error)
+    const encryptedToken = await brcypt.hash(token, 10)
+    return res.json({ msg: `Email sent to ${email}`, status: true, token: encryptedToken })
   } catch (error) {
     next(error)
   }
