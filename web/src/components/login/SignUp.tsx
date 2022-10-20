@@ -5,10 +5,15 @@ import { Toaster } from 'react-hot-toast'
 import { error, success } from '../Toasters'
 import { ConfirmEmail } from './ConfirmEmail'
 import axios from 'axios'
-import { emailConfirmation } from '../../utils/api-routes'
+import {
+  emailConfirmation,
+  registerRoute,
+  validateSignUp,
+} from '../../utils/api-routes'
 import bcryptjs from 'bcryptjs'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { handleChangeRegisterValues } from '../../store'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   signIn: boolean
@@ -16,12 +21,13 @@ interface Props {
 }
 
 export const SignUp = ({ signIn, setSignIn }: Props) => {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [token, setToken] = useState(undefined)
   const [userToken, setUserToken] = useState('')
   const [loading, setLoading] = useState(false)
   const [proceedToConfirmEmail, setProceedToConfirmEmail] = useState(false)
-  const [] = useState()
+  const [usernameAvailable, setUsernameAvailable] = useState(false)
   const dispatch = useAppDispatch()
   const registerValues = useAppSelector(
     (state) => state.anistorage.registerValues
@@ -33,26 +39,10 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   // POSTERIORMENTE SOLICITAR A INSERÇÃO DA STRING E NO INPUT AO CLICAR EM 'ENVIAR' COMPARAR AMBAS STRINGS
   // EXIBIR MENSAGEM DE EMAIL CONFIRMADO E INSERIR OS DADOS NO BANCO DE DADOS, ISTO NO COMPONENTE DE SIGNUP
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.stopPropagation()
-    event.preventDefault()
-    if (handleValidation()) {
-      // setLoading(true)
-      // console.log('in validation', registerRoute)
-      // const { username, email, password } = values
-      // const { data } = await axios.post(registerRoute, {
-      //   username,
-      //   email,
-      //   password,
-      // })
-      // console.log(data)
-      // if (data.status === false) {
-      //   toast.error(data.msg, toastOptions)
-      // }
-      // if (data.status === true) {
-      //   localStorage.setItem('mirage-app-user', JSON.stringify(data.user))
-      //   navigate('/')
-    }
+  const validateEmail = (email: string) => {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
   }
 
   const handleConfirmEmail = async (event: React.FormEvent) => {
@@ -80,17 +70,14 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   }
 
   const verifyToken = async (userToken: string) => {
-    console.log('confirmando token', token)
-    
     if (token) {
-      const isTokenValid = bcryptjs.compareSync(
-        userToken,
-        token
-      )
+      const isTokenValid = bcryptjs.compareSync(userToken, token)
       if (!isTokenValid) {
         error('Token is invalid')
+        return false
       } else {
         success('Email successfully confirmed')
+        return true
       }
     }
   }
@@ -117,6 +104,49 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     return true
   }
 
+  const verifyUsername = async (username: string) => {
+    try {
+      const { data } = await axios.post(validateSignUp, {
+        username,
+      })
+      if (data.status === false) {
+        error(data.msg)
+        setUsernameAvailable(false)
+      } else {
+        success(data.msg)
+        setUsernameAvailable(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.stopPropagation()
+    event.preventDefault()
+    const emailConfirmed = await verifyToken(userToken)
+    if (handleValidation() && emailConfirmed) {
+      setLoading(true)
+      console.log('Registering user', registerRoute)
+      const { firstName, lastName, username, email, password } = registerValues
+      const name = registerValues.firstName + ' ' + registerValues.lastName
+      const { data } = await axios.post(registerRoute, {
+        name,
+        username,
+        email,
+        password,
+      })
+      console.log(data)
+      if (data.status === false) {
+        error(data.msg)
+      }
+      if (data.status === true) {
+        localStorage.setItem('session', JSON.stringify(data.user))
+        navigate('/')
+      }
+    }
+  }
+
   const disableButton = () => {
     const booleanValues = []
     for (const [key, value] of Object.entries(registerValues)) {
@@ -126,13 +156,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     return emptyInput
   }
 
-  const validateEmail = (email: string) => {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    )
-  }
   console.log(registerValues)
-  // console.log(registerValues.firstName + ' ' + registerValues.lastName);
 
   const confirmEmail = {
     handleSubmit: handleSubmit,
@@ -140,7 +164,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     handleConfirmEmail: handleConfirmEmail,
     loading: loading,
     setProceedToConfirmEmail: setProceedToConfirmEmail,
-  }  
+  }
 
   return (
     <AnimatePresence>
@@ -250,6 +274,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                   type="text"
                   id="username"
                   required
+                  onBlur={() => verifyUsername(registerValues.username)}
                   placeholder="Choose a username"
                   onChange={(e) => dispatch(handleChangeRegisterValues(e))}
                   className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
@@ -295,7 +320,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
             // type="submit"
             title="Continue"
             className="mt-2 bg-prime-purple"
-            disabled={disableButton()}
+            disabled={disableButton() && usernameAvailable}
           />
           <span className="text-dawn-weak dark:text-dusk-weak block my-4 font-medium">
             Sign up by Open ID
