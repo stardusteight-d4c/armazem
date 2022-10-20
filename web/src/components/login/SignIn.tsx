@@ -67,5 +67,5 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
 }
 
 const style = {
-  wrapper: `w-full md:min-w-[400px] xl:min-w-[550px] 2xl:min-w-[650px] relative max-h-fit z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
+  wrapper: `w-full md:min-w-[400px] h-screen xl:min-w-[550px] 2xl:min-w-[650px] relative max-h-fit z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
 }

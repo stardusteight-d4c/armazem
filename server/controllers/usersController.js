@@ -76,13 +76,15 @@ export const validateSignUp = async (req, res, next) => {
   try {
     const { username } = req.body
     const usernameCheck = await User.findOne({ username })
-    if (usernameCheck) {
-      return res.json({
-        msg: 'Username is already in use',
-        status: false,
-      })
+    if (username.length > 3) {
+      if (usernameCheck) {
+        return res.json({
+          msg: 'Username is already in use',
+          status: false,
+        })
+      }
+      return res.json({ status: true, msg: 'Username available ', username })
     }
-    return res.json({ status: true, msg: 'Username available ',username })
   } catch (error) {
     next(error)
   }
@@ -90,20 +92,11 @@ export const validateSignUp = async (req, res, next) => {
 
 export const register = async (req, res, next) => {
   try {
-    const { name, username, password } = req.body
-    const usernameCheck = await User.findOne({ username })
-    const emailCheck = await User.findOne({ email })
-    if (usernameCheck) {
-      return res.json({
-        msg: 'Username is already in use',
-        status: false,
-      })
-    }
-    if (emailCheck) {
-      return res.json({ msg: 'Email is already in use', status: false })
-    }
+    const { name, email, username, password } = req.body
+    console.log(req.body);
     const hashedPassword = await brcypt.hash(password, 10)
     const user = await User.create({
+      name,
       email,
       username,
       password: hashedPassword,

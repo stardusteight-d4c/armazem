@@ -125,11 +125,13 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     event.stopPropagation()
     event.preventDefault()
     const emailConfirmed = await verifyToken(userToken)
+    console.log('call handlesubmit');
+    
     if (handleValidation() && emailConfirmed) {
       setLoading(true)
       console.log('Registering user', registerRoute)
       const { firstName, lastName, username, email, password } = registerValues
-      const name = registerValues.firstName + ' ' + registerValues.lastName
+      const name = firstName + ' ' + lastName
       const { data } = await axios.post(registerRoute, {
         name,
         username,
@@ -171,11 +173,12 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
       {proceedToConfirmEmail ? (
         <>
           {token ? (
-            <motion.div
+            <motion.form
               initial={{ opacity: 0, x: 200 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
               exit={{ opacity: 0 }}
+              onSubmit={(e) => handleSubmit(e)}
               className=" bg-fill-weak dark:bg-fill-strong w-[30vw]"
             >
               <Toaster position="top-left" />
@@ -194,11 +197,12 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                 className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
               />
               <Button
+                type='submit'
                 onClick={() => verifyToken(userToken)}
                 title="Confirm email"
                 className="mt-2 bg-prime-purple"
               />
-            </motion.div>
+            </motion.form>
           ) : (
             <ConfirmEmail {...confirmEmail} />
           )}
@@ -333,5 +337,5 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
 }
 
 const style = {
-  wrapper: `w-full md:min-w-[400px] xl:min-w-[550px] 2xl:min-w-[650px] relative max-h-fit z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
+  wrapper: `md:min-w-[400px] relative max-h-fit z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
 }

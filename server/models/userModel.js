@@ -4,13 +4,13 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     require: true,
-    min: 3,
+    min: 2,
     max: 30,
   },
   username: {
     type: String,
     require: true,
-    min: 4,
+    min: 3,
     max: 15,
     unique: true,
   },
