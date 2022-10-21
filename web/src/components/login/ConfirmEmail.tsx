@@ -2,49 +2,28 @@ import React from 'react'
 import { Toaster } from 'react-hot-toast'
 import { motion } from 'framer-motion'
 import { Button } from '../Button'
-import { Loader } from '../Loader'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { clearRegisterValuesEntries, handleChangeRegisterValues } from '../../store'
+import {
+  clearRegisterValuesEntries,
+  handleChangeRegisterValues,
+} from '../../store'
+import { disableButton } from '../../services/validate-form'
 
 interface Props {
-  handleSubmit: (event: React.FormEvent) => Promise<void>
-  disableButton: () => boolean
   handleConfirmEmail: (event: React.FormEvent) => Promise<void>
   loading: boolean
   setProceedToConfirmEmail: React.Dispatch<React.SetStateAction<boolean>>
-//   setRegisterValues: React.Dispatch<
-//     React.SetStateAction<{
-//       firstName: string
-//       lastName: string
-//       username: string
-//       password: string
-//       email: string
-//     }>
-//   >
 }
 
-// const clearEntries = {
-//   firstName: '',
-//   lastName: '',
-//   username: '',
-//   password: '',
-//   email: '<empty>',
-// }
-
-// Exibir modal com as crendenciais da conta e no fim um campo de input para
-// confirmar o token e cadastrar o usuário no banco de dados
-
 export const ConfirmEmail = ({
-  handleSubmit,
-  disableButton,
   handleConfirmEmail,
   loading,
   setProceedToConfirmEmail,
 }: Props) => {
-  const dispatch = useAppDispatch()
   const registerValues = useAppSelector(
     (state) => state.anistorage.registerValues
   )
+  const dispatch = useAppDispatch()
 
   return (
     <motion.form
@@ -57,7 +36,8 @@ export const ConfirmEmail = ({
     >
       <i
         onClick={() => (
-         dispatch(clearRegisterValuesEntries()), setProceedToConfirmEmail(false)
+          dispatch(clearRegisterValuesEntries()),
+          setProceedToConfirmEmail(false)
         )}
         className="ri-arrow-left-line absolute top-5 left-5 text-3xl p-2 cursor-pointer"
       />
@@ -85,10 +65,10 @@ export const ConfirmEmail = ({
       </div>
       <Button
         type="submit"
-        title='Send me confirmation code'
+        title="Send me confirmation code"
         loading={loading}
         className="mt-2 bg-prime-purple"
-        disabled={disableButton()}
+        disabled={disableButton(registerValues)}
       />
     </motion.form>
   )

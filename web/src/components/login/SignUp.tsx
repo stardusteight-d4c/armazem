@@ -9,11 +9,19 @@ import {
   emailConfirmation,
   registerRoute,
   validateSignUp,
-} from '../../utils/api-routes'
+} from '../../services/api-routes'
 import bcryptjs from 'bcryptjs'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { handleChangeRegisterValues } from '../../store'
+import {
+  clearRegisterValuesEntries,
+  handleChangeRegisterValues,
+} from '../../store'
 import { useNavigate } from 'react-router-dom'
+
+import { signInWithPopup, GoogleAuthProvider, User } from 'firebase/auth'
+import { auth } from '../../services/firebase'
+import { ConfirmVerificationToken } from './ConfirmVerificationToken'
+import { disableButton, handleValidation } from '../../services/validate-form'
 
 interface Props {
   signIn: boolean
@@ -32,31 +40,32 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   const registerValues = useAppSelector(
     (state) => state.anistorage.registerValues
   )
+  const [user, setUser] = useState<User>({} as User)
 
-  // AO CLICAR EM 'CONTINUE', TROCAR O COMPONENTE E SOLICITAR A INSERSÃO DO EMAIL PARA RECUPERAÇÃO DE SENHA
-  // ADICIONAR O EMAIL EM 'REGISTERVALUES' E ENVIAR O EMAIL PARA ROTA DE REGISTRO,
-  // ENVIAR E UM EMAIL COM UMA STRING ALEÁTORIA E ENVIAR TAL STRING PARA O BANCO DE DADOS
-  // POSTERIORMENTE SOLICITAR A INSERÇÃO DA STRING E NO INPUT AO CLICAR EM 'ENVIAR' COMPARAR AMBAS STRINGS
-  // EXIBIR MENSAGEM DE EMAIL CONFIRMADO E INSERIR OS DADOS NO BANCO DE DADOS, ISTO NO COMPONENTE DE SIGNUP
+  console.log(user.metadata ? 'a' : 'b')
 
-  const validateEmail = (email: string) => {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    )
+  function signInWithGoogle() {
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result.user)
+        setUser(result.user)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   const handleConfirmEmail = async (event: React.FormEvent) => {
     event.preventDefault()
-    if (handleValidation()) {
+    if (handleValidation(registerValues, setProceedToConfirmEmail)) {
       setLoading(true)
-      // console.log('in validation', confirmEmail)
       const { email, firstName, lastName } = registerValues
       const name = firstName + ' ' + lastName
       const { data } = await axios.post(emailConfirmation, {
         name,
         email,
       })
-      console.log(data)
       if (data.status === false) {
         setLoading(false)
         error(data.msg)
@@ -82,28 +91,6 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     }
   }
 
-  const handleValidation = () => {
-    const { firstName, lastName, username, password, email } = registerValues
-    if (firstName.length < 2) {
-      error('First name must contain at least 2 characters')
-      return false
-    } else if (lastName.length < 2) {
-      error('Last name must contain at least 2 characters')
-      return false
-    } else if (username.length <= 3) {
-      error('Username must contain more than 3 characters')
-      return false
-    } else if (password.length < 8) {
-      error('Password must contain at least 8 characters')
-      return false
-    } else if (email !== '<empty>' && !validateEmail(email)) {
-      error('Enter a valid email address')
-      return false
-    }
-    setProceedToConfirmEmail(true)
-    return true
-  }
-
   const verifyUsername = async (username: string) => {
     try {
       const { data } = await axios.post(validateSignUp, {
@@ -125,11 +112,11 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     event.stopPropagation()
     event.preventDefault()
     const emailConfirmed = await verifyToken(userToken)
-    console.log('call handlesubmit');
-    
-    if (handleValidation() && emailConfirmed) {
+    if (
+      handleValidation(registerValues, setProceedToConfirmEmail) &&
+      emailConfirmed
+    ) {
       setLoading(true)
-      console.log('Registering user', registerRoute)
       const { firstName, lastName, username, email, password } = registerValues
       const name = firstName + ' ' + lastName
       const { data } = await axios.post(registerRoute, {
@@ -138,7 +125,6 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         email,
         password,
       })
-      console.log(data)
       if (data.status === false) {
         error(data.msg)
       }
@@ -149,64 +135,33 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     }
   }
 
-  const disableButton = () => {
-    const booleanValues = []
-    for (const [key, value] of Object.entries(registerValues)) {
-      booleanValues.push(value.trim() == '')
-    }
-    const emptyInput = booleanValues.includes(true)
-    return emptyInput
-  }
-
   console.log(registerValues)
 
-  const confirmEmail = {
-    handleSubmit: handleSubmit,
-    disableButton: disableButton,
-    handleConfirmEmail: handleConfirmEmail,
-    loading: loading,
-    setProceedToConfirmEmail: setProceedToConfirmEmail,
+  const confirmEmailProps = {
+    handleConfirmEmail,
+    loading,
+    setProceedToConfirmEmail,
+  }
+
+  const verifyTokenProps = {
+    handleSubmit,
+    setUserToken,
+    verifyToken,
+    userToken,
+  }
+
+  const emailVerification = () => {
+    if (proceedToConfirmEmail && !token)
+      return <ConfirmEmail {...confirmEmailProps} />
+    if (proceedToConfirmEmail && token)
+      return <ConfirmVerificationToken data={verifyTokenProps} />
+    if (!proceedToConfirmEmail) return false
   }
 
   return (
     <AnimatePresence>
       {proceedToConfirmEmail ? (
-        <>
-          {token ? (
-            <motion.form
-              initial={{ opacity: 0, x: 200 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              exit={{ opacity: 0 }}
-              onSubmit={(e) => handleSubmit(e)}
-              className=" bg-fill-weak dark:bg-fill-strong w-[30vw]"
-            >
-              <Toaster position="top-left" />
-              <label
-                htmlFor="token"
-                className="text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold"
-              >
-                Confirm email
-              </label>
-              <input
-                type="text"
-                id="token"
-                required
-                onChange={(e) => setUserToken(e.target.value)}
-                placeholder="Paste token"
-                className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
-              />
-              <Button
-                type='submit'
-                onClick={() => verifyToken(userToken)}
-                title="Confirm email"
-                className="mt-2 bg-prime-purple"
-              />
-            </motion.form>
-          ) : (
-            <ConfirmEmail {...confirmEmail} />
-          )}
-        </>
+        emailVerification()
       ) : (
         <motion.form
           onSubmit={(e) => handleSubmit(e)}
@@ -225,7 +180,9 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                 Already a user?
               </span>
               <span
-                onClick={() => setSignIn(!signIn)}
+                onClick={() => (
+                  setSignIn(!signIn), dispatch(clearRegisterValuesEntries())
+                )}
                 className="text-prime-blue cursor-pointer p-1 hover:underline"
               >
                 Login now
@@ -324,12 +281,16 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
             // type="submit"
             title="Continue"
             className="mt-2 bg-prime-purple"
-            disabled={disableButton() && usernameAvailable}
+            disabled={disableButton(registerValues) || !usernameAvailable}
           />
-          <span className="text-dawn-weak dark:text-dusk-weak block my-4 font-medium">
+          <span className="text-dawn-weak mr-auto dark:text-dusk-weak block my-4 font-medium">
             Sign up by Open ID
           </span>
-          <Button title="Google" className="bg-prime-blue" />
+          <Button
+            title="Google"
+            className="bg-prime-blue"
+            onClick={signInWithGoogle}
+          />
         </motion.form>
       )}
     </AnimatePresence>
@@ -337,5 +298,5 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
 }
 
 const style = {
-  wrapper: `md:min-w-[400px] relative max-h-fit z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
+  wrapper: `flex flex-col items-center justify-center w-full md:min-w-[400px] xl:w-[550px] 2xl:w-[650px] max-h-fit h-screen relative z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
 }
