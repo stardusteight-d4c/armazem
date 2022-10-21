@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom'
 import { signInWithPopup, GoogleAuthProvider, User } from 'firebase/auth'
 import { auth } from '../../services/firebase'
 import { ConfirmVerificationToken } from './ConfirmVerificationToken'
-import { disableButton, handleValidation } from '../../services/validate-form'
+import { disableButton, handleValidation, signInWithGoogle } from '../../services/validate-form'
 
 interface Props {
   signIn: boolean
@@ -44,17 +44,6 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   const registerValues = useAppSelector(
     (state) => state.anistorage.registerValues
   )
-
-  function signInWithGoogle() {
-    const provider = new GoogleAuthProvider()
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        setUser(result.user)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
 
   const handleConfirmEmail = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -164,7 +153,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
           email,
         })
         if (data.status === false) {
-          error(data.msg)
+          error('Email is already in use, try sign in')
           setEmailVerified(false)
         }
         if (data.status === true) {
@@ -375,7 +364,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                 type="button"
                 title="Google"
                 className="bg-prime-blue"
-                onClick={signInWithGoogle}
+                onClick={() => signInWithGoogle(setUser)}
               />
             </motion.form>
           )}

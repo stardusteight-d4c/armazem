@@ -24,7 +24,7 @@ async function SendEmailVerification(email, name, token) {
   // SEND EMAIL WITH DEFINED TRANSPORT OBJECT
   let info = await transporter.sendMail({
     subject: 'ANiStorage',
-    from: '"Gabriel Sena developer at ANiStorage 👻" <stardusteight.d4cc@gmail.com>', // sender address
+    from: '"Developer at ANiStorage 👻" <stardusteight.d4cc@gmail.com>', // sender address
     to: email,
     text: `Email Confirmation - Hello, ${name}! Thank you for subscribing. Here is your confirmation code: ${token}`, // plain text body
     html: `
@@ -105,11 +105,12 @@ export const verifyEmailAddress = async (req, res, next) => {
     const emailCheck = await User.findOne({ email })
     if (emailCheck) {
       return res.json({
-        msg: 'Email is already in use, try sign in',
+        msg: 'Email found',
         status: false,
+        emailCheck
       })
     }
-    return res.json({ status: true, emailCheck })
+    return res.json({ status: true })
   } catch (error) {
     next(error)
   }

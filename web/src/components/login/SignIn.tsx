@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../Button'
 import { motion } from 'framer-motion'
 import { error } from '../Toasters'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { login } from '../../services/api-routes'
+import { login, verifyEmailAddress } from '../../services/api-routes'
 import { Toaster } from 'react-hot-toast'
+import { User } from 'firebase/auth'
+import { signInWithGoogle } from '../../services/validate-form'
 
 interface Props {
   signIn: boolean
@@ -14,6 +16,8 @@ interface Props {
 
 export const SignIn = ({ signIn, setSignIn }: Props) => {
   const navigate = useNavigate()
+  const [user, setUser] = useState<User>({} as User)
+  const [emailVerified, setEmailVerified] = useState(false)
   const [registerValues, setRegisterValues] = useState({
     username: '',
     password: '',
@@ -36,6 +40,24 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
       }
     }
   }
+
+  useEffect(() => {
+    ;(async function verifyEmail() {
+      if (user.metadata) {
+        const email = user.email
+        const { data } = await axios.post(verifyEmailAddress, {
+          email,
+        })
+        if (data.status === false) {
+          localStorage.setItem('session', JSON.stringify(data.emailCheck))
+          navigate('/')
+        }
+        if (data.status === true) {
+          error('Email does not exist, try sign up')
+        }
+      }
+    })()
+  }, [user.metadata])
 
   const handleValidation = () => {
     const { username, password } = registerValues
@@ -115,7 +137,12 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
           Or continue with
         </span>
       </div>
-      <Button type="submit" title="Google" className="bg-prime-blue" />
+      <Button
+        type="button"
+        onClick={() => signInWithGoogle(setUser)}
+        title="Google"
+        className="bg-prime-blue"
+      />
     </motion.form>
   )
 }

@@ -1,4 +1,6 @@
+import { GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth'
 import { error } from '../components/Toasters'
+import { auth } from './firebase'
 
 interface registerValuesParams {
   firstName: string
@@ -46,4 +48,15 @@ export const handleValidation = (
   }
   setProceedToConfirmEmail(true)
   return true
+}
+
+export function signInWithGoogle(setUser: React.Dispatch<React.SetStateAction<User>>) {
+  const provider = new GoogleAuthProvider()
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      setUser(result.user)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
