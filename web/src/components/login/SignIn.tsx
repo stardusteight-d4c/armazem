@@ -25,19 +25,24 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    if (handleValidation()) {
-      const { username, password } = registerValues
-      const { data } = await axios.post(login, {
-        username,
-        password,
-      })
-      if (data.status === false) {
-        error(data.msg)
+    try {
+      if (handleValidation()) {
+        const { username, password } = registerValues
+        const { data } = await axios.post(login, {
+          username,
+          password,
+        })
+        if (data.status === false) {
+          error(data.msg)
+        }
+        if (data.status === true) {
+          localStorage.setItem('session', JSON.stringify(data.user))
+          navigate('/')
+        }
       }
-      if (data.status === true) {
-        localStorage.setItem('session', JSON.stringify(data.user))
-        navigate('/')
-      }
+    } catch (err) {
+      error('Error, try to sign in with Google')
+      console.log(err)
     }
   }
 
