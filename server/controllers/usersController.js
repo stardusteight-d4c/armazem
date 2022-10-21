@@ -85,7 +85,6 @@ export const validateSignUp = async (req, res, next) => {
 export const register = async (req, res, next) => {
   try {
     const { name, email, username, password } = req.body
-    console.log(req.body);
     const hashedPassword = await brcypt.hash(password, 10)
     const user = await User.create({
       name,
@@ -94,6 +93,53 @@ export const register = async (req, res, next) => {
       password: hashedPassword,
     })
     delete user.password
+    return res.json({ status: true, user })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const verifyEmailAddress = async (req, res, next) => {
+  try {
+    const { email } = req.body
+    const emailCheck = await User.findOne({ email })
+    if (emailCheck) {
+      return res.json({
+        msg: 'Email is already in use, try sign in',
+        status: false,
+      })
+    }
+    return res.json({ status: true, emailCheck })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const registerGoogleAccount = async (req, res, next) => {
+  try {
+    const { name, email, username } = req.body
+    console.log(req.body)
+    const usernameCheck = await User.findOne({ username })
+    const emailCheck = await User.findOne({ email })
+    if (username.length > 3) {
+      if (usernameCheck) {
+        return res.json({
+          msg: 'Username is already in use',
+          status: false,
+        })
+      }
+    }
+    if (emailCheck) {
+      return res.json({
+        msg: 'Email is already in use, try sign in',
+        status: false,
+      })
+    }
+    const user = await User.create({
+      name,
+      email,
+      username,
+    })
     return res.json({ status: true, user })
   } catch (error) {
     next(error)

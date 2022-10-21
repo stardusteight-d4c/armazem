@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { error } from '../Toasters'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { loginRoute } from '../../services/api-routes'
+import { login } from '../../services/api-routes'
 import { Toaster } from 'react-hot-toast'
 
 interface Props {
@@ -23,7 +23,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
     event.preventDefault()
     if (handleValidation()) {
       const { username, password } = registerValues
-      const { data } = await axios.post(loginRoute, {
+      const { data } = await axios.post(login, {
         username,
         password,
       })
