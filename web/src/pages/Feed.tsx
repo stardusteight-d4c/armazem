@@ -1,13 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SwitchTheme } from '../components/SwitchTheme'
 import hero from '../assets/hero.jpg'
+import { PreviewPost } from '../components'
+import { motion } from 'framer-motion'
 
 interface Props {}
 
 export const Feed = (props: Props) => {
   const navigate = useNavigate()
   const [session, setSession] = useState(null)
+  const [width, setWidth] = useState(0)
+  const [onDrag, setOnDrag] = useState(0)
+
+  // CARROUSEL FRAMER MOTION
+  const carousel = useRef() as React.MutableRefObject<HTMLInputElement>
+  useEffect(() => {
+    carousel.current &&
+      setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth)
+  }, [session, onDrag])
 
   useEffect(() => {
     const user = localStorage.getItem('session')
@@ -19,8 +30,10 @@ export const Feed = (props: Props) => {
     }
   }, [])
 
+  // Verificar se o usuário existe no banco de dados através da sessão, pois se alterarmos o username,
+  // O feed vai carregar do mesmo jeito, crie uma tela de loading mais elaborada
+
   console.log(session)
-  // file:///home/sena/Downloads/Rectangle%201.svg
   return (
     <>
       {session ? (
@@ -35,7 +48,7 @@ export const Feed = (props: Props) => {
                   className="w-full h-full text-[#81838f] rounded-full outline-none py-4 px-12 bg-fill-strong"
                 />
               </div>
-              <div className="flex items-center space-x-5">
+              <div className="flex items-center gap-x-5">
                 <i className="ri-message-2-line text-3xl p-2 cursor-pointer" />
                 <i className="ri-notification-2-line text-3xl p-2 cursor-pointer" />
                 <i className="ri-settings-2-line text-3xl p-2 cursor-pointer" />
@@ -52,33 +65,27 @@ export const Feed = (props: Props) => {
                 <img
                   src={hero}
                   alt=""
-                  className="w-[80vw] max-w-[1200px] mx-auto h-[375px]  cursor-pointer"
+                  className="w-full max-w-[1200px] mx-auto h-[375px] cursor-pointer"
                 />
               </div>
-              <div className="w-[80vw] max-w-[1200px] mx-auto">
-                <article className="w-[450px]  p-4 text-[#9B9B9B] bg-fill-strong">
-                  <div className="flex items-center">
-                    <img
-                      src="https://avatars.githubusercontent.com/u/87643260?v=4"
-                      alt=""
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                    <span className="font-medium">Gabriel Sena</span>
-                    <span>3 hours ago</span>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold text-lg text-white">
-                      Man, I wish smoker was not treated like an "Example
-                      dummy".
-                    </h2>
-                  </div>
-                  <p>
-                    I like this man so much but holy damn he's basically on the
-                    show just to be used as a punching bag. They need to
-                    introduce a new strong pirate? Great, send in smoker to
-                    catch some fists with his face. I mean....
-                  </p>
-                </article>
+              <div className="w-full overflow-hidden max-w-[1200px] mx-auto">
+                <motion.div
+                  whileTap={{ cursor: 'grabbing' }}
+                  drag="x"
+                  ref={carousel}
+                  onDrag={(_event, info) =>
+                    setOnDrag(info.offset.x)
+                  }
+                  dragConstraints={{ right: 0, left: -width }}
+                  className="flex items-center gap-x-5"
+                >
+                  <PreviewPost />
+                  <PreviewPost />
+                  <PreviewPost />
+                  <PreviewPost />
+                  <PreviewPost />
+                  <PreviewPost />
+                </motion.div>
               </div>
             </header>
           </div>

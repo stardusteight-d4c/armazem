@@ -4,6 +4,7 @@ import { Feed, Login } from './pages'
 import { handleSwitchTheme } from './store'
 import { useAppDispatch } from './store/hooks'
 
+
 interface Props {}
 
 export const App = (props: Props) => {

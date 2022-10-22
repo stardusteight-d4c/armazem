@@ -1,4 +1,5 @@
 export { Button } from './Button'
+export { SwitchTheme } from './SwitchTheme'
 export { SignIn } from './login/SignIn'
 export { SignUp } from './login/SignUp'
-export { SwitchTheme } from './SwitchTheme'
+export { PreviewPost } from './post/PreviewPost'
