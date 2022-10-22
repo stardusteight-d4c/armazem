@@ -17,7 +17,7 @@ export const SwitchTheme = (props: Props) => {
   return (
     <div
       onClick={() => dispatch(handleSwitchTheme())}
-      className={`bg-fill-weak dark:bg-fill-strong text-dusk-main dark:text-dawn-main flex items-center px-0.5 cursor-pointer rounded-full h-6 w-12 flex-shrink-0 relative ${
+      className={`bg-fill-strong dark:bg-fill-weak dark:text-fill-strong text-fill-weak flex items-center px-0.5 cursor-pointer rounded-full h-6 w-12 flex-shrink-0 relative ${
         theme === 'dark' ? 'justify-end' : 'justify-start'
       }`}
     >
@@ -25,7 +25,7 @@ export const SwitchTheme = (props: Props) => {
         <i className="ri-flashlight-fill w-4 h-4" />
       </span>
       <motion.div
-        className="z-40 w-5 h-5 bg-layer-heavy dark:bg-layer-light rounded-full"
+        className="z-40 w-5 h-5 bg-fill-weak dark:bg-fill-strong rounded-full"
         layout
         transition={spring}
       />

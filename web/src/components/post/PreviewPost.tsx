@@ -4,7 +4,7 @@ interface Props {}
 
 export const PreviewPost = (props: Props) => {
   return (
-    <article className="max-w-[450px] min-w-[450px] p-4 text-[#9B9B9B] bg-fill-strong">
+    <article className="max-w-[450px] min-w-[450px] h-[285px] p-4 text-[#707070] dark:text-[#9B9B9B] bg-[#eceff4] dark:bg-[#2e3440]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
@@ -12,12 +12,12 @@ export const PreviewPost = (props: Props) => {
             alt=""
             className="w-8 h-8 rounded-full object-cover"
           />
-          <span className="font-medium text-dawn-main">Gabriel Sena</span>
+          <span className="font-medium text-dusk-main dark:text-dawn-main">Gabriel Sena</span>
         </div>
         <span>3 hours ago</span>
       </div>
       <div>
-        <h2 className="font-semibold text-lg py-2 text-dawn-main">
+        <h2 className="font-semibold text-lg py-2 text-dusk-main dark:text-dawn-main">
           Man, I wish smoker was not treated like an "Example dummy".
         </h2>
       </div>
@@ -27,20 +27,20 @@ export const PreviewPost = (props: Props) => {
         Great, send in smoker to catch some fists with his face...
       </p>
       <div className="h-[1px] w-[full] my-2 bg-dusk-weak/50" />
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between text-dusk-main dark:text-dawn-main">
         <div className="flex items-center gap-x-5">
           <div className="flex items-center cursor-pointer">
-            <i className="ri-battery-2-charge-line p-1 text-white text-xl" />
-            <span className="text-sm text-white">25 Ups</span>
+            <i className="ri-battery-2-charge-line p-1 text-xl" />
+            <span className="text-sm">25 Ups</span>
           </div>
           <div className="flex items-center cursor-pointer">
-            <i className="ri-discuss-line p-1 text-white  text-xl" />
-            <span className="text-sm text-white">Discuss</span>
+            <i className="ri-discuss-line p-1 text-xl" />
+            <span className="text-sm">Discuss</span>
           </div>
         </div>
         <div className="flex items-center cursor-pointer">
-          <i className="ri-share-box-line p-1 text-white  text-xl" />
-          <span className="text-sm text-white">Share</span>
+          <i className="ri-share-box-line p-1 text-xl" />
+          <span className="text-sm">Share</span>
         </div>
       </div>
     </article>
