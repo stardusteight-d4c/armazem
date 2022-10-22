@@ -4,7 +4,7 @@ interface Props {}
 
 export const PreviewPost = (props: Props) => {
   return (
-    <article className="max-w-[450px] min-w-[450px] h-[285px] p-4 text-[#707070] dark:text-[#9B9B9B] bg-[#eceff4] dark:bg-[#2e3440]">
+    <article className="max-w-[450px] min-w-[450px] h-[285px] p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
@@ -26,7 +26,7 @@ export const PreviewPost = (props: Props) => {
         be used as a punching bag. They need to introduce a new strong pirate?
         Great, send in smoker to catch some fists with his face...
       </p>
-      <div className="h-[1px] w-[full] my-2 bg-dusk-weak/50" />
+      <div className="h-[1px] w-[full] my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
       <div className="flex items-center justify-between text-dusk-main dark:text-dawn-main">
         <div className="flex items-center gap-x-5">
           <div className="flex items-center cursor-pointer">

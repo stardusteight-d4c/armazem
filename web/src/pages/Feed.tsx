@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SwitchTheme } from '../components/SwitchTheme'
 import hero from '../assets/hero.jpg'
-import { PreviewPost } from '../components'
+import { CardManga, PreviewPost } from '../components'
 import { motion } from 'framer-motion'
 
 interface Props {}
@@ -64,13 +64,13 @@ export const Feed = (props: Props) => {
       {session ? (
         <div className="grid grid-cols-5 max-w-screen-xl drop-shadow-sm dark:drop-shadow-2xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong">
           <div className="col-start-2 col-span-4 ">
-            <nav className="bg-fill-weak dark:bg-fill-strong  justify-between p-8 w-full flex items-center h-24">
+            <nav className="bg-fill-weak dark:bg-fill-strong border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between p-8 w-full flex items-center h-24">
               <div className="flex relative items-center rounded-full">
-                <i className="ri-search-2-line left-2 absolute text-dawn-main text-3xl" />
+                <i className="ri-search-2-line left-2 absolute text-dusk-main dark:text-dawn-main text-3xl" />
                 <input
                   type="text"
                   placeholder="Search Everything"
-                  className="w-full h-full text-[#81838f] rounded-full outline-none py-4 px-12 bg-transparent"
+                  className="w-full h-full placeholder:text-dusk-main dark:placeholder:text-dawn-main rounded-full outline-none py-4 px-12 bg-transparent"
                 />
               </div>
               <div className="flex items-center gap-x-5">
@@ -128,7 +128,7 @@ export const Feed = (props: Props) => {
                 </section>
                 <section>
                   <h2 className="text-2xl pb-4 pt-8 text-dusk-main dark:text-dawn-main font-bold">
-                    Popular
+                    Popular readings
                   </h2>
                   <motion.div
                     // whileTap={{ cursor: 'grabbing' }}
@@ -138,43 +138,20 @@ export const Feed = (props: Props) => {
                     dragConstraints={{ right: 0, left: -cardCarouselWidth }}
                     className="flex items-center gap-x-5 "
                   >
-                    <img
-                      src="https://kbimages1-a.akamaihd.net/22af78ba-0eeb-44e0-ab5e-20a4a890ade9/1200/1200/False/jujutsu-kaisen-vol-8.jpg"
-                      alt=""
-                      draggable="false"
-                      className="w-[215px] h-[325px] object-cover pointer-events-none"
-                    />
-                    <img
-                      src="https://kbimages1-a.akamaihd.net/22af78ba-0eeb-44e0-ab5e-20a4a890ade9/1200/1200/False/jujutsu-kaisen-vol-8.jpg"
-                      alt=""
-                      draggable="false"
-                      className="w-[215px] h-[325px] object-cover"
-                    />
-                    <img
-                      src="https://kbimages1-a.akamaihd.net/22af78ba-0eeb-44e0-ab5e-20a4a890ade9/1200/1200/False/jujutsu-kaisen-vol-8.jpg"
-                      alt=""
-                      draggable="false"
-                      className="w-[215px] h-[325px] object-cover"
-                    />
-                    <img
-                      src="https://kbimages1-a.akamaihd.net/22af78ba-0eeb-44e0-ab5e-20a4a890ade9/1200/1200/False/jujutsu-kaisen-vol-8.jpg"
-                      alt=""
-                      draggable="false"
-                      className="w-[215px] h-[325px] object-cover"
-                    />
-                    <img
-                      src="https://kbimages1-a.akamaihd.net/22af78ba-0eeb-44e0-ab5e-20a4a890ade9/1200/1200/False/jujutsu-kaisen-vol-8.jpg"
-                      alt=""
-                      draggable="false"
-                      className="w-[215px] h-[325px] object-cover"
-                    />
+                    <CardManga />
+                    <CardManga />
+                    <CardManga />
+                    <CardManga />
+                    <CardManga />
+                    <CardManga />
+                    <CardManga />
                   </motion.div>
                 </section>
               </main>
             </div>
           </div>
 
-          <aside className="min-h-screen scrollbar-hide col-span-1 row-start-1 col-start-1 drop-shadow-md dark:drop-shadow-2xl text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong">
+          <aside className="min-h-screen scrollbar-hide z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong">
             <div className="flex items-center py-8 -mt-[2px] gap-x-2">
               <i className="ri-server-fill text-2xl text-fill-strong dark:text-fill-weak" />
               <h1 className="text-3xl font-inter text-fill-strong dark:text-fill-weak font-bold">
@@ -184,8 +161,8 @@ export const Feed = (props: Props) => {
             <div>
               <span className="mb-4 block">New Feeds</span>
               <ul className="space-y-2">
-                <li className="flex w-full cursor-pointer items-center justify-start p-4 bg-[#0249C7] rounded-xl gap-4">
-                  <i className="ri-gamepad-fill text-white text-2xl" />
+                <li className="flex w-full cursor-pointer items-center justify-start p-4 bg-prime-blue rounded-xl gap-4">
+                  <i className="ri-water-flash-fill text-white text-2xl" />
                   <span className="font-medium text-white text-lg">
                     New Feed
                   </span>

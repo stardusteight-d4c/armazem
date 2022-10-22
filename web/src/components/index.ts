@@ -1,5 +1,6 @@
 export { Button } from './Button'
 export { SwitchTheme } from './SwitchTheme'
+export { CardManga } from './CardManga'
 export { SignIn } from './login/SignIn'
 export { SignUp } from './login/SignUp'
 export { PreviewPost } from './post/PreviewPost'

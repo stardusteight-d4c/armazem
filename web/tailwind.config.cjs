@@ -35,7 +35,7 @@ module.exports = {
       },
       fill: {
         strong: '#242731',
-        weak: '#FFFFFF',
+        weak: '#ededed',
       },
       layer: {
         heavy: '#2D3039',
