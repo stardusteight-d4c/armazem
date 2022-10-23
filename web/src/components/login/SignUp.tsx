@@ -42,7 +42,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   const [user, setUser] = useState<User>({} as User)
   const dispatch = useAppDispatch()
   const registerValues = useAppSelector(
-    (state) => state.anistorage.registerValues
+    (state) => state.armazem.registerValues
   )
 
   const handleConfirmEmail = async (event: React.FormEvent) => {

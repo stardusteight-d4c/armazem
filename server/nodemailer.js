@@ -9,8 +9,8 @@ for (let i = 0; i < 25; i++) {
 async function SendEmailVerification(email, name) {
   // SEND EMAIL WITH DEFINED TRANSPORT OBJECT
   let info = await transporter.sendMail({
-    subject: 'ANiStorage - Email Verification',
-    from: '"Developer from ANiStorage" <stardusteight.d4cc@gmail.com>',
+    subject: 'Armazem - Email Verification',
+    from: '"Developer from Armazem" <stardusteight.d4cc@gmail.com>',
     to: email,
     text: `Email Confirmation - Hello, ${name}! Thank you for subscribing. Here is your confirmation code: ${token}`, // plain text body
     html: `

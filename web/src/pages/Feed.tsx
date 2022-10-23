@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SwitchTheme } from '../components/SwitchTheme'
 import hero from '../assets/hero.jpg'
-import { CardManga, PreviewPost } from '../components'
-import { motion } from 'framer-motion'
+import { Button, CardManga, PostInput, PreviewPost } from '../components'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface Props {}
 
@@ -23,6 +23,7 @@ export const Feed = (props: Props) => {
   const [cardCarouselWidth, setCardCarouselWidth] = useState(0)
   const [onDragPreviewPost, setOnDragPreviewPost] = useState(0)
   const [onDrag, setOnDrag] = useState(0)
+  const [newPost, setNewPost] = useState(false)
 
   // CAROUSEL FRAMER MOTION
   const previewPostCarousel =
@@ -61,6 +62,7 @@ export const Feed = (props: Props) => {
   console.log(session)
   return (
     <>
+      {newPost && <PostInput />}
       {session ? (
         <div className="grid grid-cols-5 max-w-screen-xl drop-shadow-sm dark:drop-shadow-2xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong">
           <div className="col-start-2 col-span-4 ">
@@ -75,6 +77,10 @@ export const Feed = (props: Props) => {
               </div>
               <div className="flex items-center gap-x-5">
                 <SwitchTheme />
+                <i
+                  className="ri-article-line text-3xl p-2 cursor-pointer"
+                  onClick={() => setNewPost(!newPost)}
+                />
                 <i className="ri-message-2-line text-3xl p-2 cursor-pointer" />
                 <i className="ri-notification-2-line text-3xl p-2 cursor-pointer" />
                 <i className="ri-settings-2-line text-3xl p-2 cursor-pointer" />
@@ -155,7 +161,7 @@ export const Feed = (props: Props) => {
             <div className="flex items-center py-8 -mt-[2px] gap-x-2">
               <i className="ri-server-fill text-2xl text-fill-strong dark:text-fill-weak" />
               <h1 className="text-3xl font-inter text-fill-strong dark:text-fill-weak font-bold">
-                ANiStorage
+                Armazem
               </h1>
             </div>
             <div>

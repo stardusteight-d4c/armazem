@@ -21,8 +21,8 @@ const saveThemeToLocalStorage = (themeState: any) => {
   }
 }
 
-const ANiStorageSlice = createSlice({
-  name: 'ANiStorageSlice',
+const ArmazemSlice = createSlice({
+  name: 'ArmazemSlice',
   initialState,
   reducers: {
     handleSwitchTheme: (state) => {
@@ -52,18 +52,18 @@ const ANiStorageSlice = createSlice({
 
 export const store = configureStore({
   reducer: {
-    anistorage: ANiStorageSlice.reducer,
+    armazem: ArmazemSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['ANiStorageSlice/handleChangeRegisterValues'],
+        ignoredActions: ['ArmazemSlice/handleChangeRegisterValues'],
       },
     }),
 })
 
 export const { handleSwitchTheme, handleChangeRegisterValues, clearRegisterValuesEntries } =
-  ANiStorageSlice.actions
+ArmazemSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

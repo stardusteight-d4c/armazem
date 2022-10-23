@@ -12,7 +12,7 @@ const spring = {
 
 export const SwitchTheme = (props: Props) => {
   const dispatch = useAppDispatch()
-  const theme = useAppSelector((state) => state.anistorage.theme)
+  const theme = useAppSelector((state) => state.armazem.theme)
 
   return (
     <div

@@ -21,7 +21,7 @@ export const ConfirmEmail = ({
   setProceedToConfirmEmail,
 }: Props) => {
   const registerValues = useAppSelector(
-    (state) => state.anistorage.registerValues
+    (state) => state.armazem.registerValues
   )
   const dispatch = useAppDispatch()
 
