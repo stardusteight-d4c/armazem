@@ -103,15 +103,15 @@ export const register = async (req, res, next) => {
 export const verifyEmailAddress = async (req, res, next) => {
   try {
     const { email } = req.body
-    const emailCheck = await User.findOne({ email })
-    if (emailCheck) {
+    const user = await User.findOne({ email })
+    if (user) {
       return res.json({
         msg: 'Email found',
-        status: false,
-        emailCheck,
+        status: true,
+        user,
       })
     }
-    return res.json({ status: true })
+    return res.json({ status: false })
   } catch (error) {
     next(error)
   }
@@ -174,6 +174,23 @@ export const login = async (req, res, next) => {
     )
     const id = user._id
     delete user.password
+    return res.status(200).json({ status: true, id, session: sessionToken })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const loginByGoogleProvider = async (req, res, next) => {
+  try {
+    const { email, id } = req.body
+    const user = await User.findOne({ id })
+    const sessionToken = jwt.sign(
+      { user_id: user._id, email: email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '10s',
+      }
+    )
     return res.status(200).json({ status: true, id, session: sessionToken })
   } catch (error) {
     next(error)

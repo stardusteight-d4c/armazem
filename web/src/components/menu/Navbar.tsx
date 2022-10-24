@@ -11,7 +11,7 @@ export const Navbar = (props: Props) => {
   const navigate = useNavigate()
 
   const handleLogout = async () => {
-    localStorage.clear()
+    sessionStorage.clear()
     navigate('/login')
   }
 

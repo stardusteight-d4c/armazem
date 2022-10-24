@@ -6,6 +6,8 @@ import { Card } from '../components/login/Card'
 import { SwitchTheme } from '../components/SwitchTheme'
 import { trending } from '../../mockData'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { authorization } from '../services/api-routes'
 
 interface Props {}
 
@@ -20,8 +22,27 @@ export const Login = (props: Props) => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('session')) {
-      navigate('/')
+    setLoading(true)
+    const session = sessionStorage.getItem('session')
+    console.log(session);
+    
+    if (session) {
+      ;(async () => {
+        const parsed = JSON.parse(session) //get raw token: "token" -> token
+        const { data } = await axios.post(authorization, null, {
+          headers: {
+            Authorization: parsed,
+          },
+        })
+        console.log(data);
+        
+        if (data.status === false) {
+          setLoading(false)
+          return
+        } else {
+          navigate('/')
+        }
+      })()
     } else {
       setLoading(false)
     }

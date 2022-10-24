@@ -118,7 +118,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         error(data.msg)
       }
       if (data.status === true) {
-        localStorage.setItem('session', JSON.stringify(data.user))
+        // localStorage.setItem('session', JSON.stringify(data.user))
         navigate('/')
       }
     }
@@ -139,7 +139,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         error(data.msg)
       }
       if (data.status === true) {
-        localStorage.setItem('session', JSON.stringify(data.user))
+        // localStorage.setItem('session', JSON.stringify(data.user))
         navigate('/')
       }
     }

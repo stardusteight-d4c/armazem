@@ -4,7 +4,11 @@ import { motion } from 'framer-motion'
 import { error } from '../Toasters'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { login, verifyEmailAddress } from '../../services/api-routes'
+import {
+  login,
+  loginByGoogleProvider,
+  verifyEmailAddress,
+} from '../../services/api-routes'
 import { Toaster } from 'react-hot-toast'
 import { User } from 'firebase/auth'
 import { signInWithGoogle } from '../../services/validate-form'
@@ -55,12 +59,18 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
         const { data } = await axios.post(verifyEmailAddress, {
           email,
         })
-        if (data.status === false) {
-          localStorage.setItem('session', JSON.stringify(data.emailCheck))
-          // navigate('/')
-        }
+        data.status === false && error('Email does not exist, try sign up')
         if (data.status === true) {
-          error('Email does not exist, try sign up')
+          const username = data.user.username
+          const id = data.user._id
+          const { data: authData } = await axios.post(loginByGoogleProvider, {
+            username,
+            id,
+          })
+          if (authData.status === true) {
+            sessionStorage.setItem('session', JSON.stringify(authData.session))
+            navigate('/')
+          }
         }
       }
     })()
@@ -114,13 +124,13 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
             htmlFor="userId"
             className="text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold"
           >
-            Username or email
+            Username
           </label>
           <input
             type="text"
             onChange={(e) => handleChange(e)}
             id="username"
-            placeholder="Enter your username or email"
+            placeholder="Enter your username"
             className="w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
           />
         </div>
