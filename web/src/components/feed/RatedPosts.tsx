@@ -2,13 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { PreviewPost } from './PreviewPost'
 import { motion } from 'framer-motion'
 
-interface Props {
-  session: {}
-}
+interface Props {}
 
-
-
-export const RatedPosts = ({session}: Props) => {
+export const RatedPosts = (props: Props) => {
   const [previewPostCarouselWidth, setPreviewPostCarouselWidth] = useState(0)
   const [onDragPreviewPost, setOnDragPreviewPost] = useState(0)
   // CAROUSEL FRAMER MOTION
@@ -20,7 +16,7 @@ export const RatedPosts = ({session}: Props) => {
         previewPostCarousel.current.scrollWidth -
           previewPostCarousel.current.offsetWidth
       )
-  }, [session, onDragPreviewPost])
+  }, [onDragPreviewPost])
 
   return (
     <section>

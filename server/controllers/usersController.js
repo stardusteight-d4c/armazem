@@ -1,6 +1,7 @@
 import User from '../models/userModel.js'
 import brcypt from 'bcrypt'
 import nodemailer from 'nodemailer'
+import jwt from 'jsonwebtoken'
 
 const characters =
   '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -107,7 +108,7 @@ export const verifyEmailAddress = async (req, res, next) => {
       return res.json({
         msg: 'Email found',
         status: false,
-        emailCheck
+        emailCheck,
       })
     }
     return res.json({ status: true })
@@ -151,21 +152,29 @@ export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body
     const user = await User.findOne({ username })
+    const isPasswordValid =
+      user && (await brcypt.compare(password, user.password))
     if (!user) {
       return res.json({
         msg: 'Incorrect password or username',
         status: false,
       })
-    }
-    const isPasswordValid = await brcypt.compare(password, user.password)
-    if (!isPasswordValid) {
+    } else if (!isPasswordValid) {
       return res.json({
         msg: 'Incorrect password or username',
         status: false,
       })
     }
+    const sessionToken = jwt.sign(
+      { user_id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '300s',
+      }
+    )
+    const id = user._id
     delete user.password
-    return res.json({ status: true, user })
+    return res.status(200).json({ status: true, id, session: sessionToken })
   } catch (error) {
     next(error)
   }

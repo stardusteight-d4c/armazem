@@ -10,7 +10,7 @@ export const Hero = (props: Props) => {
         <img
           src={hero}
           alt=""
-          className="w-full rounded-xl mx-auto h-[300px] object-cover cursor-pointer"
+          className="w-full  mx-auto h-[300px] object-cover cursor-pointer"
         />
       </div>
     </header>

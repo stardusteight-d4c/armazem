@@ -221,7 +221,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               required
               placeholder="Choose a username"
               onChange={(e) => dispatch(handleChangeRegisterValues(e))}
-              className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+              className="w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
             />
           </div>
           <Button
@@ -274,7 +274,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                       required
                       placeholder="First name"
                       onChange={(e) => dispatch(handleChangeRegisterValues(e))}
-                      className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+                      className="w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                     />
                   </div>
 
@@ -291,7 +291,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                       required
                       placeholder="Last name"
                       onChange={(e) => dispatch(handleChangeRegisterValues(e))}
-                      className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+                      className="w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                     />
                   </div>
                 </div>
@@ -310,7 +310,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                       onBlur={() => verifyUsername(registerValues.username)}
                       placeholder="Choose a username"
                       onChange={(e) => dispatch(handleChangeRegisterValues(e))}
-                      className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+                      className="w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                     />
                   </div>
 
@@ -330,7 +330,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
                         onChange={(e) =>
                           dispatch(handleChangeRegisterValues(e))
                         }
-                        className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+                        className="w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                       />
                       {registerValues.password.trim() && (
                         <>

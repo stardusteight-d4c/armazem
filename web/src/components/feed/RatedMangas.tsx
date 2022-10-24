@@ -11,7 +11,7 @@ export const RatedMangas = (props: Props) => {
         Top rated mangas
       </h2>
 
-      <motion.div className="grid-cols-1 grid-rows-2 grid gap-10 min-w-full">
+      <motion.div className="grid-cols-1 grid-rows-2 grid gap-y-4 min-w-full">
         <TopManga />
         <TopManga />
         <TopManga />

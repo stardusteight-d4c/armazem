@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -9,23 +10,36 @@ import {
   RatedPosts,
   Sidebar,
 } from '../components'
+import { authorization } from '../services/api-routes'
 
 interface Props {}
 
 export const Feed = (props: Props) => {
   const navigate = useNavigate()
-  const [session, setSession] = useState(null)
+  const [authSession, setAuthSession] = useState(null)
   const [newPost, setNewPost] = useState(false)
 
   useEffect(() => {
-    const user = localStorage.getItem('session')
-    if (user) {
-      const dataSession = JSON.parse(user)
-      setSession(dataSession)
+    const session = sessionStorage.getItem('session')
+    if (session) {
+      ;(async () => {
+        const parsed = JSON.parse(session) //get raw token: "token" -> token
+        const { data } = await axios.post(authorization, null, {
+          headers: {
+            Authorization: parsed,
+          },
+        })
+        if (data.status === false) {
+          navigate('/login')
+        }
+        setAuthSession(data.session)
+      })()
     } else {
       navigate('/login')
     }
   }, [])
+
+  console.log(authSession)
 
   // Hospedar imagens no IPFS
 
@@ -36,19 +50,18 @@ export const Feed = (props: Props) => {
   // Não pegar os dados pelo local storage, apenas por banco de dados, em localstorage adicione o id e email do usuário,
   // Quando o usuário entrar na aplicação sempre  gerar um token de sessão, utilizar os JSON WEB TOKENS
 
-  console.log(session)
   return (
     <>
       {newPost && <PostInput />}
-      {session ? (
+      {authSession ? (
         <div className={style.gridContainer}>
           <Sidebar />
           <div className={style.mainContent}>
             <Navbar />
             <main className="p-8">
               <Hero />
-              <RatedPosts session={session} />
-              <PopularReadings session={session} />
+              <RatedPosts />
+              <PopularReadings />
               <RatedMangas />
             </main>
           </div>

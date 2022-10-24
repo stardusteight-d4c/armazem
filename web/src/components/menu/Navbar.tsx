@@ -29,19 +29,19 @@ export const Navbar = (props: Props) => {
           className="ri-equalizer-line right-3 cursor-pointer absolute text-dusk-main dark:text-dawn-main text-2xl"
         />
         {filterOn && (
-          <div className="absolute rounded-xl -right-16 dark:text-dusk-main text-white">
-            <div className="relative  rounded-xl dark:bg-fill-weak bg-fill-strong p-1">
+          <div className="absolute -right-16 dark:text-dusk-main text-white">
+            <div className="relative  dark:bg-fill-weak bg-fill-strong p-1">
               <div className="w-0 h-0 border-t-[10px] border-t-transparent border-r-[10px] border-r-fill-strong dark:border-r-fill-weak bg-fill-strong border-b-[10px] border-b-transparent overflow-hidden -left-[8px] absolute bg-transparent top-1/2 -translate-y-1/2" />
               <ul className="text-center">
                 <li
                   onClick={() => setFilterOn(false)}
-                  className="cursor-pointer z-10 px-1 hover:bg-prime-blue  rounded-xl"
+                  className="cursor-pointer z-10 px-1 hover:bg-prime-blue "
                 >
                   Manga
                 </li>
                 <li
                   onClick={() => setFilterOn(false)}
-                  className="cursor-pointer px-1 hover:bg-prime-blue  rounded-xl"
+                  className="cursor-pointer px-1 hover:bg-prime-blue "
                 >
                   User
                 </li>
@@ -68,19 +68,19 @@ export const Navbar = (props: Props) => {
             onClick={() => setPerfilOn(!perfilOn)}
           />
           {perfilOn && (
-            <div className="absolute -left-2 -bottom-16 dark:text-dusk-main text-white">
-              <div className="relative  z-20 rounded-xl dark:bg-fill-weak bg-fill-strong p-1">
+            <div className="absolute shadow-2xl -left-2 -bottom-16 dark:text-dusk-main text-white">
+              <div className="relative z-20 dark:bg-fill-weak bg-fill-strong p-1">
                 <div className="w-0 h-0 border-t-[10px] border-t-transparent rotate-90 border-r-[10px] border-r-fill-strong dark:border-r-fill-weak bg-fill-strong border-b-[10px] border-b-transparent overflow-hidden left-7 absolute bg-transparent -top-3 " />
                 <ul className="text-center">
                   <li
                     onClick={() => setPerfilOn(false)}
-                    className="cursor-pointer px-1 hover:bg-prime-blue  rounded-xl"
+                    className="cursor-pointer px-1 hover:bg-prime-blue "
                   >
                     Profile
                   </li>
                   <li
                     onClick={() => handleLogout()}
-                    className="cursor-pointer px-1 hover:bg-prime-blue  rounded-xl"
+                    className="cursor-pointer px-1 hover:bg-prime-blue "
                   >
                     Logout
                   </li>

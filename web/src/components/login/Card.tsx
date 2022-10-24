@@ -8,7 +8,7 @@ interface Props {
 
 export const Card = ({ poster, title, tags }: Props) => {
   return (
-    <div className="w-[240px] text-dusk-main dark:text-dawn-main bg-layer-light dark:bg-layer-heavy cursor-pointer rounded-lg backdrop-brightness-50 flex">
+    <div className="w-[240px] text-dusk-main dark:text-dawn-main bg-white dark:bg-layer-heavy cursor-pointer rounded-lg backdrop-brightness-50 flex">
       <img src={poster} alt="" className="w-[60px] h-[80px] rounded-lg" />
       <div className="flex items-center px-2">
         <div>

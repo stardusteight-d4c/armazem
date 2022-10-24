@@ -5,3 +5,5 @@ export const register = `${hostServer}/api/auth/register`
 export const registerGoogleAccount = `${hostServer}/api/auth/registerGoogleAccount`
 export const login = `${hostServer}/api/auth/login`
 export const verifyEmailAddress = `${hostServer}/api/auth/verifyEmailAddress`
+export const authorization = `${hostServer}/api/auth/middleware/checkSession`
+

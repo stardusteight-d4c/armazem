@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { CardManga } from './CardManga'
 
-interface Props {
-  session: {}
-}
+interface Props {}
 
-export const PopularReadings = ({ session }: Props) => {
+export const PopularReadings = (props: Props) => {
   const [cardCarouselWidth, setCardCarouselWidth] = useState(0)
   const [onDrag, setOnDrag] = useState(0)
 
@@ -16,7 +14,7 @@ export const PopularReadings = ({ session }: Props) => {
       setCardCarouselWidth(
         cardCarousel.current.scrollWidth - cardCarousel.current.offsetWidth
       )
-  }, [session, onDrag])
+  }, [onDrag])
 
   return (
     <section>

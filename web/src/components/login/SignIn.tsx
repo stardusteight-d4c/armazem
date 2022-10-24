@@ -32,11 +32,13 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
           username,
           password,
         })
+        console.log(data)
+
         if (data.status === false) {
           error(data.msg)
         }
         if (data.status === true) {
-          localStorage.setItem('session', JSON.stringify(data.user))
+          sessionStorage.setItem('session', JSON.stringify(data.session))
           navigate('/')
         }
       }
@@ -47,7 +49,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
   }
 
   useEffect(() => {
-    ;(async function verifyEmail() {
+    ;(async () => {
       if (user.metadata) {
         const email = user.email
         const { data } = await axios.post(verifyEmailAddress, {
@@ -55,7 +57,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
         })
         if (data.status === false) {
           localStorage.setItem('session', JSON.stringify(data.emailCheck))
-          navigate('/')
+          // navigate('/')
         }
         if (data.status === true) {
           error('Email does not exist, try sign up')
@@ -119,7 +121,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
             onChange={(e) => handleChange(e)}
             id="username"
             placeholder="Enter your username or email"
-            className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+            className="w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
           />
         </div>
         <div className="my-4">
@@ -134,7 +136,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
             onChange={(e) => handleChange(e)}
             id="password"
             placeholder="•••••••••••••"
-            className="w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
+            className="w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
           />
         </div>
         <Button title="Continue" className="mt-2 bg-prime-purple" />
