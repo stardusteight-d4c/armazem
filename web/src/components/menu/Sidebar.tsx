@@ -14,17 +14,21 @@ export const Sidebar = (props: Props) => {
       <div>
         <span className="mb-4 block">New Feeds</span>
         <ul className="space-y-2">
-          <li className="flex w-full cursor-pointer items-center justify-start p-4 bg-prime-blue rounded-xl gap-4">
-            <i className="ri-water-flash-fill text-white text-2xl" />
-            <span className="font-medium text-white text-lg">New Feed</span>
+          <li className="flex w-full cursor-pointer items-center justify-start p-4 bg-prime-blue rounded-md gap-4">
+            <i className="ri-lightbulb-flash-fill text-white text-2xl" />
+            <span className="font-medium text-white text-lg">New feed</span>
+          </li>
+          <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
+            <i className="ri-account-circle-line text-2xl" />
+            <span className="font-medium text-lg">My account</span>
           </li>
           <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
             <i className="ri-line-chart-line text-2xl" />
             <span className="font-medium text-lg">Trending</span>
           </li>
           <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
-            <i className="ri-emotion-line text-2xl" />
-            <span className="font-medium text-lg">Following</span>
+            <i className="ri-link text-2xl" />
+            <span className="font-medium text-lg">Connections</span>
           </li>
           <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
             <i className="ri-book-mark-line text-2xl" />
@@ -41,31 +45,9 @@ export const Sidebar = (props: Props) => {
               <img
                 src="https://avatars.githubusercontent.com/u/87643260?v=4"
                 alt=""
-                className="w-8 h-8 rounded-full object-cover"
+                className="w-8 h-8 rounded-md object-cover"
               />
-              <span className="font-medium">Gabriel Sena</span>
-            </div>
-            <i className="ri-wifi-line" />
-          </li>{' '}
-          <li className="flex justify-between w-full cursor-pointer items-center px-4 rounded-2xl gap-4">
-            <div className="flex items-center space-x-4">
-              <img
-                src="https://avatars.githubusercontent.com/u/87643260?v=4"
-                alt=""
-                className="w-8 h-8 rounded-full object-cover"
-              />
-              <span className="font-medium">Gabriel Sena</span>
-            </div>
-            <i className="ri-wifi-line" />
-          </li>{' '}
-          <li className="flex justify-between w-full cursor-pointer items-center px-4 rounded-2xl gap-4">
-            <div className="flex items-center space-x-4">
-              <img
-                src="https://avatars.githubusercontent.com/u/87643260?v=4"
-                alt=""
-                className="w-8 h-8 rounded-full object-cover"
-              />
-              <span className="font-medium">Gabriel Sena</span>
+              <span className="font-medium">@blackwive</span>
             </div>
             <i className="ri-wifi-line" />
           </li>
@@ -74,9 +56,9 @@ export const Sidebar = (props: Props) => {
               <img
                 src="https://avatars.githubusercontent.com/u/87643260?v=4"
                 alt=""
-                className="w-8 h-8 rounded-full object-cover"
+                className="w-8 h-8 rounded-md object-cover"
               />
-              <span className="font-medium">Gabriel Sena</span>
+              <span className="font-medium">@blackwive</span>
             </div>
             <i className="ri-wifi-line" />
           </li>
@@ -85,9 +67,9 @@ export const Sidebar = (props: Props) => {
               <img
                 src="https://avatars.githubusercontent.com/u/87643260?v=4"
                 alt=""
-                className="w-8 h-8 rounded-full object-cover"
+                className="w-8 h-8 rounded-md object-cover"
               />
-              <span className="font-medium">Gabriel Sena</span>
+              <span className="font-medium">@blackwive</span>
             </div>
             <i className="ri-wifi-line" />
           </li>
@@ -96,9 +78,31 @@ export const Sidebar = (props: Props) => {
               <img
                 src="https://avatars.githubusercontent.com/u/87643260?v=4"
                 alt=""
-                className="w-8 h-8 rounded-full object-cover"
+                className="w-8 h-8 rounded-md object-cover"
               />
-              <span className="font-medium">Gabriel Sena</span>
+              <span className="font-medium">@blackwive</span>
+            </div>
+            <i className="ri-wifi-line" />
+          </li>
+          <li className="flex justify-between w-full cursor-pointer items-center px-4 rounded-2xl gap-4">
+            <div className="flex items-center space-x-4">
+              <img
+                src="https://avatars.githubusercontent.com/u/87643260?v=4"
+                alt=""
+                className="w-8 h-8 rounded-md object-cover"
+              />
+              <span className="font-medium">@blackwive</span>
+            </div>
+            <i className="ri-wifi-line" />
+          </li>
+          <li className="flex justify-between w-full cursor-pointer items-center px-4 rounded-2xl gap-4">
+            <div className="flex items-center space-x-4">
+              <img
+                src="https://avatars.githubusercontent.com/u/87643260?v=4"
+                alt=""
+                className="w-8 h-8 rounded-md object-cover"
+              />
+              <span className="font-medium">@blackwive</span>
             </div>
             <i className="ri-wifi-line" />
           </li>

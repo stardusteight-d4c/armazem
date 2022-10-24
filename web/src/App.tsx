@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Feed, Login } from './pages'
+import { Account, Feed, Login } from './pages'
 import { handleSwitchTheme } from './store'
 import { useAppDispatch } from './store/hooks'
 
@@ -20,6 +20,7 @@ export const App = (props: Props) => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Feed />} />
+        <Route path="/username" element={<Account />} />
         {/* <Route path="*" element={<PageNotFound />} /> */}
       </Routes>
     </BrowserRouter>

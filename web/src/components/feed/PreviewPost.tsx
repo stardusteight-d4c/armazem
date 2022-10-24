@@ -10,7 +10,7 @@ export const PreviewPost = (props: Props) => {
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
-            className="w-8 h-8 rounded-full object-cover"
+            className="w-8 h-8 rounded-md object-cover"
           />
           <span className="font-medium text-dusk-main dark:text-dawn-main">Gabriel Sena</span>
         </div>
@@ -30,8 +30,8 @@ export const PreviewPost = (props: Props) => {
       <div className="flex items-center justify-between text-dusk-main dark:text-dawn-main">
         <div className="flex items-center gap-x-5">
           <div className="flex items-center cursor-pointer">
-            <i className="ri-battery-2-charge-line p-1 text-xl" />
-            <span className="text-sm">25 Ups</span>
+            <i className="ri-heart-3-line p-1 text-xl" />
+            <span className="text-sm">25 Likes</span>
           </div>
           <div className="flex items-center cursor-pointer">
             <i className="ri-discuss-line p-1 text-xl" />

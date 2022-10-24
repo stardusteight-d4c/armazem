@@ -21,6 +21,8 @@ const saveThemeToLocalStorage = (themeState: any) => {
   }
 }
 
+// pegar dados do usuário através do asyncthunk
+
 const ArmazemSlice = createSlice({
   name: 'ArmazemSlice',
   initialState,

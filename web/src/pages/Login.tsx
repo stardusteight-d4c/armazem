@@ -8,6 +8,7 @@ import { trending } from '../../mockData'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { authorization } from '../services/api-routes'
+import { Loader } from '../components/Loader'
 
 interface Props {}
 
@@ -24,23 +25,23 @@ export const Login = (props: Props) => {
   useEffect(() => {
     setLoading(true)
     const session = sessionStorage.getItem('session')
-    console.log(session);
-    
     if (session) {
       ;(async () => {
-        const parsed = JSON.parse(session) //get raw token: "token" -> token
-        const { data } = await axios.post(authorization, null, {
-          headers: {
-            Authorization: parsed,
-          },
-        })
-        console.log(data);
-        
-        if (data.status === false) {
+        try {
+          const parsed = JSON.parse(session) //get raw token: "token" -> token
+          const { data } = await axios.post(authorization, null, {
+            headers: {
+              Authorization: parsed,
+            },
+          })
+          if (data.status === false) {
+            setLoading(false)
+            return
+          } else {
+            navigate('/')
+          }
+        } catch (error) {
           setLoading(false)
-          return
-        } else {
-          navigate('/')
         }
       })()
     } else {
@@ -51,7 +52,9 @@ export const Login = (props: Props) => {
   return (
     <>
       {loading ? (
-        <p>Loading...</p>
+        <div className="w-screen h-screen flex items-center justify-center">
+          <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
+        </div>
       ) : (
         <div className={style.wrapper}>
           <div className="absolute bottom-4 z-30 left-[50%] translate-x-[-50%]">

@@ -20,10 +20,13 @@ import {
 } from '../../store'
 import { useNavigate } from 'react-router-dom'
 
-import { signInWithPopup, GoogleAuthProvider, User } from 'firebase/auth'
-import { auth } from '../../services/firebase'
+import { User } from 'firebase/auth'
 import { ConfirmVerificationToken } from './ConfirmVerificationToken'
-import { disableButton, handleValidation, signInWithGoogle } from '../../services/validate-form'
+import {
+  disableButton,
+  handleValidation,
+  signInWithGoogle,
+} from '../../services/validate-form'
 
 interface Props {
   signIn: boolean
@@ -38,12 +41,10 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   const [loading, setLoading] = useState(false)
   const [proceedToConfirmEmail, setProceedToConfirmEmail] = useState(false)
   const [usernameAvailable, setUsernameAvailable] = useState(false)
-  const [emailVerified, setEmailVerified] = useState(false)
+  const [emailAvailable, setEmailAvailable] = useState(false)
   const [user, setUser] = useState<User>({} as User)
   const dispatch = useAppDispatch()
-  const registerValues = useAppSelector(
-    (state) => state.armazem.registerValues
-  )
+  const registerValues = useAppSelector((state) => state.armazem.registerValues)
 
   const handleConfirmEmail = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -118,7 +119,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         error(data.msg)
       }
       if (data.status === true) {
-        // localStorage.setItem('session', JSON.stringify(data.user))
+        sessionStorage.setItem('session', JSON.stringify(data.session))
         navigate('/')
       }
     }
@@ -139,32 +140,30 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
         error(data.msg)
       }
       if (data.status === true) {
-        // localStorage.setItem('session', JSON.stringify(data.user))
+        sessionStorage.setItem('session', JSON.stringify(data.session))
         navigate('/')
       }
     }
   }
 
   useEffect(() => {
-    (async function verifyEmail() {
+    ;(async () => {
       if (user.metadata) {
         const email = user.email
         const { data } = await axios.post(verifyEmailAddress, {
           email,
         })
-        if (data.status === false) {
-          error('Email is already in use, try sign in')
-          setEmailVerified(false)
-        }
         if (data.status === true) {
-          setEmailVerified(true)
+          error(data.msg)
+          setEmailAvailable(false)
+        }
+        if (data.status === false) {
+          setEmailAvailable(true)
           return true
         }
       }
-    }())
+    })()
   }, [user.metadata])
-
-  console.log(registerValues)
 
   const confirmEmailProps = {
     handleConfirmEmail,
@@ -189,7 +188,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
 
   return (
     <AnimatePresence>
-      {user.metadata && emailVerified ? (
+      {user.metadata && emailAvailable ? (
         <motion.form
           onSubmit={(e) => handleGoogleSubmit(e)}
           initial={{ opacity: 0, x: 200 }}

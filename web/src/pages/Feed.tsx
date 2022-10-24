@@ -10,6 +10,7 @@ import {
   RatedPosts,
   Sidebar,
 } from '../components'
+import { Loader } from '../components/Loader'
 import { authorization } from '../services/api-routes'
 
 interface Props {}
@@ -23,16 +24,20 @@ export const Feed = (props: Props) => {
     const session = sessionStorage.getItem('session')
     if (session) {
       ;(async () => {
-        const parsed = JSON.parse(session) //get raw token: "token" -> token
-        const { data } = await axios.post(authorization, null, {
-          headers: {
-            Authorization: parsed,
-          },
-        })
-        if (data.status === false) {
+        try {
+          const parsed = JSON.parse(session) //get raw token: "token" -> token
+          const { data } = await axios.post(authorization, null, {
+            headers: {
+              Authorization: parsed,
+            },
+          })
+          if (data.status === false) {
+            navigate('/login')
+          }
+          setAuthSession(data.session)
+        } catch (error) {
           navigate('/login')
         }
-        setAuthSession(data.session)
       })()
     } else {
       navigate('/login')
@@ -42,13 +47,6 @@ export const Feed = (props: Props) => {
   console.log(authSession)
 
   // Hospedar imagens no IPFS
-
-  // Verificar se o usuário existe no banco de dados através da sessão, pois se alterarmos o username,
-  // O feed vai carregar do mesmo jeito, ou pior, se colarmos em localstorage session com um objeto vazio
-  // tbm será possível acessar a aplicação, pois isso devemos verificar pelo id do usuário no banco de dados
-
-  // Não pegar os dados pelo local storage, apenas por banco de dados, em localstorage adicione o id e email do usuário,
-  // Quando o usuário entrar na aplicação sempre  gerar um token de sessão, utilizar os JSON WEB TOKENS
 
   return (
     <>
@@ -67,7 +65,9 @@ export const Feed = (props: Props) => {
           </div>
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className="w-screen h-screen flex items-center justify-center">
+          <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
+        </div>
       )}
     </>
   )

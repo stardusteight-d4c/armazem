@@ -12,8 +12,6 @@ for (let i = 0; i < 25; i++) {
 
 // NODEMAILER CONFIGURATION
 async function SendEmailVerification(email, name, token) {
-  console.log(email, name)
-
   var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -94,7 +92,15 @@ export const register = async (req, res, next) => {
       password: hashedPassword,
     })
     delete user.password
-    return res.json({ status: true, user })
+    const sessionToken = jwt.sign(
+      { user_id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '7d',
+      }
+    )
+    const id = user._id
+    return res.json({ status: true, id, session: sessionToken })
   } catch (error) {
     next(error)
   }
@@ -103,15 +109,17 @@ export const register = async (req, res, next) => {
 export const verifyEmailAddress = async (req, res, next) => {
   try {
     const { email } = req.body
+    console.log(email)
     const user = await User.findOne({ email })
+    console.log(user)
     if (user) {
       return res.json({
-        msg: 'Email found',
+        msg: 'Email is already in use, try sign in',
         status: true,
         user,
       })
     }
-    return res.json({ status: false })
+    return res.json({ status: false, msg: 'Email not found' })
   } catch (error) {
     next(error)
   }
@@ -120,7 +128,6 @@ export const verifyEmailAddress = async (req, res, next) => {
 export const registerGoogleAccount = async (req, res, next) => {
   try {
     const { name, email, username } = req.body
-    console.log(req.body)
     const usernameCheck = await User.findOne({ username })
     const emailCheck = await User.findOne({ email })
     if (username.length > 3) {
@@ -142,7 +149,15 @@ export const registerGoogleAccount = async (req, res, next) => {
       email,
       username,
     })
-    return res.json({ status: true, user })
+    const sessionToken = jwt.sign(
+      { user_id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '7d',
+      }
+    )
+    const id = user._id
+    return res.json({ status: true, id, session: sessionToken })
   } catch (error) {
     next(error)
   }
@@ -169,7 +184,7 @@ export const login = async (req, res, next) => {
       { user_id: user._id, email: user.email },
       process.env.JWT_SECRET,
       {
-        expiresIn: '300s',
+        expiresIn: '7d',
       }
     )
     const id = user._id
@@ -188,7 +203,7 @@ export const loginByGoogleProvider = async (req, res, next) => {
       { user_id: user._id, email: email },
       process.env.JWT_SECRET,
       {
-        expiresIn: '10s',
+        expiresIn: '7d',
       }
     )
     return res.status(200).json({ status: true, id, session: sessionToken })
