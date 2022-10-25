@@ -14,7 +14,7 @@ export const Sidebar = (props: Props) => {
       <div>
         <span className="mb-4 block">New Feeds</span>
         <ul className="space-y-2">
-          <li className="flex w-full cursor-pointer items-center justify-start p-4 bg-prime-blue rounded-md gap-4">
+          <li className="flex w-full cursor-pointer items-center justify-start p-4  transition-all duration-200 hover:brightness-125 bg-prime-blue rounded-md gap-4">
             <i className="ri-lightbulb-flash-fill text-white text-2xl" />
             <span className="font-medium text-white text-lg">New feed</span>
           </li>
