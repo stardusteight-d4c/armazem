@@ -12,12 +12,16 @@ import {
 } from '../components'
 import { Loader } from '../components/Loader'
 import { authorization } from '../services/api-routes'
+import { handleAuthSession } from '../store'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { getUserData } from '../store/reducers/current-user-data'
 
 interface Props {}
 
 export const Feed = (props: Props) => {
   const navigate = useNavigate()
-  const [authSession, setAuthSession] = useState(null)
+  const dispatch = useAppDispatch()
+  const authSession = useAppSelector((state) => state.armazem.authSession)
   const [newPost, setNewPost] = useState(false)
 
   useEffect(() => {
@@ -34,7 +38,8 @@ export const Feed = (props: Props) => {
           if (data.status === false) {
             navigate('/login')
           }
-          setAuthSession(data.session)
+          dispatch(handleAuthSession(data.session))
+          dispatch(getUserData())
         } catch (error) {
           navigate('/login')
         }
@@ -44,7 +49,6 @@ export const Feed = (props: Props) => {
     }
   }, [])
 
-  console.log(authSession)
 
   // Hospedar imagens no IPFS
 

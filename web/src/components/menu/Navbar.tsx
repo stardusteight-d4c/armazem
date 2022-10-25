@@ -2,15 +2,21 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SwitchTheme } from '../SwitchTheme'
 import { Menu } from '@headlessui/react'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { clearAuthSession, clearCurrentUser } from '../../store'
 
 interface Props {}
 
 export const Navbar = (props: Props) => {
   const [newPost, setNewPost] = useState(false)
   const navigate = useNavigate()
+  const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const dispatch = useAppDispatch()
 
   const handleLogout = async () => {
     sessionStorage.clear()
+    dispatch(clearAuthSession())
+    dispatch(clearCurrentUser())
     navigate('/login')
   }
 
@@ -30,7 +36,7 @@ export const Navbar = (props: Props) => {
           >
             <i className="ri-equalizer-line" />
           </Menu.Button>
-          <Menu.Items className="absolute p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-[#2e3440] drop-shadow-2xl -right-4 -bottom-14">
+          <Menu.Items className="absolute p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong drop-shadow-2xl -right-4 -bottom-14">
             <Menu.Item>
               <a className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
                 Manga
@@ -58,15 +64,16 @@ export const Navbar = (props: Props) => {
           <Menu>
             <Menu.Button title="Account">
               <img
-                src="https://avatars.githubusercontent.com/u/87643260?v=4"
+                referrerPolicy="no-referrer"
+                src={currentUser?.user_img}
                 className="w-12 h-12 rounded-md cursor-pointer  auto-rows-auto"
                 alt=""
               />
             </Menu.Button>
-            <Menu.Items className="absolute p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-[#2e3440] drop-shadow-2xl -right-[17px] -bottom-[70px]">
+            <Menu.Items className="absolute p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong drop-shadow-2xl -right-[17px] -bottom-[70px]">
               <Menu.Item>
                 <a
-                  onClick={() => navigate('/username')}
+                  onClick={() => navigate(`/${currentUser?.username}`)}
                   className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
                 >
                   Account

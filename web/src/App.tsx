@@ -20,7 +20,7 @@ export const App = (props: Props) => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Feed />} />
-        <Route path="/username" element={<Account />} />
+        <Route path="/:username" element={<Account />} />
         {/* <Route path="*" element={<PageNotFound />} /> */}
       </Routes>
     </BrowserRouter>

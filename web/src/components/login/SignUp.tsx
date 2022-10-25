@@ -130,11 +130,13 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     if (user.metadata) {
       const name = user.displayName
       const email = user.email
+      const image = user.photoURL
       const username = registerValues.username
       const { data } = await axios.post(registerGoogleAccount, {
         name,
         username,
         email,
+        image,
       })
       if (data.status === false) {
         error(data.msg)

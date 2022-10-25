@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import { router as authRoutes } from './routes/authRoutes.js'
 import { router as userRoutes } from './routes/userRoutes.js'
 
 // ENVIRONMENT VARIABLES
@@ -20,7 +21,10 @@ app.use(
   })
 )
 
-app.use('/api/auth', userRoutes)
+// ROUTES
+app.use('/api/auth', authRoutes)
+app.use('/api/user', userRoutes)
+
 
 // CONNECTING WITH DATABASE
 mongoose

@@ -1,8 +1,14 @@
 import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { useAppSelector } from '../../store/hooks'
 
 interface Props {}
 
 export const Sidebar = (props: Props) => {
+  const location = useLocation()
+  const path = location.pathname
+  const currentUser = useAppSelector((state) => state.armazem.currentUser)
+
   return (
     <aside className="scrollbar-hide z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong">
       <div className="flex items-center py-8 -mt-[2px] gap-x-2">
@@ -14,14 +20,14 @@ export const Sidebar = (props: Props) => {
       <div>
         <span className="mb-4 block">New Feeds</span>
         <ul className="space-y-2">
-          <li className="flex w-full cursor-pointer items-center justify-start p-4  transition-all duration-200 hover:brightness-125 bg-prime-blue rounded-md gap-4">
-            <i className="ri-lightbulb-flash-fill text-white text-2xl" />
-            <span className="font-medium text-white text-lg">New feed</span>
-          </li>
-          <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
+          <Link to="/"  className={`flex w-full cursor-pointer items-center justify-start p-4  transition-all duration-200 hover:brightness-125 rounded-md gap-4 ${path === '/' && 'bg-prime-blue text-white'}`}>
+            <i className="ri-lightbulb-flash-fill text-2xl" />
+            <span className="font-medium text-lg">New feed</span>
+          </Link>
+          <Link to={`/${currentUser?.username}`} className={`flex w-full cursor-pointer items-center justify-start p-4  transition-all duration-200 hover:brightness-125 rounded-md gap-4 ${path === '/username' && 'bg-prime-blue text-white'}`}>
             <i className="ri-account-circle-line text-2xl" />
             <span className="font-medium text-lg">My account</span>
-          </li>
+          </Link>
           <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
             <i className="ri-line-chart-line text-2xl" />
             <span className="font-medium text-lg">Trending</span>

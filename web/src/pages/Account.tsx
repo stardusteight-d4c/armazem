@@ -1,12 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, CardManga, Navbar, Sidebar } from '../components'
 import { motion } from 'framer-motion'
+import { useAppSelector } from '../store/hooks'
+import axios from 'axios'
+import { dataByUsername, userData } from '../services/api-routes'
+import { useLocation } from 'react-router-dom'
 
 interface Props {}
 
 export const Account = (props: Props) => {
   const [favoritesWidth, setFavoritesCarouselWidth] = useState(0)
   const [onDragFavorites, setOnDragFavorites] = useState(0)
+  const [account, setAccount] = useState<User | null>(null)
+  const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const location = useLocation()
+  const username = location.pathname
+
+  // CRIAR UM MODELO SÓ PARA CONTA E REFERÊNCIAR O USUÁRIO,
+  // POIS ACCOUNT PODE TER CONNECTIOS, FAVORITES, READING E MAIS INFORMAÇÕES
+
+  useEffect(() => {
+    ;(async () => {
+      const { data } = await axios.get(`${dataByUsername}${username}`)
+      console.log(data)
+      setAccount(data.user)
+    })()
+  }, [])
+
   // CAROUSEL FRAMER MOTION
   const favoritesCarousel = useRef() as React.MutableRefObject<HTMLInputElement>
   useEffect(() => {
@@ -33,6 +53,8 @@ export const Account = (props: Props) => {
       },
     },
   }
+  console.log('currentUser', currentUser);
+  
 
   return (
     <div className={style.gridContainer}>
@@ -48,25 +70,31 @@ export const Account = (props: Props) => {
             />
             <div className="ri-image-edit-fill  text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute top-5 right-5 cursor-pointer rounded-full"></div>
             <img
-              className="w-40 h-40 ring-8 object-cover ring-fill-weak dark:ring-fill-strong absolute -bottom-20 left-4"
-              src="https://avatars.githubusercontent.com/u/87643260?v=4"
+              className="w-40 h-40 bg-white dark:bg-fill-strong p-2 object-cover absolute -bottom-20 left-4"
+              src={account?.user_img}
               alt=""
             />
             <div className="absolute left-[185px] -bottom-[75px]">
               <div className="flex items-center gap-x-4">
                 <h2 className="text-4xl font-semibold mr-4 text-black dark:text-white">
-                  Gabriel Sena
+                  {account?.name}
                 </h2>
-                <div className="flex cursor-pointer items-center">
-                  <i className="ri-link mr-1" />
-                  <span>Request</span>
-                </div>
-                <div className="flex cursor-pointer items-center">
-                  <i className="ri-message-3-line mr-1" />
-                  <span>Send message</span>
-                </div>
+                {account?._id !== currentUser?._id && (
+                  <>
+                    <div className="flex cursor-pointer items-center">
+                      <i className="ri-link mr-1" />
+                      <span>Request</span>
+                    </div>
+                    <div className="flex cursor-pointer items-center">
+                      <i className="ri-message-3-line mr-1" />
+                      <span>Send message</span>
+                    </div>
+                  </>
+                )}
               </div>
-              <div className="flex items-center text-lg">@blackwive</div>
+              <div className="flex items-center text-lg">
+                @{account?.username}
+              </div>
             </div>
           </div>
           <div className="p-4">
@@ -142,7 +170,7 @@ export const Account = (props: Props) => {
               </h2>
               <div className="flex gap-5">
                 <div className="flex flex-col gap-y-5 max-w-[50%]">
-                  <article className="w-full cursor-pointer h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440]">
+                  <article className="transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-black dark:hover:border-b-white hover:scale-105 hover:brightness-110 w-full cursor-pointer h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <img
@@ -185,7 +213,7 @@ export const Account = (props: Props) => {
                       </div>
                     </div>
                   </article>
-                  <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440]">
+                  <article className="transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-black dark:hover:border-b-white hover:scale-105 hover:brightness-110 w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <img
@@ -233,7 +261,7 @@ export const Account = (props: Props) => {
                 </div>
 
                 <div className="flex flex-col gap-y-5 max-w-[50%]">
-                  <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440]">
+                  <article className="transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-black dark:hover:border-b-white hover:scale-105 hover:brightness-110 w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <img
@@ -281,7 +309,7 @@ export const Account = (props: Props) => {
                       </div>
                     </div>
                   </article>
-                  <article className="w-full cursor-pointer h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440]">
+                  <article className="transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-black dark:hover:border-b-white hover:scale-105 hover:brightness-110 w-full cursor-pointer h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <img
@@ -339,7 +367,7 @@ export const Account = (props: Props) => {
                 Shared posts
               </h2>
               <div className="flex flex-col gap-y-5">
-                <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440]">
+                <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <img
@@ -369,7 +397,7 @@ export const Account = (props: Props) => {
                     Great, send in smoker to catch some fists with his face...
                   </p>
                 </article>
-                <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440]">
+                <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <img
@@ -399,7 +427,7 @@ export const Account = (props: Props) => {
                     Great, send in smoker to catch some fists with his face...
                   </p>
                 </article>
-                <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440]">
+                <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <img
@@ -439,7 +467,7 @@ export const Account = (props: Props) => {
                 Last updates
               </h2>
               <div className="flex flex-col gap-y-5">
-                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440] items-start gap-3">
+                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/87643260?v=4"
                     alt=""
@@ -459,7 +487,7 @@ export const Account = (props: Props) => {
                     </span>
                   </div>
                 </div>
-                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440] items-start gap-3">
+                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/87643260?v=4"
                     alt=""
@@ -479,7 +507,7 @@ export const Account = (props: Props) => {
                     </span>
                   </div>
                 </div>
-                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440] items-start gap-3">
+                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/87643260?v=4"
                     alt=""
@@ -499,7 +527,7 @@ export const Account = (props: Props) => {
                     </span>
                   </div>
                 </div>
-                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440] items-start gap-3">
+                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/87643260?v=4"
                     alt=""
@@ -519,7 +547,7 @@ export const Account = (props: Props) => {
                     </span>
                   </div>
                 </div>
-                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-[#2e3440] items-start gap-3">
+                <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/87643260?v=4"
                     alt=""
@@ -548,35 +576,38 @@ export const Account = (props: Props) => {
               <div>
                 <div className="flex items-start gap-x-5">
                   <img
-                    src="https://avatars.githubusercontent.com/u/87643260?v=4"
+                    src={currentUser?.user_img}
                     alt=""
                     className="w-16 h-16 rounded-md object-cover"
                   />
                   <div className="flex flex-col w-full">
                     <span className="font-medium text-2xl text-dusk-main dark:text-dawn-main">
-                      Gabriel Sena
+                      {currentUser?.name}
                     </span>
                     <textarea
-                      placeholder="Type your text"
-                      className="w-full max-h-[180px] placeholder:text-lg placeholder:text-dawn-main bg-transparent min-h-[80px] focus:border-prime-blue border p-2 outline-none"
+                      placeholder="Type your comment"
+                      className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
                     />
                   </div>
                 </div>
-                <div className=' flex justify-end '>
-                <Button title="Submit" className="bg-prime-blue my-5 !w-fit px-4 py-2" />
-
+                <div className=" flex justify-end ">
+                  <Button
+                    title="Submit"
+                    className="bg-prime-blue my-5 !w-fit px-4 py-2"
+                  />
                 </div>
-                <div className="flex border-t py-8  px-2 text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
+                <div className="flex border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-8  px-2 text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/87643260?v=4"
                     alt=""
                     className="w-9 h-9 rounded-md object-cover"
                   />
                   <div className="flex flex-col w-full ">
-                    <span className="font-medium text-lg text-dusk-main dark:text-dawn-main">
-                      @stardusteight
+                    <span className="-mt-5 ml-auto">5 hours ago</span>
+                    <span className="font-medium -mt-[10px] text-lg text-dusk-main dark:text-dawn-main">
+                      Gabriel Sena
                     </span>
-                    <span>
+                    <span className="text-dusk-main/90 dark:text-dawn-main/90">
                       I like this man so much but holy damn he's basically on
                       the punching bag. They need to introduce a new strong
                       pirate? Great, send in smoker to catch some fists with his
@@ -584,17 +615,18 @@ export const Account = (props: Props) => {
                     </span>
                   </div>
                 </div>
-                <div className="flex border-t py-8  px-2 text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
+                <div className="flex border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-8  px-2 text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/87643260?v=4"
                     alt=""
                     className="w-9 h-9 rounded-md object-cover"
                   />
                   <div className="flex flex-col w-full ">
-                    <span className="font-medium text-lg text-dusk-main dark:text-dawn-main">
-                      @stardusteight
+                    <span className="-mt-5 ml-auto">5 hours ago</span>
+                    <span className="font-medium -mt-[10px] text-lg text-dusk-main dark:text-dawn-main">
+                      Gabriel Sena
                     </span>
-                    <span>
+                    <span className="text-dusk-main/90 dark:text-dawn-main/90">
                       I like this man so much but holy damn he's basically on
                       the punching bag. They need to introduce a new strong
                       pirate? Great, send in smoker to catch some fists with his
@@ -602,17 +634,18 @@ export const Account = (props: Props) => {
                     </span>
                   </div>
                 </div>
-                <div className="flex border-t py-8  px-2 text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
+                <div className="flex border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-8  px-2 text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
                   <img
                     src="https://avatars.githubusercontent.com/u/87643260?v=4"
                     alt=""
                     className="w-9 h-9 rounded-md object-cover"
                   />
                   <div className="flex flex-col w-full ">
-                    <span className="font-medium text-lg text-dusk-main dark:text-dawn-main">
-                      @stardusteight
+                    <span className="-mt-5 ml-auto">5 hours ago</span>
+                    <span className="font-medium -mt-[10px] text-lg text-dusk-main dark:text-dawn-main">
+                      Gabriel Sena
                     </span>
-                    <span>
+                    <span className="text-dusk-main/90 dark:text-dawn-main/90">
                       I like this man so much but holy damn he's basically on
                       the punching bag. They need to introduce a new strong
                       pirate? Great, send in smoker to catch some fists with his
@@ -630,6 +663,6 @@ export const Account = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid grid-cols-5 overflow-hidden max-w-screen-xl drop-shadow-sm dark:drop-shadow-2xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid grid-cols-5 overflow-hidden max-w-screen-xl drop-shadow-sm dark:drop-shadow-2xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong`,
   mainContent: `col-start-2 col-span-4`,
 }

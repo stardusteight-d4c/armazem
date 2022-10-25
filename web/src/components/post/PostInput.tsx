@@ -21,7 +21,7 @@ export const PostInput = (props: Props) => {
         }}
         transition={{ type: 'spring', duration: 0.8 }}
         animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="absolute drop-shadow-2xl px-14 pt-4 pb-16 rounded-xl z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-white dark:bg-[#2e3440] top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        className="absolute drop-shadow-2xl px-14 pt-4 pb-16 rounded-xl z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-white dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <h1 className="text-2xl font-semibold">New post</h1>
         <div className="mt-4 flex flex-col items-start">

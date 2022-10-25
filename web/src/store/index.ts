@@ -1,9 +1,15 @@
-import { configureStore, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { getUserData } from './reducers/current-user-data'
 
 // import { } from '../Types'
 
-const initialState = {
+const initialState: InitialState = {
   theme: 'dark',
+  authSession: {
+    user_id: null,
+    email: null,
+  },
+  currentUser: null,
   registerValues: {
     firstName: '',
     lastName: '',
@@ -49,6 +55,24 @@ const ArmazemSlice = createSlice({
     clearRegisterValuesEntries: (state) => {
       state.registerValues = initialState.registerValues
     },
+    handleAuthSession: (state, action) => {
+      state.authSession = action.payload
+    },
+    clearAuthSession: (state) => {
+      console.log('initialState.authSession', initialState.authSession)
+
+      state.authSession = initialState.authSession
+    },
+    clearCurrentUser: (state) => {
+      console.log('initialState.currentUser', initialState.currentUser)
+      
+      state.currentUser = initialState.currentUser
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getUserData.fulfilled, (state, action) => {
+      action.payload && (state.currentUser = action.payload.user)
+    })
   },
 })
 
@@ -64,8 +88,14 @@ export const store = configureStore({
     }),
 })
 
-export const { handleSwitchTheme, handleChangeRegisterValues, clearRegisterValuesEntries } =
-ArmazemSlice.actions
+export const {
+  handleSwitchTheme,
+  handleChangeRegisterValues,
+  clearRegisterValuesEntries,
+  handleAuthSession,
+  clearAuthSession,
+  clearCurrentUser,
+} = ArmazemSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

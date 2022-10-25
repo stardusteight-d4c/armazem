@@ -109,9 +109,7 @@ export const register = async (req, res, next) => {
 export const verifyEmailAddress = async (req, res, next) => {
   try {
     const { email } = req.body
-    console.log(email)
     const user = await User.findOne({ email })
-    console.log(user)
     if (user) {
       return res.json({
         msg: 'Email is already in use, try sign in',
@@ -127,7 +125,7 @@ export const verifyEmailAddress = async (req, res, next) => {
 
 export const registerGoogleAccount = async (req, res, next) => {
   try {
-    const { name, email, username } = req.body
+    const { name, email, username, image } = req.body
     const usernameCheck = await User.findOne({ username })
     const emailCheck = await User.findOne({ email })
     if (username.length > 3) {
@@ -148,6 +146,7 @@ export const registerGoogleAccount = async (req, res, next) => {
       name,
       email,
       username,
+      user_img: image
     })
     const sessionToken = jwt.sign(
       { user_id: user._id, email: user.email },

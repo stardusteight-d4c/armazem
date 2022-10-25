@@ -15,7 +15,7 @@ export const TopManga = (props: Props) => {
       }}
       className="flex z-30 col-span-1 row-span-2 min-w-full items-center"
     >
-      <div className="relative flex cursor-pointer w-full bg-white dark:bg-[#2e3440] h-[150px] overflow-hidden">
+      <div className="relative flex cursor-pointer w-full bg-white dark:bg-fill-strong h-[150px] overflow-hidden">
         <img
           src="https://comicvine.gamespot.com/a/uploads/scale_medium/6/67663/5191994-01.jpg"
           alt=""

@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { authorization } from '../services/api-routes'
 import { Loader } from '../components/Loader'
+import { useAppDispatch } from '../store/hooks'
+import { clearAuthSession, clearCurrentUser } from '../store'
 
 interface Props {}
 
@@ -16,6 +18,11 @@ export const Login = (props: Props) => {
   const [signIn, setSignIn] = useState(true)
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  dispatch(clearAuthSession())
+  dispatch(clearCurrentUser())
+
 
   const switchForm = {
     signIn: signIn,

@@ -7,7 +7,7 @@ interface Props {
 export const CardManga = ({className}: Props) => {
   return (
     <div className="hover:bg-black dark:hover:bg-white cursor-pointer relative transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-black dark:hover:border-b-white hover:scale-105 hover:brightness-110">
-      <div className="absolute bottom-0 left-0 z-10 bg-white dark:bg-[#2e3440] text-base gap-x-2 flex items-center px-2 py-1 font-semibold">
+      <div className="absolute bottom-0 left-0 z-10 bg-white dark:bg-fill-strong text-base gap-x-2 flex items-center px-2 py-1 font-semibold">
         <i className="ri-star-half-line" />
         8.5
       </div>

@@ -25,9 +25,9 @@ const userSchema = new mongoose.Schema({
     require: false,
     min: 8,
   },
-  avatarImage: {
+  user_img: {
     type: String,
-    default: '',
+    default: 'https://i.ibb.co/2PYJg8D/profile.jpg',
   },
 })
 
