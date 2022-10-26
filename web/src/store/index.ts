@@ -17,6 +17,7 @@ const initialState: InitialState = {
     password: '',
     email: '<empty>',
   },
+  openModal: null,
 }
 
 const saveThemeToLocalStorage = (themeState: any) => {
@@ -59,14 +60,13 @@ const ArmazemSlice = createSlice({
       state.authSession = action.payload
     },
     clearAuthSession: (state) => {
-      console.log('initialState.authSession', initialState.authSession)
-
       state.authSession = initialState.authSession
     },
     clearCurrentUser: (state) => {
-      console.log('initialState.currentUser', initialState.currentUser)
-      
       state.currentUser = initialState.currentUser
+    },
+    handleOpenModal: (state, action) => {
+      state.openModal = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -95,6 +95,7 @@ export const {
   handleAuthSession,
   clearAuthSession,
   clearCurrentUser,
+  handleOpenModal,
 } = ArmazemSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>

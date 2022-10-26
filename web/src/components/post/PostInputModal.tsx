@@ -1,14 +1,19 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { handleOpenModal } from '../../store'
+import { useAppDispatch } from '../../store/hooks'
 
 interface Props {}
 
-export const PostInput = (props: Props) => {
+export const PostInputModal = (props: Props) => {
+  const dispatch = useAppDispatch()
+
   return (
     <>
       <motion.div
+        onClick={() => dispatch(handleOpenModal(null))}
         initial={{ opacity: 0 }}
-        transition={{duration: 0.5 }}
+        transition={{ duration: 0.5 }}
         animate={{ opacity: 1 }}
         className="absolute z-40 inset-0 w-screen h-screen bg-fill-strong/30"
       />
@@ -21,7 +26,7 @@ export const PostInput = (props: Props) => {
         }}
         transition={{ type: 'spring', duration: 0.8 }}
         animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="absolute drop-shadow-2xl px-14 pt-4 pb-16 rounded-xl z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-white dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        className="absolute drop-shadow-2xl px-14 pt-4 pb-16 rounded-sm z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-white dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <h1 className="text-2xl font-semibold">New post</h1>
         <div className="mt-4 flex flex-col items-start">
@@ -38,7 +43,7 @@ export const PostInput = (props: Props) => {
           </span>
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
-            className="w-16 h-16 rounded-full absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
+            className="w-16 h-16 rounded-md absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
             alt=""
           />
           <div className=" w-full">

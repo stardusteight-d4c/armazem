@@ -5,7 +5,6 @@ import {
   Hero,
   Navbar,
   PopularReadings,
-  PostInput,
   RatedMangas,
   RatedPosts,
   Sidebar,
@@ -22,11 +21,11 @@ export const Feed = (props: Props) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const authSession = useAppSelector((state) => state.armazem.authSession)
-  const [newPost, setNewPost] = useState(false)
 
   useEffect(() => {
     const session = sessionStorage.getItem('session')
     if (session) {
+      // Separar esta função em um arquivo a parte
       ;(async () => {
         try {
           const parsed = JSON.parse(session) //get raw token: "token" -> token
@@ -49,13 +48,13 @@ export const Feed = (props: Props) => {
     }
   }, [])
 
+  console.log(authSession)
 
   // Hospedar imagens no IPFS
 
   return (
     <>
-      {newPost && <PostInput />}
-      {authSession ? (
+      {authSession.user_id ? (
         <div className={style.gridContainer}>
           <Sidebar />
           <div className={style.mainContent}>

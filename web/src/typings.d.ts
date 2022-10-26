@@ -3,6 +3,7 @@ interface InitialState {
   authSession: Session
   currentUser: User | null
   registerValues: RegisterValues
+  openModal: string | null
 }
 
 interface RegisterValues {
@@ -26,4 +27,5 @@ interface User {
   name: string
   username: string
   user_img: string
+  cover_img: string
 } 

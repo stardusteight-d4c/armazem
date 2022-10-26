@@ -12,6 +12,8 @@ import {
 import { Toaster } from 'react-hot-toast'
 import { User } from 'firebase/auth'
 import { signInWithGoogle } from '../../services/validate-form'
+import { useAppDispatch } from '../../store/hooks'
+import { handleAuthSession } from '../../store'
 
 interface Props {
   signIn: boolean
@@ -26,6 +28,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
     username: '',
     password: '',
   })
+  const dispatch = useAppDispatch()
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -36,8 +39,6 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
           username,
           password,
         })
-        console.log(data)
-
         if (data.status === false) {
           error(data.msg)
         }

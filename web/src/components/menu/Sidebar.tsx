@@ -24,7 +24,7 @@ export const Sidebar = (props: Props) => {
             <i className="ri-lightbulb-flash-fill text-2xl" />
             <span className="font-medium text-lg">New feed</span>
           </Link>
-          <Link to={`/${currentUser?.username}`} className={`flex w-full cursor-pointer items-center justify-start p-4  transition-all duration-200 hover:brightness-125 rounded-md gap-4 ${path === '/username' && 'bg-prime-blue text-white'}`}>
+          <Link to={`/${currentUser?.username}`} className={`flex w-full cursor-pointer items-center justify-start p-4  transition-all duration-200 hover:brightness-125 rounded-md gap-4 ${path === `/${currentUser?.username}` && 'bg-prime-blue text-white'}`}>
             <i className="ri-account-circle-line text-2xl" />
             <span className="font-medium text-lg">My account</span>
           </Link>
@@ -42,9 +42,9 @@ export const Sidebar = (props: Props) => {
           </li>
         </ul>
       </div>
-      <div className="h-[1px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
+      <div className="h-[2px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
       <div>
-        <span className="mb-4 block">Following</span>
+        <span className="mb-4 block">Connections</span>
         <ul className="space-y-5">
           <li className="flex justify-between w-full cursor-pointer items-center px-4 rounded-2xl gap-4">
             <div className="flex items-center space-x-4">

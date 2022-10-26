@@ -1,7 +1,9 @@
 import User from '../models/userModel.js'
+import Account from '../models/accountModel.js'
 import brcypt from 'bcrypt'
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
 
 const characters =
   '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -146,7 +148,13 @@ export const registerGoogleAccount = async (req, res, next) => {
       name,
       email,
       username,
-      user_img: image
+      user_img: image,
+    })   
+    const account = await Account.create({
+      from: user._id
+    })
+    const userCreated = await User.findByIdAndUpdate(user._id, {
+      account: account._id
     })
     const sessionToken = jwt.sign(
       { user_id: user._id, email: user.email },
