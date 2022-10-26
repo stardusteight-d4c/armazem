@@ -11,6 +11,10 @@ dotenv.config()
 // INSTANTING EXPRESS APP
 const app = express()
 
+// PAYLOAD LIMIT 
+app.use(express.json({limit: "10mb", extended: true}))
+app.use(express.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}))
+
 // CONVERTING REQUEST BODY TO JSON
 app.use(express.json())
 
@@ -24,7 +28,6 @@ app.use(
 // ROUTES
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
-
 
 // CONNECTING WITH DATABASE
 mongoose

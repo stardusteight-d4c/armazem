@@ -18,60 +18,24 @@ import { getUserData } from '../store/reducers/current-user-data'
 interface Props {}
 
 export const Feed = (props: Props) => {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const authSession = useAppSelector((state) => state.armazem.authSession)
-
-  useEffect(() => {
-    const session = sessionStorage.getItem('session')
-    if (session) {
-      // Separar esta função em um arquivo a parte
-      ;(async () => {
-        try {
-          const parsed = JSON.parse(session) //get raw token: "token" -> token
-          const { data } = await axios.post(authorization, null, {
-            headers: {
-              Authorization: parsed,
-            },
-          })
-          if (data.status === false) {
-            navigate('/login')
-          }
-          dispatch(handleAuthSession(data.session))
-          dispatch(getUserData())
-        } catch (error) {
-          navigate('/login')
-        }
-      })()
-    } else {
-      navigate('/login')
-    }
-  }, [])
-
-  console.log(authSession)
+ 
 
   // Hospedar imagens no IPFS
 
   return (
     <>
-      {authSession.user_id ? (
-        <div className={style.gridContainer}>
-          <Sidebar />
-          <div className={style.mainContent}>
-            <Navbar />
-            <main className="p-8">
-              <Hero />
-              <RatedPosts />
-              <PopularReadings />
-              <RatedMangas />
-            </main>
-          </div>
+      <div className={style.gridContainer}>
+        <Sidebar />
+        <div className={style.mainContent}>
+          <Navbar />
+          <main className="p-8">
+            <Hero />
+            <RatedPosts />
+            <PopularReadings />
+            <RatedMangas />
+          </main>
         </div>
-      ) : (
-        <div className="w-screen h-screen flex items-center justify-center">
-          <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
-        </div>
-      )}
+      </div>
     </>
   )
 }

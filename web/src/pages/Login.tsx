@@ -106,5 +106,5 @@ export const Login = (props: Props) => {
 }
 
 const style = {
-  wrapper: `w-screen relative min-h-screen overflow-x-hidden bg-fill-weak dark:bg-fill-strong`,
+  wrapper: `max-w-screen relative min-h-screen overflow-hidden bg-fill-weak dark:bg-fill-strong`,
 }

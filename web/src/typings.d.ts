@@ -2,8 +2,10 @@ interface InitialState {
   theme: string
   authSession: Session
   currentUser: User | null
+  userMetadata: User | null
   registerValues: RegisterValues
   openModal: string | null
+  requestAgain: boolean
 }
 
 interface RegisterValues {

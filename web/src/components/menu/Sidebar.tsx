@@ -44,7 +44,7 @@ export const Sidebar = (props: Props) => {
       </div>
       <div className="h-[2px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
       <div>
-        <span className="mb-4 block">Connections</span>
+        <span className="mb-8 block">Connections</span>
         <ul className="space-y-5">
           <li className="flex justify-between w-full cursor-pointer items-center px-4 rounded-2xl gap-4">
             <div className="flex items-center space-x-4">

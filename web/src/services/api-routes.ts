@@ -13,5 +13,5 @@ export const authorization = `${hostServer}/api/auth/middleware/checkSession`
 // USER
 export const userData = `${hostServer}/api/user` // /:id
 export const dataByUsername = `${hostServer}/api/user/username` // /:username
-
+export const updateCoverImage = `${hostServer}/api/user/updateCoverImage` 
 

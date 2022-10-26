@@ -1,7 +1,12 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { Toaster } from 'react-hot-toast'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import { EditProfileImageModal, PostInputModal } from './components'
+import {
+  EditCoverImageModal,
+  EditProfileImageModal,
+  PostInputModal,
+} from './components'
 import { Account, Feed, Login } from './pages'
 import { authorization } from './services/api-routes'
 import { handleAuthSession, handleSwitchTheme } from './store'
@@ -14,6 +19,7 @@ export const App = (props: Props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const openModal = useAppSelector((state) => state.armazem.openModal)
+  const session = sessionStorage.getItem('session')
 
   // After mounting, we have access to the theme in localStorage
   useEffect(() => {
@@ -21,14 +27,13 @@ export const App = (props: Props) => {
   }, [])
 
   useEffect(() => {
-    const session = sessionStorage.getItem('session')
     if (session) {
       ;(async () => {
         try {
-          const parsed = JSON.parse(session) //get raw token: "token" -> token
+          const parsedSession = JSON.parse(session) //get raw token: "token" -> token
           const { data } = await axios.post(authorization, null, {
             headers: {
-              Authorization: parsed,
+              Authorization: parsedSession,
             },
           })
           if (data.status === false) {
@@ -43,17 +48,15 @@ export const App = (props: Props) => {
     } else {
       navigate('/login')
     }
-  }, [])
-
-  console.log(openModal)
+  }, [session])
 
   return (
     <>
       {openModal === 'EditProfileImage' && <EditProfileImageModal />}
+      {openModal === 'EditCoverImage' && <EditCoverImageModal />}
       {openModal === 'PostInput' && <PostInputModal />}
-      <div
-        className='max-h-screen overflow-y-scroll'
-      >
+      <div className="max-h-screen overflow-x-hidden scrollbar-hide overflow-y-scroll">
+        <Toaster position="top-center" />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Feed />} />

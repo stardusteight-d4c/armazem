@@ -1,18 +1,23 @@
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { handleOpenModal } from '../../store'
-import { useAppDispatch } from '../../store/hooks'
+import { askToRequestAgain, handleOpenModal, handleUserMetadata } from '../../store'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
+import axios from 'axios'
+import { error, success } from '../Toasters'
+import { updateCoverImage } from '../../services/api-routes'
+import { Toaster } from 'react-hot-toast'
 
 interface Props {}
 
-export const EditProfileImageModal = (props: Props) => {
+export const EditCoverImageModal = (props: Props) => {
   const dispatch = useAppDispatch()
   const [selectedFile, setSelectedFile] = useState<string | null>('')
   const [loading, setLoading] = useState(false)
   const filePickerRef = useRef() as React.MutableRefObject<HTMLInputElement>
+  const currentUser = useAppSelector((state) => state.armazem.currentUser)
 
-  const getFileMetadata = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const convertFileToBase64 = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader()
     if (e.target.files) {
       reader.readAsDataURL(e.target.files[0])
@@ -25,7 +30,22 @@ export const EditProfileImageModal = (props: Props) => {
     }
   }
 
-  console.log(selectedFile)
+  const updateCoverImageById = async () => {
+    setLoading(true)
+    const { data } = await axios.post(updateCoverImage, {
+      cover_img: selectedFile,
+      id: currentUser?._id,
+    })
+    if (data.status === true) {
+      dispatch(handleOpenModal(null))
+      dispatch(askToRequestAgain())
+      // location.reload()
+    }
+    if (data.status === false) {
+      dispatch(handleOpenModal(null))
+    }
+    setLoading(false)
+  }
 
   return (
     <>
@@ -49,7 +69,7 @@ export const EditProfileImageModal = (props: Props) => {
         className="absolute drop-shadow-2xl rounded-sm p-4  z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-white dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Send a profile picture</h1>
+          <h1 className="text-2xl font-semibold">Send a cover picture</h1>
           <i
             onClick={() => dispatch(handleOpenModal(null))}
             className="ri-close-circle-fill text-4xl cursor-pointer"
@@ -59,20 +79,24 @@ export const EditProfileImageModal = (props: Props) => {
           <div>
             {selectedFile ? (
               <div className="relative">
-                <img src={selectedFile} className="w-40 h-40 border" />
+                <img
+                  src={selectedFile}
+                  className="w-[510px] h-[150px] border"
+                />
                 <i
                   onClick={() => setSelectedFile(null)}
                   className="ri-close-line dark:text-dusk-main w-10 h-10 text-dawn-main cursor-pointer dark:bg-white/50 bg-black/50 flex items-center p-2 rounded-full text-2xl absolute right-2 top-2"
                 />
                 <Button
                   title="Submit"
-                  onClick={() => filePickerRef.current.click()}
+                  loading={loading}
+                  onClick={() => updateCoverImageById()}
                   className="bg-prime-blue !w-full my-4 py-2 text-white rounded-md"
                 />
               </div>
             ) : (
               <>
-                <div className="w-40 h-40 border rounded-md flex items-center justify-center" />
+                <div className="w-[510px] h-[150px] border rounded-md flex items-center justify-center" />
                 <Button
                   title="Upload picture"
                   onClick={() => filePickerRef.current.click()}
@@ -87,7 +111,7 @@ export const EditProfileImageModal = (props: Props) => {
                 accept=".jpg,.png,.jpeg"
                 size={5000000} // 5 MB
                 hidden
-                onChange={(e) => getFileMetadata(e)}
+                onChange={(e) => convertFileToBase64(e)}
               />
             </div>
           </div>

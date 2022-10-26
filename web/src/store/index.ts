@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { Action } from '@remix-run/router'
 import { getUserData } from './reducers/current-user-data'
 
 // import { } from '../Types'
@@ -10,6 +11,7 @@ const initialState: InitialState = {
     email: null,
   },
   currentUser: null,
+  userMetadata: null,
   registerValues: {
     firstName: '',
     lastName: '',
@@ -18,6 +20,7 @@ const initialState: InitialState = {
     email: '<empty>',
   },
   openModal: null,
+  requestAgain: false,
 }
 
 const saveThemeToLocalStorage = (themeState: any) => {
@@ -59,6 +62,9 @@ const ArmazemSlice = createSlice({
     handleAuthSession: (state, action) => {
       state.authSession = action.payload
     },
+    handleUserMetadata: (state, action) => {
+      state.userMetadata = action.payload
+    },
     clearAuthSession: (state) => {
       state.authSession = initialState.authSession
     },
@@ -67,6 +73,9 @@ const ArmazemSlice = createSlice({
     },
     handleOpenModal: (state, action) => {
       state.openModal = action.payload
+    },
+    askToRequestAgain: (state) => {
+      state.requestAgain = !state.requestAgain
     },
   },
   extraReducers: (builder) => {
@@ -96,6 +105,8 @@ export const {
   clearAuthSession,
   clearCurrentUser,
   handleOpenModal,
+  handleUserMetadata,
+  askToRequestAgain,
 } = ArmazemSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>

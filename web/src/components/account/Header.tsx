@@ -9,6 +9,7 @@ interface Props {
 export const Header = ({ account }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const dispatch = useAppDispatch()
+  const [changeCoverImage, setChangeCoverImage] = useState(null)
 
   return (
     <>
@@ -19,7 +20,7 @@ export const Header = ({ account }: Props) => {
           alt="cover/img"
         />
         {account._id === currentUser?._id && (
-          <div className="ri-image-edit-fill  text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute top-5 right-5 cursor-pointer rounded-full" />
+          <div onClick={() => dispatch(handleOpenModal('EditCoverImage'))} className="ri-image-edit-fill  text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute top-5 right-5 cursor-pointer rounded-full" />
         )}
         <img
           className="w-40 h-40 bg-white dark:bg-fill-strong p-2 object-cover absolute -bottom-20 left-4"

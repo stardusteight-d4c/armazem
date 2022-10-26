@@ -205,7 +205,7 @@ export const login = async (req, res, next) => {
 export const loginByGoogleProvider = async (req, res, next) => {
   try {
     const { email, id } = req.body
-    const user = await User.findOne({ id })
+    const user = await User.findById(id)
     const sessionToken = jwt.sign(
       { user_id: user._id, email: email },
       process.env.JWT_SECRET,

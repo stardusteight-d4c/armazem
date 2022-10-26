@@ -10,19 +10,22 @@ import {
   Sidebar,
   StatusBar,
 } from '../components'
-import { useAppSelector } from '../store/hooks'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import axios from 'axios'
 import { dataByUsername, userData } from '../services/api-routes'
 import { useLocation } from 'react-router-dom'
 import { Comments } from '../components/account/Comments'
 import { Loader } from '../components/Loader'
+import { handleUserMetadata } from '../store'
 
 interface Props {}
 
 export const Account = (props: Props) => {
-  const [account, setAccount] = useState<User | null>(null)
-  const currentUser = useAppSelector((state) => state.armazem.currentUser)
-  const openModal = useAppSelector((state) => state.armazem.openModal)
+  // const [account, setAccount] = useState<User | null>(null)
+  const dispatch = useAppDispatch()
+  const account = useAppSelector((state) => state.armazem.userMetadata)
+  const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
+
   const location = useLocation()
   const username = location.pathname
 
@@ -32,11 +35,10 @@ export const Account = (props: Props) => {
   useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${dataByUsername}${username}`)
-      setAccount(data.user)
+      dispatch(handleUserMetadata(data.user))
     })()
-  }, [username])
+  }, [username, requestAgain])
 
-  console.log('currentUser', currentUser)
   console.log('account', account)
 
   return (
