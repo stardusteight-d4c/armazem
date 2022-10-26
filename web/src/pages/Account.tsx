@@ -39,14 +39,17 @@ export const Account = (props: Props) => {
     })()
   }, [username, requestAgain])
 
-  console.log('account', account)
+  // console.log('account', account)
+  // console.log(username);
+  // Limpar dados de account quando deslogar
+  
 
   return (
     <div className={style.gridContainer}>
       <Sidebar />
       <div className={style.mainContent}>
         <Navbar />
-        {account ? (
+        {account !== null && username ? (
           <main>
             <Header account={account} />
             <div className="p-4">
@@ -55,7 +58,7 @@ export const Account = (props: Props) => {
               <LastPosts />
               <SharedPosts />
               <LastUpdates />
-              <Comments />
+              <Comments account={account} />
             </div>
           </main>
         ) : (

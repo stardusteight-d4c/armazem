@@ -39,7 +39,6 @@ export const EditCoverImageModal = (props: Props) => {
     if (data.status === true) {
       dispatch(handleOpenModal(null))
       dispatch(askToRequestAgain())
-      // location.reload()
     }
     if (data.status === false) {
       dispatch(handleOpenModal(null))

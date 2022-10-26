@@ -23,3 +23,16 @@ export const updateCoverImage = async (req, res, next) => {
     return res.json({ status: false, msg: 'A failure has occurred. Try compressing the image'})
   }
 }
+
+export const updateProfileImage = async (req, res, next) => {
+  try {
+    const { id, user_img } = req.body
+    const user = await User.findByIdAndUpdate(id, {
+      user_img,
+    })
+    return res.status(200).json({ status: true, msg: 'Image successfully updated'})
+  } catch (error) {
+    return res.json({ status: false, msg: 'A failure has occurred. Try compressing the image'})
+  }
+}
+

@@ -1,19 +1,22 @@
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { handleOpenModal } from '../../store'
-import { useAppDispatch } from '../../store/hooks'
+import { askToRequestAgain, handleOpenModal } from '../../store'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
+import axios from 'axios'
+import { updateProfileImage } from '../../services/api-routes'
 
 interface Props {}
 
 export const EditProfileImageModal = (props: Props) => {
   const dispatch = useAppDispatch()
-  const [selectedFile, setSelectedFile] = useState<string | null>('')
-  const [loading, setLoading] = useState(false)
-  const filePickerRef = useRef() as React.MutableRefObject<HTMLInputElement>
-
-  const getFileMetadata = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const [selectedFile, setSelectedFile] = useState<string | null>('')
+    const [loading, setLoading] = useState(false)
+    const filePickerRef = useRef() as React.MutableRefObject<HTMLInputElement>
+    const currentUser = useAppSelector((state) => state.armazem.currentUser)
     const reader = new FileReader()
+
+  const convertFileToBase64 = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       reader.readAsDataURL(e.target.files[0])
     }
@@ -25,7 +28,23 @@ export const EditProfileImageModal = (props: Props) => {
     }
   }
 
-  console.log(selectedFile)
+  const updatProfileImageById = async () => {
+    setLoading(true)
+    const { data } = await axios.post(updateProfileImage, {
+      user_img: selectedFile,
+      id: currentUser?._id,
+    })
+    if (data.status === true) {
+      dispatch(handleOpenModal(null))
+      dispatch(askToRequestAgain())
+    }
+    if (data.status === false) {
+      dispatch(handleOpenModal(null))
+    }
+    setLoading(false)
+  }
+
+
 
   return (
     <>
@@ -66,7 +85,7 @@ export const EditProfileImageModal = (props: Props) => {
                 />
                 <Button
                   title="Submit"
-                  onClick={() => filePickerRef.current.click()}
+                  onClick={() => updatProfileImageById()}
                   className="bg-prime-blue !w-full my-4 py-2 text-white rounded-md"
                 />
               </div>
@@ -87,7 +106,7 @@ export const EditProfileImageModal = (props: Props) => {
                 accept=".jpg,.png,.jpeg"
                 size={5000000} // 5 MB
                 hidden
-                onChange={(e) => getFileMetadata(e)}
+                onChange={(e) => convertFileToBase64(e)}
               />
             </div>
           </div>

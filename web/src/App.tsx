@@ -20,6 +20,7 @@ export const App = (props: Props) => {
   const navigate = useNavigate()
   const openModal = useAppSelector((state) => state.armazem.openModal)
   const session = sessionStorage.getItem('session')
+  const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
 
   // After mounting, we have access to the theme in localStorage
   useEffect(() => {
@@ -48,15 +49,14 @@ export const App = (props: Props) => {
     } else {
       navigate('/login')
     }
-  }, [session])
+  }, [session, requestAgain])
 
   return (
     <>
       {openModal === 'EditProfileImage' && <EditProfileImageModal />}
       {openModal === 'EditCoverImage' && <EditCoverImageModal />}
       {openModal === 'PostInput' && <PostInputModal />}
-      <div className="max-h-screen overflow-x-hidden scrollbar-hide overflow-y-scroll">
-        <Toaster position="top-center" />
+      <div className="max-h-screen overflow-x-hidden  overflow-y-scroll">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Feed />} />

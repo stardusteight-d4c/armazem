@@ -9,7 +9,6 @@ interface Props {
 export const Header = ({ account }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const dispatch = useAppDispatch()
-  const [changeCoverImage, setChangeCoverImage] = useState(null)
 
   return (
     <>
