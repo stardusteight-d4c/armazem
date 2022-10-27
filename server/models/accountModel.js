@@ -1,12 +1,12 @@
 import mongoose, { Schema } from 'mongoose'
 
 const accountSchema = new mongoose.Schema({
-  user:  { type: Schema.Types.ObjectId, ref: 'User' },
-  requests: {
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  requestsReceived: {
     type: Array,
     from: String,
   },
-  pending_requests: {
+  requestsSent: {
     type: Array,
     to: String,
   },

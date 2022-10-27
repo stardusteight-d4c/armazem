@@ -17,3 +17,20 @@ export const getUserData = createAsyncThunk(
     return data
   }
 )
+
+// getCurrentUserAccount and UserAccount
+
+// export const getCurrentUserAccount = createAsyncThunk(
+//   'CurrentUserAccount/data',
+//   async (_, { getState }) => {
+//     const {
+//       armazem: { currentUser },
+//     } = getState() as RootState
+//     if (currentUser) {
+//       const user_id = currentUser._id
+//       const { data } = await axios.get(`${userAccount}/${user_id}`)
+
+//       return data
+//     }
+//   }
+// )

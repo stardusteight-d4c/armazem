@@ -2,6 +2,7 @@ interface InitialState {
   theme: string
   authSession: Session
   currentUser: User | null
+  currentAccount: Account | Array
   userMetadata: User | null
   registerValues: RegisterValues
   openModal: string | null
@@ -31,4 +32,19 @@ interface User {
   username: string
   user_img: string
   cover_img: string
-} 
+}
+
+interface Account {
+  _id: string
+  user: string
+  requestsReceived: [
+    {
+      from: string
+    }
+  ]
+  requestsSent: [
+    {
+      to: string
+    }
+  ]
+}

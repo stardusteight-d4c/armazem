@@ -1,8 +1,10 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import { Toaster } from 'react-hot-toast'
 import { sendRequest } from '../../services/api-routes'
 import { handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { error, success } from '../Toasters'
 
 interface Props {
   account: User
@@ -14,14 +16,20 @@ export const Header = ({ account }: Props) => {
 
   // sendRequest
   const sendRequestToUser = async () => {
-    const { data } = await axios.post(sendRequest, {
-       id: account._id,
-      username: currentUser?.username
-    })
-    // console.log(data)
+    try {
+      const { data } = await axios.post(sendRequest, {
+        to: account._id,
+        from: currentUser?._id,
+      })
+      if (data.status === true) {
+        success(data.msg)
+      } else if (data.status === false) {
+        error(data.msg)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
-
-
 
   return (
     <>
@@ -56,20 +64,14 @@ export const Header = ({ account }: Props) => {
             {account._id !== currentUser?._id && (
               <>
                 <div className="flex cursor-pointer items-center">
+                   {/* puxar conta do usuário corrente e da página
+                   {currentAccount.requestsSent.inclues(account._id) (metadado user) ?  (
+                    <p className="text-orange">Request sent</p>
+                   ) }
+
+                   */}
                   <i className="ri-link mr-1" />
                   <span onClick={sendRequestToUser}>Request</span>
-
-                  {/* Request vai cair na [user account] como [requests].
-                      Para quem solicitou vai cair em [pending_requests]
-
-                      request {
-                        from: { id, username }
-                      }
-
-                      pending_requests {
-                        to: { id, username }
-                      }
-                  */}
                 </div>
                 <div className="flex cursor-pointer items-center">
                   <i className="ri-message-3-line mr-1" />

@@ -11,6 +11,7 @@ const initialState: InitialState = {
     email: null,
   },
   currentUser: null,
+  currentAccount: [],
   userMetadata: null,
   registerValues: {
     firstName: '',
@@ -86,7 +87,11 @@ const ArmazemSlice = createSlice({
     builder.addCase(getUserData.fulfilled, (state, action) => {
       action.payload && (state.currentUser = action.payload.user)
     })
+    // builder.addCase(getCurrentUserAccount.fulfilled, (state, action) => {
+    //   action.payload && (state.currentAccount = action.payload)
+    // })
   },
+
 })
 
 export const store = configureStore({

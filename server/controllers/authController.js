@@ -158,12 +158,11 @@ export const registerGoogleAccount = async (req, res, next) => {
     })   
     // const objectId = mongoose.Types.ObjectId(user._id);
     // console.log('objectId', objectId);
-    console.log('user._id.toString()', user._id.toString());
+    // console.log('user._id.toString()', user._id.toString());
    
     const account = await Account.create({
       user: user._id
     })
-    // aparentemente find by id não está funcionando, e tenta atualizar sempre o primerio documento
     const userCreated = await User.findByIdAndUpdate(user._id, {
       account: account._id
     })
