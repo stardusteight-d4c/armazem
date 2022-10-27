@@ -94,6 +94,12 @@ export const register = async (req, res, next) => {
       password: hashedPassword,
     })
     delete user.password
+    // const account = await Account.create({
+    //   from: user._id
+    // })
+    // const userCreated = await User.findByIdAndUpdate(user._id, {
+    //   account: account._id
+    // })
     const sessionToken = jwt.sign(
       { user_id: user._id, email: user.email },
       process.env.JWT_SECRET,
@@ -150,11 +156,16 @@ export const registerGoogleAccount = async (req, res, next) => {
       username,
       user_img: image,
     })   
+    // const objectId = mongoose.Types.ObjectId(user._id);
+    // console.log('objectId', objectId);
+    console.log('user._id.toString()', user._id.toString());
+   
     const account = await Account.create({
-      from: user._id
+      user: user._id.toString()
     })
-    const userCreated = await User.findByIdAndUpdate(user._id, {
-      account: account._id
+    // aparentemente find by id não está funcionando, e tenta atualizar sempre o primerio documento
+    const userCreated = await User.findByIdAndUpdate(user._id.toString(), {
+      account: account._id.toString()
     })
     const sessionToken = jwt.sign(
       { user_id: user._id, email: user.email },

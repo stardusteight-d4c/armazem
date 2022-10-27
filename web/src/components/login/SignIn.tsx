@@ -96,8 +96,6 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
     })
   }
 
-  console.log(registerValues)
-
   return (
     <motion.form
       onSubmit={(e) => handleSubmit(e)}

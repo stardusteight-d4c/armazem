@@ -33,7 +33,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'https://via.placeholder.com/1025x300',
   },
-  account: { type: Schema.Types.ObjectId, ref: 'Account' },
+  account: {
+    type: String,
+  },
 })
 
 export default mongoose.model('User', userSchema)

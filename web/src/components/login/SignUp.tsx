@@ -127,6 +127,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
 
   const handleGoogleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
+    event.stopPropagation()
     if (user.metadata) {
       const name = user.displayName
       const email = user.email

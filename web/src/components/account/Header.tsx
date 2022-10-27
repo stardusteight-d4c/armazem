@@ -18,11 +18,10 @@ export const Header = ({ account }: Props) => {
        id: account._id,
       username: currentUser?.username
     })
-    console.log(data)
+    // console.log(data)
   }
 
-  console.log('account', account)
-  console.log('currentUser', currentUser)
+
 
   return (
     <>

@@ -1,17 +1,17 @@
 import mongoose, { Schema } from 'mongoose'
-import userModel from './userModel'
 
 const accountSchema = new mongoose.Schema({
-  from: { type: Schema.Types.ObjectId, ref: 'User' },
+  user: {
+    type: String,
+    require: true,
+  },
   requests: {
     type: Array,
-    from: { type: Schema.Types.ObjectId, ref: 'User' },
-    username: String,
+    from: String,
   },
   pending_requests: {
     type: Array,
-    to: { type: Schema.Types.ObjectId, ref: 'User' },
-    username: String,
+    to: String,
   },
 })
 
