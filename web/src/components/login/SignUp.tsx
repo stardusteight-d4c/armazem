@@ -144,7 +144,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
       }
       if (data.status === true) {
         sessionStorage.setItem('session', JSON.stringify(data.session))
-        navigate('/')
+        // navigate('/')
       }
     }
   }

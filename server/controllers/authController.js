@@ -161,11 +161,11 @@ export const registerGoogleAccount = async (req, res, next) => {
     console.log('user._id.toString()', user._id.toString());
    
     const account = await Account.create({
-      user: user._id.toString()
+      user: user._id
     })
     // aparentemente find by id não está funcionando, e tenta atualizar sempre o primerio documento
-    const userCreated = await User.findByIdAndUpdate(user._id.toString(), {
-      account: account._id.toString()
+    const userCreated = await User.findByIdAndUpdate(user._id, {
+      account: account._id
     })
     const sessionToken = jwt.sign(
       { user_id: user._id, email: user.email },

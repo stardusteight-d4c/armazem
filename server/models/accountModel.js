@@ -1,10 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 
 const accountSchema = new mongoose.Schema({
-  user: {
-    type: String,
-    require: true,
-  },
+  user:  { type: Schema.Types.ObjectId, ref: 'User' },
   requests: {
     type: Array,
     from: String,
