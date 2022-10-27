@@ -1,4 +1,6 @@
+import axios from 'axios'
 import React, { useState } from 'react'
+import { sendRequest } from '../../services/api-routes'
 import { handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 
@@ -10,6 +12,18 @@ export const Header = ({ account }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const dispatch = useAppDispatch()
 
+  // sendRequest
+  const sendRequestToUser = async () => {
+    const { data } = await axios.post(sendRequest, {
+       id: account._id,
+      username: currentUser?.username
+    })
+    console.log(data)
+  }
+
+  console.log('account', account)
+  console.log('currentUser', currentUser)
+
   return (
     <>
       <div className="relative">
@@ -19,7 +33,10 @@ export const Header = ({ account }: Props) => {
           alt="cover/img"
         />
         {account._id === currentUser?._id && (
-          <div onClick={() => dispatch(handleOpenModal('EditCoverImage'))} className="ri-image-edit-fill  text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute top-5 right-5 cursor-pointer rounded-full" />
+          <div
+            onClick={() => dispatch(handleOpenModal('EditCoverImage'))}
+            className="ri-image-edit-fill  text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute top-5 right-5 cursor-pointer rounded-full"
+          />
         )}
         <img
           className="w-40 h-40 bg-white dark:bg-fill-strong p-2 object-cover absolute -bottom-20 left-4"
@@ -41,7 +58,19 @@ export const Header = ({ account }: Props) => {
               <>
                 <div className="flex cursor-pointer items-center">
                   <i className="ri-link mr-1" />
-                  <span>Request</span>
+                  <span onClick={sendRequestToUser}>Request</span>
+
+                  {/* Request vai cair na [user account] como [requests].
+                      Para quem solicitou vai cair em [pending_requests]
+
+                      request {
+                        from: { id, username }
+                      }
+
+                      pending_requests {
+                        to: { id, username }
+                      }
+                  */}
                 </div>
                 <div className="flex cursor-pointer items-center">
                   <i className="ri-message-3-line mr-1" />

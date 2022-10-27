@@ -9,7 +9,7 @@ import {
 } from './components'
 import { Account, Feed, Login } from './pages'
 import { authorization } from './services/api-routes'
-import { handleAuthSession, handleSwitchTheme } from './store'
+import { handleAuthSession, handleResultUsersSearch, handleSwitchTheme } from './store'
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import { getUserData } from './store/reducers/current-user-data'
 
@@ -20,6 +20,7 @@ export const App = (props: Props) => {
   const navigate = useNavigate()
   const openModal = useAppSelector((state) => state.armazem.openModal)
   const session = sessionStorage.getItem('session')
+  const usersSearch = useAppSelector((state) => state.armazem.usersSearch)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
 
   // After mounting, we have access to the theme in localStorage
@@ -51,12 +52,21 @@ export const App = (props: Props) => {
     }
   }, [session, requestAgain])
 
+  // depois arrumar esta gambiarra
+  const handleSearchResults = () => {
+    if (usersSearch !== null) {
+      dispatch(handleResultUsersSearch([]))
+    } else {
+      return
+    }
+  }
+
   return (
     <>
       {openModal === 'EditProfileImage' && <EditProfileImageModal />}
       {openModal === 'EditCoverImage' && <EditCoverImageModal />}
       {openModal === 'PostInput' && <PostInputModal />}
-      <div className="max-h-screen overflow-x-hidden  overflow-y-scroll">
+      <div onClick={handleSearchResults} className="max-h-screen overflow-x-hidden  overflow-y-scroll">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Feed />} />

@@ -15,5 +15,11 @@ export const userData = `${hostServer}/api/user` // /:id
 export const dataByUsername = `${hostServer}/api/user/username` // /:username
 export const updateCoverImage = `${hostServer}/api/user/updateCoverImage` 
 export const updateProfileImage = `${hostServer}/api/user/updateProfileImage` 
+export const searchUsersByQuery = `${hostServer}/api/user/searchUsersByQuery` 
+
+// ACCOUNT
+export const sendRequest = `${hostServer}/api/account/sendRequest` 
+
+
 
 

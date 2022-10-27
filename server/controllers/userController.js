@@ -12,15 +12,30 @@ export const userByUsername = async (req, res, next) => {
   return res.json({ user })
 }
 
+export const searchUsersByQuery = async (req, res, next) => {
+  const query = req.body.query
+  const users = await User.findOne({
+    username: { $regex: new RegExp(query, 'i') },
+  })
+    .select('username')
+    .limit(5)
+  return res.json({ users })
+}
+
 export const updateCoverImage = async (req, res, next) => {
   try {
     const { id, cover_img } = req.body
     const user = await User.findByIdAndUpdate(id, {
       cover_img,
     })
-    return res.status(200).json({ status: true, msg: 'Image successfully updated'})
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Image successfully updated' })
   } catch (error) {
-    return res.json({ status: false, msg: 'A failure has occurred. Try compressing the image'})
+    return res.json({
+      status: false,
+      msg: 'A failure has occurred. Try compressing the image',
+    })
   }
 }
 
@@ -30,9 +45,13 @@ export const updateProfileImage = async (req, res, next) => {
     const user = await User.findByIdAndUpdate(id, {
       user_img,
     })
-    return res.status(200).json({ status: true, msg: 'Image successfully updated'})
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Image successfully updated' })
   } catch (error) {
-    return res.json({ status: false, msg: 'A failure has occurred. Try compressing the image'})
+    return res.json({
+      status: false,
+      msg: 'A failure has occurred. Try compressing the image',
+    })
   }
 }
-

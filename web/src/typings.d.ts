@@ -6,6 +6,7 @@ interface InitialState {
   registerValues: RegisterValues
   openModal: string | null
   requestAgain: boolean
+  usersSearch: [object] | null
 }
 
 interface RegisterValues {

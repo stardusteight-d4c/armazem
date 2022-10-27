@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import { router as authRoutes } from './routes/authRoutes.js'
 import { router as userRoutes } from './routes/userRoutes.js'
+import { router as accountRoutes } from './routes/accountRoutes.js'
 
 // ENVIRONMENT VARIABLES
 dotenv.config()
@@ -28,6 +29,7 @@ app.use(
 // ROUTES
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/account', accountRoutes)
 
 // CONNECTING WITH DATABASE
 mongoose

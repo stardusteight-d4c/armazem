@@ -3,28 +3,15 @@ import userModel from './userModel'
 
 const accountSchema = new mongoose.Schema({
   from: { type: Schema.Types.ObjectId, ref: 'User' },
-  connections: {
-    type: [userModel.schema],
-  },
-  posts: {
+  requests: {
     type: Array,
+    from: { type: Schema.Types.ObjectId, ref: 'User' },
+    username: String,
   },
-  // Referenciar model post
-  liked: {
+  pending_requests: {
     type: Array,
-  },
-  // Referenciar model manga
-  reading: {
-    type: Array,
-  },
-  completed: {
-    type: Array,
-  },
-  plan_to_read: {
-    type: Array,
-  },
-  favorites: {
-    type: Array,
+    to: { type: Schema.Types.ObjectId, ref: 'User' },
+    username: String,
   },
 })
 

@@ -21,6 +21,7 @@ const initialState: InitialState = {
   },
   openModal: null,
   requestAgain: false,
+  usersSearch: null,
 }
 
 const saveThemeToLocalStorage = (themeState: any) => {
@@ -77,6 +78,9 @@ const ArmazemSlice = createSlice({
     askToRequestAgain: (state) => {
       state.requestAgain = !state.requestAgain
     },
+    handleResultUsersSearch: (state, action) => {
+      state.usersSearch = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserData.fulfilled, (state, action) => {
@@ -107,6 +111,7 @@ export const {
   handleOpenModal,
   handleUserMetadata,
   askToRequestAgain,
+  handleResultUsersSearch,
 } = ArmazemSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>

@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   currentUserData,
+  searchUsersByQuery,
   updateCoverImage,
   updateProfileImage,
   userByUsername,
@@ -12,5 +13,6 @@ router.get('/:id', currentUserData)
 router.get('/username/:username', userByUsername)
 router.post('/updateCoverImage', updateCoverImage)
 router.post('/updateProfileImage', updateProfileImage)
+router.post('/searchUsersByQuery', searchUsersByQuery)
 
 export { router }
