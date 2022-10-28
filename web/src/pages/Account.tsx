@@ -17,20 +17,19 @@ import { useLocation } from 'react-router-dom'
 import { Comments } from '../components/account/Comments'
 import { Loader } from '../components/Loader'
 import { handleUserMetadata } from '../store'
+import { getCurrentUserAccount } from '../store/reducers/current-user-data'
 
 interface Props {}
 
 export const Account = (props: Props) => {
   // const [account, setAccount] = useState<User | null>(null)
   const dispatch = useAppDispatch()
-  const account = useAppSelector((state) => state.armazem.userMetadata)
+  const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
+  const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
 
   const location = useLocation()
   const username = location.pathname
-
-  // CRIAR UM MODELO SÓ PARA CONTA E REFERÊNCIAR O USUÁRIO,
-  // POIS ACCOUNT PODE TER CONNECTIOS, FAVORITES, READING E MAIS INFORMAÇÕES
 
   useEffect(() => {
     ;(async () => {
@@ -42,27 +41,32 @@ export const Account = (props: Props) => {
   // console.log('account', account)
   // console.log(username);
   // Limpar dados de account quando deslogar
-  
+
+  const dataLoaded =
+    currentAccount.user !== undefined && userMetadata !== null && username
 
   return (
     <div className={style.gridContainer}>
       <Sidebar />
       <div className={style.mainContent}>
         <Navbar />
-        {account !== null && username ? (
+        {dataLoaded ? (
           <main>
-            <Header account={account} />
+            <Header
+              userMetadata={userMetadata}
+              currentAccount={currentAccount}
+            />
             <div className="p-4">
               <StatusBar />
               <Favorites />
               <LastPosts />
               <SharedPosts />
               <LastUpdates />
-              <Comments account={account} />
+              <Comments userMetadata={userMetadata} />
             </div>
           </main>
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full h-screen -mt-28 flex items-center justify-center">
             <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
           </div>
         )}

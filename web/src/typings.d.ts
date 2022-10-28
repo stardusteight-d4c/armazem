@@ -32,19 +32,12 @@ interface User {
   username: string
   user_img: string
   cover_img: string
+  account: string
 }
 
 interface Account {
   _id: string
   user: string
-  requestsReceived: [
-    {
-      from: string
-    }
-  ]
-  requestsSent: [
-    {
-      to: string
-    }
-  ]
+  requestsReceived: { from: string }[]
+  requestsSent: { to: string }[]
 }

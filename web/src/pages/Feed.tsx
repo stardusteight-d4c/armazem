@@ -1,6 +1,4 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react'
 import {
   Hero,
   Navbar,
@@ -9,11 +7,6 @@ import {
   RatedPosts,
   Sidebar,
 } from '../components'
-import { Loader } from '../components/Loader'
-import { authorization } from '../services/api-routes'
-import { handleAuthSession } from '../store'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { getUserData } from '../store/reducers/current-user-data'
 
 interface Props {}
 

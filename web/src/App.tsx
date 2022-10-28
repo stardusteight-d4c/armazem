@@ -9,9 +9,13 @@ import {
 } from './components'
 import { Account, Feed, Login } from './pages'
 import { authorization } from './services/api-routes'
-import { handleAuthSession, handleResultUsersSearch, handleSwitchTheme } from './store'
+import {
+  handleAuthSession,
+  handleResultUsersSearch,
+  handleSwitchTheme,
+} from './store'
 import { useAppDispatch, useAppSelector } from './store/hooks'
-import { getUserData } from './store/reducers/current-user-data'
+import { getCurrentUserAccount, getUserData } from './store/reducers/current-user-data'
 
 interface Props {}
 
@@ -42,7 +46,8 @@ export const App = (props: Props) => {
             navigate('/login')
           }
           dispatch(handleAuthSession(data.session))
-          dispatch(getUserData())
+          await dispatch(getUserData())
+          dispatch(getCurrentUserAccount())
         } catch (error) {
           navigate('/login')
         }
@@ -66,7 +71,10 @@ export const App = (props: Props) => {
       {openModal === 'EditProfileImage' && <EditProfileImageModal />}
       {openModal === 'EditCoverImage' && <EditCoverImageModal />}
       {openModal === 'PostInput' && <PostInputModal />}
-      <div onClick={handleSearchResults} className="max-h-screen overflow-x-hidden  overflow-y-scroll">
+      <div
+        onClick={handleSearchResults}
+        className="max-h-screen overflow-x-hidden  overflow-y-scroll"
+      >
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Feed />} />

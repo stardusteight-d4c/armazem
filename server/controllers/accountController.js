@@ -1,6 +1,16 @@
-import mongoose from 'mongoose'
 import Account from '../models/accountModel.js'
 import User from '../models/userModel.js'
+
+export const accountDataByUserId = async (req, res, next) => {
+  try {
+    const userId = req.params.id
+    const userAccountRef = await User.findById(userId).select('account')
+    const account = await Account.findById(userAccountRef.account)
+    return res.status(200).json({ account, status: true, msg: 'Account found' })
+  } catch (error) {
+    next(error)
+  }
+}
 
 export const sendRequest = async (req, res, next) => {
   const { to, from } = req.body

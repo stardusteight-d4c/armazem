@@ -3,10 +3,10 @@ import { useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
 
 interface Props {
-  account: User
+  userMetadata: User
 }
 
-export const Comments = ({ account }: Props) => {
+export const Comments = ({ userMetadata }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
 
   return (
@@ -15,7 +15,7 @@ export const Comments = ({ account }: Props) => {
         Comments
       </h2>
       <div>
-        {currentUser?._id !== account._id && (
+        {currentUser?._id !== userMetadata._id && (
           <>
             <div className="flex items-start gap-x-5">
               <img
@@ -57,7 +57,7 @@ export const Comments = ({ account }: Props) => {
               punching bag. They need to introduce a new strong pirate? Great,
               send in smoker to catch some fists with his face!
             </span>
-            {currentUser?._id === account._id && (
+            {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
                 <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
                 <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
@@ -81,7 +81,7 @@ export const Comments = ({ account }: Props) => {
               punching bag. They need to introduce a new strong pirate? Great,
               send in smoker to catch some fists with his face!
             </span>
-            {currentUser?._id === account._id && (
+            {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
                 <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
                 <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
@@ -106,7 +106,7 @@ export const Comments = ({ account }: Props) => {
               send in smoker to catch some fists with his face!They need to
               introduce a new strong pirate? Great,
             </span>
-            {currentUser?._id === account._id && (
+            {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
                 <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
                 <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
@@ -130,7 +130,7 @@ export const Comments = ({ account }: Props) => {
               punching bag. They need to introduce a new strong pirate? Great,
               send in smoker to catch some fists with his face!
             </span>
-            {currentUser?._id === account._id && (
+            {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
                 <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
                 <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
@@ -154,7 +154,7 @@ export const Comments = ({ account }: Props) => {
               punching bag. They need to introduce a new strong pirate? Great,
               send in smoker to catch some fists with his face!
             </span>
-            {currentUser?._id === account._id && (
+            {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
                 <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
                 <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />

@@ -19,7 +19,6 @@ export const searchUsersByQuery = `${hostServer}/api/user/searchUsersByQuery`
 
 // ACCOUNT
 export const sendRequest = `${hostServer}/api/account/sendRequest` 
-
-
+export const accountDataByUserId = `${hostServer}/api/account/accountDataByUserId` // /:id
 
 

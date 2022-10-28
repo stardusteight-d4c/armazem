@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import { Action } from '@remix-run/router'
-import { getUserData } from './reducers/current-user-data'
+import { getCurrentUserAccount, getUserData } from './reducers/current-user-data'
 
 // import { } from '../Types'
 
@@ -87,9 +87,9 @@ const ArmazemSlice = createSlice({
     builder.addCase(getUserData.fulfilled, (state, action) => {
       action.payload && (state.currentUser = action.payload.user)
     })
-    // builder.addCase(getCurrentUserAccount.fulfilled, (state, action) => {
-    //   action.payload && (state.currentAccount = action.payload)
-    // })
+    builder.addCase(getCurrentUserAccount.fulfilled, (state, action) => {
+      action.payload && (state.currentAccount = action.payload)
+    })
   },
 
 })

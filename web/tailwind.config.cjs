@@ -21,6 +21,7 @@ module.exports = {
       black: '#000000',
       red: '#E44242',
       green: '#15f463',
+      orange: '#ffff',
       prime: {
         purple: '#4D3BC9',
         blue: '#4B8EF3',
