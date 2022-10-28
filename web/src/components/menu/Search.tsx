@@ -41,7 +41,7 @@ export const Search = (props: Props) => {
       {usersSearch && usersSearch[0] !== null && (
         <div
           onClick={() => dispatch(handleResultUsersSearch(undefined))}
-          className="text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong z-50 w-[403px] rounded-md absolute -bottom-10"
+          className="text-dusk-main drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 dark:text-dawn-main bg-white dark:bg-fill-strong z-50 w-[403px] rounded-md absolute -bottom-10"
         >
           {usersSearch.map((user: any, index: React.Key | null | undefined) => (
             <Link

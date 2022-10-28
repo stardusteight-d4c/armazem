@@ -182,6 +182,7 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
             <i className="ri-link mr-1" />
             <span>Connected</span>
           </div>
+          {/* Remover account */}
           <div className="flex cursor-pointer items-center">
             <i className="ri-message-3-line mr-1" />
             <span>Send message</span>
