@@ -38,6 +38,7 @@ interface User {
 interface Account {
   _id: string
   user: string
-  requestsReceived: { from: string }[]
-  requestsSent: { to: string }[]
+  requestsReceived: [{ from: string }]
+  requestsSent: [{ to: string }]
+  connections: [{ with: string }]
 }

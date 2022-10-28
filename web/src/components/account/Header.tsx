@@ -1,10 +1,15 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { sendRequest } from '../../services/api-routes'
+import {
+  addConnection,
+  rejectConnection,
+  sendRequest,
+} from '../../services/api-routes'
 import { askToRequestAgain, handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { error, success } from '../Toasters'
+import { Menu } from '@headlessui/react'
 
 interface Props {
   userMetadata: User
@@ -34,7 +39,45 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
 
   console.log('currentAccount', currentAccount)
 
-  // who sent
+  const createConnection = async () => {
+    try {
+      const { data } = await axios.post(addConnection, {
+        to: userMetadata._id,
+        from: currentUser?._id,
+      })
+      dispatch(askToRequestAgain())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const rejectRequestConnection = async () => {
+    try {
+      const { data } = await axios.post(rejectConnection, {
+        to: userMetadata._id,
+        from: currentUser?._id,
+      })
+      dispatch(askToRequestAgain())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const unsendRequestConnection = async () => {
+    try {
+      const { data } = await axios.post(rejectConnection, {
+        to: currentUser?._id,
+        from: userMetadata._id,
+      })
+      dispatch(askToRequestAgain())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //
+
+  // Who sent
   const requestAlreadySentStatus = () => {
     const verificationResult = currentAccount.requestsSent.map((requests) => {
       if (requests.to === userMetadata._id) {
@@ -46,9 +89,9 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
     return verificationResult[0]
   }
 
-  // who received
+  // Who received
   const requestAlreadyReceivedStatus = () => {
-    const verificationResult = currentAccount?.requestsReceived?.map(
+    const verificationResult = currentAccount.requestsReceived.map(
       (requests) => {
         if (requests.from == userMetadata._id) {
           return true
@@ -60,28 +103,115 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
     return verificationResult[0]
   }
 
+  const connectWithThisUser = () => {
+    const verificationResult = currentAccount.connections.map((connection) => {
+      if (connection.with == userMetadata._id) {
+        return true
+      } else {
+        return false
+      }
+    })
+    return verificationResult[0]
+  }
+
   const HandleRequestComponent = () => {
+    // criar um componente para cada estado e chamar aqui
     if (requestAlreadySentStatus()) {
       return (
-        <div className="text-[#eb7140] flex cursor-pointer items-center">
-          <i className="ri-link mr-1" />
-          <span>Request sent</span>
+        <div className="relative z-50 text-orange flex cursor-pointer items-center">
+          <Menu>
+            <Menu.Button>
+              <i className="ri-link mr-1" />
+              <span>Request sent</span>
+            </Menu.Button>
+            <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-7 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+              <Menu.Item>
+                <span onClick={unsendRequestConnection} className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                  Unsend
+                </span>
+              </Menu.Item>
+              <Menu.Item>
+                <span className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                  Cancel
+                </span>
+              </Menu.Item>
+            </Menu.Items>
+          </Menu>
         </div>
       )
     }
     if (requestAlreadyReceivedStatus()) {
       return (
-        <div className="text-prime-blue flex cursor-pointer items-center">
-          <i className="ri-link mr-1" />
-          <span>Accept request</span>
-          {/* Fazer menu dropdown com reject e accept */}
+        <div className="relative text-prime-blue flex cursor-pointer items-center">
+          <Menu>
+            <Menu.Button>
+              <i className="ri-link mr-1" />
+              <span>Accept request</span>
+            </Menu.Button>
+            <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-10 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+              <Menu.Item>
+                <span
+                  onClick={createConnection}
+                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                >
+                  Accept
+                </span>
+              </Menu.Item>
+              <Menu.Item>
+                <span
+                  onClick={rejectRequestConnection}
+                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                >
+                  Reject
+                </span>
+              </Menu.Item>
+            </Menu.Items>
+          </Menu>
+          {/* Fazer menu dropdown com reject e accept,
+           também deixar uma lista em connectios e no dropdown de notificações, ao aceitar colocar
+           o usuário em connectios em ambas contas, ao rejeitar deletar de requestsReceived e requestsSent, 
+           notificar com web sockets que a solicitação foi aceita, ou recusada.
+           */}
         </div>
+      )
+    }
+    if (connectWithThisUser()) {
+      return (
+        <>
+          <div className="text-green flex cursor-pointer items-center">
+            <i className="ri-link mr-1" />
+            <span>Connected</span>
+          </div>
+          <div className="flex cursor-pointer items-center">
+            <i className="ri-message-3-line mr-1" />
+            <span>Send message</span>
+          </div>
+        </>
       )
     } else {
       return (
-        <div className="flex cursor-pointer items-center">
-          <i className="ri-link mr-1" />
-          <span onClick={sendRequestToUser}>Send request</span>
+        <div className="relative flex cursor-pointer items-center">
+          <Menu>
+            <Menu.Button>
+              <i className="ri-link mr-1" />
+              <span>Send request</span>
+            </Menu.Button>
+            <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-8 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+              <Menu.Item>
+                <span
+                  onClick={sendRequestToUser}
+                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                >
+                  Send
+                </span>
+              </Menu.Item>
+              <Menu.Item>
+                <span className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                  Cancel
+                </span>
+              </Menu.Item>
+            </Menu.Items>
+          </Menu>
         </div>
       )
     }
@@ -120,10 +250,6 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
             {userMetadata._id !== currentUser?._id && (
               <>
                 <HandleRequestComponent />
-                <div className="flex cursor-pointer items-center">
-                  <i className="ri-message-3-line mr-1" />
-                  <span>Send message</span>
-                </div>
               </>
             )}
           </div>
@@ -132,7 +258,6 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
           </div>
         </div>
       </div>
-      '
     </>
   )
 }

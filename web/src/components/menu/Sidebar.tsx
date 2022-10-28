@@ -20,11 +20,21 @@ export const Sidebar = (props: Props) => {
       <div>
         <span className="mb-4 block">New Feeds</span>
         <ul className="space-y-2">
-          <Link to="/"  className={`flex w-full cursor-pointer items-center justify-start p-4  transition-all duration-200 hover:brightness-125 rounded-md gap-4 ${path === '/' && 'bg-prime-blue text-white'}`}>
+          <Link
+            to="/"
+            className={`flex w-full cursor-pointer items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 rounded-md gap-4 ${
+              path === '/' && 'bg-prime-blue text-white'
+            }`}
+          >
             <i className="ri-lightbulb-flash-fill text-2xl" />
             <span className="font-medium text-lg">New feed</span>
           </Link>
-          <Link to={`/${currentUser?.username}`} className={`flex w-full cursor-pointer items-center justify-start p-4  transition-all duration-200 hover:brightness-125 rounded-md gap-4 ${path === `/${currentUser?.username}` && 'bg-prime-blue text-white'}`}>
+          <Link
+            to={`/${currentUser?.username}`}
+            className={`flex w-full cursor-pointer items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 rounded-md gap-4 ${
+              path === `/${currentUser?.username}` && 'bg-prime-blue text-white'
+            }`}
+          >
             <i className="ri-account-circle-line text-2xl" />
             <span className="font-medium text-lg">My account</span>
           </Link>
@@ -32,10 +42,15 @@ export const Sidebar = (props: Props) => {
             <i className="ri-line-chart-line text-2xl" />
             <span className="font-medium text-lg">Trending</span>
           </li>
-          <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
+          <Link
+            to="/connections"
+            className={`flex w-full cursor-pointer items-center justify-start p-4 hover:transition-all hover:duration-200 hover:brightness-125 rounded-2xl gap-4 ${
+              path === `/connections` && 'bg-prime-blue text-white'
+            }`}
+          >
             <i className="ri-link text-2xl" />
             <span className="font-medium text-lg">Connections</span>
-          </li>
+          </Link>
           <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
             <i className="ri-book-mark-line text-2xl" />
             <span className="font-medium text-lg">My list</span>

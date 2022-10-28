@@ -25,7 +25,7 @@ export const Search = (props: Props) => {
     if (term.length >= 3) {
       search(term)
     } else {
-      dispatch(handleResultUsersSearch([]))
+      dispatch(handleResultUsersSearch(undefined))
     }
   }
 
@@ -40,7 +40,7 @@ export const Search = (props: Props) => {
       />
       {usersSearch && usersSearch[0] !== null && (
         <div
-          onClick={() => dispatch(handleResultUsersSearch([]))}
+          onClick={() => dispatch(handleResultUsersSearch(undefined))}
           className="text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong z-50 w-[403px] rounded-md absolute -bottom-10"
         >
           {usersSearch.map((user: any, index: React.Key | null | undefined) => (
@@ -61,7 +61,7 @@ export const Search = (props: Props) => {
         >
           <i className="ri-equalizer-line" />
         </Menu.Button>
-        <Menu.Items className="absolute p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong drop-shadow-2xl -right-4 -bottom-14">
+        <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20  absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-4 -bottom-14">
           <Menu.Item>
             <a className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
               Manga

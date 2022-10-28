@@ -28,7 +28,7 @@ export const EditProfileImageModal = (props: Props) => {
     }
   }
 
-  const updatProfileImageById = async () => {
+  const updateProfileImageById = async () => {
     setLoading(true)
     const { data } = await axios.post(updateProfileImage, {
       user_img: selectedFile,
@@ -85,7 +85,7 @@ export const EditProfileImageModal = (props: Props) => {
                 />
                 <Button
                   title="Submit"
-                  onClick={() => updatProfileImageById()}
+                  onClick={() => updateProfileImageById()}
                   className="bg-prime-blue !w-full my-4 py-2 text-white rounded-md"
                 />
               </div>

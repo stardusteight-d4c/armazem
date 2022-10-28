@@ -20,5 +20,9 @@ export const searchUsersByQuery = `${hostServer}/api/user/searchUsersByQuery`
 // ACCOUNT
 export const sendRequest = `${hostServer}/api/account/sendRequest` 
 export const accountDataByUserId = `${hostServer}/api/account/accountDataByUserId` // /:id
+export const addConnection = `${hostServer}/api/account/addConnection` 
+export const rejectConnection = `${hostServer}/api/account/rejectConnection` 
+
+
 
 

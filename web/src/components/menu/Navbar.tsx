@@ -47,7 +47,7 @@ export const Navbar = (props: Props) => {
                 alt=""
               />
             </Menu.Button>
-            <Menu.Items className="absolute p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong drop-shadow-2xl -right-[17px] -bottom-[70px]">
+            <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20  absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[17px] -bottom-[70px]">
               <Menu.Item>
                 <a
                   onClick={() => navigate(`/${currentUser?.username}`)}

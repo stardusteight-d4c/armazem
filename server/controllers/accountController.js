@@ -20,13 +20,10 @@ export const sendRequest = async (req, res, next) => {
 
     const requestAlreadyReceived = await Account.findById(
       toAccountRef.account,
-      {
-        requestsReceived: { from },
-      }
+      { requestsReceived: { from } }
     )
 
     if (requestAlreadyReceived.requestsReceived.length === 0) {
-      console.log('request not received')
       await Account.findByIdAndUpdate(
         fromAccountRef.account,
         { $push: { requestsSent: { to } } },
@@ -48,6 +45,72 @@ export const sendRequest = async (req, res, next) => {
   } catch (error) {
     next(error)
   }
-
   return res.json({ status: true })
 }
+
+export const addConnection = async (req, res, next) => {
+  const { to, from } = req.body
+  try {
+    const toAccountRef = await User.findById(to).select('account')
+    const fromAccountRef = await User.findById(from).select('account')
+
+    // Link connection
+    await Account.findByIdAndUpdate(toAccountRef.account, {
+      connections: { with: from },
+    })
+    await Account.findByIdAndUpdate(fromAccountRef.account, {
+      connections: { with: to },
+    })
+
+    // Delete request
+    await Account.findByIdAndUpdate(
+      fromAccountRef.account,
+      {
+        $pull: { requestsReceived: { from: to } },
+      },
+      { safe: true, multi: false }
+    )
+    await Account.findByIdAndUpdate(
+      toAccountRef.account,
+      {
+        $pull: { requestsSent: { to: from } },
+      },
+      { safe: true, multi: false }
+    )
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Operation performed successfully' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const rejectConnection = async (req, res, next) => {
+  const { to, from } = req.body
+  try {
+    const toAccountRef = await User.findById(to).select('account')
+    const fromAccountRef = await User.findById(from).select('account')
+
+    // Delete request
+    await Account.findByIdAndUpdate(
+      fromAccountRef.account,
+      {
+        $pull: { requestsReceived: { from: to } },
+      },
+      { safe: true, multi: false }
+    )
+    await Account.findByIdAndUpdate(
+      toAccountRef.account,
+      {
+        $pull: { requestsSent: { to: from } },
+      },
+      { safe: true, multi: false }
+    )
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Operation performed successfully' })
+  } catch (error) {
+    next(error)
+  }
+}
+

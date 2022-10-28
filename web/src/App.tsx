@@ -8,6 +8,7 @@ import {
   PostInputModal,
 } from './components'
 import { Account, Feed, Login } from './pages'
+import { Connections } from './pages/Connections'
 import { authorization } from './services/api-routes'
 import {
   handleAuthSession,
@@ -47,7 +48,7 @@ export const App = (props: Props) => {
           }
           dispatch(handleAuthSession(data.session))
           await dispatch(getUserData())
-          dispatch(getCurrentUserAccount())
+          await dispatch(getCurrentUserAccount())
         } catch (error) {
           navigate('/login')
         }
@@ -57,14 +58,16 @@ export const App = (props: Props) => {
     }
   }, [session, requestAgain])
 
-  // depois arrumar esta gambiarra
   const handleSearchResults = () => {
-    if (usersSearch !== null) {
-      dispatch(handleResultUsersSearch([]))
+    if (usersSearch !== undefined || usersSearch !== null) {
+      dispatch(handleResultUsersSearch(undefined))
     } else {
       return
     }
   }
+
+  console.log(usersSearch);
+  
 
   return (
     <>
@@ -79,6 +82,7 @@ export const App = (props: Props) => {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Feed />} />
           <Route path="/:username" element={<Account />} />
+          <Route path="/connections" element={<Connections />} />
           {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
       </div>
