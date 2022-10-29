@@ -59,8 +59,8 @@ export const Comments = ({ userMetadata }: Props) => {
             </span>
             {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
-                <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
-                <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
+                <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                <i className="ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
               </div>
             )}
           </div>
@@ -83,8 +83,8 @@ export const Comments = ({ userMetadata }: Props) => {
             </span>
             {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
-                <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
-                <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
+                <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                <i className="ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
               </div>
             )}
           </div>
@@ -108,8 +108,8 @@ export const Comments = ({ userMetadata }: Props) => {
             </span>
             {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
-                <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
-                <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
+                <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                <i className="ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
               </div>
             )}
           </div>
@@ -132,8 +132,8 @@ export const Comments = ({ userMetadata }: Props) => {
             </span>
             {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
-                <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
-                <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
+                <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                <i className="ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
               </div>
             )}
           </div>
@@ -156,8 +156,8 @@ export const Comments = ({ userMetadata }: Props) => {
             </span>
             {currentUser?._id === userMetadata._id && (
               <div className="flex items-center space-x-2 justify-end w-full">
-                <i className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
-                <i className="ri-delete-bin-6-fill  transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 bg-fill-strong dark:bg-white rounded-full text-lg cursor-pointer dark:text-fill-strong text-white" />
+                <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                <i className="ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
               </div>
             )}
           </div>

@@ -10,7 +10,7 @@ export const Sidebar = (props: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
 
   return (
-    <aside className="scrollbar-hide z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong">
+    <aside className="scrollbar-hide pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong">
       <div className="flex items-center py-8 -mt-[2px] gap-x-2">
         <i className="ri-server-fill text-2xl text-fill-strong dark:text-fill-weak" />
         <h1 className="text-3xl font-inter text-fill-strong dark:text-fill-weak font-bold">

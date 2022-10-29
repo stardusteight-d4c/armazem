@@ -66,9 +66,6 @@ export const App = (props: Props) => {
     }
   }
 
-  console.log(usersSearch);
-  
-
   return (
     <>
       {openModal === 'EditProfileImage' && <EditProfileImageModal />}

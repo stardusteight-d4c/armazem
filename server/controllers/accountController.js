@@ -114,3 +114,47 @@ export const rejectConnection = async (req, res, next) => {
   }
 }
 
+export const removeConnection = async (req, res, next) => {
+  const { to, from } = req.body
+  try {
+    const toAccountRef = await User.findById(to).select('account')
+    const fromAccountRef = await User.findById(from).select('account')
+
+    // Delete connection
+    await Account.findByIdAndUpdate(
+      fromAccountRef.account,
+      {
+        $pull: { connections: { with: to } },
+      },
+      { safe: true, multi: false }
+    )
+    await Account.findByIdAndUpdate(
+      toAccountRef.account,
+      {
+        $pull: { connections: { with: from } },
+      },
+      { safe: true, multi: false }
+    )
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Operation performed successfully' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+// export const userConnections = async (req, res, next) => {
+//   const { id } = req.params.id
+//   try {
+//     const userAccountRef = await User.findById(id).select('account')
+//     const connections = await Account.findById(userAccountRef.account).select('connections')
+
+//     console.log('connections', connections)
+
+//     return res
+//       .status(200)
+//       .json({ status: true, msg: 'Operation performed successfully' })
+//   } catch (error) {
+//     next(error)
+//   }
+// }

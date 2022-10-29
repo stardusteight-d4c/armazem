@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast'
 import {
   addConnection,
   rejectConnection,
+  removeConnection,
   sendRequest,
 } from '../../services/api-routes'
 import { askToRequestAgain, handleOpenModal } from '../../store'
@@ -37,8 +38,6 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
     }
   }
 
-  console.log('currentAccount', currentAccount)
-
   const createConnection = async () => {
     try {
       const { data } = await axios.post(addConnection, {
@@ -50,6 +49,18 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
       console.log(error)
     }
   }
+
+ const deleteUserConnection = async () => {
+  try {
+    const { data } = await axios.post(removeConnection, {
+      to: userMetadata._id,
+      from: currentUser?._id,
+    })
+    dispatch(askToRequestAgain())
+  } catch (error) {
+    console.log(error)
+  }
+}
 
   const rejectRequestConnection = async () => {
     try {
@@ -126,7 +137,10 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
             </Menu.Button>
             <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-7 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
               <Menu.Item>
-                <span onClick={unsendRequestConnection} className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                <span
+                  onClick={unsendRequestConnection}
+                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                >
                   Unsend
                 </span>
               </Menu.Item>
@@ -178,11 +192,29 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
     if (connectWithThisUser()) {
       return (
         <>
-          <div className="text-green flex cursor-pointer items-center">
-            <i className="ri-link mr-1" />
-            <span>Connected</span>
+          <div className="relative text-green flex cursor-pointer items-center">
+            <Menu>
+              <Menu.Button>
+                <i className="ri-link mr-1" />
+                <span>Connected</span>
+                <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-4 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+                  <Menu.Item>
+                    <span
+                      onClick={deleteUserConnection}
+                      className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                    >
+                      Remove
+                    </span>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <span className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                      Cancel
+                    </span>
+                  </Menu.Item>
+                </Menu.Items>
+              </Menu.Button>
+            </Menu>
           </div>
-          {/* Remover account */}
           <div className="flex cursor-pointer items-center">
             <i className="ri-message-3-line mr-1" />
             <span>Send message</span>

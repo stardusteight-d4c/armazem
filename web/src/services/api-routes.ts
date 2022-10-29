@@ -22,7 +22,7 @@ export const sendRequest = `${hostServer}/api/account/sendRequest`
 export const accountDataByUserId = `${hostServer}/api/account/accountDataByUserId` // /:id
 export const addConnection = `${hostServer}/api/account/addConnection` 
 export const rejectConnection = `${hostServer}/api/account/rejectConnection` 
-
-
+export const removeConnection = `${hostServer}/api/account/removeConnection` 
+// export const userConnections = `${hostServer}/api/account/userConnections` // :id
 
 
