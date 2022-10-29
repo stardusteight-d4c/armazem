@@ -26,3 +26,10 @@ export { SharedPosts } from './account/SharedPosts'
 export { LastUpdates } from './account/LastUpdates'
 export { EditProfileImageModal } from './account/EditProfileImageModal'
 export { EditCoverImageModal } from './account/EditCoverImageModal'
+
+
+export { Filter } from './connections/Filter'
+export { ConnectionsList } from './connections/ConnectionsList'
+export { PendingList } from './connections/PendingList'
+export { AcceptList } from './connections/AcceptList'
+

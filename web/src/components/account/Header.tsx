@@ -50,17 +50,17 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
     }
   }
 
- const deleteUserConnection = async () => {
-  try {
-    const { data } = await axios.post(removeConnection, {
-      to: userMetadata._id,
-      from: currentUser?._id,
-    })
-    dispatch(askToRequestAgain())
-  } catch (error) {
-    console.log(error)
+  const deleteUserConnection = async () => {
+    try {
+      const { data } = await axios.post(removeConnection, {
+        to: userMetadata._id,
+        from: currentUser?._id,
+      })
+      dispatch(askToRequestAgain())
+    } catch (error) {
+      console.log(error)
+    }
   }
-}
 
   const rejectRequestConnection = async () => {
     try {
@@ -126,7 +126,6 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
   }
 
   const HandleRequestComponent = () => {
-    // criar um componente para cada estado e chamar aqui
     if (requestAlreadySentStatus()) {
       return (
         <div className="relative z-50 text-orange flex cursor-pointer items-center">

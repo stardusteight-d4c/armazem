@@ -22,7 +22,6 @@ import { getCurrentUserAccount } from '../store/reducers/current-user-data'
 interface Props {}
 
 export const Account = (props: Props) => {
-  // const [account, setAccount] = useState<User | null>(null)
   const dispatch = useAppDispatch()
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)

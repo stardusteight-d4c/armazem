@@ -7,8 +7,7 @@ import {
   EditProfileImageModal,
   PostInputModal,
 } from './components'
-import { Account, Feed, Login } from './pages'
-import { Connections } from './pages/Connections'
+import { Account, Connections, Feed, Login } from './pages'
 import { authorization } from './services/api-routes'
 import {
   handleAuthSession,

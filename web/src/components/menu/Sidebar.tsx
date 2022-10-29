@@ -35,7 +35,7 @@ export const Sidebar = (props: Props) => {
               path === `/${currentUser?.username}` && 'bg-prime-blue text-white'
             }`}
           >
-            <i className="ri-account-circle-line text-2xl" />
+            <i className="ri-account-pin-box-fill text-2xl" />
             <span className="font-medium text-lg">My account</span>
           </Link>
           <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
@@ -57,7 +57,7 @@ export const Sidebar = (props: Props) => {
           </li>
         </ul>
       </div>
-      <div className="h-[2px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
+      <div className="h-[1px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
       <div>
         <span className="mb-8 block">Connections</span>
         <ul className="space-y-5">
