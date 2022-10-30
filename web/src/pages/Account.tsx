@@ -37,10 +37,6 @@ export const Account = (props: Props) => {
     })()
   }, [username, requestAgain])
 
-  // console.log('account', account)
-  // console.log(username);
-  // Limpar dados de account quando deslogar
-
   const dataLoaded =
     currentAccount.user !== undefined && userMetadata !== null && username
 
@@ -58,7 +54,7 @@ export const Account = (props: Props) => {
             <div className="p-4">
               <StatusBar />
               <Favorites />
-              <LastPosts />
+              <LastPosts userMetadata={userMetadata} />
               <SharedPosts />
               <LastUpdates />
               <Comments userMetadata={userMetadata} />

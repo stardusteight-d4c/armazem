@@ -80,7 +80,7 @@ export const App = (props: Props) => {
           <Route path="/" element={<Feed />} />
           <Route path="/:username" element={<Account />} />
           <Route path="/connections" element={<Connections />} />
-          <Route path="/post/:slug" element={<Post />} />
+          <Route path="/post/:id" element={<Post />} />
           {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
       </div>

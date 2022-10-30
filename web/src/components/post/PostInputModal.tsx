@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { handleOpenModal } from '../../store'
+import { askToRequestAgain, handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import axios from 'axios'
 import { createPostAndAddToUserAccount } from '../../services/api-routes'
@@ -40,6 +40,7 @@ export const PostInputModal = (props: Props) => {
         userId: currentUser?._id,
       })
       if (data.status === true) {
+        dispatch(askToRequestAgain())
         success(data.msg)
       }
     } catch (error) {
@@ -106,16 +107,16 @@ export const PostInputModal = (props: Props) => {
             <textarea
               onChange={(e) => handleChange(e)}
               id="body"
-              maxLength={2255}
+              maxLength={855}
               placeholder="Type your text"
               className="w-full max-h-full min-h-[80px] px-10 py-4 bg-transparent outline-none"
             />
             <span
               className={`font-semibold absolute items-center flex gap-x-2 left-0 -bottom-7 font-inter ${
-                postTextLength >= 725 && '!text-orange'
-              } ${postTextLength >= 780 && '!text-red'}`}
+                postTextLength >= 750 && '!text-orange'
+              } ${postTextLength >= 800 && '!text-red'}`}
             >
-              {postTextLength}/2255
+              {postTextLength}/855
               <div className="text-xs text-dawn-weak dark:text-dusk-weak">(min. 50)</div>
             </span>
           </div>

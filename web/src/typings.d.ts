@@ -42,3 +42,25 @@ interface Account {
   requestsSent: [{ to: string }]
   connections: [{ with: string }]
 }
+
+interface Posts {
+  post: Post
+}
+
+interface Post {
+  _id: string
+  by: string
+  title: string
+  body: string
+  discussions: Discussions
+  likes: Array
+  createdAt: string
+  updatedAt: string
+}
+
+interface Discussions {
+  mainDiscussion: {
+    by: string
+    body: string
+  }
+}

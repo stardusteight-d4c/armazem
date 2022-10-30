@@ -259,6 +259,7 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
           />
         )}
         <img
+          referrerPolicy="no-referrer"
           className="w-40 h-40 rounded-sm bg-white dark:bg-fill-strong p-2 object-cover absolute -bottom-20 left-4"
           src={userMetadata.user_img}
           alt=""

@@ -26,5 +26,8 @@ export const removeConnection = `${hostServer}/api/account/removeConnection`
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`
+export const lastFivePostsOfAccount = `${hostServer}/api/post/lastFivePostsOfAccount` // /:id
+export const postMetadataById = `${hostServer}/api/post/postMetadataById` // /:id
+export const addNewDiscussion = `${hostServer}/api/post/addNewDiscussion` 
 
 
