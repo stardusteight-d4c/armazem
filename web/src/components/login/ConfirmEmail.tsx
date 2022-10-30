@@ -41,8 +41,6 @@ export const ConfirmEmail = ({
         )}
         className="ri-arrow-left-line absolute top-5 left-5 text-3xl p-2 cursor-pointer"
       />
-
-      <Toaster position="top-left" />
       <h1 className="text-4xl font-semibold">Enter your email</h1>
       <span className="text-sm text-dawn-weak dark:text-dusk-weak">
         *so that in the future you can recover your credentials

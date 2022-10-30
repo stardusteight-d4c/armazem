@@ -204,8 +204,6 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
             onClick={() => setUser({} as User)}
             className="ri-arrow-left-line absolute top-5 left-5 text-3xl p-2 cursor-pointer"
           />
-
-          <Toaster position="top-left" />
           <h1 className="text-4xl font-semibold">Choose username</h1>
           <span className="text-sm text-dawn-weak dark:text-dusk-weak">
             *Choose how you want to be called in the app
@@ -245,7 +243,6 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
               exit={{ opacity: 0 }}
               className={style.wrapper}
             >
-              <Toaster position="top-left" />
               <div className="relative">
                 <i className="ri-user-add-line absolute text-2xl top-0 right-0" />
                 <h1 className="text-4xl font-semibold">Sign up</h1>

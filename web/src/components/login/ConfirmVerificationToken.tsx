@@ -19,7 +19,6 @@ export const ConfirmVerificationToken = ({ data }: { data: Props }) => {
       onSubmit={(e) => handleSubmit(e)}
       className=" bg-fill-weak dark:bg-fill-strong w-[30vw]"
     >
-      <Toaster position="top-left" />
       <label
         htmlFor="token"
         className="text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold"

@@ -30,6 +30,7 @@ export const Navbar = (props: Props) => {
       <div className="flex items-center gap-x-5">
         <SwitchTheme />
         <i
+          title="New post"
           className="ri-article-line text-3xl p-2 cursor-pointer"
           onClick={() => dispatch(handleOpenModal('PostInput'))}
         />
@@ -43,7 +44,7 @@ export const Navbar = (props: Props) => {
               <img
                 referrerPolicy="no-referrer"
                 src={currentUser?.user_img}
-                className="w-12 h-12 rounded-md cursor-pointer  auto-rows-auto"
+                className="w-12 h-12 rounded-sm cursor-pointer  auto-rows-auto"
                 alt=""
               />
             </Menu.Button>

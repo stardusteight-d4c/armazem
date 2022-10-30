@@ -13,7 +13,10 @@ const accountSchema = new mongoose.Schema({
   connections: {
     type: Array,
     with: String,
-  }
+  },
+  posts: {
+    type: Array,
+  },
 })
 
 export default mongoose.model('Account', accountSchema)

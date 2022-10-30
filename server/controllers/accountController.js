@@ -143,18 +143,3 @@ export const removeConnection = async (req, res, next) => {
   }
 }
 
-// export const userConnections = async (req, res, next) => {
-//   const { id } = req.params.id
-//   try {
-//     const userAccountRef = await User.findById(id).select('account')
-//     const connections = await Account.findById(userAccountRef.account).select('connections')
-
-//     console.log('connections', connections)
-
-//     return res
-//       .status(200)
-//       .json({ status: true, msg: 'Operation performed successfully' })
-//   } catch (error) {
-//     next(error)
-//   }
-// }

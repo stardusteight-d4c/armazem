@@ -7,7 +7,7 @@ import {
   EditProfileImageModal,
   PostInputModal,
 } from './components'
-import { Account, Connections, Feed, Login } from './pages'
+import { Account, Connections, Feed, Login, Post } from './pages'
 import { authorization } from './services/api-routes'
 import {
   handleAuthSession,
@@ -74,11 +74,13 @@ export const App = (props: Props) => {
         onClick={handleSearchResults}
         className="max-h-screen overflow-x-hidden  overflow-y-scroll"
       >
+        <Toaster position='top-left' />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Feed />} />
           <Route path="/:username" element={<Account />} />
           <Route path="/connections" element={<Connections />} />
+          <Route path="/post/:slug" element={<Post />} />
           {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
       </div>

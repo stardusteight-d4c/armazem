@@ -180,11 +180,6 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
               </Menu.Item>
             </Menu.Items>
           </Menu>
-          {/* Fazer menu dropdown com reject e accept,
-           também deixar uma lista em connectios e no dropdown de notificações, ao aceitar colocar
-           o usuário em connectios em ambas contas, ao rejeitar deletar de requestsReceived e requestsSent, 
-           notificar com web sockets que a solicitação foi aceita, ou recusada.
-           */}
         </div>
       )
     }
@@ -264,14 +259,14 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
           />
         )}
         <img
-          className="w-40 h-40 bg-white dark:bg-fill-strong p-2 object-cover absolute -bottom-20 left-4"
+          className="w-40 h-40 rounded-sm bg-white dark:bg-fill-strong p-2 object-cover absolute -bottom-20 left-4"
           src={userMetadata.user_img}
           alt=""
         />
         {userMetadata._id === currentUser?._id && (
           <div
             onClick={() => dispatch(handleOpenModal('EditProfileImage'))}
-            className="ri-pencil-fill  text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute z-20 bottom-12 left-36 cursor-pointer rounded-full"
+            className="ri-pencil-fill text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute z-20 bottom-12 left-36 cursor-pointer rounded-full"
           />
         )}
         <div className="absolute left-[185px] -bottom-[75px]">

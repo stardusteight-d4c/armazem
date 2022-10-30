@@ -95,7 +95,7 @@ export const EditCoverImageModal = (props: Props) => {
               </div>
             ) : (
               <>
-                <div className="w-[510px] h-[150px] border rounded-md flex items-center justify-center" />
+                <div className="w-[510px] h-[150px] border rounded-sm flex items-center justify-center" />
                 <Button
                   title="Upload picture"
                   onClick={() => filePickerRef.current.click()}

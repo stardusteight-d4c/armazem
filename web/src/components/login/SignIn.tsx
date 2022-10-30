@@ -105,7 +105,6 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
       exit={{ opacity: 0 }}
       className={style.wrapper}
     >
-      <Toaster position="top-left" />
       <div className="relative w-full">
         <i className="ri-user-shared-line absolute text-2xl top-0 right-0" />
         <h1 className="text-4xl font-bold">Sign in</h1>

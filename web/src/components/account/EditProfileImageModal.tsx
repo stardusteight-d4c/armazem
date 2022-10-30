@@ -91,7 +91,7 @@ export const EditProfileImageModal = (props: Props) => {
               </div>
             ) : (
               <>
-                <div className="w-40 h-40 border rounded-md flex items-center justify-center" />
+                <div className="w-40 h-40 border rounded-sm flex items-center justify-center" />
                 <Button
                   title="Upload picture"
                   onClick={() => filePickerRef.current.click()}
