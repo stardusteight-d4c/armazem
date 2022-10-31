@@ -30,6 +30,7 @@ export const lastFivePostsOfAccount = `${hostServer}/api/post/lastFivePostsOfAcc
 export const postMetadataById = `${hostServer}/api/post/postMetadataById` // /:id
 export const addNewDiscussion = `${hostServer}/api/post/addNewDiscussion` 
 export const addNewReply = `${hostServer}/api/post/addNewReply` 
+export const repliesOfDiscussion = `${hostServer}/api/post/repliesOfDiscussion` // :discussionId
 
 
 

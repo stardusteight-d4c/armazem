@@ -151,75 +151,16 @@ export const Post = (props: Props) => {
                 </div>
               </div>
 
-              <div>
-                <section className="flex flex-col space-y-10">
+              <div className=' space-y-10'>
                   {post?.discussions.map((discussion) => (
+                <section className="flex flex-col">
                     <Discussions
                       post={post}
                       discussion={discussion}
                       currentUser={currentUser}
                     />
-                  ))}
-                  <div className="flex relative p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
-                    <div className="h-[110%] left-[26px] -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
-                    <img
-                      src="https://avatars.githubusercontent.com/u/87643260?v=4"
-                      alt=""
-                      className="w-9 h-9 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
-                    />
-                    <div className="flex flex-col w-full ">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium text-lg text-dusk-main dark:text-dawn-main">
-                          @blackwive
-                        </span>
-                        <span>5 hours ago</span>
-                      </div>
-                      <span
-                        className="pr-2 text-dusk-main/90 dark:text-dawn-main/90"
-                        pb-2
-                      >
-                        <span className="text-prime-blue pr-2">@rodrigo</span>
-                        Man, your comment just in the top, hohoho. You are a
-                        idiot for an case? You know that it mean!??? I Hate you
-                        so much man jajaja
-                      </span>
-                      <div>
-                        <div className="flex items-center py-2 space-x-2 justify-end w-full">
-                          <i className="ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                          <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex relative p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
-                    <img
-                      src="https://avatars.githubusercontent.com/u/87643260?v=4"
-                      alt=""
-                      className="w-9 h-9 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
-                    />
-                    <div className="flex flex-col w-full ">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium text-lg text-dusk-main dark:text-dawn-main">
-                          @stardusteight
-                        </span>
-                        <span>5 hours ago</span>
-                      </div>
-                      <span
-                        className="pr-2 text-dusk-main/90 dark:text-dawn-main/90"
-                        pb-2
-                      >
-                        <span className="text-prime-blue pr-2">@blackwive</span>
-                        tmnc gringo fdp
-                      </span>
-                      <div>
-                        <div className="flex items-center py-2 space-x-2 justify-end w-full">
-                          <i className="ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                          <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </section>
+                  ))}
 
                 <section className="flex flex-col">
                   <div className="flex relative bg-dusk-weak/10 dark:bg-dusk-weak/5 border rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20 p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3">

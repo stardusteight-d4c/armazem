@@ -1,6 +1,10 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { addNewReply, userData } from '../../services/api-routes'
+import {
+  addNewReply,
+  repliesOfDiscussion,
+  userData,
+} from '../../services/api-routes'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -8,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { handleOpenModal } from '../../store'
 import { Button } from '../Button'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Replies } from './Replies'
 
 timeago.register('en_short', en_short)
 
@@ -22,24 +27,31 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
   const dispatch = useAppDispatch()
   const [reply, setReply] = useState('')
   const [comment, setComment] = useState('')
+  const [replies, setReplies] = useState([])
 
   useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${userData}/${discussion.by}`)
+      const { data: replies } = await axios.get(
+        `${repliesOfDiscussion}/${discussion._id}`
+      )
       setUser(data.user)
+      setReplies(replies.replies)
     })()
   }, [])
 
-  console.log(discussion)
-  
+  const repliesLength = replies.length
 
-  
-  const handleAddNewReply = async (discussionId: any, sender: any, receiver: any) => {
+  const handleAddNewReply = async (
+    discussionId: any,
+    sender: any,
+    receiver: any
+  ) => {
     const { data } = await axios.post(addNewReply, {
       discussionId,
       sender,
       receiver,
-      body: reply
+      body: reply,
     })
   }
 
@@ -51,13 +63,14 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
     setReply(event.target.value)
   }
 
+  console.log(replies)
+
   return (
     <>
-      <div
-      
-        className="flex relative bg-dusk-weak/10 dark:bg-dusk-weak/5 border rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20 p-2   text-[#707070] dark:text-[#9B9B9B] items-start gap-3"
-      >
-        {/* <div className="h-[110%] left-[26px] -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" /> */}
+      <div className="flex relative bg-dusk-weak/10 dark:bg-dusk-weak/5 border rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20 p-2   text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
+        {replies.length !== 0 && (
+          <div className="h-[110%] left-[26px] -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
+        )}
         <img
           src={user?.user_img}
           alt=""
@@ -110,7 +123,13 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
               <div className="flex justify-end ">
                 <Button
                   title="Reply"
-                  onClick={() => handleAddNewReply(discussion._id, currentUser?._id, user._id)}
+                  onClick={() =>
+                    handleAddNewReply(
+                      discussion._id,
+                      currentUser?._id,
+                      user._id
+                    )
+                  }
                   className="!text-prime-blue !w-fit"
                 />
               </div>
@@ -118,6 +137,11 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
           )}
         </div>
       </div>
+      <>
+        {replies.map((reply, index) => (
+          <Replies key={index} repliesLength={repliesLength} index={index} reply={reply} />
+        ))}
+      </>
     </>
   )
 }

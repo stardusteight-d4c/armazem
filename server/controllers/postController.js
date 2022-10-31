@@ -111,3 +111,20 @@ export const addNewReply = async (req, res, next) => {
     })
   }
 }
+
+export const repliesOfDiscussion = async (req, res, next) => {
+  try {
+    const discussionId = req.params.discussionId
+    const repliesRef = await Discussion.findById(discussionId).select('replies')
+    const replies = repliesRef.replies
+    return res
+    .status(200)
+    .json({ status: true, msg: 'Operation performed successfully', replies })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
