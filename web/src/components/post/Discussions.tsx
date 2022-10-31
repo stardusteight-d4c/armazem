@@ -69,23 +69,23 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
     <>
       <div className="flex relative bg-dusk-weak/10 dark:bg-dusk-weak/5 border rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20 p-2   text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
         {replies.length !== 0 && (
-          <div className="h-[110%] left-[26px] -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
+          <div className="h-[110%] left-9 -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
         )}
         <img
           src={user?.user_img}
           alt=""
-          className="w-9 h-9 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+          className="w-14 h-14 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
         />
         <div className="flex flex-col w-full ">
           <div className="flex justify-between items-center">
-            <span className="font-medium font-inter -mt-1 text-dusk-main dark:text-dawn-main">
+            <span className="font-medium text-lg font-inter -mt-1 text-dusk-main dark:text-dawn-main">
               @{user?.username}
             </span>
             <span>
-              <TimeAgo datetime={discussion.date} locale="en_short" />
+              <TimeAgo datetime={discussion.createdAt} locale="en_short" />
             </span>
           </div>
-          <span className="pr-2 text-dusk-main/90 dark:text-dawn-main/90" pb-2>
+          <span className="pr-2 text-lg text-dusk-main/90 dark:text-dawn-main/90">
             {discussion.body}
           </span>
           <div>
@@ -111,13 +111,13 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
                 <img
                   src={currentUser?.user_img}
                   alt=""
-                  className="w-9 h-9 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+                  className="w-12 h-12 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
                 />
                 <textarea
                   maxLength={255}
                   onChange={(e) => handleChange(e)}
                   placeholder={`Reply to ${user?.username}`}
-                  className="w-full max-h-[180px] placeholder:text-lg rounded-sm  placeholder:text-fill-strong/20 dark:placeholder:text-fill-weak/20 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/50 dark:border-dusk-weak/50 p-2 outline-none"
+                  className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
                 />
               </div>
               <div className="flex justify-end ">

@@ -52,7 +52,7 @@ export const Comments = ({ userMetadata }: Props) => {
             <span className="font-medium -mt-[10px] text-lg text-dusk-main dark:text-dawn-main">
               Gabriel Sena
             </span>
-            <span className="text-dusk-main/90 dark:text-dawn-main/90" pb-2>
+            <span className="text-dusk-main/90 dark:text-dawn-main/90">
               I like this man so much but holy damn he's basically on the
               punching bag. They need to introduce a new strong pirate? Great,
               send in smoker to catch some fists with his face!
