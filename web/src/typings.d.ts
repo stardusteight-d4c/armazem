@@ -53,10 +53,9 @@ interface Post {
   title: string
   body: string
   discussions: {
-    mainDiscussion: {
-      by: string
-      body: string
-    }[]
+    _id: string
+    by: string
+    body: string
   }[]
   likes: Array
   createdAt: string

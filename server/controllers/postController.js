@@ -1,6 +1,9 @@
 import Account from '../models/accountModel.js'
 import User from '../models/userModel.js'
 import Post from '../models/postModel.js'
+import Discussion from '../models/discussionModel.js'
+import Reply from '../models/replyModel.js'
+import mongoose from 'mongoose'
 
 export const createPostAndAddToUserAccount = async (req, res, next) => {
   try {
@@ -67,14 +70,16 @@ export const postMetadataById = async (req, res, next) => {
 export const addNewDiscussion = async (req, res, next) => {
   try {
     const { postId, userId, body } = req.body
-    const date = new Date()
-    await Post.findByIdAndUpdate(postId, {
-      $push: {
-        discussions: {
-          mainDiscussion: { by: userId, body: body, date: date },
-        },
-      },
+    const discussion = await Discussion.create({
+      post: postId,
+      by: userId,
+      body,
     })
+    await Post.findByIdAndUpdate(
+      postId,
+      { $push: { discussions: discussion } },
+      { safe: true, upsert: true }
+    )
   } catch (error) {
     next(error)
     return res.status(500).json({
@@ -86,24 +91,18 @@ export const addNewDiscussion = async (req, res, next) => {
 
 export const addNewReply = async (req, res, next) => {
   try {
-    const { postId, sender, receiver, body } = req.body
-    const date = new Date()
-    await Post.findByIdAndUpdate(postId, {
-      $push: {
-        discussions: {
-          mainDiscussion: {
-            replies: {
-              reply: {
-                by: sender,
-                to: receiver,
-                body: body,
-                date: date,
-              },
-            },
-          },
-        },
-      },
+    const { discussionId, sender, receiver, body } = req.body
+    const reply = await Reply.create({
+      discussion: discussionId,
+      by: sender,
+      to: receiver,
+      body,
     })
+    await Discussion.findByIdAndUpdate(
+      discussionId,
+      { $push: { replies: reply } },
+      { safe: true, upsert: true }
+    )
   } catch (error) {
     next(error)
     return res.status(500).json({

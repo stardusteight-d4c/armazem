@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { userData } from '../../services/api-routes'
+import { addNewReply, userData } from '../../services/api-routes'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -12,27 +12,36 @@ import { AnimatePresence, motion } from 'framer-motion'
 timeago.register('en_short', en_short)
 
 interface Props {
-  mainDiscussion: any
+  discussion: any
   currentUser: User | null
+  post: Post
 }
 
-export const MainDiscussion = ({ mainDiscussion, currentUser }: Props) => {
+export const Discussions = ({ discussion, currentUser, post }: Props) => {
   const [user, setUser] = useState<User>()
   const dispatch = useAppDispatch()
-  const [comment, setComment] = useState('')
   const [reply, setReply] = useState('')
+  const [comment, setComment] = useState('')
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(`${userData}/${mainDiscussion.by}`)
+      const { data } = await axios.get(`${userData}/${discussion.by}`)
       setUser(data.user)
     })()
   }, [])
 
-  // mandar discussion e everificar se possui replys
+  console.log(discussion)
+  
 
   
-  
+  const handleAddNewReply = async (discussionId: any, sender: any, receiver: any) => {
+    const { data } = await axios.post(addNewReply, {
+      discussionId,
+      sender,
+      receiver,
+      body: reply
+    })
+  }
 
   const handleChange = (
     event:
@@ -43,7 +52,7 @@ export const MainDiscussion = ({ mainDiscussion, currentUser }: Props) => {
   }
 
   return (
-    <AnimatePresence>
+    <>
       <div
       
         className="flex relative bg-dusk-weak/10 dark:bg-dusk-weak/5 border rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20 p-2   text-[#707070] dark:text-[#9B9B9B] items-start gap-3"
@@ -60,11 +69,11 @@ export const MainDiscussion = ({ mainDiscussion, currentUser }: Props) => {
               @{user?.username}
             </span>
             <span>
-              <TimeAgo datetime={mainDiscussion.date} locale="en_short" />
+              <TimeAgo datetime={discussion.date} locale="en_short" />
             </span>
           </div>
           <span className="pr-2 text-dusk-main/90 dark:text-dawn-main/90" pb-2>
-            {mainDiscussion.body}
+            {discussion.body}
           </span>
           <div>
             <div className="flex items-center py-2 space-x-2 justify-end w-full">
@@ -81,12 +90,11 @@ export const MainDiscussion = ({ mainDiscussion, currentUser }: Props) => {
           </div>
           {user?._id === comment && (
             <motion.section
-              initial={{ opacity: 0, x: -100 }}
+              initial={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
             >
-              <div className="flex mt-2">
+              <div className="flex gap-x-2 mt-2">
                 <img
                   src={currentUser?.user_img}
                   alt=""
@@ -101,8 +109,8 @@ export const MainDiscussion = ({ mainDiscussion, currentUser }: Props) => {
               </div>
               <div className="flex justify-end ">
                 <Button
-                  title="Submit"
-                  // onClick={() => handleSubmitMainDiscussion()}
+                  title="Reply"
+                  onClick={() => handleAddNewReply(discussion._id, currentUser?._id, user._id)}
                   className="!text-prime-blue !w-fit"
                 />
               </div>
@@ -110,6 +118,6 @@ export const MainDiscussion = ({ mainDiscussion, currentUser }: Props) => {
           )}
         </div>
       </div>
-    </AnimatePresence>
+    </>
   )
 }

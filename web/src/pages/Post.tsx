@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { Button, MainDiscussion, Navbar, Sidebar } from '../components'
+import { Button, Discussions, Navbar, Sidebar } from '../components'
 import { Loader } from '../components/Loader'
 import { error, success } from '../components/Toasters'
 import { addNewDiscussion, postMetadataById } from '../services/api-routes'
@@ -34,13 +34,15 @@ export const Post = (props: Props) => {
         setAuthorAccount(postData.authorAccount)
         setAuthorUser(postData.authorUser)
         setPost(postData.post)
+        
         setLoading(false)
       } else {
         error(postData.msg.error)
       }
     })()
   }, [])
-
+  
+  console.log(post);
   const handleChange = (
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -65,7 +67,7 @@ export const Post = (props: Props) => {
       <Sidebar />
       <div className={style.mainContent}>
         <Navbar />
-        <main className="px-28 py-8">
+         <main className="px-28 py-8">
           {loading ? (
             <div className="w-full h-screen -mt-28 flex items-center justify-center">
               <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
@@ -151,16 +153,14 @@ export const Post = (props: Props) => {
 
               <div>
                 <section className="flex flex-col space-y-10">
-                  {post?.discussions.map((mainDiscussion) => (
-                    <MainDiscussion
-                      mainDiscussion={mainDiscussion.mainDiscussion}
+                  {post?.discussions.map((discussion) => (
+                    <Discussions
+                      post={post}
+                      discussion={discussion}
                       currentUser={currentUser}
                     />
                   ))}
-                  <div
-                   
-                    className="flex relative p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3"
-                  >
+                  <div className="flex relative p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
                     <div className="h-[110%] left-[26px] -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
                     <img
                       src="https://avatars.githubusercontent.com/u/87643260?v=4"
@@ -319,7 +319,7 @@ export const Post = (props: Props) => {
               </div>
             </>
           )}
-        </main>
+        </main> 
       </div>
     </div>
   )

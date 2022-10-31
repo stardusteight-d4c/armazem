@@ -16,8 +16,7 @@ const accountSchema = new mongoose.Schema({
   },
   posts: {
     type: Array,
-    post: { type: Schema.Types.ObjectId, ref: 'Post' },
-    timestamps: true 
+    post: { type: Schema.Types.ObjectId, ref: 'Post' }
   },
 })
 

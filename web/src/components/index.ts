@@ -33,5 +33,5 @@ export { ConnectionsList } from './connections/ConnectionsList'
 export { PendingList } from './connections/PendingList'
 export { AcceptList } from './connections/AcceptList'
 
-export { MainDiscussion } from './post/MainDiscussion'
+export { Discussions } from './post/Discussions'
 

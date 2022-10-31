@@ -15,29 +15,8 @@ const postSchema = new mongoose.Schema(
     },
     discussions: {
       type: Array,
-      mainDiscussion: {
-        by: { type: Schema.Types.ObjectId, ref: 'User' },
-        date: {
-          type: Date,
-        },
-        body: {
-          type: String,
-        },
-        replies: {
-          type: Array,
-          reply: {
-            date: {
-              type: Date,
-            },
-            by: { type: Schema.Types.ObjectId, ref: 'User' },
-            to: { type: Schema.Types.ObjectId, ref: 'User' },
-            body: {
-              type: String,
-            },
-          },
-        },
-      },
-    },
+      discussion: { type: Schema.Types.ObjectId, ref: 'Discussion' },
+    }
   },
   { timestamps: true }
 )
