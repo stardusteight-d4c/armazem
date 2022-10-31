@@ -11,11 +11,13 @@ import { Account, Connections, Feed, Login, Post } from './pages'
 import { authorization } from './services/api-routes'
 import {
   handleAuthSession,
+  handleOpenModal,
   handleResultUsersSearch,
   handleSwitchTheme,
 } from './store'
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import { getCurrentUserAccount, getUserData } from './store/reducers/current-user-data'
+import { motion } from  'framer-motion'
 
 interface Props {}
 

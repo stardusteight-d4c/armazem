@@ -89,7 +89,7 @@ export const PostInputModal = (props: Props) => {
             type="text"
             onChange={(e) => handleChange(e)}
             id="title"
-            maxLength={60}
+            maxLength={200}
             placeholder="What do you want to comment on?"
             className="p-2 bg-transparent w-full focus:outline-none border border-dawn-weak/20 dark:border-dusk-weak/20"
           />

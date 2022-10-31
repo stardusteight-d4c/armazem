@@ -52,15 +52,13 @@ interface Post {
   by: string
   title: string
   body: string
-  discussions: Discussions
+  discussions: {
+    mainDiscussion: {
+      by: string
+      body: string
+    }[]
+  }[]
   likes: Array
   createdAt: string
   updatedAt: string
-}
-
-interface Discussions {
-  mainDiscussion: {
-    by: string
-    body: string
-  }
 }

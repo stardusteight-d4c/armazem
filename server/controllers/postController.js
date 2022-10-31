@@ -67,16 +67,43 @@ export const postMetadataById = async (req, res, next) => {
 export const addNewDiscussion = async (req, res, next) => {
   try {
     const { postId, userId, body } = req.body
-
-    await Post.findByIdAndUpdate(
-      postId,
-      {
-        $push: { discussions: { mainDiscussion: { by: userId, body: body } } },
+    const date = new Date()
+    await Post.findByIdAndUpdate(postId, {
+      $push: {
+        discussions: {
+          mainDiscussion: { by: userId, body: body, date: date },
+        },
       },
-      { safe: true, upsert: true }
-    )
+    })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
 
-    console.log('operação feita com sucesso')
+export const addNewReply = async (req, res, next) => {
+  try {
+    const { postId, sender, receiver, body } = req.body
+    const date = new Date()
+    await Post.findByIdAndUpdate(postId, {
+      $push: {
+        discussions: {
+          mainDiscussion: {
+            replies: {
+              reply: {
+                by: sender,
+                to: receiver,
+                body: body,
+                date: date,
+              },
+            },
+          },
+        },
+      },
+    })
   } catch (error) {
     next(error)
     return res.status(500).json({

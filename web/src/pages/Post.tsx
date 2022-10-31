@@ -1,11 +1,12 @@
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { Button, Navbar, Sidebar } from '../components'
+import { Button, MainDiscussion, Navbar, Sidebar } from '../components'
 import { Loader } from '../components/Loader'
-import { success } from '../components/Toasters'
+import { error, success } from '../components/Toasters'
 import { addNewDiscussion, postMetadataById } from '../services/api-routes'
 import { useAppSelector } from '../store/hooks'
+import { AnimatePresence, motion } from 'framer-motion'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -26,12 +27,16 @@ export const Post = (props: Props) => {
   useEffect(() => {
     ;(async () => {
       setLoading(true)
-      const { data } = await axios.get(`${postMetadataById}/${postId}`)
-      if (data.status === true) {
-        setAuthorAccount(data.authorAccount)
-        setAuthorUser(data.authorUser)
-        setPost(data.post)
+      const { data: postData } = await axios.get(
+        `${postMetadataById}/${postId}`
+      )
+      if (postData.status === true) {
+        setAuthorAccount(postData.authorAccount)
+        setAuthorUser(postData.authorUser)
+        setPost(postData.post)
         setLoading(false)
+      } else {
+        error(postData.msg.error)
       }
     })()
   }, [])
@@ -47,17 +52,13 @@ export const Post = (props: Props) => {
     })
   }
 
-  
   const handleSubmitMainDiscussion = async () => {
     await axios.post(addNewDiscussion, {
       postId,
       userId: currentUser?._id,
-      body: postComment.body
+      body: postComment.body,
     })
   }
-
-  console.log(post);
-  
 
   return (
     <div className={style.gridContainer}>
@@ -77,7 +78,7 @@ export const Post = (props: Props) => {
                     <span className="text-3xl font-semibold">
                       {post?.title}
                     </span>
-                    <span className="text-lg mt-1">
+                    <span className="text-lg w-28 mt-1">
                       <TimeAgo datetime={post!.createdAt} locale="en_short" />
                     </span>
                   </div>
@@ -148,37 +149,18 @@ export const Post = (props: Props) => {
                 </div>
               </div>
 
-              <div className="space-y-5">
-                <section className="flex flex-col">
-                  <div className="flex relative bg-dusk-weak/10 dark:bg-dusk-weak/5 border rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20 p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
-                    <div className="h-[110%] left-[26px] -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
-                    <img
-                      // src={post?.discussions.mainDiscussion}
-                      alt=""
-                      className="w-9 h-9 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+              <div>
+                <section className="flex flex-col space-y-10">
+                  {post?.discussions.map((mainDiscussion) => (
+                    <MainDiscussion
+                      mainDiscussion={mainDiscussion.mainDiscussion}
+                      currentUser={currentUser}
                     />
-                    <div className="flex flex-col w-full ">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium text-lg text-dusk-main dark:text-dawn-main">
-                          @rodrigo
-                        </span>
-                        <span>5 hours ago</span>
-                      </div>
-                      <span
-                        className="pr-2 text-dusk-main/90 dark:text-dawn-main/90"
-                        pb-2
-                      >
-                        {post?.discussions[0].mainDiscussion.body}
-                      </span>
-                      <div>
-                        <div className="flex items-center py-2 space-x-2 justify-end w-full">
-                          <i className="ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                          <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex relative p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
+                  ))}
+                  <div
+                   
+                    className="flex relative p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3"
+                  >
                     <div className="h-[110%] left-[26px] -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
                     <img
                       src="https://avatars.githubusercontent.com/u/87643260?v=4"
