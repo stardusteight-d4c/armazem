@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { addNewReply, userData } from '../../services/api-routes'
+import { addNewReply, updateReply, userData } from '../../services/api-routes'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -17,9 +17,19 @@ interface Props {
   index: number
   activeItem: string
   setActiveItem: React.Dispatch<React.SetStateAction<string>>
+  editValue: string
+  setEditValue: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const Replies = ({ reply, activeItem, setActiveItem, repliesLength, index }: Props) => {
+export const Replies = ({
+  reply,
+  editValue,
+  setEditValue,
+  activeItem,
+  setActiveItem,
+  repliesLength,
+  index,
+}: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const [userByMetadata, setUserByMetadata] = useState<any>()
   const [toUsername, setToUsername] = useState(null)
@@ -55,6 +65,22 @@ export const Replies = ({ reply, activeItem, setActiveItem, repliesLength, index
     })
   }
 
+  function handleOnClick() {
+    activeItem === reply._id + 'EDIT'
+      ? setActiveItem('')
+      : setActiveItem(reply._id + 'EDIT')
+    setEditValue(reply.body)
+  }
+
+  const editReply = async () => {
+    const { data } = await axios.post(updateReply, {
+      replyId: reply._id,
+      body: editValue,
+    })
+  }
+
+  
+
   return (
     <>
       {toUsername !== null && (
@@ -63,12 +89,12 @@ export const Replies = ({ reply, activeItem, setActiveItem, repliesLength, index
             <div className="h-[110%] left-9 -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
           )}
           <Link to={`/${userByMetadata.username}`}>
-          <img
-            src={userByMetadata.user_img}
-            alt=""
-            className="w-14 h-14 cursor-pointer rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+            <img
+              src={userByMetadata.user_img}
+              alt=""
+              className="w-14 h-14 cursor-pointer rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
             />
-            </Link>
+          </Link>
           <div className="flex flex-col w-full ">
             <div className="flex justify-between items-center">
               <span className="font-medium text-lg text-dusk-main dark:text-dawn-main">
@@ -78,7 +104,24 @@ export const Replies = ({ reply, activeItem, setActiveItem, repliesLength, index
             </div>
             <span className="pr-2 text-dusk-main/90 text-lg dark:text-dawn-main/90">
               <span className="text-prime-blue pr-2">{toUsername}</span>
-              {reply.body}
+              {activeItem === reply._id + 'EDIT' ? (
+                 <div className="flex flex-col">
+                 <textarea
+                   value={editValue}
+                   maxLength={255}
+                   onChange={(e) => setEditValue(e.target.value)}
+                   className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+                 />
+                 <div className="flex justify-end">
+                   <Button
+                     disabled={editValue.trim() === '' && editValue.length <= 5}
+                     title="Update"
+                     onClick={() => editReply()}
+                     className="!text-prime-purple !w-fit"
+                   />
+                 </div>
+               </div>
+              ) : <>{reply.body}</>}
             </span>
             <div>
               <div className="flex items-center py-2 space-x-2 justify-end w-full">
@@ -91,7 +134,10 @@ export const Replies = ({ reply, activeItem, setActiveItem, repliesLength, index
                   className="ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer"
                 />
                 {userByMetadata._id === currentUser?._id && (
-                  <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                  <i
+                    onClick={handleOnClick}
+                    className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer"
+                  />
                 )}
               </div>
             </div>

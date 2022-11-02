@@ -42,17 +42,14 @@ export const Discussions = ({
   const [replies, setReplies] = useState([])
   const [editValue, setEditValue] = useState('')
 
-  console.log('discussion', discussion.by);
-  
-
   useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${userData}/${discussion.by}`)
-      // const { data: replies } = await axios.get(
-      //   `${repliesOfDiscussion}/${discussion._id}`
-      // )
       setUser(data.user)
-      // setReplies(replies.replies)
+      const { data: replies } = await axios.get(
+        `${repliesOfDiscussion}/${discussion._id}`
+      )
+      setReplies(replies.replies)
     })()
   }, [discussion])
 
@@ -86,15 +83,12 @@ export const Discussions = ({
     setEditValue(discussion.body)
   }
 
-  console.log(editValue, activeItem, discussion._id)
-
   const editDiscussion = async () => {
     const { data } = await axios.post(updateDiscussion, {
       discussionId: discussion._id,
       body: editValue,
     })
   }
-  
 
   return (
     <>
@@ -104,7 +98,7 @@ export const Discussions = ({
         )}
         <Link to={`/${user?.username}`}>
           <img
-           referrerPolicy="no-referrer"
+            referrerPolicy="no-referrer"
             src={user?.user_img}
             alt=""
             className="w-14 h-14 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
@@ -127,7 +121,7 @@ export const Discussions = ({
                 onChange={(e) => setEditValue(e.target.value)}
                 className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
               />
-              <div className="flex justify-end ">
+              <div className="flex justify-end">
                 <Button
                   disabled={editValue.trim() === '' && editValue.length <= 5}
                   title="Update"
@@ -201,6 +195,8 @@ export const Discussions = ({
       <>
         {replies.map((reply, index) => (
           <Replies
+            editValue={editValue}
+            setEditValue={setEditValue}
             key={index}
             activeItem={activeItem}
             setActiveItem={setActiveItem}

@@ -34,6 +34,8 @@ export const discussionsByPostId = `${hostServer}/api/post/discussionsByPostId` 
 export const addNewReply = `${hostServer}/api/post/addNewReply` 
 export const repliesOfDiscussion = `${hostServer}/api/post/repliesOfDiscussion` // :discussionId
 export const updateDiscussion = `${hostServer}/api/post/updateDiscussion`
+export const updateReply = `${hostServer}/api/post/updateReply`
+
 
 
 

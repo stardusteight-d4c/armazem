@@ -8,6 +8,7 @@ import {
   postMetadataById,
   repliesOfDiscussion,
   updateDiscussion,
+  updateReply,
 } from '../controllers/postController'
 
 const router = express.Router()
@@ -20,6 +21,8 @@ router.get('/discussionsByPostId/:postId', discussionsByPostId)
 router.post('/addNewReply', addNewReply)
 router.get('/repliesOfDiscussion/:discussionId', repliesOfDiscussion)
 router.post('/updateDiscussion', updateDiscussion)
+router.post('/updateReply', updateReply)
+
 
 
 export { router }
