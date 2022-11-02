@@ -1,8 +1,15 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, {
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import {
   addNewReply,
   repliesOfDiscussion,
+  updateDiscussion,
   userData,
 } from '../../services/api-routes'
 import TimeAgo from 'timeago-react'
@@ -13,32 +20,41 @@ import { handleOpenModal } from '../../store'
 import { Button } from '../Button'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Replies } from './Replies'
+import { Link } from 'react-router-dom'
 
 timeago.register('en_short', en_short)
 
 interface Props {
   discussion: any
   currentUser: User | null
-  post: Post
+  activeItem: string
+  setActiveItem: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const Discussions = ({ discussion, currentUser, post }: Props) => {
+export const Discussions = ({
+  discussion,
+  currentUser,
+  activeItem,
+  setActiveItem,
+}: Props) => {
   const [user, setUser] = useState<User>()
-  const dispatch = useAppDispatch()
   const [reply, setReply] = useState('')
-  const [comment, setComment] = useState('')
   const [replies, setReplies] = useState([])
+  const [editValue, setEditValue] = useState('')
+
+  console.log('discussion', discussion.by);
+  
 
   useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${userData}/${discussion.by}`)
-      const { data: replies } = await axios.get(
-        `${repliesOfDiscussion}/${discussion._id}`
-      )
+      // const { data: replies } = await axios.get(
+      //   `${repliesOfDiscussion}/${discussion._id}`
+      // )
       setUser(data.user)
-      setReplies(replies.replies)
+      // setReplies(replies.replies)
     })()
-  }, [])
+  }, [discussion])
 
   const repliesLength = replies.length
 
@@ -63,7 +79,22 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
     setReply(event.target.value)
   }
 
-  console.log(replies)
+  function handleOnClick() {
+    activeItem === discussion._id + 'EDIT'
+      ? setActiveItem('')
+      : setActiveItem(discussion._id + 'EDIT')
+    setEditValue(discussion.body)
+  }
+
+  console.log(editValue, activeItem, discussion._id)
+
+  const editDiscussion = async () => {
+    const { data } = await axios.post(updateDiscussion, {
+      discussionId: discussion._id,
+      body: editValue,
+    })
+  }
+  
 
   return (
     <>
@@ -71,11 +102,14 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
         {replies.length !== 0 && (
           <div className="h-[110%] left-9 -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
         )}
-        <img
-          src={user?.user_img}
-          alt=""
-          className="w-14 h-14 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
-        />
+        <Link to={`/${user?.username}`}>
+          <img
+           referrerPolicy="no-referrer"
+            src={user?.user_img}
+            alt=""
+            className="w-14 h-14 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+          />
+        </Link>
         <div className="flex flex-col w-full ">
           <div className="flex justify-between items-center">
             <span className="font-medium text-lg font-inter -mt-1 text-dusk-main dark:text-dawn-main">
@@ -85,23 +119,50 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
               <TimeAgo datetime={discussion.createdAt} locale="en_short" />
             </span>
           </div>
-          <span className="pr-2 text-lg text-dusk-main/90 dark:text-dawn-main/90">
-            {discussion.body}
-          </span>
+          {activeItem === discussion._id + 'EDIT' ? (
+            <div className="flex flex-col">
+              <textarea
+                value={editValue}
+                maxLength={255}
+                onChange={(e) => setEditValue(e.target.value)}
+                className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+              />
+              <div className="flex justify-end ">
+                <Button
+                  disabled={editValue.trim() === '' && editValue.length <= 5}
+                  title="Update"
+                  onClick={() => editDiscussion()}
+                  className="!text-prime-purple !w-fit"
+                />
+              </div>
+            </div>
+          ) : (
+            <span className="pr-2 text-lg text-dusk-main/90 dark:text-dawn-main/90">
+              {discussion.body}
+            </span>
+          )}
           <div>
             <div className="flex items-center py-2 space-x-2 justify-end w-full">
               <i
                 onClick={() => {
-                  comment === user?._id ? setComment('') : setComment(user!._id)
+                  activeItem === discussion._id
+                    ? setActiveItem('')
+                    : setActiveItem(discussion._id)
                 }}
                 className="ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer"
               />
               {currentUser?._id === user?._id && (
-                <i className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                <>
+                  <i
+                    onClick={handleOnClick}
+                    className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-prime-purple transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer"
+                  />
+                  <i className="ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                </>
               )}
             </div>
           </div>
-          {user?._id === comment && (
+          {discussion?._id === activeItem && (
             <motion.section
               initial={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5 }}
@@ -127,7 +188,7 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
                     handleAddNewReply(
                       discussion._id,
                       currentUser?._id,
-                      user._id
+                      user?._id
                     )
                   }
                   className="!text-prime-blue !w-fit"
@@ -139,7 +200,14 @@ export const Discussions = ({ discussion, currentUser, post }: Props) => {
       </div>
       <>
         {replies.map((reply, index) => (
-          <Replies key={index} repliesLength={repliesLength} index={index} reply={reply} />
+          <Replies
+            key={index}
+            activeItem={activeItem}
+            setActiveItem={setActiveItem}
+            repliesLength={repliesLength}
+            index={index}
+            reply={reply}
+          />
         ))}
       </>
     </>

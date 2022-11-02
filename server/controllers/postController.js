@@ -1,7 +1,7 @@
 import Account from '../models/accountModel.js'
 import User from '../models/userModel.js'
 import Post from '../models/postModel.js'
-import Discussion from '../models/discussionModel.js'
+import Discussion, { discussionSchema } from '../models/discussionModel.js'
 import Reply from '../models/replyModel.js'
 import mongoose from 'mongoose'
 
@@ -18,7 +18,7 @@ export const createPostAndAddToUserAccount = async (req, res, next) => {
 
     await Account.findByIdAndUpdate(
       user.account,
-      { $push: { posts: { post } } },
+      { $push: { posts: post._id } },
       { safe: true, upsert: true }
     )
 
@@ -75,11 +75,52 @@ export const addNewDiscussion = async (req, res, next) => {
       by: userId,
       body,
     })
+
     await Post.findByIdAndUpdate(
       postId,
-      { $push: { discussions: discussion } },
+      { $push: { discussions: discussion._id } },
       { safe: true, upsert: true }
     )
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const discussionsByPostId = async (req, res, next) => {
+  try {
+    const postId = req.params.postId
+    const discussions = await Discussion.find({ post: postId })
+    return res.status(200).json({
+      status: true,
+      msg: 'Post discussions successfully acquired',
+      discussions,
+    })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const updateDiscussion = async (req, res, next) => {
+  try {
+    const { discussionId, body } = req.body
+    await Discussion.findByIdAndUpdate(
+      discussionId,
+      {
+        $set: {
+          body: body,
+        },
+      },
+      { safe: true, upsert: true }
+    )
+    // retornar update feito com sucesso
   } catch (error) {
     next(error)
     return res.status(500).json({
@@ -100,7 +141,7 @@ export const addNewReply = async (req, res, next) => {
     })
     await Discussion.findByIdAndUpdate(
       discussionId,
-      { $push: { replies: reply } },
+      { $push: { replies: reply._id } },
       { safe: true, upsert: true }
     )
   } catch (error) {
@@ -117,9 +158,9 @@ export const repliesOfDiscussion = async (req, res, next) => {
     const discussionId = req.params.discussionId
     const repliesRef = await Discussion.findById(discussionId).select('replies')
     const replies = repliesRef.replies
-    return res
-    .status(200)
-    .json({ status: true, msg: 'Operation performed successfully', replies })
+    // return res
+    //   .status(200)
+    //   .json({ status: true, msg: 'Operation performed successfully', replies })
   } catch (error) {
     next(error)
     return res.status(500).json({

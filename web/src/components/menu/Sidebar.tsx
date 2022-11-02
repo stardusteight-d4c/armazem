@@ -11,14 +11,16 @@ export const Sidebar = (props: Props) => {
 
   return (
     <aside className="scrollbar-hide pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong">
-      <div className="flex items-center py-8 -mt-[2px] gap-x-2">
-        <i className="ri-server-fill text-2xl text-fill-strong dark:text-fill-weak" />
-        <h1 className="text-3xl font-inter text-fill-strong dark:text-fill-weak font-bold">
+      <Link
+        to="/"
+        className="flex cursor-pointer items-center justify-center mt-6 mb-8 gap-x-2"
+      >
+        <i className="ri-server-fill text-3xl text-fill-strong dark:text-fill-weak" />
+        <h1 className="text-4xl font-inter text-fill-strong dark:text-fill-weak font-bold">
           Armazem
         </h1>
-      </div>
+      </Link>
       <div>
-        <span className="mb-4 block">New Feeds</span>
         <ul className="space-y-2">
           <Link
             to="/"
@@ -26,7 +28,7 @@ export const Sidebar = (props: Props) => {
               path === '/' && 'bg-prime-blue text-white'
             }`}
           >
-            <i className="ri-lightbulb-flash-fill text-2xl" />
+            <i className={`text-2xl ${path === '/' ? 'ri-lightbulb-flash-fill' : 'ri-lightbulb-flash-line'}`} />
             <span className="font-medium text-lg">New feed</span>
           </Link>
           <Link
@@ -35,7 +37,7 @@ export const Sidebar = (props: Props) => {
               path === `/${currentUser?.username}` && 'bg-prime-blue text-white'
             }`}
           >
-            <i className="ri-account-pin-box-fill text-2xl" />
+            <i className={`ri-account-pin-box-fill text-2xl ${path === `/${currentUser?.username}` ? 'ri-account-pin-box-fill' : 'ri-account-pin-box-line'}`} />
             <span className="font-medium text-lg">My account</span>
           </Link>
           <li className="flex w-full cursor-pointer items-center justify-start p-4 rounded-2xl gap-4">
@@ -59,7 +61,6 @@ export const Sidebar = (props: Props) => {
       </div>
       <div className="h-[1px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
       <div>
-        <span className="mb-8 block">Connections</span>
         <ul className="space-y-5">
           <li className="flex justify-between w-full cursor-pointer items-center px-4 rounded-2xl gap-4">
             <div className="flex items-center space-x-4">

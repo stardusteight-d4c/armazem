@@ -67,6 +67,10 @@ export const App = (props: Props) => {
     }
   }
 
+  // FAZER REQUISIÇÕES COM PROMISES ALL
+  // onChange={(e) => setPool(e.target.value)}
+  
+
   return (
     <>
       {openModal === 'EditProfileImage' && <EditProfileImageModal />}

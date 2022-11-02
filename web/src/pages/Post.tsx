@@ -4,9 +4,12 @@ import { useLocation, useParams } from 'react-router-dom'
 import { Button, Discussions, Navbar, Sidebar } from '../components'
 import { Loader } from '../components/Loader'
 import { error, success } from '../components/Toasters'
-import { addNewDiscussion, postMetadataById } from '../services/api-routes'
+import {
+  addNewDiscussion,
+  discussionsByPostId,
+  postMetadataById,
+} from '../services/api-routes'
 import { useAppSelector } from '../store/hooks'
-import { AnimatePresence, motion } from 'framer-motion'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -23,18 +26,25 @@ export const Post = (props: Props) => {
   const [authorUser, setAuthorUser] = useState<User>()
   const [post, setPost] = useState<Post>()
   const [postComment, setPostComment] = useState<any>({ body: '' })
+  const [discussions, setDiscussions] = useState<any>({ body: '' })
+
+  const [activeItem, setActiveItem] = useState('')
+  // Fazer os coments abrir de acordo com o ID e os EDIT tbm
 
   useEffect(() => {
     ;(async () => {
       setLoading(true)
-      const { data: postData } = await axios.get(
-        `${postMetadataById}/${postId}`
+      const [{ data: postData }, { data: discussionsData }] = await Promise.all(
+        [
+          axios.get(`${postMetadataById}/${postId}`),
+          axios.get(`${discussionsByPostId}/${postId}`),
+        ]
       )
-      if (postData.status === true) {
+      if (postData.status === true && discussionsData.status === true) {
         setAuthorAccount(postData.authorAccount)
         setAuthorUser(postData.authorUser)
         setPost(postData.post)
-
+        setDiscussions(discussionsData.discussions);
         setLoading(false)
       } else {
         error(postData.msg.error)
@@ -42,7 +52,6 @@ export const Post = (props: Props) => {
     })()
   }, [])
 
-  console.log(post)
   const handleChange = (
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -74,7 +83,7 @@ export const Post = (props: Props) => {
             </div>
           ) : (
             <>
-              <article>
+              <article className="rounded border border-dawn-weak/20 dark:border-dusk-weak/20 px-4 py-8">
                 <header>
                   <div className="flex justify-between pb-8 items-center">
                     <span className="text-4xl font-semibold">
@@ -110,7 +119,7 @@ export const Post = (props: Props) => {
                   <div className="flex items-center gap-x-5">
                     <div className="flex items-center  cursor-pointer">
                       <i className="ri-heart-3-line text-3xl p-1" />
-                      <span className='text-xl'>25 Likes</span>
+                      <span className="text-xl">25 Likes</span>
                     </div>
                   </div>
                   <div className="flex items-center cursor-pointer">
@@ -135,6 +144,7 @@ export const Post = (props: Props) => {
                     </span>
                     <textarea
                       maxLength={255}
+                      minLength={5}
                       id="body"
                       onChange={(e) => handleChange(e)}
                       placeholder="Type what you think about this subject"
@@ -152,10 +162,11 @@ export const Post = (props: Props) => {
               </div>
 
               <div className=" space-y-10">
-                {post?.discussions.map((discussion, index) => (
+                {discussions.slice(0).reverse().map((discussion: any, index: React.Key | null | undefined) => (
                   <section className="flex flex-col" key={index}>
                     <Discussions
-                      post={post}
+                      activeItem={activeItem}
+                      setActiveItem={setActiveItem}
                       discussion={discussion}
                       currentUser={currentUser}
                     />

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { lastFivePostsOfAccount } from '../../services/api-routes'
+import { lastFivePostsOfAccount, postMetadataById } from '../../services/api-routes'
 import { askToRequestAgain } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const LastPosts = ({ userMetadata }: Props) => {
-  const [posts, setPosts] = useState<[Posts] | undefined>(undefined)
+  const [lastPosts, setLastPosts] = useState<[Posts] | undefined | any>(undefined)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const dispatch = useAppDispatch()
 
@@ -21,32 +21,38 @@ export const LastPosts = ({ userMetadata }: Props) => {
         `${lastFivePostsOfAccount}/${userMetadata.account}`
       )
       if (data.posts.length > 0) {
-        setPosts(data.posts)
+        const posts: any[] = []
+        data.posts.map(async (post: any) => {
+          const { data } = await axios.get(`${postMetadataById}/${post}`)
+          posts.push(data.post)
+          setLastPosts(posts)
+        })
       } else {
-        setPosts(undefined)
+        setLastPosts(undefined)
       }
     })()
   }, [userMetadata, requestAgain])
 
-  console.log(posts)
+  console.log(lastPosts);
+  
 
   return (
     <section>
       <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
         Last posts
       </h2>
-      {posts !== undefined ? (
+      {lastPosts !== undefined ? (
         <>
           <div className="flex gap-5">
             <div className="flex flex-col gap-y-5 max-w-[50%]">
-              {posts.slice(0, 2).map((post) => (
-                <LastPostFirstSection post={post.post} />
+              {lastPosts.slice(0, 2).map((post: any) => (
+                <LastPostFirstSection post={post} />
               ))}
             </div>
 
             <div className="flex flex-col gap-y-5 max-w-[50%]">
-              {posts.slice(2, 4).map((post) => (
-                <LastPostSecondSection post={post.post} />
+              {lastPosts.slice(2, 4).map((post: any) => (
+                <LastPostSecondSection post={post} />
               ))}
             </div>
           </div>

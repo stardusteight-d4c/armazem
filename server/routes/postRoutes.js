@@ -3,9 +3,11 @@ import {
   addNewDiscussion,
   addNewReply,
   createPostAndAddToUserAccount,
+  discussionsByPostId,
   lastFivePostsOfAccount,
   postMetadataById,
   repliesOfDiscussion,
+  updateDiscussion,
 } from '../controllers/postController'
 
 const router = express.Router()
@@ -14,7 +16,10 @@ router.post('/createPostAndAddToUserAccount', createPostAndAddToUserAccount)
 router.get('/lastFivePostsOfAccount/:id', lastFivePostsOfAccount)
 router.get('/postMetadataById/:id', postMetadataById)
 router.post('/addNewDiscussion', addNewDiscussion)
+router.get('/discussionsByPostId/:postId', discussionsByPostId)
 router.post('/addNewReply', addNewReply)
 router.get('/repliesOfDiscussion/:discussionId', repliesOfDiscussion)
+router.post('/updateDiscussion', updateDiscussion)
+
 
 export { router }

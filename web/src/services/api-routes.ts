@@ -29,8 +29,12 @@ export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostA
 export const lastFivePostsOfAccount = `${hostServer}/api/post/lastFivePostsOfAccount` // /:id
 export const postMetadataById = `${hostServer}/api/post/postMetadataById` // /:id
 export const addNewDiscussion = `${hostServer}/api/post/addNewDiscussion` 
+export const discussionsByPostId = `${hostServer}/api/post/discussionsByPostId` // /:postId
+
 export const addNewReply = `${hostServer}/api/post/addNewReply` 
 export const repliesOfDiscussion = `${hostServer}/api/post/repliesOfDiscussion` // :discussionId
+export const updateDiscussion = `${hostServer}/api/post/updateDiscussion`
+
 
 
 
