@@ -78,7 +78,7 @@ export const addNewDiscussion = async (req, res, next) => {
 
     await Post.findByIdAndUpdate(
       postId,
-      { $push: { discussions: discussion._id } },
+      { $push: { discussions: { discussion: discussion._id } } },
       { safe: true, upsert: true }
     )
   } catch (error) {
@@ -121,6 +121,22 @@ export const updateDiscussion = async (req, res, next) => {
       { safe: true, upsert: true }
     )
     // retornar update feito com sucesso
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const deleteDiscussion = async (req, res, next) => {
+  try {
+    const { discussionId } = req.body
+    await Discussion.findByIdAndDelete(discussionId)
+    await Reply.deleteMany({ discussion: discussionId })
+    // await Post.deleteMany({ discussions: { discussion: discussionId } })
+    // retornar delete feito com sucesso
   } catch (error) {
     next(error)
     return res.status(500).json({
@@ -178,7 +194,7 @@ export const updateReply = async (req, res, next) => {
 export const repliesOfDiscussion = async (req, res, next) => {
   try {
     const discussionId = req.params.discussionId
-    const replies = await Reply.find({ discussion: discussionId})
+    const replies = await Reply.find({ discussion: discussionId })
 
     return res
       .status(200)

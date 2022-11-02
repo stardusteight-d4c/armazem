@@ -110,7 +110,7 @@ export const Replies = ({
                    value={editValue}
                    maxLength={255}
                    onChange={(e) => setEditValue(e.target.value)}
-                   className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+                   className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border-dashed border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
                  />
                  <div className="flex justify-end">
                    <Button
@@ -131,12 +131,12 @@ export const Replies = ({
                       ? setActiveItem('')
                       : setActiveItem(reply!._id)
                   }}
-                  className="ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer"
+                  className={`${activeItem === reply?._id && "!text-prime-blue"} ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`} 
                 />
                 {userByMetadata._id === currentUser?._id && (
                   <i
                     onClick={handleOnClick}
-                    className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer"
+                    className={`${activeItem === reply._id + 'EDIT' && "!text-prime-purple"} ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                   />
                 )}
               </div>
@@ -157,7 +157,7 @@ export const Replies = ({
                     maxLength={255}
                     onChange={(e) => handleChange(e)}
                     placeholder={`Reply to ${userByMetadata?.username}`}
-                    className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
+                    className="w-full max-h-[180px] border-prime-blue placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] border p-2 outline-none"
                   />
                 </div>
                 <div className="flex justify-end ">

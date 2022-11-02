@@ -13,7 +13,10 @@ const postSchema = new mongoose.Schema(
       type: Array,
       by: String,
     },
-    discussions: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    discussions: {
+      type: Array,
+      discussion: { type: Schema.Types.ObjectId, ref: 'User' },
+    }
   },
   { timestamps: true }
 )

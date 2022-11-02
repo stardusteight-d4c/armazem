@@ -83,7 +83,7 @@ export const Post = (props: Props) => {
             </div>
           ) : (
             <>
-              <article className="rounded border border-dawn-weak/20 dark:border-dusk-weak/20 px-4 py-8">
+              <article className="border border-dawn-weak/20 dark:border-dusk-weak/20 px-4 py-8">
                 <header>
                   <div className="flex justify-between pb-8 items-center">
                     <span className="text-4xl font-semibold">
@@ -93,10 +93,10 @@ export const Post = (props: Props) => {
                       <TimeAgo datetime={post!.createdAt} locale="en_short" />
                     </span>
                   </div>
-                  <div className="flex justify-between border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-sm items-center bg-dusk-weak/10 dark:bg-dusk-weak/5 p-2">
+                  <div className="flex justify-between border border-dawn-weak/20 dark:border-dusk-weak/20 items-center bg-dusk-weak/10 dark:bg-dusk-weak/5 p-2">
                     <div className="flex items-start justify-start gap-x-2">
                       <img
-                        className="w-16 h-16 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20"
+                        className="w-16 h-16 border border-dawn-weak/20 dark:border-dusk-weak/20"
                         src={authorUser?.user_img}
                         alt=""
                       />

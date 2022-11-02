@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import {
   addNewReply,
+  deleteDiscussion,
   repliesOfDiscussion,
   updateDiscussion,
   userData,
@@ -21,6 +22,7 @@ import { Button } from '../Button'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Replies } from './Replies'
 import { Link } from 'react-router-dom'
+import { Menu } from '@headlessui/react'
 
 timeago.register('en_short', en_short)
 
@@ -90,6 +92,12 @@ export const Discussions = ({
     })
   }
 
+  const removeDiscussion = async () => {
+    const { data } = await axios.post(deleteDiscussion, {
+      discussionId: discussion._id,
+    })
+  }
+
   return (
     <>
       <div className="flex relative bg-dusk-weak/10 dark:bg-dusk-weak/5 border rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20 p-2   text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
@@ -119,7 +127,7 @@ export const Discussions = ({
                 value={editValue}
                 maxLength={255}
                 onChange={(e) => setEditValue(e.target.value)}
-                className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+                className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border-dashed border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
               />
               <div className="flex justify-end">
                 <Button
@@ -136,22 +144,43 @@ export const Discussions = ({
             </span>
           )}
           <div>
-            <div className="flex items-center py-2 space-x-2 justify-end w-full">
+            <div className="flex items-center text-dusk-main dark:text-dusk-weak py-2 space-x-2 justify-end w-full">
               <i
                 onClick={() => {
                   activeItem === discussion._id
                     ? setActiveItem('')
                     : setActiveItem(discussion._id)
                 }}
-                className="ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer"
+                className={`${
+                  activeItem === discussion._id && '!text-prime-blue'
+                } ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
               />
               {currentUser?._id === user?._id && (
                 <>
                   <i
                     onClick={handleOnClick}
-                    className="ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-prime-purple transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer"
+                    className={`${
+                      activeItem === discussion._id + 'EDIT' &&
+                      '!text-prime-purple'
+                    } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                   />
-                  <i className="ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                  <Menu>
+                    <Menu.Button>
+                      <i className="ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                    </Menu.Button>
+                    <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20  absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[20px] -bottom-[65px]">
+                      <Menu.Item>
+                        <a onClick={() => removeDiscussion()} className="hover:bg-red rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                          Delete
+                        </a>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <a className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                          Cancel
+                        </a>
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Menu>
                 </>
               )}
             </div>
@@ -172,7 +201,7 @@ export const Discussions = ({
                   maxLength={255}
                   onChange={(e) => handleChange(e)}
                   placeholder={`Reply to ${user?.username}`}
-                  className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
+                  className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] border border-prime-blue p-2 outline-none"
                 />
               </div>
               <div className="flex justify-end ">
