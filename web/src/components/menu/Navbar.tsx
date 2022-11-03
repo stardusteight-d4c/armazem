@@ -44,7 +44,7 @@ export const Navbar = (props: Props) => {
               <img
                 referrerPolicy="no-referrer"
                 src={currentUser?.user_img}
-                className="w-12 h-12 rounded-sm cursor-pointer  auto-rows-auto"
+                className="w-12 h-12 cursor-pointer  auto-rows-auto"
                 alt=""
               />
             </Menu.Button>

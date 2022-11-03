@@ -95,6 +95,7 @@ export const Discussions = ({
   const removeDiscussion = async () => {
     const { data } = await axios.post(deleteDiscussion, {
       discussionId: discussion._id,
+      postId: discussion.post
     })
   }
 

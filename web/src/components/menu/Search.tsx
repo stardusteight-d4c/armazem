@@ -36,7 +36,7 @@ export const Search = (props: Props) => {
         type="text"
         placeholder="Search by manga or user"
         onChange={(e) => handleSearchTerm(e)}
-        className="w-full h-full border border-dawn-weak/20 dark:border-dusk-weak/20 placeholder:text-dusk-main dark:placeholder:text-dawn-main rounded-md outline-none py-4 px-12 bg-transparent"
+        className="w-full h-full border border-dawn-weak/20 dark:border-dusk-weak/20 placeholder:text-dusk-main dark:placeholder:text-dawn-main outline-none py-4 px-12 bg-transparent"
       />
       {usersSearch && usersSearch[0] !== null && (
         <div

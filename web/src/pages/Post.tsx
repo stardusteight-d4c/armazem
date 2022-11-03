@@ -76,27 +76,27 @@ export const Post = (props: Props) => {
       <Sidebar />
       <div className={style.mainContent}>
         <Navbar />
-        <main className="px-4 py-8">
+        <main className="px-4 pt-2 pb-20">
           {loading ? (
             <div className="w-full h-screen -mt-28 flex items-center justify-center">
               <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
             </div>
           ) : (
             <>
-              <article className="border border-dawn-weak/20 dark:border-dusk-weak/20 px-4 py-8">
+              <article className="px-4 py-8">
                 <header>
-                  <div className="flex justify-between pb-8 items-center">
+                  <div className="flex justify-between pb-4 items-center">
                     <span className="text-4xl font-semibold">
                       {post?.title}
                     </span>
-                    <span className="text-lg w-fit mt-1">
+                    <span className="text-lg w-fit mt-2">
                       <TimeAgo datetime={post!.createdAt} locale="en_short" />
                     </span>
                   </div>
-                  <div className="flex justify-between border border-dawn-weak/20 dark:border-dusk-weak/20 items-center bg-dusk-weak/10 dark:bg-dusk-weak/5 p-2">
+                  <div className="flex justify-between items-center p-2">
                     <div className="flex items-start justify-start gap-x-2">
                       <img
-                        className="w-16 h-16 border border-dawn-weak/20 dark:border-dusk-weak/20"
+                        className="w-16 h-16"
                         src={authorUser?.user_img}
                         alt=""
                       />
@@ -111,19 +111,19 @@ export const Post = (props: Props) => {
                   </div>
                 </header>
 
-                <pre className="p-2 font-poppins break-words whitespace-pre-wrap text-2xl leading-9 mt-8">
+                <pre className="p-2 font-poppins break-words whitespace-pre-wrap text-2xl leading-9 mt-4">
                   {post!.body}
                 </pre>
                 <div className="h-[1px] w-[full] my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
                 <div className="flex px-2 items-center justify-between text-dusk-main dark:text-dawn-main">
                   <div className="flex items-center gap-x-5">
                     <div className="flex items-center  cursor-pointer">
-                      <i className="ri-heart-3-line text-3xl p-1" />
+                      <i className="ri-heart-3-line text-2xl p-1" />
                       <span className="text-xl">25 Likes</span>
                     </div>
                   </div>
                   <div className="flex items-center cursor-pointer">
-                    <i className="ri-share-box-line p-1 text-3xl" />
+                    <i className="ri-share-box-line p-1 text-2xl" />
                     <span className="text-xl">Share</span>
                   </div>
                 </div>
