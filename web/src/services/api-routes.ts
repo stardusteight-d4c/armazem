@@ -38,3 +38,6 @@ export const deleteDiscussion = `${hostServer}/api/post/deleteDiscussion`
 export const deleteReply = `${hostServer}/api/post/deleteReply`
 export const likePost = `${hostServer}/api/post/likePost`
 export const unlikedPost = `${hostServer}/api/post/unlikedPost`
+export const updatePost = `${hostServer}/api/post/updatePost`
+export const deletePost = `${hostServer}/api/post/deletePost`
+

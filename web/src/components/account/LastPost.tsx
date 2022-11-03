@@ -24,7 +24,7 @@ export const LastPostFirstSection = ({ post }: Props) => {
           <img
             src={userMetadata?.user_img}
             alt=""
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 object-cover"
           />
           <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
             {userMetadata?.name}

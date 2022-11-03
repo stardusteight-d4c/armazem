@@ -100,7 +100,7 @@ export const PostInputModal = (props: Props) => {
           </span>
           <img
             src={currentUser?.user_img}
-            className="w-16 h-16 rounded-md absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
+            className="w-16 h-16 absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
             alt=""
           />
           <div className="relative w-full">

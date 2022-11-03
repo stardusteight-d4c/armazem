@@ -293,3 +293,50 @@ export const unlikedPost = async (req, res, next) => {
     })
   }
 }
+
+export const updatePost = async (req, res, next) => {
+  try {
+    const { postId, body } = req.body
+
+    await Post.findByIdAndUpdate(
+      postId,
+      {
+        $set: { body: body },
+      },
+      { safe: true, multi: false }
+    )
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const deletePost = async (req, res, next) => {
+  try {
+    const { postId, accountId } = req.body
+    const repliesRef = await Discussion.find({ post: postId }).select('replies')
+    const replies = []
+    repliesRef.map((reply) => replies.push(...reply.replies))
+    replies.map(async (reply) => await Reply.findByIdAndDelete(reply))
+    await Discussion.deleteMany({ post: postId })
+
+    await Account.findByIdAndUpdate(
+      accountId,
+      {
+        $pull: { posts: postId },
+      },
+      { safe: true, multi: false }
+    )
+
+    await Post.findByIdAndDelete(postId)
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}

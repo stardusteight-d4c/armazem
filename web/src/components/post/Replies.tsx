@@ -127,7 +127,7 @@ export const Replies = ({
                     value={editValue}
                     maxLength={255}
                     onChange={(e) => setEditValue(e.target.value)}
-                    className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border-dashed border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+                    className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
                   />
                   <div className="flex justify-end">
                     <Button

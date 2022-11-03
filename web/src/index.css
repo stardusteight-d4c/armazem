@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply font-poppins antialiased scroll-smooth scrollbar-hide bg-fill-weak dark:bg-fill-strong;
+    @apply font-inter antialiased scroll-smooth scrollbar-hide bg-fill-weak dark:bg-fill-strong;
   }
   /* ::-webkit-scrollbar {
     @apply bg-transparent w-2;

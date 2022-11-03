@@ -4,6 +4,7 @@ import {
   addNewReply,
   createPostAndAddToUserAccount,
   deleteDiscussion,
+  deletePost,
   deleteReply,
   discussionsByPostId,
   lastFivePostsOfAccount,
@@ -12,6 +13,7 @@ import {
   repliesOfDiscussion,
   unlikedPost,
   updateDiscussion,
+  updatePost,
   updateReply,
 } from '../controllers/postController'
 
@@ -30,5 +32,7 @@ router.post('/deleteDiscussion', deleteDiscussion) // colocar os métodos adequa
 router.post('/deleteReply', deleteReply)
 router.post('/likePost', likePost)
 router.post('/unlikedPost', unlikedPost)
+router.post('/updatePost', updatePost)
+router.post('/deletePost', deletePost)
 
 export { router }

@@ -6,10 +6,12 @@ import { Loader } from '../components/Loader'
 import { error, success } from '../components/Toasters'
 import {
   addNewDiscussion,
+  deletePost,
   discussionsByPostId,
   likePost,
   postMetadataById,
   unlikedPost,
+  updatePost,
 } from '../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import TimeAgo from 'timeago-react'
@@ -32,6 +34,7 @@ export const Post = (props: Props) => {
   const [discussions, setDiscussions] = useState<any>({ body: '' })
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const dispatch = useAppDispatch()
+  const [editValue, setEditValue] = useState(post?.body)
 
   const [activeItem, setActiveItem] = useState('')
 
@@ -49,6 +52,7 @@ export const Post = (props: Props) => {
         setAuthorUser(postData.authorUser)
         setPost(postData.post)
         setDiscussions(discussionsData.discussions)
+        setEditValue(postData.post.body)
         setLoading(false)
       } else {
         error(postData.msg.error)
@@ -74,7 +78,6 @@ export const Post = (props: Props) => {
       body: postComment.body,
     })
     if (data.status === true) {
-      console.log('executed')
       setTimeout(() => {
         dispatch(askToRequestAgain())
       }, 200)
@@ -95,23 +98,47 @@ export const Post = (props: Props) => {
     }
   }
 
-  const likedByUser = () => { 
+  function handleActiveItemEditOnClick() {
+    activeItem === post?._id + 'EDIT'
+      ? setActiveItem('')
+      : setActiveItem(post?._id + 'EDIT')
+  }
+
+  function handleActiveItemDeleteOnClick() {
+    activeItem === post?._id + 'DELETE'
+      ? setActiveItem('')
+      : setActiveItem(post?._id + 'DELETE')
+  }
+
+  const likedByUser = () => {
     if (post && currentUser) {
-      const verificationResult = post?.likes.map((like: { by: string | undefined }) => {
-        if (like.by == currentUser?._id) {
-          return true
-        } else {
-          return false
+      const verificationResult = post?.likes.map(
+        (like: { by: string | undefined }) => {
+          if (like.by == currentUser?._id) {
+            return true
+          } else {
+            return false
+          }
         }
-      })
-     
-      
+      )
+
       return verificationResult.includes(true)
     }
   }
 
-  console.log('likedByUser()', likedByUser());
-  
+  const editPost = async () => {
+    await axios.post(updatePost, {
+      postId: post?._id,
+      body: editValue,
+    })
+  }
+
+  const removePost = async () => {
+    const { data } = await axios.post(deletePost, {
+      postId: post?._id,
+      accountId: currentUser?.account
+    })
+  }
 
   return (
     <div className={style.gridContainer}>
@@ -128,7 +155,7 @@ export const Post = (props: Props) => {
               <article className="px-4 py-8">
                 <header>
                   <div className="flex justify-between pb-4 items-center">
-                    <span className="text-4xl font-semibold">
+                    <span className="text-4xl font-inter font-semibold">
                       {post?.title}
                     </span>
                     <span className="text-lg w-fit mt-2">
@@ -143,7 +170,7 @@ export const Post = (props: Props) => {
                         alt=""
                       />
                       <div className="flex flex-col text-dusk-main/90 dark:text-dawn-main/90">
-                        <span className="text-2xl font-light">
+                        <span className="text-2xl font-semibold">
                           {authorUser?.name}
                         </span>
                         <span className="text-lg">{authorUser?.username}</span>
@@ -153,26 +180,46 @@ export const Post = (props: Props) => {
                   </div>
                 </header>
 
-                <pre className="p-2 font-poppins break-words whitespace-pre-wrap text-xl leading-9 mt-2">
-                  {post!.body}
-                </pre>
+                {activeItem === post?._id + 'EDIT' ? (
+                  <div className="flex flex-col">
+                    <textarea
+                      value={editValue}
+                      maxLength={855}
+                      minLength={50}
+                      onChange={(e) => setEditValue(e.target.value)}
+                      className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-56 min-h-[180px]  text-dusk-main/90 dark:text-dawn-main/90"
+                    />
+                    <div className="flex justify-end">
+                      <Button
+                        disabled={
+                          editValue?.trim() === '' && editValue?.length <= 50
+                        }
+                        title="Update"
+                        onClick={() => editPost()}
+                        className="!text-prime-purple !w-fit"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <pre className="p-2 font-inter break-words whitespace-pre-wrap text-xl leading-9 mt-2">
+                    {post!.body}
+                  </pre>
+                )}
                 <div className="h-[1px] w-[full] my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
                 <div className="flex px-2 items-center justify-between text-dusk-main dark:text-dawn-main">
                   <div className="flex items-center gap-x-5">
                     <div className="flex items-center  cursor-pointer">
                       {likedByUser && (
                         <>
-                        {console.log(likedByUser)}
-                        <i
-                          onClick={handleLikePost}
-                          className={`${
-                            likedByUser()
-                              ? 'ri-heart-3-fill text-red'
-                              : 'ri-heart-3-line'
-                          }  text-2xl p-1`}
-                        />
+                          <i
+                            onClick={handleLikePost}
+                            className={`${
+                              likedByUser()
+                                ? 'ri-heart-3-fill text-red'
+                                : 'ri-heart-3-line'
+                            }  text-2xl p-1`}
+                          />
                         </>
-
                       )}
                       <span className="text-xl">
                         {post?.likes.length} Likes
@@ -188,13 +235,40 @@ export const Post = (props: Props) => {
                     )}
                     {authorUser?._id === currentUser?._id && (
                       <>
-                        <div className="flex items-center cursor-pointer">
+                        <div
+                          onClick={handleActiveItemEditOnClick}
+                          className={`${
+                            activeItem === post?._id + 'EDIT' &&
+                            'text-prime-purple'
+                          } flex items-center cursor-pointer`}
+                        >
                           <i className="ri-edit-2-fill p-1 text-2xl" />
                           <span className="text-xl">Edit</span>
                         </div>
-                        <div className="flex items-center cursor-pointer">
+                        <div
+                          onClick={handleActiveItemDeleteOnClick}
+                          className={`${
+                            activeItem === post?._id + 'DELETE' && 'text-red'
+                          } flex relative items-center cursor-pointer`}
+                        >
                           <i className="ri-delete-bin-2-fill p-1 text-2xl" />
                           <span className="text-xl">Delete</span>
+                          {activeItem === post?._id + 'DELETE' && (
+                            <div className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[7px] -bottom-[70px]">
+                              <a
+                                onClick={() => removePost()}
+                                className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                              >
+                                Delete
+                              </a>
+                              <a
+                                onClick={() => setActiveItem('')}
+                                className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                              >
+                                Cancel
+                              </a>
+                            </div>
+                          )}
                         </div>
                       </>
                     )}
