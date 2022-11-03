@@ -96,7 +96,7 @@ export const Post = (props: Props) => {
                   <div className="flex justify-between items-center p-2">
                     <div className="flex items-start justify-start gap-x-2">
                       <img
-                        className="w-16 h-16"
+                        className="w-14 h-14"
                         src={authorUser?.user_img}
                         alt=""
                       />
@@ -111,7 +111,7 @@ export const Post = (props: Props) => {
                   </div>
                 </header>
 
-                <pre className="p-2 font-poppins break-words whitespace-pre-wrap text-2xl leading-9 mt-4">
+                <pre className="p-2 font-poppins break-words whitespace-pre-wrap text-2xl leading-9 mt-2">
                   {post!.body}
                 </pre>
                 <div className="h-[1px] w-[full] my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />

@@ -35,9 +35,5 @@ export const repliesOfDiscussion = `${hostServer}/api/post/repliesOfDiscussion` 
 export const updateDiscussion = `${hostServer}/api/post/updateDiscussion`
 export const updateReply = `${hostServer}/api/post/updateReply`
 export const deleteDiscussion = `${hostServer}/api/post/deleteDiscussion`
-
-
-
-
-
+export const deleteReply = `${hostServer}/api/post/deleteReply`
 

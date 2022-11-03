@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { addNewReply, updateReply, userData } from '../../services/api-routes'
+import { addNewReply, deleteReply, updateReply, userData } from '../../services/api-routes'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -8,6 +8,7 @@ import { useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { Menu } from '@headlessui/react'
 
 timeago.register('en_short', en_short)
 
@@ -79,7 +80,12 @@ export const Replies = ({
     })
   }
 
-  
+  const removeReply = async () => {
+    const { data } = await axios.post(deleteReply, {
+      discussionId: reply.discussion,
+      replyId: reply._id
+    })
+  }
 
   return (
     <>
@@ -105,23 +111,27 @@ export const Replies = ({
             <span className="pr-2 text-dusk-main/90 text-lg dark:text-dawn-main/90">
               <span className="text-prime-blue pr-2">{toUsername}</span>
               {activeItem === reply._id + 'EDIT' ? (
-                 <div className="flex flex-col">
-                 <textarea
-                   value={editValue}
-                   maxLength={255}
-                   onChange={(e) => setEditValue(e.target.value)}
-                   className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border-dashed border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
-                 />
-                 <div className="flex justify-end">
-                   <Button
-                     disabled={editValue.trim() === '' && editValue.length <= 5}
-                     title="Update"
-                     onClick={() => editReply()}
-                     className="!text-prime-purple !w-fit"
-                   />
-                 </div>
-               </div>
-              ) : <>{reply.body}</>}
+                <div className="flex flex-col">
+                  <textarea
+                    value={editValue}
+                    maxLength={255}
+                    onChange={(e) => setEditValue(e.target.value)}
+                    className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border-dashed border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+                  />
+                  <div className="flex justify-end">
+                    <Button
+                      disabled={
+                        editValue.trim() === '' && editValue.length <= 5
+                      }
+                      title="Update"
+                      onClick={() => editReply()}
+                      className="!text-prime-purple !w-fit"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>{reply.body}</>
+              )}
             </span>
             <div>
               <div className="flex items-center py-2 space-x-2 justify-end w-full">
@@ -131,14 +141,38 @@ export const Replies = ({
                       ? setActiveItem('')
                       : setActiveItem(reply!._id)
                   }}
-                  className={`${activeItem === reply?._id && "!text-prime-blue"} ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`} 
+                  className={`${
+                    activeItem === reply?._id && '!text-prime-blue'
+                  } ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                 />
                 {userByMetadata._id === currentUser?._id && (
                   <i
                     onClick={handleOnClick}
-                    className={`${activeItem === reply._id + 'EDIT' && "!text-prime-purple"} ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                    className={`${
+                      activeItem === reply._id + 'EDIT' && '!text-prime-purple'
+                    } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                   />
                 )}
+                <Menu>
+                  <Menu.Button>
+                    <i className="ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
+                  </Menu.Button>
+                  <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20  absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[20px] -bottom-[65px]">
+                    <Menu.Item>
+                      <a
+                        onClick={() => removeReply()}
+                        className="hover:bg-red rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                      >
+                        Delete
+                      </a>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <a className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                        Cancel
+                      </a>
+                    </Menu.Item>
+                  </Menu.Items>
+                </Menu>
               </div>
             </div>
             {reply?._id === activeItem && (

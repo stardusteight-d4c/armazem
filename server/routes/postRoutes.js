@@ -4,6 +4,7 @@ import {
   addNewReply,
   createPostAndAddToUserAccount,
   deleteDiscussion,
+  deleteReply,
   discussionsByPostId,
   lastFivePostsOfAccount,
   postMetadataById,
@@ -23,9 +24,7 @@ router.post('/addNewReply', addNewReply)
 router.get('/repliesOfDiscussion/:discussionId', repliesOfDiscussion)
 router.post('/updateDiscussion', updateDiscussion)
 router.post('/updateReply', updateReply)
-router.post('/deleteDiscussion', deleteDiscussion)
-
-
-
+router.post('/deleteDiscussion', deleteDiscussion) // colocar os métodos adequados
+router.post('/deleteReply', deleteReply)
 
 export { router }

@@ -135,18 +135,21 @@ export const deleteDiscussion = async (req, res, next) => {
     const { discussionId, postId } = req.body
     await Discussion.findByIdAndDelete(discussionId)
     await Reply.deleteMany({ discussion: discussionId })
-    const updatedDiscussions = await Discussion.find({ post: postId }).select('_id')
-    updatedDiscussions.map(async (discussion) => (
-      await Post.findByIdAndUpdate(
-        postId,
-        {
-          $set: {
-            discussions: { discussion: discussion._id},
+    const updatedDiscussions = await Discussion.find({ post: postId }).select(
+      '_id'
+    )
+    updatedDiscussions.map(
+      async (discussion) =>
+        await Post.findByIdAndUpdate(
+          postId,
+          {
+            $set: {
+              discussions: { discussion: discussion._id },
+            },
           },
-        },
-        { safe: true, upsert: true }
-      )
-    ))
+          { safe: true, upsert: true }
+        )
+    )
     // retornar delete feito com sucesso
   } catch (error) {
     next(error)
@@ -193,6 +196,35 @@ export const updateReply = async (req, res, next) => {
       { safe: true, upsert: true }
     )
     // retornar update feito com sucesso
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const deleteReply = async (req, res, next) => {
+  try {
+    const { replyId, discussionId } = req.body
+    await Reply.findByIdAndDelete(replyId)
+    const updatedReplies = await Reply.find({
+      discussion: discussionId,
+    }).select('_id')
+    updatedReplies.map(
+      async (replies) =>
+        await Discussion.findByIdAndUpdate(
+          discussionId,
+          {
+            $set: {
+              replies: replies._id,
+            },
+          },
+          { safe: true, upsert: true }
+        )
+    )
+    // retornar delete feito com sucesso
   } catch (error) {
     next(error)
     return res.status(500).json({
