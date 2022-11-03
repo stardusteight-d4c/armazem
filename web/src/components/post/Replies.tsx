@@ -1,6 +1,11 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { addNewReply, deleteReply, updateReply, userData } from '../../services/api-routes'
+import {
+  addNewReply,
+  deleteReply,
+  updateReply,
+  userData,
+} from '../../services/api-routes'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -66,7 +71,7 @@ export const Replies = ({
     })
   }
 
-  function handleOnClick() {
+  function handleActiveItemEditOnClick() {
     activeItem === reply._id + 'EDIT'
       ? setActiveItem('')
       : setActiveItem(reply._id + 'EDIT')
@@ -80,10 +85,16 @@ export const Replies = ({
     })
   }
 
+  function handleActiveItemDeleteOnClick() {
+    activeItem === reply._id + 'DELETE'
+      ? setActiveItem('')
+      : setActiveItem(reply._id + 'DELETE')
+  }
+
   const removeReply = async () => {
     const { data } = await axios.post(deleteReply, {
       discussionId: reply.discussion,
-      replyId: reply._id
+      replyId: reply._id,
     })
   }
 
@@ -146,33 +157,40 @@ export const Replies = ({
                   } ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                 />
                 {userByMetadata._id === currentUser?._id && (
-                  <i
-                    onClick={handleOnClick}
-                    className={`${
-                      activeItem === reply._id + 'EDIT' && '!text-prime-purple'
-                    } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
-                  />
+                  <>
+                    <i
+                      onClick={handleActiveItemEditOnClick}
+                      className={`${
+                        activeItem === reply._id + 'EDIT' &&
+                        '!text-prime-purple'
+                      } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                    />
+                    <div className="relative">
+                      <i
+                        onClick={handleActiveItemDeleteOnClick}
+                        className={`${
+                          activeItem === reply._id + 'DELETE' && '!text-red'
+                        } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                      />
+                      {activeItem === reply._id + 'DELETE' && (
+                        <div className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[25px] -bottom-[80px]">
+                          <a
+                            onClick={() => removeReply()}
+                            className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                          >
+                            Delete
+                          </a>
+                          <a
+                            onClick={() => setActiveItem('')}
+                            className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                          >
+                            Cancel
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </>
                 )}
-                <Menu>
-                  <Menu.Button>
-                    <i className="ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                  </Menu.Button>
-                  <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20  absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[20px] -bottom-[65px]">
-                    <Menu.Item>
-                      <a
-                        onClick={() => removeReply()}
-                        className="hover:bg-red rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
-                      >
-                        Delete
-                      </a>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <a className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
-                        Cancel
-                      </a>
-                    </Menu.Item>
-                  </Menu.Items>
-                </Menu>
               </div>
             </div>
             {reply?._id === activeItem && (

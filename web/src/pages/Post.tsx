@@ -7,12 +7,15 @@ import { error, success } from '../components/Toasters'
 import {
   addNewDiscussion,
   discussionsByPostId,
+  likePost,
   postMetadataById,
+  unlikedPost,
 } from '../services/api-routes'
-import { useAppSelector } from '../store/hooks'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
+import { askToRequestAgain } from '../store'
 
 timeago.register('en_short', en_short)
 
@@ -27,9 +30,10 @@ export const Post = (props: Props) => {
   const [post, setPost] = useState<Post>()
   const [postComment, setPostComment] = useState<any>({ body: '' })
   const [discussions, setDiscussions] = useState<any>({ body: '' })
+  const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
+  const dispatch = useAppDispatch()
 
   const [activeItem, setActiveItem] = useState('')
-  // Fazer os coments abrir de acordo com o ID e os EDIT tbm
 
   useEffect(() => {
     ;(async () => {
@@ -41,16 +45,16 @@ export const Post = (props: Props) => {
         ]
       )
       if (postData.status === true && discussionsData.status === true) {
-        setAuthorAccount(postData.authorAccount)
+        // setAuthorAccount(postData.authorAccount)
         setAuthorUser(postData.authorUser)
         setPost(postData.post)
-        setDiscussions(discussionsData.discussions);
+        setDiscussions(discussionsData.discussions)
         setLoading(false)
       } else {
         error(postData.msg.error)
       }
     })()
-  }, [])
+  }, [requestAgain])
 
   const handleChange = (
     event:
@@ -64,12 +68,50 @@ export const Post = (props: Props) => {
   }
 
   const handleSubmitMainDiscussion = async () => {
-    await axios.post(addNewDiscussion, {
+    const { data } = await axios.post(addNewDiscussion, {
       postId,
       userId: currentUser?._id,
       body: postComment.body,
     })
+    if (data.status === true) {
+      console.log('executed')
+      setTimeout(() => {
+        dispatch(askToRequestAgain())
+      }, 200)
+    }
   }
+
+  const handleLikePost = async () => {
+    if (likedByUser()) {
+      await axios.post(unlikedPost, {
+        userId: currentUser?._id,
+        postId: post?._id,
+      })
+    } else {
+      await axios.post(likePost, {
+        userId: currentUser?._id,
+        postId: post?._id,
+      })
+    }
+  }
+
+  const likedByUser = () => { 
+    if (post && currentUser) {
+      const verificationResult = post?.likes.map((like: { by: string | undefined }) => {
+        if (like.by == currentUser?._id) {
+          return true
+        } else {
+          return false
+        }
+      })
+     
+      
+      return verificationResult.includes(true)
+    }
+  }
+
+  console.log('likedByUser()', likedByUser());
+  
 
   return (
     <div className={style.gridContainer}>
@@ -111,20 +153,51 @@ export const Post = (props: Props) => {
                   </div>
                 </header>
 
-                <pre className="p-2 font-poppins break-words whitespace-pre-wrap text-2xl leading-9 mt-2">
+                <pre className="p-2 font-poppins break-words whitespace-pre-wrap text-xl leading-9 mt-2">
                   {post!.body}
                 </pre>
                 <div className="h-[1px] w-[full] my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
                 <div className="flex px-2 items-center justify-between text-dusk-main dark:text-dawn-main">
                   <div className="flex items-center gap-x-5">
                     <div className="flex items-center  cursor-pointer">
-                      <i className="ri-heart-3-line text-2xl p-1" />
-                      <span className="text-xl">25 Likes</span>
+                      {likedByUser && (
+                        <>
+                        {console.log(likedByUser)}
+                        <i
+                          onClick={handleLikePost}
+                          className={`${
+                            likedByUser()
+                              ? 'ri-heart-3-fill text-red'
+                              : 'ri-heart-3-line'
+                          }  text-2xl p-1`}
+                        />
+                        </>
+
+                      )}
+                      <span className="text-xl">
+                        {post?.likes.length} Likes
+                      </span>
                     </div>
                   </div>
-                  <div className="flex items-center cursor-pointer">
-                    <i className="ri-share-box-line p-1 text-2xl" />
-                    <span className="text-xl">Share</span>
+                  <div className="flex items-center gap-x-5 cursor-pointer">
+                    {authorUser?._id !== currentUser?._id && (
+                      <div className="flex items-center cursor-pointer">
+                        <i className="ri-share-box-line p-1 text-2xl" />
+                        <span className="text-xl">Share</span>
+                      </div>
+                    )}
+                    {authorUser?._id === currentUser?._id && (
+                      <>
+                        <div className="flex items-center cursor-pointer">
+                          <i className="ri-edit-2-fill p-1 text-2xl" />
+                          <span className="text-xl">Edit</span>
+                        </div>
+                        <div className="flex items-center cursor-pointer">
+                          <i className="ri-delete-bin-2-fill p-1 text-2xl" />
+                          <span className="text-xl">Delete</span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </article>
@@ -162,16 +235,21 @@ export const Post = (props: Props) => {
               </div>
 
               <div className=" space-y-10">
-                {discussions.slice(0).reverse().map((discussion: any, index: React.Key | null | undefined) => (
-                  <section className="flex flex-col" key={index}>
-                    <Discussions
-                      activeItem={activeItem}
-                      setActiveItem={setActiveItem}
-                      discussion={discussion}
-                      currentUser={currentUser}
-                    />
-                  </section>
-                ))}
+                {discussions
+                  .slice(0)
+                  .reverse()
+                  .map(
+                    (discussion: any, index: React.Key | null | undefined) => (
+                      <section className="flex flex-col" key={index}>
+                        <Discussions
+                          activeItem={activeItem}
+                          setActiveItem={setActiveItem}
+                          discussion={discussion}
+                          currentUser={currentUser}
+                        />
+                      </section>
+                    )
+                  )}
               </div>
             </>
           )}

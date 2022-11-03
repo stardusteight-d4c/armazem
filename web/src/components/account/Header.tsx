@@ -122,7 +122,7 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
         return false
       }
     })
-    return verificationResult[0]
+    return verificationResult.includes(true)
   }
 
   const HandleRequestComponent = () => {

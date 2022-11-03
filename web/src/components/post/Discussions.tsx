@@ -43,6 +43,7 @@ export const Discussions = ({
   const [reply, setReply] = useState('')
   const [replies, setReplies] = useState([])
   const [editValue, setEditValue] = useState('')
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     ;(async () => {
@@ -78,11 +79,17 @@ export const Discussions = ({
     setReply(event.target.value)
   }
 
-  function handleOnClick() {
+  function handleActiveItemEditOnClick() {
     activeItem === discussion._id + 'EDIT'
       ? setActiveItem('')
       : setActiveItem(discussion._id + 'EDIT')
     setEditValue(discussion.body)
+  }
+
+  function handleActiveItemDeleteOnClick() {
+    activeItem === discussion._id + 'DELETE'
+      ? setActiveItem('')
+      : setActiveItem(discussion._id + 'DELETE')
   }
 
   const editDiscussion = async () => {
@@ -95,7 +102,7 @@ export const Discussions = ({
   const removeDiscussion = async () => {
     const { data } = await axios.post(deleteDiscussion, {
       discussionId: discussion._id,
-      postId: discussion.post
+      postId: discussion.post,
     })
   }
 
@@ -159,29 +166,33 @@ export const Discussions = ({
               {currentUser?._id === user?._id && (
                 <>
                   <i
-                    onClick={handleOnClick}
+                    onClick={handleActiveItemEditOnClick}
                     className={`${
                       activeItem === discussion._id + 'EDIT' &&
                       '!text-prime-purple'
                     } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                   />
-                  <Menu>
-                    <Menu.Button>
-                      <i className="ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                    </Menu.Button>
-                    <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20  absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[20px] -bottom-[65px]">
-                      <Menu.Item>
-                        <a onClick={() => removeDiscussion()} className="hover:bg-red rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
-                          Delete
-                        </a>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <a className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
-                          Cancel
-                        </a>
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Menu>
+                  <div className="relative">
+                    <i
+                      onClick={handleActiveItemDeleteOnClick}
+                      className={`${
+                        activeItem === discussion._id + 'DELETE' && '!text-red'
+                      } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                    />
+                    {activeItem === discussion._id + 'DELETE' && (
+                      <div className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[25px] -bottom-[80px]">
+                          <a
+                            onClick={() => removeDiscussion()}
+                            className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                          >
+                            Delete
+                          </a>
+                          <a onClick={() => setActiveItem('')} className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                            Cancel
+                          </a>
+                      </div>
+                    )}
+                  </div>
                 </>
               )}
             </div>

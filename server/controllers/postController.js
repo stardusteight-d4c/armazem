@@ -81,6 +81,9 @@ export const addNewDiscussion = async (req, res, next) => {
       { $push: { discussions: { discussion: discussion._id } } },
       { safe: true, upsert: true }
     )
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Operation performed successfully' })
   } catch (error) {
     next(error)
     return res.status(500).json({
@@ -242,6 +245,46 @@ export const repliesOfDiscussion = async (req, res, next) => {
     return res
       .status(200)
       .json({ status: true, msg: 'Operation performed successfully', replies })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const likePost = async (req, res, next) => {
+  try {
+    const { userId, postId } = req.body
+    await Post.findByIdAndUpdate(
+      postId,
+      {
+        $push: {
+          likes: { by: userId },
+        },
+      },
+      { safe: true, upsert: true }
+    )
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const unlikedPost = async (req, res, next) => {
+  try {
+    const { userId, postId } = req.body
+    await Post.findByIdAndUpdate(
+      postId,
+      {
+        $pull: { likes: { by: userId } },
+      },
+      { safe: true, multi: false }
+    )
   } catch (error) {
     next(error)
     return res.status(500).json({

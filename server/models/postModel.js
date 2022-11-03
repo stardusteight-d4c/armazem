@@ -11,12 +11,12 @@ const postSchema = new mongoose.Schema(
     },
     likes: {
       type: Array,
-      by: String,
+      by: { type: Schema.Types.ObjectId, ref: 'User' },
     },
     discussions: {
       type: Array,
       discussion: { type: Schema.Types.ObjectId, ref: 'User' },
-    }
+    },
   },
   { timestamps: true }
 )
