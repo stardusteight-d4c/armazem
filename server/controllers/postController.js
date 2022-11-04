@@ -260,7 +260,7 @@ export const likePost = async (req, res, next) => {
     await Post.findByIdAndUpdate(
       postId,
       {
-        $push: {
+        $addToSet: {
           likes: { by: userId },
         },
       },
@@ -332,6 +332,26 @@ export const deletePost = async (req, res, next) => {
     )
 
     await Post.findByIdAndDelete(postId)
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const sharePost = async (req, res, next) => {
+  try {
+    const { postId, accountId } = req.body
+
+    await Account.findByIdAndUpdate(
+      accountId,
+      {
+        $addToSet: { sharedPosts: postId },
+      },
+      { safe: true, multi: false }
+    )
   } catch (error) {
     next(error)
     return res.status(500).json({

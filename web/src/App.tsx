@@ -18,6 +18,7 @@ import {
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import { getCurrentUserAccount, getUserData } from './store/reducers/current-user-data'
 import { motion } from  'framer-motion'
+import { AllLastsPostsModal } from './components/account/AllLastsPostsModal'
 
 interface Props {}
 
@@ -76,6 +77,7 @@ export const App = (props: Props) => {
       {openModal === 'EditProfileImage' && <EditProfileImageModal />}
       {openModal === 'EditCoverImage' && <EditCoverImageModal />}
       {openModal === 'PostInput' && <PostInputModal />}
+      {openModal === 'LastPosts' && <AllLastsPostsModal />}
       <div
         onClick={handleSearchResults}
         className="max-h-screen overflow-x-hidden  overflow-y-scroll"

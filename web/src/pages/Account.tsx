@@ -55,7 +55,7 @@ export const Account = (props: Props) => {
               <StatusBar />
               <Favorites />
               <LastPosts userMetadata={userMetadata} />
-              <SharedPosts />
+              <SharedPosts userMetadata={userMetadata} />
               <LastUpdates />
               <Comments userMetadata={userMetadata} />
             </div>

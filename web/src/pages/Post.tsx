@@ -10,6 +10,7 @@ import {
   discussionsByPostId,
   likePost,
   postMetadataById,
+  sharePost,
   unlikedPost,
   updatePost,
 } from '../services/api-routes'
@@ -110,6 +111,12 @@ export const Post = (props: Props) => {
       : setActiveItem(post?._id + 'DELETE')
   }
 
+  function handleActiveItemShareOnClick() {
+    activeItem === post?._id + 'SHARE'
+      ? setActiveItem('')
+      : setActiveItem(post?._id + 'SHARE')
+  }
+
   const likedByUser = () => {
     if (post && currentUser) {
       const verificationResult = post?.likes.map(
@@ -133,10 +140,17 @@ export const Post = (props: Props) => {
     })
   }
 
+  const addPostToSharedPosts = async () => {
+    await axios.post(sharePost, {
+      postId: post?._id,
+      accountId: currentUser?.account,
+    })
+  }
+
   const removePost = async () => {
     const { data } = await axios.post(deletePost, {
       postId: post?._id,
-      accountId: currentUser?.account
+      accountId: currentUser?.account,
     })
   }
 
@@ -228,9 +242,30 @@ export const Post = (props: Props) => {
                   </div>
                   <div className="flex items-center gap-x-5 cursor-pointer">
                     {authorUser?._id !== currentUser?._id && (
-                      <div className="flex items-center cursor-pointer">
-                        <i className="ri-share-box-line p-1 text-2xl" />
-                        <span className="text-xl">Share</span>
+                      <div className="relative">
+                        <div
+                          onClick={handleActiveItemShareOnClick}
+                          className={`${activeItem === post?._id + 'SHARE' && 'text-orange'} flex items-center cursor-pointer`}
+                        >
+                          <i className="ri-share-box-line p-1 text-2xl" />
+                          <span className="text-xl">Share</span>
+                        </div>
+                        {activeItem === post?._id + 'SHARE' && (
+                          <div className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[7px] -bottom-[70px]">
+                            <a
+                              onClick={() => addPostToSharedPosts()}
+                              className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                            >
+                              Share
+                            </a>
+                            <a
+                              onClick={() => setActiveItem('')}
+                              className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                            >
+                              Cancel
+                            </a>
+                          </div>
+                        )}
                       </div>
                     )}
                     {authorUser?._id === currentUser?._id && (

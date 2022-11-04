@@ -23,6 +23,8 @@ export const accountDataByUserId = `${hostServer}/api/account/accountDataByUserI
 export const addConnection = `${hostServer}/api/account/addConnection` 
 export const rejectConnection = `${hostServer}/api/account/rejectConnection` 
 export const removeConnection = `${hostServer}/api/account/removeConnection` 
+export const sharedPosts = `${hostServer}/api/account/sharedPosts` 
+export const postByPagination = `${hostServer}/api/account/postByPagination` // /:userId/:page
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`
@@ -40,4 +42,4 @@ export const likePost = `${hostServer}/api/post/likePost`
 export const unlikedPost = `${hostServer}/api/post/unlikedPost`
 export const updatePost = `${hostServer}/api/post/updatePost`
 export const deletePost = `${hostServer}/api/post/deletePost`
-
+export const sharePost = `${hostServer}/api/post/sharePost`

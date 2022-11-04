@@ -1,15 +1,15 @@
 import express from 'express'
 import {
-  currentUserData,
   searchUsersByQuery,
   updateCoverImage,
   updateProfileImage,
+  userById,
   userByUsername,
 } from '../controllers/userController'
 
 const router = express.Router()
 
-router.get('/:id', currentUserData)
+router.get('/:id', userById)
 router.get('/username/:username', userByUsername)
 router.post('/updateCoverImage', updateCoverImage)
 router.post('/updateProfileImage', updateProfileImage)

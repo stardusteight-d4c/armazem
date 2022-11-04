@@ -11,6 +11,7 @@ import {
   likePost,
   postMetadataById,
   repliesOfDiscussion,
+  sharePost,
   unlikedPost,
   updateDiscussion,
   updatePost,
@@ -34,5 +35,6 @@ router.post('/likePost', likePost)
 router.post('/unlikedPost', unlikedPost)
 router.post('/updatePost', updatePost)
 router.post('/deletePost', deletePost)
+router.post('/sharePost', sharePost)
 
 export { router }

@@ -1,7 +1,10 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { lastFivePostsOfAccount, postMetadataById } from '../../services/api-routes'
-import { askToRequestAgain } from '../../store'
+import {
+  lastFivePostsOfAccount,
+  postMetadataById,
+} from '../../services/api-routes'
+import { askToRequestAgain, handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
 import { LastPostFirstSection, LastPostSecondSection } from './LastPost'
@@ -11,7 +14,9 @@ interface Props {
 }
 
 export const LastPosts = ({ userMetadata }: Props) => {
-  const [lastPosts, setLastPosts] = useState<[Posts] | undefined | any>(undefined)
+  const [lastPosts, setLastPosts] = useState<[Posts] | undefined | any>(
+    undefined
+  )
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const dispatch = useAppDispatch()
 
@@ -33,9 +38,6 @@ export const LastPosts = ({ userMetadata }: Props) => {
     })()
   }, [userMetadata, requestAgain])
 
-  console.log(lastPosts);
-  
-
   return (
     <section>
       <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
@@ -56,12 +58,13 @@ export const LastPosts = ({ userMetadata }: Props) => {
               ))}
             </div>
           </div>
-            <div className="flex items-center justify-center">
-              <Button
-                title="See all"
-                className="bg-prime-blue my-5 !text-xl p-4 px-16 "
-              />
-            </div>
+          <div className="flex items-center justify-center">
+            <Button
+              title="See all"
+              onClick={() => dispatch(handleOpenModal('LastPosts'))}
+              className="bg-prime-blue my-5 !text-xl p-4 px-16 "
+            />
+          </div>
         </>
       ) : (
         <div className="flex items-center justify-center text-2xl my-8">

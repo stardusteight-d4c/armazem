@@ -2,10 +2,11 @@ import express from 'express'
 import {
   accountDataByUserId,
   addConnection,
+  postByPagination,
   rejectConnection,
   removeConnection,
   sendRequest,
-  // userConnections,
+  sharedPosts,
 } from '../controllers/accountController'
 
 const router = express.Router()
@@ -15,6 +16,7 @@ router.get('/accountDataByUserId/:id', accountDataByUserId)
 router.post('/addConnection', addConnection)
 router.post('/rejectConnection', rejectConnection)
 router.post('/removeConnection', removeConnection)
-// router.get('/userConnections/:id', userConnections)
+router.post('/sharedPosts', sharedPosts)
+router.get('/postByPagination/:userId/:page', postByPagination)
 
 export { router }

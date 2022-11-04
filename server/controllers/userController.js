@@ -1,6 +1,6 @@
 import User from '../models/userModel.js'
 
-export const currentUserData = async (req, res, next) => {
+export const userById = async (req, res, next) => {
   const userId = req.params.id
   const user = await User.findById(userId)
   return res.json({ user })
