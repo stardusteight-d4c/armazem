@@ -13,7 +13,7 @@ export const LastUpdates = (props: Props) => {
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 object-cover"
           />
           <div className="flex flex-col w-[500px] ">
             <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
@@ -33,7 +33,7 @@ export const LastUpdates = (props: Props) => {
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 object-cover"
           />
           <div className="flex flex-col w-[500px] ">
             <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
@@ -53,7 +53,7 @@ export const LastUpdates = (props: Props) => {
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 object-cover"
           />
           <div className="flex flex-col w-[500px] ">
             <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
@@ -73,7 +73,7 @@ export const LastUpdates = (props: Props) => {
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 object-cover"
           />
           <div className="flex flex-col w-[500px] ">
             <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
@@ -93,7 +93,7 @@ export const LastUpdates = (props: Props) => {
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 object-cover"
           />
           <div className="flex flex-col w-[500px] ">
             <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">

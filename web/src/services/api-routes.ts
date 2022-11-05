@@ -28,6 +28,7 @@ export const postByPagination = `${hostServer}/api/account/postByPagination` // 
 export const searchUserPostByTitle = `${hostServer}/api/account/searchUserPostByTitle`
 export const sharedPostByPagination = `${hostServer}/api/account/sharedPostByPagination` // /:accountId/:page
 export const searchSharedPostByTitle = `${hostServer}/api/account/searchSharedPostByTitle` 
+export const addComment = `${hostServer}/api/account/addComment` 
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`

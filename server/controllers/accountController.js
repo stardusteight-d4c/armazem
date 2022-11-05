@@ -263,3 +263,24 @@ export const searchSharedPostByTitle = async (req, res, next) => {
     next(error)
   }
 }
+
+export const addComment = async (req, res, next) => {
+  try {
+    const {accountId, userId, comment } = req.body
+    await Account.findByIdAndUpdate(
+     accountId,
+      {
+        $push: { comments: { by: userId, comment: comment } },
+      },
+      { safe: true, multi: false }
+    )
+
+    return res.status(200).json({ status: true, msg: 'Comment made successfully' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const commentsOfAccount = async (req, res, next) => {
+  // envia comentário com os metadados do usuário
+}

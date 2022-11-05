@@ -1,6 +1,9 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
+import { addComment } from '../../services/api-routes'
 import { useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
+import { success } from '../Toasters'
 
 interface Props {
   userMetadata: User
@@ -8,6 +11,20 @@ interface Props {
 
 export const Comments = ({ userMetadata }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const [comment, setComment] = useState('')
+
+
+  const sendComment = async () => {
+    const { data } = await axios.post(addComment, {
+      accountId: userMetadata.account,
+      userId: currentUser?._id,
+      comment
+    })
+    if (data.status === true) {
+      success(data.msg)
+    }
+  }
+
 
   return (
     <section>
@@ -28,6 +45,7 @@ export const Comments = ({ userMetadata }: Props) => {
                   {currentUser?.name}
                 </span>
                 <textarea
+                  onChange={(e) => setComment(e.target.value)}
                   placeholder="Leave your comment"
                   className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
                 />
@@ -36,6 +54,7 @@ export const Comments = ({ userMetadata }: Props) => {
             <div className=" flex justify-end ">
               <Button
                 title="Submit"
+                onClick={sendComment}
                 className="bg-prime-blue my-5 !w-fit px-4 py-2"
               />
             </div>

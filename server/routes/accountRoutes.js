@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   accountDataByUserId,
+  addComment,
   addConnection,
   postByPagination,
   rejectConnection,
@@ -24,5 +25,6 @@ router.get('/postByPagination/:userId/:page', postByPagination)
 router.post('/searchUserPostByTitle', searchUserPostByTitle)
 router.get('/sharedPostByPagination/:accountId/:page', sharedPostByPagination)
 router.post('/searchSharedPostByTitle', searchSharedPostByTitle)
+router.post('/addComment', addComment)
 
 export { router }
