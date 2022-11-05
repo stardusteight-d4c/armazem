@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { Button, Discussions, Navbar, Sidebar } from '../components'
 import { Loader } from '../components/Loader'
 import { error, success } from '../components/Toasters'
@@ -12,6 +12,7 @@ import {
   postMetadataById,
   sharePost,
   unlikedPost,
+  unsharePost,
   updatePost,
 } from '../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
@@ -36,6 +37,7 @@ export const Post = (props: Props) => {
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const dispatch = useAppDispatch()
   const [editValue, setEditValue] = useState(post?.body)
+  const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
 
   const [activeItem, setActiveItem] = useState('')
 
@@ -147,12 +149,22 @@ export const Post = (props: Props) => {
     })
   }
 
+  const removePostToSharedPosts = async () => {
+    await axios.post(unsharePost, {
+      postId: post?._id,
+      accountId: currentUser?.account,
+    })
+  }
+
   const removePost = async () => {
     const { data } = await axios.post(deletePost, {
       postId: post?._id,
       accountId: currentUser?.account,
     })
   }
+
+  const isSharedPosts =
+    currentAccount && currentAccount?.sharedPosts?.includes(post?._id)
 
   return (
     <div className={style.gridContainer}>
@@ -166,7 +178,7 @@ export const Post = (props: Props) => {
             </div>
           ) : (
             <>
-              <article className="px-4 py-8">
+              <article className="px-4 pb-3 bg-dawn-weak/5 dark:bg-dusk-weak/10  pt-4 mt-4">
                 <header>
                   <div className="flex justify-between pb-4 items-center">
                     <span className="text-4xl font-inter font-semibold">
@@ -176,20 +188,20 @@ export const Post = (props: Props) => {
                       <TimeAgo datetime={post!.createdAt} locale="en_short" />
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-2">
-                    <div className="flex items-start justify-start gap-x-2">
+                  <div className="flex justify-between items-center">
+                    <Link to={`/${authorUser?.username}`} className="flex items-start justify-start gap-x-2">
                       <img
                         className="w-14 h-14"
                         src={authorUser?.user_img}
                         alt=""
                       />
-                      <div className="flex flex-col text-dusk-main/90 dark:text-dawn-main/90">
+                      <div className="flex flex-col -mt-1 text-dusk-main/90 dark:text-dawn-main/90">
                         <span className="text-2xl font-semibold">
                           {authorUser?.name}
                         </span>
                         <span className="text-lg">{authorUser?.username}</span>
                       </div>
-                    </div>
+                    </Link>
                     <span className="text-green">Connected</span>
                   </div>
                 </header>
@@ -215,12 +227,12 @@ export const Post = (props: Props) => {
                     </div>
                   </div>
                 ) : (
-                  <pre className="p-2 font-inter break-words whitespace-pre-wrap text-xl leading-9 mt-2">
+                  <pre className="py-2 font-inter break-words whitespace-pre-wrap text-xl leading-9 mt-2">
                     {post!.body}
                   </pre>
                 )}
                 <div className="h-[1px] w-[full] my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
-                <div className="flex px-2 items-center justify-between text-dusk-main dark:text-dawn-main">
+                <div className="flex items-center justify-between text-dusk-main dark:text-dawn-main">
                   <div className="flex items-center gap-x-5">
                     <div className="flex items-center  cursor-pointer">
                       {likedByUser && (
@@ -231,42 +243,76 @@ export const Post = (props: Props) => {
                               likedByUser()
                                 ? 'ri-heart-3-fill text-red'
                                 : 'ri-heart-3-line'
-                            }  text-2xl p-1`}
+                            }  text-2xl pr-1`}
                           />
                         </>
                       )}
                       <span className="text-xl">
-                        {post?.likes.length} Likes
+                        {post?.likes.length}
+                        {post?.likes.length <= 1 ? ' Like' : ' Likes'}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-x-5 cursor-pointer">
                     {authorUser?._id !== currentUser?._id && (
-                      <div className="relative">
-                        <div
-                          onClick={handleActiveItemShareOnClick}
-                          className={`${activeItem === post?._id + 'SHARE' && 'text-orange'} flex items-center cursor-pointer`}
-                        >
-                          <i className="ri-share-box-line p-1 text-2xl" />
-                          <span className="text-xl">Share</span>
-                        </div>
-                        {activeItem === post?._id + 'SHARE' && (
-                          <div className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[7px] -bottom-[70px]">
-                            <a
-                              onClick={() => addPostToSharedPosts()}
-                              className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                      <>
+                        {isSharedPosts ? (
+                          <div className="relative">
+                            <div
+                              onClick={handleActiveItemShareOnClick}
+                              className="text-orange flex items-center cursor-pointer"
                             >
-                              Share
-                            </a>
-                            <a
-                              onClick={() => setActiveItem('')}
-                              className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                              <i className="ri-share-box-line pr-1 text-2xl" />
+                              <span className="text-xl">Shared</span>
+                            </div>
+                            {activeItem === post?._id + 'SHARE' && (
+                              <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[4px] -bottom-[60px]">
+                                <a
+                                  onClick={() => removePostToSharedPosts()}
+                                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                >
+                                  Unshare
+                                </a>
+                                <a
+                                  onClick={() => setActiveItem('')}
+                                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                >
+                                  Cancel
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="relative">
+                            <div
+                              onClick={handleActiveItemShareOnClick}
+                              className={`${
+                                activeItem === post?._id + 'SHARE' &&
+                                'text-orange'
+                              } flex items-center cursor-pointer`}
                             >
-                              Cancel
-                            </a>
+                              <i className="ri-share-box-line p-1 text-2xl" />
+                              <span className="text-xl">Share</span>
+                            </div>
+                            {activeItem === post?._id + 'SHARE' && (
+                              <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[2px] -bottom-[60px]">
+                                <a
+                                  onClick={() => addPostToSharedPosts()}
+                                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                >
+                                  Share
+                                </a>
+                                <a
+                                  onClick={() => setActiveItem('')}
+                                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                >
+                                  Cancel
+                                </a>
+                              </div>
+                            )}
                           </div>
                         )}
-                      </div>
+                      </>
                     )}
                     {authorUser?._id === currentUser?._id && (
                       <>
@@ -289,16 +335,16 @@ export const Post = (props: Props) => {
                           <i className="ri-delete-bin-2-fill p-1 text-2xl" />
                           <span className="text-xl">Delete</span>
                           {activeItem === post?._id + 'DELETE' && (
-                            <div className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[7px] -bottom-[70px]">
+                            <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[2px] -bottom-[60px]">
                               <a
                                 onClick={() => removePost()}
-                                className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                               >
                                 Delete
                               </a>
                               <a
                                 onClick={() => setActiveItem('')}
-                                className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                               >
                                 Cancel
                               </a>
@@ -310,10 +356,10 @@ export const Post = (props: Props) => {
                   </div>
                 </div>
               </article>
-              <div className="flex items-center mt-16 mb-8">
-                <span className="text-2xl  font-semibold">Discussion</span>
-              </div>
-              <div className="mb-5">
+              <div className="mb-5 px-4">
+                <div className="flex items-center mt-16 mb-8">
+                  <span className="text-2xl font-semibold">Discussion</span>
+                </div>
                 <div className="flex items-start gap-x-5">
                   <img
                     src={currentUser?.user_img}
@@ -343,7 +389,7 @@ export const Post = (props: Props) => {
                 </div>
               </div>
 
-              <div className=" space-y-10">
+              <div className="space-y-10 px-4">
                 {discussions
                   .slice(0)
                   .reverse()
@@ -369,6 +415,6 @@ export const Post = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid grid-cols-5 overflow-hidden max-w-screen-xl drop-shadow-xl dark:drop-shadow-2xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto  text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong`,
+  gridContainer: `grid grid-cols-5 overflow-hidden max-w-screen-xl drop-shadow-xl dark:drop-shadow-2xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2 col-span-4`,
 }

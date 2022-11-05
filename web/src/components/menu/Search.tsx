@@ -31,7 +31,7 @@ export const Search = (props: Props) => {
 
   return (
     <div className="flex relative items-center rounded-full">
-      <i className="ri-search-2-line left-2 absolute text-dusk-main dark:text-dawn-main text-3xl" />
+      <i className="ri-search-line left-2 absolute text-dusk-main dark:text-dawn-main text-3xl" />
       <input
         type="text"
         placeholder="Search by manga or user"
@@ -41,7 +41,7 @@ export const Search = (props: Props) => {
       {usersSearch && usersSearch[0] !== null && (
         <div
           onClick={() => dispatch(handleResultUsersSearch(undefined))}
-          className="text-dusk-main drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 dark:text-dawn-main bg-white dark:bg-fill-strong z-50 w-[403px] rounded-md absolute -bottom-10"
+          className="text-dusk-main drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 dark:text-dawn-main bg-fill-weak dark:bg-fill-strong z-50 min-w-[337px] max-w-[403px] absolute -bottom-10"
         >
           {usersSearch.map((user: any, index: React.Key | null | undefined) => (
             <Link
@@ -61,14 +61,14 @@ export const Search = (props: Props) => {
         >
           <i className="ri-equalizer-line" />
         </Menu.Button>
-        <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20  absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-4 -bottom-14">
+        <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[14px] -bottom-[50px]">
           <Menu.Item>
-            <a className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+            <a className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
               Manga
             </a>
           </Menu.Item>
           <Menu.Item>
-            <a className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+            <a className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
               User
             </a>
           </Menu.Item>

@@ -28,7 +28,7 @@ export const Comments = ({ userMetadata }: Props) => {
                   {currentUser?.name}
                 </span>
                 <textarea
-                  placeholder="Type your comment"
+                  placeholder="Leave your comment"
                   className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
                 />
               </div>

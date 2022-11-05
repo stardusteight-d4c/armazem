@@ -48,11 +48,11 @@ export const Navbar = (props: Props) => {
                 alt=""
               />
             </Menu.Button>
-            <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20  absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[17px] -bottom-[70px]">
+            <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[20px] -bottom-[62px]">
               <Menu.Item>
                 <a
                   onClick={() => navigate(`/${currentUser?.username}`)}
-                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                 >
                   Account
                 </a>
@@ -60,7 +60,7 @@ export const Navbar = (props: Props) => {
               <Menu.Item>
                 <a
                   onClick={() => handleLogout()}
-                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                 >
                   Logout
                 </a>

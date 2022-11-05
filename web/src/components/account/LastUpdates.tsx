@@ -9,7 +9,7 @@ export const LastUpdates = (props: Props) => {
         Last updates
       </h2>
       <div className="flex flex-col gap-y-5">
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
+        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
@@ -29,7 +29,7 @@ export const LastUpdates = (props: Props) => {
             </span>
           </div>
         </div>
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
+        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
@@ -49,7 +49,7 @@ export const LastUpdates = (props: Props) => {
             </span>
           </div>
         </div>
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
+        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
@@ -69,7 +69,7 @@ export const LastUpdates = (props: Props) => {
             </span>
           </div>
         </div>
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
+        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
@@ -89,7 +89,7 @@ export const LastUpdates = (props: Props) => {
             </span>
           </div>
         </div>
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong items-start gap-3">
+        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""

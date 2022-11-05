@@ -68,7 +68,7 @@ export const LastPosts = ({ userMetadata }: Props) => {
         </>
       ) : (
         <div className="flex items-center justify-center text-2xl my-8">
-          No posts here yet
+          No posts yet
         </div>
       )}
     </section>

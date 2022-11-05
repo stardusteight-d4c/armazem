@@ -65,7 +65,7 @@ export const EditProfileImageModal = (props: Props) => {
         }}
         transition={{ type: 'spring', duration: 0.8 }}
         animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="absolute border border-dawn-weak/20 dark:border-dusk-weak/20  drop-shadow-2xl rounded-sm p-4  z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-white dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        className="absolute border border-dawn-weak/20 dark:border-dusk-weak/20  drop-shadow-2xl p-4 z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Send a profile picture</h1>
@@ -78,7 +78,7 @@ export const EditProfileImageModal = (props: Props) => {
           <div>
             {selectedFile ? (
               <div className="relative">
-                <img src={selectedFile} className="w-40 h-40 border" />
+                <img src={selectedFile} className="w-40 h-40 border border-dawn-weak/20 dark:border-dusk-weak/20" />
                 <i
                   onClick={() => setSelectedFile(null)}
                   className="ri-close-line dark:text-dusk-main w-10 h-10 text-dawn-main cursor-pointer dark:bg-white/50 bg-black/50 flex items-center p-2 rounded-full text-2xl absolute right-2 top-2"
@@ -91,7 +91,7 @@ export const EditProfileImageModal = (props: Props) => {
               </div>
             ) : (
               <>
-                <div className="w-40 h-40 border rounded-sm flex items-center justify-center" />
+                <div className="w-40 h-40 border border-dashed flex items-center justify-center" />
                 <Button
                   title="Upload picture"
                   onClick={() => filePickerRef.current.click()}

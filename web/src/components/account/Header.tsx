@@ -134,17 +134,17 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
               <i className="ri-link mr-1" />
               <span>Request sent</span>
             </Menu.Button>
-            <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-7 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+            <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong left-8 -bottom-[65px]">
               <Menu.Item>
                 <span
                   onClick={unsendRequestConnection}
-                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                 >
                   Unsend
                 </span>
               </Menu.Item>
               <Menu.Item>
-                <span className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
                   Cancel
                 </span>
               </Menu.Item>
@@ -161,11 +161,11 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
               <i className="ri-link mr-1" />
               <span>Accept request</span>
             </Menu.Button>
-            <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-10 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+            <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong left-8 -bottom-[65px]">
               <Menu.Item>
                 <span
                   onClick={createConnection}
-                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                 >
                   Accept
                 </span>
@@ -173,7 +173,7 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
               <Menu.Item>
                 <span
                   onClick={rejectRequestConnection}
-                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                 >
                   Reject
                 </span>
@@ -191,17 +191,17 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
               <Menu.Button>
                 <i className="ri-link mr-1" />
                 <span>Connected</span>
-                <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-4 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+                <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong left-5 -bottom-[65px]">
                   <Menu.Item>
                     <span
                       onClick={deleteUserConnection}
-                      className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                      className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                     >
                       Remove
                     </span>
                   </Menu.Item>
                   <Menu.Item>
-                    <span className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                    <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
                       Cancel
                     </span>
                   </Menu.Item>
@@ -223,17 +223,17 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
               <i className="ri-link mr-1" />
               <span>Send request</span>
             </Menu.Button>
-            <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start left-8 -bottom-[75px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+            <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong left-8 -bottom-[65px]">
               <Menu.Item>
                 <span
                   onClick={sendRequestToUser}
-                  className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                 >
                   Send
                 </span>
               </Menu.Item>
               <Menu.Item>
-                <span className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
                   Cancel
                 </span>
               </Menu.Item>
@@ -248,7 +248,7 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
     <>
       <div className="relative">
         <img
-         referrerPolicy="no-referrer"
+          referrerPolicy="no-referrer"
           className="w-full h-[300px]"
           src={userMetadata.cover_img}
           alt="cover/img"
@@ -256,19 +256,19 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
         {userMetadata._id === currentUser?._id && (
           <div
             onClick={() => dispatch(handleOpenModal('EditCoverImage'))}
-            className="ri-image-edit-fill  text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute top-5 right-5 cursor-pointer rounded-full"
+            className="ri-image-edit-fill transition-all duration-200 hover:brightness-125 flex justify-center items-center p-2 drop-shadow-md rounded-full text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong  w-10 h-10 text-xl absolute z-20 top-5 right-5  cursor-pointer"
           />
         )}
         <img
           referrerPolicy="no-referrer"
-          className="w-40 h-40 bg-white dark:bg-fill-strong p-2 object-cover absolute -bottom-20 left-4"
+          className="w-40 h-40 bg-fill-weak dark:bg-fill-strong p-2 object-cover absolute -bottom-20 left-4"
           src={userMetadata.user_img}
           alt=""
         />
         {userMetadata._id === currentUser?._id && (
           <div
             onClick={() => dispatch(handleOpenModal('EditProfileImage'))}
-            className="ri-pencil-fill text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong flex items-center justify-center w-10 h-10 text-xl absolute z-20 bottom-12 left-36 cursor-pointer rounded-full"
+            className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 flex justify-center items-center p-2 drop-shadow-md rounded-full text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong  w-10 h-10 text-xl absolute z-20 bottom-12 left-36 cursor-pointer"
           />
         )}
         <div className="absolute left-[185px] -bottom-[75px]">

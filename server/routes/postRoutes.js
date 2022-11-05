@@ -13,6 +13,7 @@ import {
   repliesOfDiscussion,
   sharePost,
   unlikedPost,
+  unsharePost,
   updateDiscussion,
   updatePost,
   updateReply,
@@ -36,5 +37,6 @@ router.post('/unlikedPost', unlikedPost)
 router.post('/updatePost', updatePost)
 router.post('/deletePost', deletePost)
 router.post('/sharePost', sharePost)
+router.post('/unsharePost', unsharePost)
 
 export { router }

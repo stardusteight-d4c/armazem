@@ -46,3 +46,4 @@ export const unlikedPost = `${hostServer}/api/post/unlikedPost`
 export const updatePost = `${hostServer}/api/post/updatePost`
 export const deletePost = `${hostServer}/api/post/deletePost`
 export const sharePost = `${hostServer}/api/post/sharePost`
+export const unsharePost = `${hostServer}/api/post/unsharePost`

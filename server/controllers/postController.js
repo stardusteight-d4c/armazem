@@ -360,3 +360,23 @@ export const sharePost = async (req, res, next) => {
     })
   }
 }
+
+export const unsharePost = async (req, res, next) => {
+  try {
+    const { postId, accountId } = req.body
+
+    await Account.findByIdAndUpdate(
+      accountId,
+      {
+        $pull: { sharedPosts: postId },
+      },
+      { safe: true, multi: false }
+    )
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}

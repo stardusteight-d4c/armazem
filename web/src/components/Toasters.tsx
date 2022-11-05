@@ -13,7 +13,7 @@ export const error = (error: string) =>
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={spring}
-      className="bg-fill-weak/50 dark:bg-fill-strong/50 text-fill-strong dark:text-fill-weak backdrop-blur-sm border-l-2 border-red py-3 px-4"
+      className="bg-fill-weak dark:bg-fill-strong drop-shadow-md text-fill-strong dark:text-fill-weak border-l-4 border-red py-3 px-4"
     >
       {error}
     </motion.div>
@@ -25,7 +25,7 @@ export const error = (error: string) =>
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={spring}
-      className="bg-fill-weak/50 dark:bg-fill-strong/50 text-fill-strong dark:text-fill-weak backdrop-blur-sm border-l-2 border-green py-3 px-4"
+      className="bg-fill-weak dark:bg-fill-strong drop-shadow-md text-fill-strong dark:text-fill-weak border-l-4 border-green py-3 px-4"
     >
       {success}
     </motion.div>

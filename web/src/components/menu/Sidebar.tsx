@@ -24,7 +24,7 @@ export const Sidebar = (props: Props) => {
         <ul className="space-y-2">
           <Link
             to="/"
-            className={`flex w-full cursor-pointer items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
+            className={`flex w-full cursor-pointer rounded-xl  items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
               path === '/' && 'bg-prime-blue text-white'
             }`}
           >
@@ -33,27 +33,27 @@ export const Sidebar = (props: Props) => {
           </Link>
           <Link
             to={`/${currentUser?.username}`}
-            className={`flex w-full cursor-pointer items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
+            className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
               path === `/${currentUser?.username}` && 'bg-prime-blue text-white'
             }`}
           >
             <i className={`ri-account-pin-box-fill text-2xl ${path === `/${currentUser?.username}` ? 'ri-account-pin-box-fill' : 'ri-account-pin-box-line'}`} />
             <span className="font-medium text-lg">My account</span>
           </Link>
-          <li className="flex w-full cursor-pointer items-center justify-start p-4 gap-4">
+          <li className="flex w-full cursor-pointer rounded-xl items-center justify-start p-4 gap-4">
             <i className="ri-line-chart-line text-2xl" />
             <span className="font-medium text-lg">Trending</span>
           </li>
           <Link
             to="/connections"
-            className={`flex w-full cursor-pointer items-center justify-start p-4 hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
+            className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4 hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
               path === `/connections` && 'bg-prime-blue text-white'
             }`}
           >
             <i className="ri-link text-2xl" />
             <span className="font-medium text-lg">Connections</span>
           </Link>
-          <li className="flex w-full cursor-pointer items-center justify-start p-4 gap-4">
+          <li className="flex w-full cursor-pointer rounded-xl  items-center justify-start p-4 gap-4">
             <i className="ri-book-mark-line text-2xl" />
             <span className="font-medium text-lg">My list</span>
           </li>

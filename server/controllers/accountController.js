@@ -19,12 +19,15 @@ export const sendRequest = async (req, res, next) => {
     const toAccountRef = await User.findById(to).select('account')
     const fromAccountRef = await User.findById(from).select('account')
 
-    const requestAlreadyReceived = await Account.findById(
-      toAccountRef.account,
-      { requestsReceived: { from } }
-    )
+    const requestAlreadyReceived = await Account.find({
+      _id: toAccountRef.account,
+      requestsReceived: from,
+    })
 
-    if (requestAlreadyReceived.requestsReceived.length === 0) {
+    if (
+      requestAlreadyReceived?.requestsReceived?.length === 0 ||
+      requestAlreadyReceived?.requestsReceived === undefined
+    ) {
       await Account.findByIdAndUpdate(
         fromAccountRef.account,
         { $push: { requestsSent: { to } } },

@@ -101,15 +101,15 @@ export const Replies = ({
   return (
     <>
       {toUsername !== null && (
-        <div className="flex relative p-2 my-1  text-[#707070] dark:text-[#9B9B9B] items-start gap-3">
+        <div className="flex relative p-2 my-1 text-dusk-main dark:text-dawn-main items-start gap-3">
           {index < repliesLength - 1 && (
-            <div className="h-[110%] left-9 -z-10 absolute w-[1px] bg-dawn-weak/20 dark:bg-dusk-weak/20" />
+            <div className="h-[110%] left-[34px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
           )}
           <Link to={`/${userByMetadata.username}`}>
             <img
               src={userByMetadata.user_img}
               alt=""
-              className="w-14 h-14 cursor-pointer rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+              className="w-14 h-14 cursor-pointer border border-black/20 dark:border-white/20 object-cover"
             />
           </Link>
           <div className="flex flex-col w-full ">
@@ -134,7 +134,7 @@ export const Replies = ({
                       disabled={
                         editValue.trim() === '' && editValue.length <= 5
                       }
-                      title="Update"
+                      title="Edit"
                       onClick={() => editReply()}
                       className="!text-prime-purple !w-fit"
                     />
@@ -173,16 +173,16 @@ export const Replies = ({
                         } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                       />
                       {activeItem === reply._id + 'DELETE' && (
-                        <div className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 absolute rounded-md p-1 z-20 flex flex-col text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong -right-[25px] -bottom-[80px]">
+                        <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[27px] -bottom-[70px]">
                           <a
                             onClick={() => removeReply()}
-                            className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                            className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                           >
                             Delete
                           </a>
                           <a
                             onClick={() => setActiveItem('')}
-                            className="hover:bg-prime-blue min-w-full rounded-sm  duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                            className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                           >
                             Cancel
                           </a>

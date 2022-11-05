@@ -17,7 +17,7 @@ export const LastPostFirstSection = ({ post }: Props) => {
   return (
     <Link
       to={`/post/${post._id}`}
-      className="transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-black dark:hover:border-b-white hover:scale-105 hover:brightness-110 w-full cursor-pointer h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong"
+      className="hover:drop-shadow-xl dark:hover:brightness-105 transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-fill-strong dark:hover:border-b-fill-weak hover:scale-105 w-full cursor-pointer h-fit p-4  text-dusk-main dark:text-dawn-main  bg-fill-weak dark:bg-fill-strong"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -48,14 +48,14 @@ export const LastPostSecondSection = ({ post }: Props) => {
   return (
     <Link
       to={`/post/${post._id}`}
-      className="transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-black dark:hover:border-b-white hover:scale-105 hover:brightness-110 w-full cursor-pointer h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong"
+      className="hover:drop-shadow-xl dark:hover:brightness-105 transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-black dark:hover:border-b-white hover:scale-105 w-full cursor-pointer h-fit p-4 text-dusk-main dark:text-dawn-main  bg-fill-weak dark:bg-fill-strong"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
             src={userMetadata?.user_img}
             alt=""
-            className="w-12 h-12 rounded-md object-cover"
+            className="w-12 h-12 object-cover"
           />
           <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
             {userMetadata?.name}

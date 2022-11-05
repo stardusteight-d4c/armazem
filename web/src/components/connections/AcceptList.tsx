@@ -58,13 +58,13 @@ export const AcceptList = ({
           {accept.map((accept: User, index: React.Key | null | undefined) => (
             <div
               key={index}
-              className="transition-all px-4 duration-200 hover:brightness-105 cursor-pointer flex justify-between border-y border-dawn-weak/20 dark:border-dusk-weak/20 rounded-sm p-2"
+              className="transition-all px-4 duration-200 cursor-pointer flex justify-between border-y border-dawn-weak/20 dark:border-dusk-weak/20 rounded-sm p-2"
             >
               <Link to={`/${accept.username}`} className="flex">
                 <img
                   src={accept.user_img}
                   alt=""
-                  className="w-20 h-20 rounded-md object-cover"
+                  className="w-20 h-20 object-cover"
                 />
                 <div className="flex flex-col px-2 -mt-1">
                   <span className="text-2xl">{accept.name}</span>
@@ -74,19 +74,19 @@ export const AcceptList = ({
               <div className="flex relative items-center space-x-2 justify-end">
                 <Menu>
                   <Menu.Button>
-                    <i className="ri-check-fill text-green border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-xl cursor-pointer" />
+                    <i className="ri-check-fill text-green border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-xl cursor-pointer" />
                   </Menu.Button>
-                  <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start right-4 -bottom-[55px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+                  <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong right-5 -bottom-[45px]">
                     <Menu.Item>
                       <span
                         onClick={() => createConnection(accept._id)}
-                        className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                        className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                       >
                         Accept
                       </span>
                     </Menu.Item>
                     <Menu.Item>
-                      <span className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                      <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
                         Cancel
                       </span>
                     </Menu.Item>
@@ -96,17 +96,17 @@ export const AcceptList = ({
                   <Menu.Button>
                     <i className="ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
                   </Menu.Button>
-                  <Menu.Items className="transition-all duration-200 hover:brightness-125 drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 rounded-md p-1 absolute flex flex-col items-startS justify-start -right-6 -bottom-[55px] z-50 h-fit text-dusk-main dark:text-dawn-main bg-white dark:bg-fill-strong">
+                  <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[23px] -bottom-[45px]">
                     <Menu.Item>
                       <span
                         onClick={() => rejectRequestConnection(accept._id)}
-                        className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                         className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                       >
                         Reject
                       </span>
                     </Menu.Item>
                     <Menu.Item>
-                      <span className="hover:bg-prime-blue rounded-sm transition-all duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                      <span  className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
                         Cancel
                       </span>
                     </Menu.Item>

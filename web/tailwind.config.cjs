@@ -17,14 +17,14 @@ module.exports = {
     },
     colors: {
       transparent: 'transparent',
-      white: '#FFFFFF',
+      white: '#fff',
       black: '#000000',
       red: '#E44242',
       green: '#57db1f',
       orange: '#EB7140',
       prime: {
         purple: '#4D3BC9',
-        blue: '#4B8EF3',
+        blue: '#4B8BEC', 
       },
       dusk: {
         main: '#3E3E3E',
@@ -36,7 +36,7 @@ module.exports = {
       },
       fill: {
         strong: '#252a27',
-        weak: '#FFFFFF',
+        weak: '#f1eefe',
       },
       layer: {
         heavy: '#2D3039',

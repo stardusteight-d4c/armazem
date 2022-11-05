@@ -31,8 +31,10 @@ export const SharedPosts = ({ userMetadata }: Props) => {
       <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
         Shared posts
       </h2>
+      {sharedPostsData.length > 0 ? (
+        <>
       <div className="flex flex-col gap-y-5">
-        {sharedPostsData.slice(0,3).map((post, index) => (
+        {sharedPostsData.slice(0,3).reverse().map((post, index) => (
           <SharedPostCard key={index} post={post} />
         ))}
       </div>
@@ -43,6 +45,12 @@ export const SharedPosts = ({ userMetadata }: Props) => {
           className="bg-prime-blue my-5 !text-xl p-4 px-16 "
         />
       </div>
+        </>
+      ) : (
+        <div className="flex items-center justify-center text-2xl my-8">
+          No posts shared yet
+        </div>
+      )}
     </section>
   )
 }
