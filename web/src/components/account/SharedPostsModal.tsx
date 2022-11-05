@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import {
-  askToRequestAgain,
-  handleOpenModal,
-  handleUserMetadata,
-} from '../../store'
+import { handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import axios from 'axios'
 import {
-  dataByUsername,
-  postByPagination,
-  searchUserPostByTitle,
+  searchSharedPostByTitle,
+  sharedPostByPagination,
+  userData,
 } from '../../services/api-routes'
-import { useLocation } from 'react-router-dom'
 
 interface Props {}
 
-export const AllLastsPostsModal = (props: Props) => {
+export const SharedPostsModal = (props: Props) => {
   const dispatch = useAppDispatch()
   const [page, setPage] = useState(1)
   const [posts, setPosts] = useState([])
@@ -28,10 +23,9 @@ export const AllLastsPostsModal = (props: Props) => {
     searching ? searchByTerm() : getPostsData()
   }, [searching, page, searchTerm])
 
-
   const getPostsData = async () => {
     const { data } = await axios.get(
-      `${postByPagination}/${userMetadata?._id}/${page}`
+      `${sharedPostByPagination}/${userMetadata?.account}/${page}`
     )
     if (data.status === true) {
       setPosts(data.posts)
@@ -40,9 +34,9 @@ export const AllLastsPostsModal = (props: Props) => {
 
   const searchByTerm = async () => {
     if (searchTerm.length >= 3) {
-      const { data } = await axios.post(searchUserPostByTitle, {
+      const { data } = await axios.post(searchSharedPostByTitle, {
+        accountId: userMetadata?.account,
         searchTerm: searchTerm,
-        userId: userMetadata?._id,
       })
       setPosts(data.posts)
     } else {
@@ -71,7 +65,7 @@ export const AllLastsPostsModal = (props: Props) => {
         className="absolute border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-14 pt-4 pb-16 rounded-sm z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-white dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">All posts</h1>
+          <h1 className="text-2xl font-semibold">Shared Posts</h1>
           <i
             onClick={() => dispatch(handleOpenModal(null))}
             className="ri-close-circle-fill text-4xl cursor-pointer"
@@ -135,14 +129,18 @@ interface PropsList {
 
 const ListPost = ({ post }: PropsList) => {
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
+  const [authorPost, setAuthorPost] = useState<User>()
+
+  useEffect(() => {
+    ;(async () => {
+      const { data } = await axios.get(`${userData}/${post.by}`)
+      setAuthorPost(data.user)
+    })()
+  }, [])
 
   return (
     <div className="flex space-x-2 cursor-pointer">
-      <img
-        className="w-12 h-12"
-        src={userMetadata?.user_img}
-        alt="avatar/img"
-      />
+      <img className="w-12 h-12" src={authorPost?.user_img} alt="avatar/img" />
       <div className="flex flex-col -mt-1">
         <h2 className="text-lg font-semibold">{post.title}</h2>
         <p className="truncate w-96">{post.body}</p>

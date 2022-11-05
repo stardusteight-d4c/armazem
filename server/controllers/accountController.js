@@ -171,15 +171,91 @@ export const postByPagination = async (req, res, next) => {
   try {
     const userId = req.params.userId
     const page = req.params.page
-    const skip = (page - 1) * 5
+    const skip = (page - 1) * 2
 
     // 5 out of 5 pagination
     const posts = await Post.find({ by: userId })
       .skip(skip)
-      .limit(5)
+      .limit(2)
       .sort('-createdAt')
-     
+
     return res.status(200).json({ status: true, posts })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const searchUserPostByTitle = async (req, res, next) => {
+  try {
+    const { searchTerm, userId } = req.body
+    const posts = await Post.find({
+      by: userId,
+      title: { $regex: new RegExp(searchTerm, 'i') },
+    }).limit(2)
+    return res.json({ posts })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const sharedPostByPagination = async (req, res, next) => {
+  try {
+    const accountId = req.params.accountId
+    const page = req.params.page
+    // const skip = (page - 1) * 2
+
+    const sharedPostsRef = await Account.findById(accountId).select(
+      'sharedPosts'
+    )
+
+    const sharedPostsIds = []
+    sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post))
+
+    const sharedPosts = await Promise.all(
+      sharedPostsIds.map(async (id) => await Post.find({ _id: id })).reverse()
+    )
+
+    function paginate(array, page_size, page_number) {
+      return array.slice((page_number - 1) * page_size, page_number * page_size)
+    }
+
+    const sharedPostsPaginate = paginate(sharedPosts, 2, page)
+    const posts = []
+    sharedPostsPaginate.map((post) => posts.push(post[0]))
+
+    return res.status(200).json({ status: true, posts })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const searchSharedPostByTitle = async (req, res, next) => {
+  try {
+    const { searchTerm, accountId } = req.body
+
+    const sharedPostsRef = await Account.findById(accountId).select(
+      'sharedPosts'
+    )
+
+    const sharedPostsIds = []
+    sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post))
+
+    const searchResult = await Promise.all(
+      sharedPostsIds
+        .map(
+          async (id) =>
+            await Post.find({
+              _id: id,
+              title: { $regex: new RegExp(searchTerm, 'i') },
+            })
+        )
+        .reverse()
+    )
+
+    const posts = []
+    searchResult.map((post) => post.length > 0 && posts.push(post[0]))
+
+    return res.json({ posts })
   } catch (error) {
     next(error)
   }

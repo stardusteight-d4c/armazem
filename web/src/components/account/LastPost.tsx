@@ -69,7 +69,6 @@ export const LastPostSecondSection = ({ post }: Props) => {
         </h2>
       </div>
       <p className="line-clamp-4">{post.body}</p>
-      <div className="h-[1px] w-full my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
     </Link>
   )
 }

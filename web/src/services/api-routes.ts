@@ -25,6 +25,9 @@ export const rejectConnection = `${hostServer}/api/account/rejectConnection`
 export const removeConnection = `${hostServer}/api/account/removeConnection` 
 export const sharedPosts = `${hostServer}/api/account/sharedPosts` 
 export const postByPagination = `${hostServer}/api/account/postByPagination` // /:userId/:page
+export const searchUserPostByTitle = `${hostServer}/api/account/searchUserPostByTitle`
+export const sharedPostByPagination = `${hostServer}/api/account/sharedPostByPagination` // /:accountId/:page
+export const searchSharedPostByTitle = `${hostServer}/api/account/searchSharedPostByTitle` 
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`
