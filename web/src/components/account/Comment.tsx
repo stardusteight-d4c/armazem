@@ -4,9 +4,14 @@ import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
 import axios from 'axios'
-import { updateComment, userData } from '../../services/api-routes'
+import {
+  deleteComment,
+  updateComment,
+  userData,
+} from '../../services/api-routes'
 import { Button } from '../Button'
 import { Loader } from '../Loader'
+import { success } from '../Toasters'
 
 timeago.register('en_short', en_short)
 
@@ -56,6 +61,15 @@ export const Comment = ({
       commentId: comment._id,
       body: editValue,
     })
+  }
+
+  const removeComment = async () => {
+    const { data } = await axios.post(deleteComment, {
+      commentId: comment._id,
+    })
+    if (data.status === true) {
+      success(data.msg)
+    }
   }
 
   return (
@@ -108,7 +122,7 @@ export const Comment = ({
               {activeItem === comment._id + 'DELETE' && (
                 <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[20px] -bottom-[68px]">
                   <a
-                    // onClick={() => removeDiscussion()}
+                    onClick={() => removeComment()}
                     className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                   >
                     Delete
@@ -141,7 +155,7 @@ export const Comment = ({
               {activeItem === comment._id + 'DELETE' && (
                 <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[20px] -bottom-[68px]">
                   <a
-                    // onClick={() => removeDiscussion()}
+                    onClick={() => removeComment()}
                     className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
                   >
                     Delete

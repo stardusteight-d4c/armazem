@@ -31,6 +31,7 @@ export const searchSharedPostByTitle = `${hostServer}/api/account/searchSharedPo
 export const addComment = `${hostServer}/api/account/addComment` 
 export const updateComment = `${hostServer}/api/account/updateComment` 
 export const accountComments = `${hostServer}/api/account/accountComments` // /:accountId
+export const deleteComment = `${hostServer}/api/account/deleteComment` 
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`

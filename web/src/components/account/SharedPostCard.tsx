@@ -30,7 +30,7 @@ export const SharedPostCard = ({ post }: Props) => {
            {authorPost?.username}
           </span>
         </Link>
-        <span>{post?.createdAt}</span>
+        <span> {new Date(post!.createdAt).toLocaleString('en-US')}</span>
       </div>
       <div>
         <h2 className="font-semibold text-xl py-2 text-dusk-main dark:text-dawn-main">

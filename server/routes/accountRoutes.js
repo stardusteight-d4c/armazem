@@ -4,6 +4,7 @@ import {
   accountDataByUserId,
   addComment,
   addConnection,
+  deleteComment,
   postByPagination,
   rejectConnection,
   removeConnection,
@@ -30,5 +31,6 @@ router.post('/searchSharedPostByTitle', searchSharedPostByTitle)
 router.post('/addComment', addComment)
 router.post('/updateComment', updateComment)
 router.get('/accountComments/:accountId', accountComments)
+router.post('/deleteComment', deleteComment)
 
 export { router }

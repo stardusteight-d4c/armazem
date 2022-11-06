@@ -16,12 +16,9 @@ import {
   updatePost,
 } from '../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import TimeAgo from 'timeago-react'
-import * as timeago from 'timeago.js'
-import en_short from 'timeago.js/lib/lang/en_short'
 import { askToRequestAgain } from '../store'
 
-timeago.register('en_short', en_short)
+
 
 interface Props {}
 
@@ -162,8 +159,10 @@ export const Post = (props: Props) => {
     })
   }
 
-  const isSharedPosts =
-    currentAccount && currentAccount?.sharedPosts?.includes(post?._id)
+  const sharedPosts = currentAccount?.sharedPosts?.map(
+    (postShared: any) => postShared.id
+  )
+  const isSharedPosts = currentAccount && sharedPosts?.includes(post?._id)
 
   return (
     <div className={style.gridContainer}>
@@ -184,11 +183,14 @@ export const Post = (props: Props) => {
                       {post?.title}
                     </span>
                     <span className="text-lg w-fit mt-2">
-                      <TimeAgo datetime={post!.createdAt} locale="en_short" />
+                      {new Date(post!.createdAt).toLocaleString('en-US')}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <Link to={`/${authorUser?.username}`} className="flex items-start justify-start gap-x-2">
+                    <Link
+                      to={`/${authorUser?.username}`}
+                      className="flex items-start justify-start gap-x-2"
+                    >
                       <img
                         className="w-14 h-14"
                         src={authorUser?.user_img}

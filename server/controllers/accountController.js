@@ -333,3 +333,21 @@ export const updateComment = async (req, res, next) => {
     })
   }
 }
+
+export const deleteComment = async (req, res, next) => {
+  try {
+    const { commentId } = req.body
+
+    await Comment.findByIdAndDelete(commentId)
+
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Comment successfully deleted' })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
