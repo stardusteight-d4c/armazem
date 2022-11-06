@@ -1,9 +1,13 @@
 import User from '../models/userModel.js'
 
 export const userById = async (req, res, next) => {
-  const userId = req.params.id
-  const user = await User.findById(userId)
-  return res.json({ user })
+  try {
+    const userId = req.params.id
+    const user = await User.findById(userId)
+    return res.json({ user })
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const userByUsername = async (req, res, next) => {

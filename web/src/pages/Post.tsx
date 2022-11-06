@@ -29,7 +29,6 @@ export const Post = (props: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const { id: postId } = useParams()
   const [loading, setLoading] = useState(true)
-  const [authorAccount, setAuthorAccount] = useState()
   const [authorUser, setAuthorUser] = useState<User>()
   const [post, setPost] = useState<Post>()
   const [postComment, setPostComment] = useState<any>({ body: '' })

@@ -142,8 +142,8 @@ const ListPost = ({ post }: PropsList) => {
     <div className="flex space-x-2 cursor-pointer">
       <img className="w-12 h-12" src={authorPost?.user_img} alt="avatar/img" />
       <div className="flex flex-col -mt-1">
-        <h2 className="text-lg font-semibold">{post.title}</h2>
-        <p className="truncate w-96">{post.body}</p>
+        <h2 className="text-lg font-semibold">{post?.title}</h2>
+        <p className="truncate w-96">{post?.body}</p>
       </div>
     </div>
   )

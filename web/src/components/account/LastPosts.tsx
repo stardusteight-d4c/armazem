@@ -47,15 +47,19 @@ export const LastPosts = ({ userMetadata }: Props) => {
         <>
           <div className="flex gap-5">
             <div className="flex flex-col gap-y-5 max-w-[50%]">
-              {lastPosts.slice(0, 2).map((post: any) => (
-                <LastPostFirstSection post={post} />
-              ))}
+              {lastPosts
+                .slice(0, 2)
+                .map((post: any, index: React.Key | null | undefined) => (
+                  <LastPostFirstSection post={post} key={index} />
+                ))}
             </div>
 
             <div className="flex flex-col gap-y-5 max-w-[50%]">
-              {lastPosts.slice(2, 4).map((post: any) => (
-                <LastPostSecondSection post={post} />
-              ))}
+              {lastPosts
+                .slice(2, 4)
+                .map((post: any, index: React.Key | null | undefined) => (
+                  <LastPostSecondSection post={post} key={index} />
+                ))}
             </div>
           </div>
           <div className="flex items-center justify-center">

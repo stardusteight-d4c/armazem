@@ -1,6 +1,10 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { accountDataByUserId, addComment } from '../../services/api-routes'
+import {
+  accountComments,
+  accountDataByUserId,
+  addComment,
+} from '../../services/api-routes'
 import { useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
 import { success } from '../Toasters'
@@ -14,21 +18,25 @@ export const Comments = ({ userMetadata }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const [comment, setComment] = useState('')
   const [comments, setComments] = useState([])
+  const [edit, setEdit] = useState('')
+  const [activeItem, setActiveItem] = useState('')
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(
-        `${accountDataByUserId}/${userMetadata._id}`
-      )
-      if (data.status === true) {
-        setComments(data.account.comments)
+      if (userMetadata._id) {
+        const { data } = await axios.get(
+          `${accountComments}/${userMetadata?.account}`
+        )
+        if (data.status === true) {
+          setComments(data.comments)
+        }
       }
     })()
   }, [])
 
   const sendComment = async () => {
     const { data } = await axios.post(addComment, {
-      accountId: userMetadata.account,
+      accountId: userMetadata?.account,
       userId: currentUser?._id,
       comment,
     })
@@ -37,11 +45,8 @@ export const Comments = ({ userMetadata }: Props) => {
     }
   }
 
-  console.log(comments);
-  
-
   return (
-    <section>
+    <section className="mb-7">
       <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
         Comments
       </h2>
@@ -77,8 +82,14 @@ export const Comments = ({ userMetadata }: Props) => {
 
         {comments.length > 0 ? (
           <>
-            {comments?.map((comment) => (
-              <Comment userMetadata={userMetadata} comment={comment} />
+            {comments?.map((comment, index) => (
+              <Comment
+                userMetadata={userMetadata}
+                comment={comment}
+                key={index}
+                activeItem={activeItem}
+                setActiveItem={setActiveItem}
+              />
             ))}
           </>
         ) : (

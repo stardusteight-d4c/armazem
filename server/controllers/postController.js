@@ -323,6 +323,12 @@ export const deletePost = async (req, res, next) => {
     replies.map(async (reply) => await Reply.findByIdAndDelete(reply))
     await Discussion.deleteMany({ post: postId })
 
+    await Account.updateMany({
+      $pullAll: {
+        sharedPosts: [{ id: postId }],
+      },
+    })
+
     await Account.findByIdAndUpdate(
       accountId,
       {
@@ -348,7 +354,7 @@ export const sharePost = async (req, res, next) => {
     await Account.findByIdAndUpdate(
       accountId,
       {
-        $addToSet: { sharedPosts: postId },
+        $addToSet: { sharedPosts: { id: postId } },
       },
       { safe: true, multi: false }
     )
@@ -368,7 +374,7 @@ export const unsharePost = async (req, res, next) => {
     await Account.findByIdAndUpdate(
       accountId,
       {
-        $pull: { sharedPosts: postId },
+        $pull: { sharedPosts: { id: postId } },
       },
       { safe: true, multi: false }
     )

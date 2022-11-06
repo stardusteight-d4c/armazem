@@ -15,13 +15,11 @@ const accountSchema = new mongoose.Schema({
     with: String,
   },
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-  sharedPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-  comments: {
+  sharedPosts: {
     type: Array,
-    by: { type: Schema.Types.ObjectId, ref: 'User' },
-    comment: String,
-    createdAt: { type: Date, default: Date.now },
+    id: { type: Schema.Types.ObjectId, ref: 'Post' },
   },
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 })
 
 export default mongoose.model('Account', accountSchema)

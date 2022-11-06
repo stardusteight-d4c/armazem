@@ -1,6 +1,9 @@
 import Account from '../models/accountModel.js'
 import User from '../models/userModel.js'
 import Post from '../models/postModel.js'
+import Comment from '../models/commentModel.js'
+import ShortUniqueId from 'short-unique-id'
+const uid = new ShortUniqueId({ length: 10 })
 
 export const accountDataByUserId = async (req, res, next) => {
   try {
@@ -156,7 +159,7 @@ export const sharedPosts = async (req, res, next) => {
     )
 
     const sharedPostsIds = []
-    sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post))
+    sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post.id))
 
     const sharedPosts = await Promise.all(
       sharedPostsIds.map(
@@ -266,21 +269,67 @@ export const searchSharedPostByTitle = async (req, res, next) => {
 
 export const addComment = async (req, res, next) => {
   try {
-    const {accountId, userId, comment } = req.body
+    const { accountId, userId, comment } = req.body
+
+    const accountComment = await Comment.create({
+      in: accountId,
+      by: userId,
+      comment: comment,
+    })
+
     await Account.findByIdAndUpdate(
-     accountId,
+      accountId,
       {
-        $push: { comments: { by: userId, comment: comment, createdAt: Date.now() } },
+        $push: { comments: accountComment._id },
       },
-      { safe: true, multi: false }
+      { safe: true, upsert: true }
     )
 
-    return res.status(200).json({ status: true, msg: 'Comment made successfully' })
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Comment made successfully' })
   } catch (error) {
     next(error)
   }
 }
 
-export const commentsOfAccount = async (req, res, next) => {
-  // envia comentário com os metadados do usuário// talvez
+export const accountComments = async (req, res, next) => {
+  try {
+    const accountId = req.params.accountId
+    const commentsIds = await Account.findById(accountId).select('comments')
+    const commentsMetadata = await Promise.all(
+      commentsIds.comments.map(async (id) => await Comment.find({ _id: id }))
+    )
+
+    const comments = []
+    commentsMetadata.map(
+      (comment) => comment.length > 0 && comments.push(comment[0])
+    )
+
+    return res.status(200).json({ status: true, comments })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const updateComment = async (req, res, next) => {
+  try {
+    const { commentId, body } = req.body
+
+    await Comment.findByIdAndUpdate(
+      commentId,
+      {
+        $set: { comment: body },
+      },
+      { safe: true, multi: false }
+    )
+
+    return res.status(200)
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
 }

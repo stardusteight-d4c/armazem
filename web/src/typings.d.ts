@@ -64,6 +64,7 @@ interface Post {
 
 
 interface Comment {
+  _id: string,
   by: string
   comment: string
   createdAt: string

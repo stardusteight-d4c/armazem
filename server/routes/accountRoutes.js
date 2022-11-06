@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+  accountComments,
   accountDataByUserId,
   addComment,
   addConnection,
@@ -11,6 +12,7 @@ import {
   sendRequest,
   sharedPostByPagination,
   sharedPosts,
+  updateComment,
 } from '../controllers/accountController'
 
 const router = express.Router()
@@ -26,5 +28,7 @@ router.post('/searchUserPostByTitle', searchUserPostByTitle)
 router.get('/sharedPostByPagination/:accountId/:page', sharedPostByPagination)
 router.post('/searchSharedPostByTitle', searchSharedPostByTitle)
 router.post('/addComment', addComment)
+router.post('/updateComment', updateComment)
+router.get('/accountComments/:accountId', accountComments)
 
 export { router }

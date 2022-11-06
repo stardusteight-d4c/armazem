@@ -12,7 +12,7 @@ import {
   postByPagination,
   searchUserPostByTitle,
 } from '../../services/api-routes'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 interface Props {}
 
@@ -144,7 +144,7 @@ const ListPost = ({ post }: PropsList) => {
         alt="avatar/img"
       />
       <div className="flex flex-col -mt-1">
-        <h2 className="text-lg font-semibold">{post.title}</h2>
+        <Link to={`/post/${post?._id}`} className="text-lg font-semibold transition-all duration-200 hover:text-prime-blue">{post.title}</Link>
         <p className="truncate w-96">{post.body}</p>
       </div>
     </div>
