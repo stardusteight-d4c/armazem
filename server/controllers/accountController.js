@@ -270,7 +270,7 @@ export const addComment = async (req, res, next) => {
     await Account.findByIdAndUpdate(
      accountId,
       {
-        $push: { comments: { by: userId, comment: comment } },
+        $push: { comments: { by: userId, comment: comment, createdAt: Date.now() } },
       },
       { safe: true, multi: false }
     )
@@ -282,5 +282,5 @@ export const addComment = async (req, res, next) => {
 }
 
 export const commentsOfAccount = async (req, res, next) => {
-  // envia comentário com os metadados do usuário
+  // envia comentário com os metadados do usuário// talvez
 }

@@ -20,6 +20,7 @@ const accountSchema = new mongoose.Schema({
     type: Array,
     by: { type: Schema.Types.ObjectId, ref: 'User' },
     comment: String,
+    createdAt: { type: Date, default: Date.now },
   },
 })
 

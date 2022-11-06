@@ -61,3 +61,10 @@ interface Post {
   createdAt: string
   updatedAt: string
 }
+
+
+interface Comment {
+  by: string
+  comment: string
+  createdAt: string
+}
