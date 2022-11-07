@@ -11,16 +11,15 @@ import {
 } from '../../services/api-routes'
 import { Toaster } from 'react-hot-toast'
 import { User } from 'firebase/auth'
-import { signInWithGoogle } from '../../services/validate-form'
+import { signInWithGoogle } from './integrate/validate-form'
 import { useAppDispatch } from '../../store/hooks'
 import { handleAuthSession } from '../../store'
 
 interface Props {
-  signIn: boolean
   setSignIn: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const SignIn = ({ signIn, setSignIn }: Props) => {
+export const SignIn = ({ setSignIn }: Props) => {
   const navigate = useNavigate()
   const [user, setUser] = useState<User>({} as User)
   const [emailVerified, setEmailVerified] = useState(false)
@@ -111,7 +110,7 @@ export const SignIn = ({ signIn, setSignIn }: Props) => {
         <div className="flex items-center space-x-4 font-medium text-sm pt-5 pb-4">
           <span className="text-dawn-weak dark:text-dusk-weak">New user?</span>
           <span
-            onClick={() => setSignIn(!signIn)}
+            onClick={() => setSignIn(false)}
             className="text-prime-blue cursor-pointer p-1 hover:underline"
           >
             Create an account

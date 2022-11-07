@@ -13,13 +13,15 @@ import axios from 'axios'
 interface Props {}
 
 export const Login = (props: Props) => {
-  const [signIn, setSignIn] = useState(true)
-  const [loading, setLoading] = useState(true)
+  const [signIn, setSignIn] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  dispatch(clearAuthSession())
-  dispatch(clearCurrentUser())
+  useEffect(() => {
+    dispatch(clearAuthSession())
+    dispatch(clearCurrentUser())
+  }, [])
 
   const switchForm = {
     signIn: signIn,
@@ -27,15 +29,14 @@ export const Login = (props: Props) => {
   }
 
   useEffect(() => {
-    setLoading(true)
     const session = sessionStorage.getItem('session')
     if (session) {
       ;(async () => {
         try {
-          const parsed = JSON.parse(session) // get raw token: "token" -> token
+          const rawToken = JSON.parse(session)
           const { data } = await axios.post(authorization, null, {
             headers: {
-              Authorization: parsed,
+              Authorization: rawToken,
             },
           })
           if (data.status === false) {
@@ -107,8 +108,8 @@ const style = {
   logoIcon: `ri-server-fill text-3xl text-fill-weak`,
   logoText: 'text-4xl font-inter text-fill-weak font-bold',
   backgroundImage: `w-screen h-screen absolute inset-0 object-cover object-top opacity-95`,
-  pageSpan: `z-10 absolute bottom-0 left-0 bg-fill-weak font-medium text-lg dark:bg-fill-strong py-1 px-2 hidden xl:block`,
-  switch: `absolute bottom-4 z-30 left-[50%] translate-x-[-50%]`,
+  pageSpan: `z-10 w-full absolute bottom-0 left-0 bg-fill-weak font-medium text-base dark:bg-fill-strong py-[2px] px-2 hidden xl:block`,
+  switch: `absolute top-4 z-30 left-[50%] translate-x-[-50%]`,
 }
 
 const grid = {

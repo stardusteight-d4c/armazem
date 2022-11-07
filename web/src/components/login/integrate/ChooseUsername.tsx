@@ -49,7 +49,7 @@ export const ChooseUsername = (props: Props) => {
           className="mx-auto max-w-md"
         >
           <i
-            onClick={() => setUser({} as User)}
+            // onClick={() => setUser(undefined!)}
             className="ri-arrow-left-line absolute top-5 left-5 text-3xl p-2 cursor-pointer"
           />
           <h1 className="text-4xl font-semibold">Choose username</h1>

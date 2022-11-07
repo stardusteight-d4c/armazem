@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer'
 export async function SendEmailVerification(email, name, token) {
   var transporter = nodemailer.createTransport({
     service: 'Gmail',
+    host: "smtp.ethereal.email",
     auth: {
       user: 'stardusteight.d4cc@gmail.com',
       pass: 'gtrqgsupsmiogwcv', // get in google Two-step verification

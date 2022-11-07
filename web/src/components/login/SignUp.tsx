@@ -1,32 +1,27 @@
-import React, { JSXElementConstructor, ReactComponentElement, ReactNode, useEffect, useState } from 'react'
-import { Button } from '../Button'
-import { AnimatePresence, motion } from 'framer-motion'
-import { error, success } from '../Toasters'
-import { ConfirmEmail } from './integrate/ConfirmEmail'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { User } from 'firebase/auth'
+
 import {
-  emailConfirmation,
-  register,
-  verifyEmailAddress,
-} from '../../services/api-routes'
-import bcryptjs from 'bcryptjs'
+  handleUsernameValidation,
+  handleValidation,
+  signInWithGoogle,
+} from './integrate/validate-form'
+import { inputData } from './integrate/input-data'
+import { Input } from './integrate/Input'
+import { ConfirmVerificationToken } from './integrate/ConfirmVerificationToken'
+import { ConfirmEmail } from './integrate/ConfirmEmail'
+import { ChooseUsername } from './integrate/ChooseUsername'
+import { Button } from '../Button'
+import { error } from '../Toasters'
+import { AnimatePresence, motion } from 'framer-motion'
+
+import axios from 'axios'
+import { verifyEmailAddress } from '../../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import {
   clearRegisterValuesEntries,
   handleChangeRegisterValues,
 } from '../../store'
-import { useNavigate } from 'react-router-dom'
-
-import { User } from 'firebase/auth'
-import {
-  disableButton,
-  handleValidation,
-  signInWithGoogle,
-} from '../../services/validate-form'
-import { Input } from './integrate/Input'
-import { inputData } from './integrate/input-data'
-import { ConfirmVerificationToken } from './integrate/ConfirmVerificationToken'
-import { ChooseUsername } from './integrate/ChooseUsername'
 
 interface Props {
   signIn: boolean
@@ -34,94 +29,12 @@ interface Props {
 }
 
 export const SignUp = ({ signIn, setSignIn }: Props) => {
-  const navigate = useNavigate()
   const [token, setToken] = useState(undefined)
-  const [userToken, setUserToken] = useState('')
-  const [loading, setLoading] = useState(false)
   const [proceedToConfirmEmail, setProceedToConfirmEmail] = useState(false)
-  // const [usernameAvailable, setUsernameAvailable] = useState(false)
   const [emailAvailable, setEmailAvailable] = useState(false)
   const [user, setUser] = useState<User>({} as User)
   const dispatch = useAppDispatch()
   const registerValues = useAppSelector((state) => state.armazem.registerValues)
-
-  const handleConfirmEmail = async (event: React.FormEvent) => {
-    event.preventDefault()
-    if (handleValidation(registerValues, setProceedToConfirmEmail)) {
-      setLoading(true)
-      const { email, firstName, lastName } = registerValues
-      const name = firstName + ' ' + lastName
-      const { data } = await axios.post(emailConfirmation, {
-        name,
-        email,
-      })
-      if (data.status === false) {
-        setLoading(false)
-        error(data.msg)
-      }
-      if (data.status === true) {
-        setLoading(false)
-        setToken(data.token)
-        success(data.msg)
-      }
-    }
-  }
-
-  const verifyToken = async (userToken: string) => {
-    if (token) {
-      const isTokenValid = bcryptjs.compareSync(userToken, token)
-      if (!isTokenValid) {
-        error('Token is invalid')
-        return false
-      } else {
-        success('Email successfully confirmed')
-        return true
-      }
-    }
-  }
-
-  // const verifyUsername = async (username: string) => {
-  //   try {
-  //     const { data } = await axios.post(validateSignUp, {
-  //       username,
-  //     })
-  //       if (data.status === false) {
-  //         setUsernameAvailable(false)
-  //         success(data.msg)
-  //       } else {
-  //         setUsernameAvailable(true)
-  //       }
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.stopPropagation()
-    event.preventDefault()
-    const emailConfirmed = await verifyToken(userToken)
-    if (
-      handleValidation(registerValues, setProceedToConfirmEmail) &&
-      emailConfirmed
-    ) {
-      setLoading(true)
-      const { firstName, lastName, username, email, password } = registerValues
-      const name = firstName + ' ' + lastName
-      const { data } = await axios.post(register, {
-        name,
-        username,
-        email,
-        password,
-      })
-      if (data.status === false) {
-        error(data.msg)
-      }
-      if (data.status === true) {
-        sessionStorage.setItem('session', JSON.stringify(data.session))
-        navigate('/')
-      }
-    }
-  }
 
   useEffect(() => {
     ;(async () => {
@@ -142,17 +55,22 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     })()
   }, [user.metadata])
 
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.stopPropagation()
+    event.preventDefault()
+    if (await handleUsernameValidation(registerValues)) {
+      handleValidation(registerValues, setProceedToConfirmEmail)
+    }
+  }
+
   const confirmEmailProps = {
-    handleConfirmEmail,
-    loading,
+    setToken,
     setProceedToConfirmEmail,
   }
 
   const verifyTokenProps = {
-    handleSubmit,
-    setUserToken,
-    verifyToken,
-    userToken,
+    setToken,
+    token,
   }
 
   const emailVerification = () => {
@@ -188,7 +106,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
             <span className={style.span}>Already a user?</span>
             <span
               onClick={() => (
-                setSignIn(!signIn), dispatch(clearRegisterValuesEntries())
+                dispatch(clearRegisterValuesEntries()), setSignIn(!signIn)
               )}
               className={style.link}
             >
@@ -196,8 +114,9 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
             </span>
           </div>
           <div className={style.gridContainer}>
-            {inputData.map((input) => (
+            {inputData.map((input, index) => (
               <Input
+                key={index}
                 {...input}
                 onChange={(e) => dispatch(handleChangeRegisterValues(e))}
               />
@@ -208,7 +127,6 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
           type="submit"
           title="Continue"
           className="mt-2 bg-prime-purple"
-          disabled={disableButton(registerValues)}
         />
         <span className={style.optionalSignUp}>Sign up by Open ID</span>
         <Button

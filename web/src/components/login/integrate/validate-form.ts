@@ -1,14 +1,8 @@
+import axios from 'axios'
 import { GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth'
-import { error } from '../components/Toasters'
-import { auth } from './firebase'
-
-interface registerValuesParams {
-  firstName: string
-  lastName: string
-  username: string
-  password: string
-  email: string
-}
+import { error } from '../../Toasters'
+import { verifyUsername } from '../../../services/api-routes'
+import { auth } from '../../../services/firebase'
 
 const validateEmail = (email: string) => {
   return email.match(
@@ -16,20 +10,36 @@ const validateEmail = (email: string) => {
   )
 }
 
-export const disableButton = (registerValues: registerValuesParams) => {
+export const disableButton = (registerValues: RegisterValues) => {
   const booleanValues = []
-  for (const [key, value] of Object.entries(registerValues)) {
+  for (const [, value] of Object.entries(registerValues)) {
     booleanValues.push(value.trim() == '')
   }
   const emptyInput = booleanValues.includes(true)
   return emptyInput
 }
 
+export const handleUsernameValidation = async (
+  registerValues: RegisterValues
+) => {
+  const { username } = registerValues
+  const { data } = await axios.post(verifyUsername, {
+    username,
+  })
+  if (data.status === true) {
+    return true
+  } else {
+    error(data.msg)
+    return false
+  }
+}
+
 export const handleValidation = (
-  registerValues: registerValuesParams,
+  registerValues: RegisterValues,
   setProceedToConfirmEmail: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { firstName, lastName, username, password, email } = registerValues
+
   if (firstName.length < 2) {
     error('First name must contain at least 2 characters')
     return false
@@ -42,7 +52,7 @@ export const handleValidation = (
   } else if (password.length < 8) {
     error('Password must contain at least 8 characters')
     return false
-  } else if (email !== '<empty>' && !validateEmail(email)) {
+  } else if (email !== '' && !validateEmail(email)) {
     error('Enter a valid email address')
     return false
   }
@@ -50,7 +60,9 @@ export const handleValidation = (
   return true
 }
 
-export function signInWithGoogle(setUser: React.Dispatch<React.SetStateAction<User>>) {
+export function signInWithGoogle(
+  setUser: React.Dispatch<React.SetStateAction<User>>
+) {
   const provider = new GoogleAuthProvider()
   signInWithPopup(auth, provider)
     .then((result) => {

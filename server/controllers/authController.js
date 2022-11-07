@@ -5,6 +5,22 @@ import jwt from 'jsonwebtoken'
 import ShortUniqueId from 'short-unique-id'
 import { SendEmailVerification } from '../services/nodemailer.js'
 
+export const verifyUsername = async (req, res, next) => {
+  try {
+    const { username } = req.body
+    const usernameCheck = await User.findOne({ username })
+    if (usernameCheck) {
+      return res.json({
+        msg: 'Username is already in use',
+        status: false,
+      })
+    }
+    return res.json({ status: true, msg: 'Username available ', username })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const emailConfirmation = async (req, res, next) => {
   try {
     const { name, email } = req.body
@@ -16,62 +32,12 @@ export const emailConfirmation = async (req, res, next) => {
     } else {
       await SendEmailVerification(email, name, token).catch(console.error)
       const encryptedToken = await brcypt.hash(token, 10)
-
       return res.json({
         msg: `Email sent to ${email}`,
         status: true,
         token: encryptedToken,
       })
     }
-  } catch (error) {
-    next(error)
-  }
-}
-
-export const validateSignUp = async (req, res, next) => {
-  try {
-    const { username } = req.body
-    const usernameCheck = await User.findOne({ username })
-    if (username.length > 3) {
-      if (usernameCheck) {
-        return res.json({
-          msg: 'Username is already in use',
-          status: false,
-        })
-      }
-      return res.json({ status: true, msg: 'Username available ', username })
-    }
-  } catch (error) {
-    next(error)
-  }
-}
-
-export const register = async (req, res, next) => {
-  try {
-    const { name, email, username, password } = req.body
-    const hashedPassword = await brcypt.hash(password, 10)
-    const user = await User.create({
-      name,
-      email,
-      username,
-      password: hashedPassword,
-    })
-    delete user.password
-    // const account = await Account.create({
-    //   from: user._id
-    // })
-    // const userCreated = await User.findByIdAndUpdate(user._id, {
-    //   account: account._id
-    // })
-    const sessionToken = jwt.sign(
-      { user_id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '7d',
-      }
-    )
-    const id = user._id
-    return res.json({ status: true, id, session: sessionToken })
   } catch (error) {
     next(error)
   }
@@ -89,6 +55,37 @@ export const verifyEmailAddress = async (req, res, next) => {
       })
     }
     return res.json({ status: false, msg: 'Email not found' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const register = async (req, res, next) => {
+  try {
+    const { name, email, username, password } = req.body
+    const hashedPassword = await brcypt.hash(password, 10)
+    const user = await User.create({
+      name,
+      email,
+      username,
+      password: hashedPassword,
+    })
+    delete user.password
+    const account = await Account.create({
+      user: user._id,
+    })
+    await User.findByIdAndUpdate(user._id, {
+      account: account._id,
+    })
+    const sessionToken = jwt.sign(
+      { user_id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '7d',
+      }
+    )
+    const id = user._id
+    return res.json({ status: true, id, session: sessionToken })
   } catch (error) {
     next(error)
   }
@@ -118,16 +115,12 @@ export const registerGoogleAccount = async (req, res, next) => {
       email,
       username,
       user_img: image,
-    })   
-    // const objectId = mongoose.Types.ObjectId(user._id);
-    // console.log('objectId', objectId);
-    // console.log('user._id.toString()', user._id.toString());
-   
-    const account = await Account.create({
-      user: user._id
     })
-    const userCreated = await User.findByIdAndUpdate(user._id, {
-      account: account._id
+    const account = await Account.create({
+      user: user._id,
+    })
+    await User.findByIdAndUpdate(user._id, {
+      account: account._id,
     })
     const sessionToken = jwt.sign(
       { user_id: user._id, email: user.email },

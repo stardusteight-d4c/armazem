@@ -1,7 +1,7 @@
 export const hostServer = 'http://localhost:5000'
 
 // AUTH
-export const validateSignUp = `${hostServer}/api/auth/validateSignUp`
+export const verifyUsername = `${hostServer}/api/auth/verifyUsername`
 export const emailConfirmation = `${hostServer}/api/auth/emailConfirmation`
 export const register = `${hostServer}/api/auth/register`
 export const registerGoogleAccount = `${hostServer}/api/auth/registerGoogleAccount`

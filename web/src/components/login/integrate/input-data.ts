@@ -30,3 +30,20 @@ export const inputData = [
     isPassword: true,
   },
 ]
+
+export const emailInputData = {
+  htmlFor: 'email',
+  labelName: 'Email',
+  type: 'text',
+  id: 'email',
+  placeholder: 'Your e-mail address',
+}
+
+export const tokenInputData = {
+  htmlFor: 'token',
+  labelName: 'Confirm email',
+  type: 'text',
+  id: 'token',
+  placeholder: 'Paste token',
+  stylesLabel: ' !text-xl'
+}

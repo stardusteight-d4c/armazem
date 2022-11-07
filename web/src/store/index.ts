@@ -18,7 +18,7 @@ const initialState: InitialState = {
     lastName: '',
     username: '',
     password: '',
-    email: '<empty>',
+    email: '',
   },
   openModal: null,
   requestAgain: false,
@@ -53,6 +53,10 @@ const ArmazemSlice = createSlice({
       }
     },
     handleChangeRegisterValues: (state, action) => {
+      console.log(action.payload.target.id)
+      console.log(action.payload.target.value)
+      
+      
       state.registerValues = {
         ...state.registerValues,
         [action.payload.target.id]: action.payload.target.value,

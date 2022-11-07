@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { InputHTMLAttributes, useEffect, useState } from 'react'
-import { validateSignUp } from '../../../services/api-routes'
+// import { validateSignUp } from '../../../services/api-routes'
 import { useAppSelector } from '../../../store/hooks'
 import { error, success } from '../../Toasters'
 
@@ -9,39 +9,22 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   labelName: string
   styles?: string
   isPassword?: boolean
+  stylesLabel?: string
 }
 export const Input = ({
   styles,
   htmlFor,
   labelName,
   isPassword,
+  stylesLabel,
   ...props
 }: Props) => {
   const [showPassword, setShowPassword] = useState(false)
   const registerValues = useAppSelector((state) => state.armazem.registerValues)
 
-  // useEffect(() => {
-  //   ;(async () => {
-  //     try {
-  //       const { data } = await axios.post(validateSignUp, {
-  //         username: registerValues.username,
-  //       })
-  //       console.log(data);
-        
-  //       if (data.status === true) {
-  //        success(data.msg)
-  //       } else {
-  //         error(data.msg)
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   })()
-  // }, [registerValues.username])
-
   return (
     <div className={style.fieldContainer}>
-      <label htmlFor={htmlFor} className={style.label}>
+      <label htmlFor={htmlFor} className={`${style.label} ${stylesLabel && stylesLabel}`}>
         {labelName}
       </label>
       {isPassword ? (

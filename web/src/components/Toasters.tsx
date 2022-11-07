@@ -3,8 +3,8 @@ import { motion } from 'framer-motion'
 
 const spring = {
   type: 'spring',
-  stiffness: 1000,
-  damping: 30,
+  stiffness: 800,
+  damping: 20,
 }
 
 export const error = (error: string) =>
