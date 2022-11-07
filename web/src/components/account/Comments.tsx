@@ -57,7 +57,7 @@ export const Comments = ({ userMetadata }: Props) => {
               <img
                 src={currentUser?.user_img}
                 alt=""
-                className="w-16 h-16 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+                className="w-16 h-16 border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
               />
               <div className="flex flex-col w-full">
                 <span className="font-medium text-2xl text-dusk-main dark:text-dawn-main">

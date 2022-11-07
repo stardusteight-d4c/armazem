@@ -1,13 +1,13 @@
 import React from 'react'
 import { Toaster } from 'react-hot-toast'
 import { motion } from 'framer-motion'
-import { Button } from '../Button'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { Button } from '../../Button'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import {
   clearRegisterValuesEntries,
   handleChangeRegisterValues,
-} from '../../store'
-import { disableButton } from '../../services/validate-form'
+} from '../../../store'
+import { disableButton } from '../../../services/validate-form'
 
 interface Props {
   handleConfirmEmail: (event: React.FormEvent) => Promise<void>

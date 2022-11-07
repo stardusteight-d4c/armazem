@@ -1,7 +1,7 @@
 import React from 'react'
 import { Toaster } from 'react-hot-toast'
 import { motion } from 'framer-motion'
-import { Button } from '../Button'
+import { Button } from '../../Button'
 
 interface Props {
   handleSubmit: (event: React.FormEvent) => Promise<void>

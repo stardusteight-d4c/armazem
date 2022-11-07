@@ -77,7 +77,7 @@ export const Comment = ({
       <img
         src={commentAuthor?.user_img}
         alt="authorComment/img_profile"
-        className="w-12 h-12 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+        className="w-12 h-12 border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
       />
       <div className="flex flex-col w-full ">
         <span className="-mt-5 ml-auto">
@@ -117,7 +117,7 @@ export const Comment = ({
                 onClick={handleDeleteComment}
                 className={`${
                   activeItem === comment._id + 'DELETE' && '!text-red'
-                } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm text-lg cursor-pointer`}
               />
               {activeItem === comment._id + 'DELETE' && (
                 <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[20px] -bottom-[68px]">
@@ -144,13 +144,13 @@ export const Comment = ({
                 className={`${
                   activeItem === comment._id + 'EDIT' && '!text-prime-purple'
                 }
-                ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm text-lg cursor-pointer`}
               />
               <i
                 onClick={handleDeleteComment}
                 className={`${
                   activeItem === comment._id + 'DELETE' && '!text-red'
-                } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm text-lg cursor-pointer`}
               />
               {activeItem === comment._id + 'DELETE' && (
                 <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[20px] -bottom-[68px]">

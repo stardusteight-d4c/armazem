@@ -45,15 +45,15 @@ export const ConnectionsList = ({
                 key={index}
                 className="transition-all px-4 duration-200 cursor-pointer flex justify-between border-y border-dawn-weak/20 dark:border-dusk-weak/20 rounded-sm p-2"
               >
-                <Link to={`/${connection.username}`} className="flex">
+                <Link to={`/${connection?.username}`} className="flex">
                   <img
-                    src={connection.user_img}
+                    src={connection?.user_img}
                     alt=""
                     className="w-20 h-20 object-cover"
                   />
                   <div className="flex flex-col px-2 -mt-1">
-                    <span className="text-2xl">{connection.name}</span>
-                    <span>{connection.username}</span>
+                    <span className="text-2xl">{connection?.name}</span>
+                    <span>{connection?.username}</span>
                   </div>
                 </Link>
                 <div className="flex relative items-center space-x-2 justify-end">
@@ -66,7 +66,7 @@ export const ConnectionsList = ({
                       <Menu.Item>
                         <span
                           className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-                          onClick={() => deleteUserConnection(connection._id)}
+                          onClick={() => deleteUserConnection(connection?._id)}
                         >
                           Remove
                         </span>

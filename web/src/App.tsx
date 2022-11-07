@@ -75,6 +75,7 @@ export const App = (props: Props) => {
 
   return (
     <>
+    {/* colocar isto aqui em um função if , switch que retorna o componente e chamar aqui */}
       {openModal === 'EditProfileImage' && <EditProfileImageModal />}
       {openModal === 'EditCoverImage' && <EditCoverImageModal />}
       {openModal === 'PostInput' && <PostInputModal />}

@@ -3,7 +3,11 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'spin-fast': 'spin 0.8s linear infinite',
+      }
+    },
     // screens: {
     //   'sm': '640px',
     //   'md': '800px',

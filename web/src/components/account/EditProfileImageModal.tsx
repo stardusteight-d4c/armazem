@@ -86,7 +86,7 @@ export const EditProfileImageModal = (props: Props) => {
                 <Button
                   title="Submit"
                   onClick={() => updateProfileImageById()}
-                  className="bg-prime-blue !w-full my-4 py-2 text-white rounded-md"
+                  className="bg-prime-blue !w-full my-4 py-2 text-white rounded-lg"
                 />
               </div>
             ) : (
@@ -95,7 +95,7 @@ export const EditProfileImageModal = (props: Props) => {
                 <Button
                   title="Upload picture"
                   onClick={() => filePickerRef.current.click()}
-                  className="bg-prime-blue !w-full my-4 py-2 text-white rounded-md"
+                  className="bg-prime-blue !w-full my-4 py-2 text-white rounded-lg"
                 />
               </>
             )}
