@@ -1,4 +1,4 @@
-export const inputData = [
+export const inputSignUpData = [
   {
     htmlFor: 'firstName',
     labelName: 'First Name',
@@ -47,3 +47,30 @@ export const tokenInputData = {
   placeholder: 'Paste token',
   stylesLabel: ' !text-xl'
 }
+
+export const chooseUsernameInputData = {
+  htmlFor: 'username',
+  labelName: 'Username',
+  type: 'text',
+  id: 'username',
+  placeholder: 'Choose a username',
+  stylesLabel: ' !text-xl'
+}
+
+export const inputSignInData = [
+  {
+    htmlFor: 'username',
+    labelName: 'Username',
+    type: 'text',
+    id: 'username',
+    placeholder: 'Enter your username',
+  },
+  {
+    htmlFor: 'password',
+    labelName: 'Password',
+    type: 'password',
+    id: 'password',
+    placeholder: '•••••••••••••',
+  }
+]
+

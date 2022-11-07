@@ -3,17 +3,24 @@ import { User } from 'firebase/auth'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { registerGoogleAccount } from '../../../services/api-routes'
-import { useAppSelector } from '../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { Button } from '../../Button'
 import { error } from '../../Toasters'
 import { motion } from 'framer-motion'
+import { Input } from './Input'
+import { chooseUsernameInputData } from './input-data'
+import { handleChangeRegisterValues } from '../../../store'
 
-interface Props {}
+interface Props {
+  user: User
+  setUser: React.Dispatch<React.SetStateAction<User>>
+}
 
-export const ChooseUsername = (props: Props) => {
-  const [user, setUser] = useState<User>({} as User)
+export const ChooseUsername = ({ user, setUser }: Props) => {
   const navigate = useNavigate()
   const registerValues = useAppSelector((state) => state.armazem.registerValues)
+  const dispatch = useAppDispatch()
+  const [inputValue, setInputValue] = useState<string | undefined>(undefined)
 
   const handleGoogleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -39,41 +46,55 @@ export const ChooseUsername = (props: Props) => {
     }
   }
 
+  const isDisableButton =
+    inputValue?.trim() === '' ||
+    inputValue === undefined ||
+    inputValue.length > 3
+
   return (
-    <motion.form
-          onSubmit={(e) => handleGoogleSubmit(e)}
-          initial={{ opacity: 0, x: 200 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          exit={{ opacity: 0 }}
-          className="mx-auto max-w-md"
-        >
-          <i
-            // onClick={() => setUser(undefined!)}
-            className="ri-arrow-left-line absolute top-5 left-5 text-3xl p-2 cursor-pointer"
-          />
-          <h1 className="text-4xl font-semibold">Choose username</h1>
-          <span className="text-sm text-dawn-weak dark:text-dusk-weak">
+    <>
+      <i
+        tabIndex={0}
+        title="Back"
+        onKeyDown={(e) => e.key === 'Enter' && setUser({} as User)}
+        onClick={() => setUser({} as User)}
+        className={style.arrowBack}
+      />
+      <motion.form
+        onSubmit={(e) => handleGoogleSubmit(e)}
+        initial={{ opacity: 0, x: 200 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        exit={{ opacity: 0 }}
+        className={style.wrapper}
+      >
+        <div className="mb-5">
+          <h1 className={style.title}>Choose username</h1>
+          <span className={style.span}>
             *Choose how you want to be called in the app
           </span>
-          <div className="my-4">
-            {/* <label htmlFor="username" className={style.label}>
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              required
-              placeholder="Choose a username"
-              onChange={(e) => dispatch(handleChangeRegisterValues(e))}
-              className={style.input}
-            /> */}
-          </div>
-          <Button
-            type="submit"
-            title="Finish"
-            className="mt-2 bg-prime-purple"
-          />
-        </motion.form>
+        </div>
+        <Input
+          {...chooseUsernameInputData}
+          onChange={(e) => {
+            dispatch(handleChangeRegisterValues(e))
+            setInputValue(e.target.value)
+          }}
+        />
+        <Button
+          type="submit"
+          title="Finish"
+          disabled={isDisableButton}
+          className="mt-2 bg-prime-purple"
+        />
+      </motion.form>
+    </>
   )
+}
+
+const style = {
+  arrowBack: `ri-arrow-left-line z-30 absolute top-5 left-5 text-3xl p-2 cursor-pointer`,
+  wrapper: `flex flex-col items-start justify-center w-full md:min-w-[400px] xl:w-[550px] 2xl:w-[650px] max-h-fit h-screen z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
+  title: `text-4xl font-semibold`,
+  span: `text-sm text-dawn-weak dark:text-dusk-weak`,
 }

@@ -6,7 +6,7 @@ import {
   handleValidation,
   signInWithGoogle,
 } from './integrate/validate-form'
-import { inputData } from './integrate/input-data'
+import { inputSignUpData } from './integrate/input-data'
 import { Input } from './integrate/Input'
 import { ConfirmVerificationToken } from './integrate/ConfirmVerificationToken'
 import { ConfirmEmail } from './integrate/ConfirmEmail'
@@ -73,20 +73,24 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     token,
   }
 
-  const emailVerification = () => {
+  const chooseUsernameProps = {
+    user,
+    setUser,
+  }
+
+  function emailVerification() {
     if (proceedToConfirmEmail && !token)
       return <ConfirmEmail {...confirmEmailProps} />
     if (proceedToConfirmEmail && token)
       return <ConfirmVerificationToken data={verifyTokenProps} />
-    if (!proceedToConfirmEmail) return false
   }
 
   if (user.metadata && emailAvailable) {
-    return <ChooseUsername />
+    return <ChooseUsername {...chooseUsernameProps} />
   }
 
   if (proceedToConfirmEmail) {
-    return <>{emailVerification()}</>
+    return emailVerification()
   }
 
   return (
@@ -105,6 +109,12 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
           <div className={style.alreadyUserContainer}>
             <span className={style.span}>Already a user?</span>
             <span
+              tabIndex={0}
+              title="Login now"
+              onKeyDown={(e) =>
+                e.key === 'Enter' &&
+                (dispatch(clearRegisterValuesEntries()), setSignIn(!signIn))
+              }
               onClick={() => (
                 dispatch(clearRegisterValuesEntries()), setSignIn(!signIn)
               )}
@@ -114,7 +124,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
             </span>
           </div>
           <div className={style.gridContainer}>
-            {inputData.map((input, index) => (
+            {inputSignUpData.map((input, index) => (
               <Input
                 key={index}
                 {...input}
@@ -128,7 +138,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
           title="Continue"
           className="mt-2 bg-prime-purple"
         />
-        <span className={style.optionalSignUp}>Sign up by Open ID</span>
+        <span className={style.alternativeSignUp}>Sign up by Open ID</span>
         <Button
           type="button"
           title="Google"
@@ -149,5 +159,5 @@ const style = {
   span: `text-dawn-weak dark:text-dusk-weak`,
   link: `text-prime-blue cursor-pointer p-1 hover:underline`,
   gridContainer: `grid grid-cols-2 gap-3 justify-between mt-2 mb-4`,
-  optionalSignUp: `text-dawn-weak mr-auto dark:text-dusk-weak block my-4 font-medium`,
+  alternativeSignUp: `text-dawn-weak mr-auto dark:text-dusk-weak block my-4 font-medium`,
 }

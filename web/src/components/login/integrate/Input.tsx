@@ -1,8 +1,5 @@
-import axios from 'axios'
-import { InputHTMLAttributes, useEffect, useState } from 'react'
-// import { validateSignUp } from '../../../services/api-routes'
+import { InputHTMLAttributes, useState } from 'react'
 import { useAppSelector } from '../../../store/hooks'
-import { error, success } from '../../Toasters'
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   htmlFor: string
