@@ -36,15 +36,13 @@ export const EditProfileImageModal = (props: Props) => {
     })
     if (data.status === true) {
       dispatch(handleOpenModal(null))
-      dispatch(askToRequestAgain())
+      // dispatch(askToRequestAgain()) // Fazer outro estado para gerenciar estas requisições de editar Imagem de perfil e Cover e depois para o POST
     }
     if (data.status === false) {
       dispatch(handleOpenModal(null))
     }
     setLoading(false)
   }
-
-
 
   return (
     <>

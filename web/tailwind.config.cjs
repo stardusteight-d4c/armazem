@@ -43,7 +43,7 @@ module.exports = {
         weak: '#f1eefe',
       },
       layer: {
-        heavy: '#2D3039',
+        heavy: '#2e2e2e',
         light: '#F0F0F0',
       },
     },

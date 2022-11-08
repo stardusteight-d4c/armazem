@@ -173,6 +173,27 @@ export const sharedPosts = async (req, res, next) => {
   }
 }
 
+export const lastFivePostsOfAccount = async (req, res, next) => {
+  try {
+    const accountId = req.params.id
+    const postsData = await Account.findById(accountId).select('posts')
+    const postsId = postsData.posts.reverse().slice(0, 4)
+
+   if (postsId.length === 0) return res
+   .json({ status: false, msg: 'No activity found' })
+
+    const lastPosts = await Promise.all(
+      postsId.map(async (id) => await Post.findById(id))
+    )
+
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Operation performed successfully', lastPosts })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const postByPagination = async (req, res, next) => {
   try {
     const userId = req.params.userId

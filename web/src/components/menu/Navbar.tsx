@@ -25,7 +25,7 @@ export const Navbar = (props: Props) => {
   }
 
   return (
-    <nav className="bg-fill-weak z-50 dark:bg-fill-strong border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between p-8 w-full flex items-center h-24">
+    <nav className="bg-fill-weak dark:bg-fill-strong shadow-sm dark:shadow-md z-50 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between p-8 w-full flex items-center h-24">
       <Search />
       <div className="flex items-center gap-x-5">
         <SwitchTheme />

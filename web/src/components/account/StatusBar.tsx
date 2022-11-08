@@ -42,7 +42,7 @@ export const StatusBar = (props: Props) => {
       </div>
 
       <div className="w-full">
-        <div className="bg-dusk-weak/10 rounded-lg flex h-6  w-full relative">
+        <div className="bg-dusk-weak/10 rounded-full flex h-4  w-full relative">
           {/* Regra de três: 52 está para 100% -> 11 está para x
                       52.x - 11.100
                       52.x = 1100

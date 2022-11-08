@@ -68,7 +68,7 @@ export function signInWithGoogle(
     .then((result) => {
       setUser(result.user)
     })
-    .catch((error) => {
-      console.log(error)
+    .catch((err) => {
+      console.error(err)
     })
 }

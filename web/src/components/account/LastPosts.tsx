@@ -7,36 +7,30 @@ import {
 import { askToRequestAgain, handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
-import { LastPostFirstSection, LastPostSecondSection } from './LastPost'
+import { LastPost } from './LastPost'
 
 interface Props {
   userMetadata: User
 }
 
 export const LastPosts = ({ userMetadata }: Props) => {
+  const dispatch = useAppDispatch()
+  const [postUpdatedData, setPostUpdatedData] = useState(false)
   const [lastPosts, setLastPosts] = useState<[Posts] | undefined | any>(
     undefined
   )
-  const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
-  const dispatch = useAppDispatch()
+
 
   useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(
         `${lastFivePostsOfAccount}/${userMetadata.account}`
       )
-      if (data.posts.length > 0) {
-        const posts: any[] = []
-        data.posts.map(async (post: any) => {
-          const { data } = await axios.get(`${postMetadataById}/${post}`)
-          posts.push(data.post)
-          setLastPosts(posts)
-        })
-      } else {
-        setLastPosts(undefined)
-      }
+      data.status === true
+        ? setLastPosts(data.lastPosts)
+        : setLastPosts(undefined)
     })()
-  }, [userMetadata, requestAgain])
+  }, [userMetadata, postUpdatedData])
 
   return (
     <section>
@@ -50,7 +44,7 @@ export const LastPosts = ({ userMetadata }: Props) => {
               {lastPosts
                 .slice(0, 2)
                 .map((post: any, index: React.Key | null | undefined) => (
-                  <LastPostFirstSection post={post} key={index} />
+                  <LastPost post={post} key={index} setPostUpdatedData={setPostUpdatedData} postUpdatedData={postUpdatedData} />
                 ))}
             </div>
 
@@ -58,14 +52,14 @@ export const LastPosts = ({ userMetadata }: Props) => {
               {lastPosts
                 .slice(2, 4)
                 .map((post: any, index: React.Key | null | undefined) => (
-                  <LastPostSecondSection post={post} key={index} />
+                  <LastPost post={post} key={index} setPostUpdatedData={setPostUpdatedData} postUpdatedData={postUpdatedData} />
                 ))}
             </div>
           </div>
           <div className="flex items-center justify-center">
             <Button
               title="See all"
-              onClick={() => dispatch(handleOpenModal('LastPosts'))}
+              onClick={() => dispatch(handleOpenModal('AllPosts'))}
               className="bg-prime-blue my-5 !text-xl p-4 px-16 "
             />
           </div>

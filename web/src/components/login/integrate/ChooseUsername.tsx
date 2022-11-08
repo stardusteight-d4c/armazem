@@ -49,7 +49,7 @@ export const ChooseUsername = ({ user, setUser }: Props) => {
   const isDisableButton =
     inputValue?.trim() === '' ||
     inputValue === undefined ||
-    inputValue.length > 3
+    inputValue.length <= 3
 
   return (
     <>
@@ -80,6 +80,7 @@ export const ChooseUsername = ({ user, setUser }: Props) => {
             dispatch(handleChangeRegisterValues(e))
             setInputValue(e.target.value)
           }}
+          maxLength={20}
         />
         <Button
           type="submit"

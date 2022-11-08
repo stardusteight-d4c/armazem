@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
-  Button,
   Favorites,
   Header,
   LastPosts,
@@ -12,29 +11,30 @@ import {
 } from '../components'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import axios from 'axios'
-import { dataByUsername, userData } from '../services/api-routes'
-import { useLocation } from 'react-router-dom'
+import { dataByUsername } from '../services/api-routes'
+import { useLocation, useParams } from 'react-router-dom'
 import { Comments } from '../components/account/Comments'
 import { Loader } from '../components/Loader'
 import { handleUserMetadata } from '../store'
-import { getCurrentUserAccount } from '../store/reducers/current-user-data'
 
 interface Props {}
 
 export const Account = (props: Props) => {
   const dispatch = useAppDispatch()
+  const { username } = useParams()
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
-
-  const location = useLocation()
-  const username = location.pathname
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(`${dataByUsername}${username}`)
+      const { data } = await axios.get(`${dataByUsername}/${username}`)
       dispatch(handleUserMetadata(data.user))
     })()
+    setTimeout(() => {
+      setLoading(false)
+    }, 100)
   }, [username, requestAgain])
 
   const dataLoaded =
@@ -45,7 +45,7 @@ export const Account = (props: Props) => {
       <Sidebar />
       <div className={style.mainContent}>
         <Navbar />
-        {dataLoaded ? (
+        {dataLoaded && !loading ? (
           <main>
             <Header
               userMetadata={userMetadata}

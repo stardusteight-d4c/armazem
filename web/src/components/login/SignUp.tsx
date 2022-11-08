@@ -79,10 +79,11 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
   }
 
   function emailVerification() {
-    if (proceedToConfirmEmail && !token)
+    if (proceedToConfirmEmail && !token) {
       return <ConfirmEmail {...confirmEmailProps} />
-    if (proceedToConfirmEmail && token)
+    } else {
       return <ConfirmVerificationToken data={verifyTokenProps} />
+    }
   }
 
   if (user.metadata && emailAvailable) {

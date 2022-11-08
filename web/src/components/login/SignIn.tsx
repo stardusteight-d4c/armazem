@@ -11,7 +11,6 @@ import {
 } from '../../services/api-routes'
 import { User } from 'firebase/auth'
 import { signInWithGoogle } from './integrate/validate-form'
-import { useAppDispatch } from '../../store/hooks'
 import { inputSignInData } from './integrate/input-data'
 import { Input } from './integrate/Input'
 
@@ -36,10 +35,10 @@ export const SignIn = ({ setSignIn }: Props) => {
         })
         data.status === false && error('Email does not exist, try sign up')
         if (data.status === true) {
-          const username = data.user.username
+          const email = data.user.email
           const id = data.user._id
           const { data: authData } = await axios.post(loginByGoogleProvider, {
-            username,
+            email,
             id,
           })
           if (authData.status === true) {
@@ -70,7 +69,7 @@ export const SignIn = ({ setSignIn }: Props) => {
       }
     } catch (err) {
       error('Error, try to sign in with Google')
-      console.log(err)
+      console.error(err)
     }
   }
 
@@ -122,7 +121,11 @@ export const SignIn = ({ setSignIn }: Props) => {
             <Input {...input} onChange={(e) => handleChange(e)} />
           ))}
         </div>
-        <Button title="Continue" className="mt-2 bg-prime-purple" />
+        <Button
+          type="submit"
+          title="Continue"
+          className="mt-2 bg-prime-purple"
+        />
         <span className={style.alternativeSignIn}>Or continue with</span>
       </div>
       <Button

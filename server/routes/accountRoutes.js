@@ -5,6 +5,7 @@ import {
   addComment,
   addConnection,
   deleteComment,
+  lastFivePostsOfAccount,
   postByPagination,
   rejectConnection,
   removeConnection,
@@ -24,6 +25,7 @@ router.post('/addConnection', addConnection)
 router.post('/rejectConnection', rejectConnection)
 router.post('/removeConnection', removeConnection)
 router.post('/sharedPosts', sharedPosts)
+router.get('/lastFivePostsOfAccount/:id', lastFivePostsOfAccount)
 router.get('/postByPagination/:userId/:page', postByPagination)
 router.post('/searchUserPostByTitle', searchUserPostByTitle)
 router.get('/sharedPostByPagination/:accountId/:page', sharedPostByPagination)
@@ -32,5 +34,6 @@ router.post('/addComment', addComment)
 router.post('/updateComment', updateComment)
 router.get('/accountComments/:accountId', accountComments)
 router.post('/deleteComment', deleteComment)
+
 
 export { router }

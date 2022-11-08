@@ -11,19 +11,27 @@ export const userById = async (req, res, next) => {
 }
 
 export const userByUsername = async (req, res, next) => {
-  const username = req.params.username
-  const user = await User.findOne({ username })
-  return res.json({ user })
+  try {
+    const username = req.params.username
+    const user = await User.findOne({ username })
+    return res.json({ user })
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const searchUsersByQuery = async (req, res, next) => {
-  const query = req.body.query
-  const users = await User.findOne({
-    username: { $regex: new RegExp(query, 'i') },
-  })
-    .select('username')
-    .limit(5)
-  return res.json({ users })
+  try {
+    const query = req.body.query
+    const users = await User.findOne({
+      username: { $regex: new RegExp(query, 'i') },
+    })
+      .select('username')
+      .limit(5)
+    return res.json({ users })
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const updateCoverImage = async (req, res, next) => {

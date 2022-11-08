@@ -4,13 +4,13 @@ interface Props {}
 
 export const PreviewPost = (props: Props) => {
   return (
-    <article className="max-w-[450px] min-w-[450px] h-[285px] p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
+    <article className="max-w-[450px] drop-shadow-md min-w-[450px] h-[285px] p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-layer-heavy">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
             src="https://avatars.githubusercontent.com/u/87643260?v=4"
             alt=""
-            className="w-8 h-8 rounded-md object-cover"
+            className="w-8 h-8 object-cover"
           />
           <span className="font-medium text-dusk-main dark:text-dawn-main">Gabriel Sena</span>
         </div>

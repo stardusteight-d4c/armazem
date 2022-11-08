@@ -57,7 +57,7 @@ export const Search = (props: Props) => {
       <Menu>
         <Menu.Button
           title="Filter"
-          className="right-3 cursor-pointer absolute text-dusk-main dark:text-dawn-main text-2xl"
+          className="right-3 mt-[4px] cursor-pointer absolute text-dusk-main dark:text-dawn-main text-2xl"
         >
           <i className="ri-equalizer-line" />
         </Menu.Button>

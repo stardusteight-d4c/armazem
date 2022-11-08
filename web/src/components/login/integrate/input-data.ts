@@ -53,7 +53,7 @@ export const chooseUsernameInputData = {
   labelName: 'Username',
   type: 'text',
   id: 'username',
-  placeholder: 'Choose a username',
+  placeholder: 'Choose a username (min. 4 chars)',
   stylesLabel: ' !text-xl'
 }
 

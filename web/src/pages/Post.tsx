@@ -18,8 +18,6 @@ import {
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { askToRequestAgain } from '../store'
 
-
-
 interface Props {}
 
 export const Post = (props: Props) => {
@@ -48,6 +46,7 @@ export const Post = (props: Props) => {
       )
       if (postData.status === true && discussionsData.status === true) {
         // setAuthorAccount(postData.authorAccount)
+        // Tratar erro, caso não encontre o post(retorne algum erro), mostrar página 404
         setAuthorUser(postData.authorUser)
         setPost(postData.post)
         setDiscussions(discussionsData.discussions)
@@ -126,7 +125,6 @@ export const Post = (props: Props) => {
           }
         }
       )
-
       return verificationResult.includes(true)
     }
   }
@@ -176,10 +174,10 @@ export const Post = (props: Props) => {
             </div>
           ) : (
             <>
-              <article className="px-4 pb-3 bg-dawn-weak/5 dark:bg-dusk-weak/10  pt-4 mt-4">
+              <article className="px-4 pb-3 drop-shadow-md bg-white dark:bg-layer-heavy pt-4 mt-4">
                 <header>
                   <div className="flex justify-between pb-4 items-center">
-                    <span className="text-4xl font-inter font-semibold">
+                    <span className="text-4xl font-inter font-semibold w-[700px]">
                       {post?.title}
                     </span>
                     <span className="text-lg w-fit mt-2">
@@ -214,7 +212,7 @@ export const Post = (props: Props) => {
                       maxLength={855}
                       minLength={50}
                       onChange={(e) => setEditValue(e.target.value)}
-                      className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-56 min-h-[180px]  text-dusk-main/90 dark:text-dawn-main/90"
+                      className="p-1 mt-1 text-lg outline-none bg-transparent border-prime-blue border max-h-56 min-h-[180px]  text-dusk-main/90 dark:text-dawn-main/90"
                     />
                     <div className="flex justify-end">
                       <Button
@@ -223,7 +221,7 @@ export const Post = (props: Props) => {
                         }
                         title="Update"
                         onClick={() => editPost()}
-                        className="!text-prime-purple !w-fit"
+                        className="!text-prime-blue !w-fit"
                       />
                     </div>
                   </div>
@@ -321,7 +319,7 @@ export const Post = (props: Props) => {
                           onClick={handleActiveItemEditOnClick}
                           className={`${
                             activeItem === post?._id + 'EDIT' &&
-                            'text-prime-purple'
+                            'text-prime-blue'
                           } flex items-center cursor-pointer`}
                         >
                           <i className="ri-edit-2-fill p-1 text-2xl" />
@@ -358,6 +356,7 @@ export const Post = (props: Props) => {
                 </div>
               </article>
               <div className="mb-5 px-4">
+             
                 <div className="flex items-center mt-16 mb-8">
                   <span className="text-2xl font-semibold">Discussion</span>
                 </div>

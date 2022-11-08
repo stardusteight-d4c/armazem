@@ -54,14 +54,6 @@ export const Login = (props: Props) => {
     }
   }, [])
 
-  if (loading || undefined) {
-    return (
-      <div className={loader.container}>
-        <Loader className={loader.loader} />
-      </div>
-    )
-  }
-
   function rendersPageSpan() {
     return (
       <span className="block">
@@ -81,11 +73,7 @@ export const Login = (props: Props) => {
             <h1 className={style.logoText}>Armazem</h1>
           </div>
           <div className={grid.firstColumn}>
-            <img
-              src={background}
-              alt="background/img"
-              className={style.backgroundImage}
-            />
+            <img src={background} className={style.backgroundImage} />
             <div className={style.pageSpan}>{rendersPageSpan()}</div>
           </div>
           <div className={grid.secondColumn}>
@@ -116,9 +104,4 @@ const grid = {
   container: `sm:grid grid-cols-2 xl:grid-cols-5 origin-center text-dusk-main dark:text-dawn-main relative`,
   firstColumn: `col-span-1 hidden xl:col-span-3 relative h-screen sm:flex pl-5 flex-col justify-center items-start`,
   secondColumn: `col-span-1 w-full relative xl:col-span-2 flex justify-center items-center`,
-}
-
-const loader = {
-  container: `w-screen bg-fill-weak dark:bg-fill-strong h-screen flex items-center justify-center`,
-  loader: `border-black dark:border-white !w-16 !h-16 !border-[8px]`,
 }

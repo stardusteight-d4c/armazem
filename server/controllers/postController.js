@@ -1,9 +1,8 @@
 import Account from '../models/accountModel.js'
 import User from '../models/userModel.js'
 import Post from '../models/postModel.js'
-import Discussion, { discussionSchema } from '../models/discussionModel.js'
+import Discussion from '../models/discussionModel.js'
 import Reply from '../models/replyModel.js'
-import mongoose from 'mongoose'
 
 export const createPostAndAddToUserAccount = async (req, res, next) => {
   try {
@@ -25,19 +24,6 @@ export const createPostAndAddToUserAccount = async (req, res, next) => {
     return res
       .status(201)
       .json({ status: true, msg: 'Post created successfully' })
-  } catch (error) {
-    next(error)
-  }
-}
-
-export const lastFivePostsOfAccount = async (req, res, next) => {
-  try {
-    const accountId = req.params.id
-    const postsData = await Account.findById(accountId).select('posts')
-    const posts = postsData.posts.reverse().slice(0, 4)
-    return res
-      .status(200)
-      .json({ status: true, msg: 'Operation performed successfully', posts })
   } catch (error) {
     next(error)
   }
@@ -266,6 +252,7 @@ export const likePost = async (req, res, next) => {
       },
       { safe: true, upsert: true }
     )
+    return res.status(200).json({ status: true })
   } catch (error) {
     next(error)
     return res.status(500).json({
@@ -285,6 +272,7 @@ export const unlikedPost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+    return res.status(200).json({ status: true })
   } catch (error) {
     next(error)
     return res.status(500).json({

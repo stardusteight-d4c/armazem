@@ -21,7 +21,10 @@ export const Input = ({
 
   return (
     <div className={style.fieldContainer}>
-      <label htmlFor={htmlFor} className={`${style.label} ${stylesLabel && stylesLabel}`}>
+      <label
+        htmlFor={htmlFor}
+        className={`${style.label} ${stylesLabel && stylesLabel}`}
+      >
         {labelName}
       </label>
       {isPassword ? (
@@ -31,7 +34,11 @@ export const Input = ({
           type={showPassword ? 'text' : 'password'}
         />
       ) : (
-        <input {...props} className={`${style.input} ${styles && styles}`} />
+        <input
+          {...props}
+          className={`${style.input} ${styles && styles}`}
+          maxLength={20}
+        />
       )}
 
       {isPassword && (

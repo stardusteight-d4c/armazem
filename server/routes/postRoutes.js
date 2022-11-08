@@ -7,7 +7,6 @@ import {
   deletePost,
   deleteReply,
   discussionsByPostId,
-  lastFivePostsOfAccount,
   likePost,
   postMetadataById,
   repliesOfDiscussion,
@@ -22,7 +21,6 @@ import {
 const router = express.Router()
 
 router.post('/createPostAndAddToUserAccount', createPostAndAddToUserAccount)
-router.get('/lastFivePostsOfAccount/:id', lastFivePostsOfAccount)
 router.get('/postMetadataById/:id', postMetadataById)
 router.post('/addNewDiscussion', addNewDiscussion)
 router.get('/discussionsByPostId/:postId', discussionsByPostId)

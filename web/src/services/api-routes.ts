@@ -24,6 +24,7 @@ export const addConnection = `${hostServer}/api/account/addConnection`
 export const rejectConnection = `${hostServer}/api/account/rejectConnection` 
 export const removeConnection = `${hostServer}/api/account/removeConnection` 
 export const sharedPosts = `${hostServer}/api/account/sharedPosts` 
+export const lastFivePostsOfAccount = `${hostServer}/api/account/lastFivePostsOfAccount` // /:id
 export const postByPagination = `${hostServer}/api/account/postByPagination` // /:userId/:page
 export const searchUserPostByTitle = `${hostServer}/api/account/searchUserPostByTitle`
 export const sharedPostByPagination = `${hostServer}/api/account/sharedPostByPagination` // /:accountId/:page
@@ -35,7 +36,6 @@ export const deleteComment = `${hostServer}/api/account/deleteComment`
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`
-export const lastFivePostsOfAccount = `${hostServer}/api/post/lastFivePostsOfAccount` // /:id
 export const postMetadataById = `${hostServer}/api/post/postMetadataById` // /:id
 export const addNewDiscussion = `${hostServer}/api/post/addNewDiscussion` 
 export const discussionsByPostId = `${hostServer}/api/post/discussionsByPostId` // /:postId

@@ -12,11 +12,11 @@ import {
   postByPagination,
   searchUserPostByTitle,
 } from '../../services/api-routes'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 interface Props {}
 
-export const AllLastsPostsModal = (props: Props) => {
+export const AllPostsModal = (props: Props) => {
   const dispatch = useAppDispatch()
   const [page, setPage] = useState(1)
   const [posts, setPosts] = useState([])
@@ -27,7 +27,6 @@ export const AllLastsPostsModal = (props: Props) => {
   useEffect(() => {
     searching ? searchByTerm() : getPostsData()
   }, [searching, page, searchTerm])
-
 
   const getPostsData = async () => {
     const { data } = await axios.get(
@@ -137,16 +136,18 @@ const ListPost = ({ post }: PropsList) => {
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
 
   return (
-    <div className="flex space-x-2 cursor-pointer">
+    <div className="flex space-x-2 cursor-default">
       <img
         className="w-12 h-12"
         src={userMetadata?.user_img}
         alt="avatar/img"
       />
-      <div className="flex flex-col -mt-1">
-        <Link to={`/post/${post?._id}`} className="text-lg font-semibold transition-all duration-200 hover:text-prime-blue">{post.title}</Link>
+      <Link to={`/post/${post?._id}`} className="flex cursor-pointer flex-col -mt-1">
+        <h2 className="text-lg font-semibold transition-all duration-200">
+          {post.title}
+        </h2>
         <p className="truncate w-96">{post.body}</p>
-      </div>
+      </Link>
     </div>
   )
 }
