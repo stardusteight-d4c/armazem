@@ -42,7 +42,7 @@ export const App = (props: Props) => {
   // Session middleware
   useEffect(() => {
     if (session) {
-      setLoading(true)
+      // setLoading(true)
       ;(async () => {
         try {
           const rawToken = JSON.parse(session)
@@ -94,13 +94,13 @@ export const App = (props: Props) => {
     }
   }
 
-  if (loading) {
-    return (
-      <div className={loader.container}>
-        <Loader className={loader.loader} />
-      </div>
-    )
-  }
+  // if (loading) {
+  //   return (
+  //     <div className={loader.container}>
+  //       <Loader className={loader.loader} />
+  //     </div>
+  //   )
+  // }
 
   return (
     <>

@@ -15,7 +15,7 @@ import { dataByUsername } from '../services/api-routes'
 import { useLocation, useParams } from 'react-router-dom'
 import { Comments } from '../components/account/Comments'
 import { Loader } from '../components/Loader'
-import { handleUserMetadata } from '../store'
+import { askToRequestAgain, handleUserMetadata } from '../store'
 
 interface Props {}
 
@@ -26,6 +26,10 @@ export const Account = (props: Props) => {
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+  }, [username])
 
   useEffect(() => {
     ;(async () => {

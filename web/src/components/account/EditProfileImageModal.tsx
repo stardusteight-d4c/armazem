@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { askToRequestAgain, handleOpenModal } from '../../store'
+import { askToRequestAgain, askToRequestEditProfile, handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
 import axios from 'axios'
@@ -35,11 +35,12 @@ export const EditProfileImageModal = (props: Props) => {
       id: currentUser?._id,
     })
     if (data.status === true) {
+      dispatch(askToRequestAgain()) 
       dispatch(handleOpenModal(null))
-      // dispatch(askToRequestAgain()) // Fazer outro estado para gerenciar estas requisições de editar Imagem de perfil e Cover e depois para o POST
     }
     if (data.status === false) {
       dispatch(handleOpenModal(null))
+
     }
     setLoading(false)
   }

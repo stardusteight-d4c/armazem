@@ -7,6 +7,7 @@ interface InitialState {
   registerValues: RegisterValues
   openModal: string | null
   requestAgain: boolean
+  requestEditProfile: boolean
   usersSearch: [object] | null
 }
 

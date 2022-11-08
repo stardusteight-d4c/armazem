@@ -22,6 +22,7 @@ const initialState: InitialState = {
   },
   openModal: null,
   requestAgain: false,
+  requestEditProfile: false,
   usersSearch: null,
 }
 
@@ -79,6 +80,9 @@ const ArmazemSlice = createSlice({
     askToRequestAgain: (state) => {
       state.requestAgain = !state.requestAgain
     },
+    askToRequestEditProfile: (state) => {
+      state.requestAgain = !state.requestEditProfile
+    },
     handleResultUsersSearch: (state, action) => {
       state.usersSearch = action.payload
     },
@@ -116,6 +120,7 @@ export const {
   handleOpenModal,
   handleUserMetadata,
   askToRequestAgain,
+  askToRequestEditProfile,
   handleResultUsersSearch,
 } = ArmazemSlice.actions
 
