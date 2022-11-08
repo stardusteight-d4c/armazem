@@ -28,17 +28,13 @@ export const Account = (props: Props) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setLoading(true)
-  }, [username])
-
-  useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${dataByUsername}/${username}`)
       dispatch(handleUserMetadata(data.user))
     })()
     setTimeout(() => {
       setLoading(false)
-    }, 100)
+    }, 200)
   }, [username, requestAgain])
 
   const dataLoaded =

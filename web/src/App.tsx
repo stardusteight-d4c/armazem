@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { Account, Connections, Feed, Login, PageNotFound, Post } from './pages'
 import { authorization } from './services/api-routes'
 import {
@@ -34,6 +34,9 @@ export const App = (props: Props) => {
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const [loading, setLoading] = useState(true)
 
+  const location = useLocation()
+
+
   // After mounting, we have access to the theme in localStorage
   useEffect(() => {
     dispatch(handleSwitchTheme())
@@ -41,8 +44,10 @@ export const App = (props: Props) => {
 
   // Session middleware
   useEffect(() => {
+    if (location.pathname === '/login' || location.pathname === '/') {
+      setLoading(true)
+    }
     if (session) {
-      // setLoading(true)
       ;(async () => {
         try {
           const rawToken = JSON.parse(session)
@@ -55,6 +60,9 @@ export const App = (props: Props) => {
             dispatch(handleAuthSession(data.session))
             await dispatch(getUserData())
             await dispatch(getCurrentUserAccount())
+            if (location.pathname === '/login') {
+              navigate('/')
+            }
             setLoading(false)
           } else {
             navigate('/login')
@@ -94,13 +102,13 @@ export const App = (props: Props) => {
     }
   }
 
-  // if (loading) {
-  //   return (
-  //     <div className={loader.container}>
-  //       <Loader className={loader.loader} />
-  //     </div>
-  //   )
-  // }
+  if (loading) {
+    return (
+      <div className={loader.container}>
+        <Loader className={loader.loader} />
+      </div>
+    )
+  }
 
   return (
     <>

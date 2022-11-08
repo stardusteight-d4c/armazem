@@ -1,21 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { SignIn, SignUp } from '../components/login'
 import { SwitchTheme } from '../components/SwitchTheme'
-import { Loader } from '../components/Loader'
 import background from '../assets/background.jpg'
 import { AnimatePresence } from 'framer-motion'
-import { authorization } from '../services/api-routes'
 import { useAppDispatch } from '../store/hooks'
 import { clearAuthSession, clearCurrentUser } from '../store'
-import axios from 'axios'
 
 interface Props {}
 
 export const Login = (props: Props) => {
   const [signIn, setSignIn] = useState<boolean>(true)
-  const [loading, setLoading] = useState<boolean>(true)
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -27,32 +21,6 @@ export const Login = (props: Props) => {
     signIn: signIn,
     setSignIn: setSignIn,
   }
-
-  useEffect(() => {
-    const session = sessionStorage.getItem('session')
-    if (session) {
-      ;(async () => {
-        try {
-          const rawToken = JSON.parse(session)
-          const { data } = await axios.post(authorization, null, {
-            headers: {
-              Authorization: rawToken,
-            },
-          })
-          if (data.status === false) {
-            setLoading(false)
-            return
-          } else {
-            navigate('/')
-          }
-        } catch (error) {
-          setLoading(false)
-        }
-      })()
-    } else {
-      setLoading(false)
-    }
-  }, [])
 
   function rendersPageSpan() {
     return (

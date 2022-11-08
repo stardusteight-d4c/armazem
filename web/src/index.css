@@ -4,12 +4,12 @@
 
 @layer base {
   body {
-    @apply font-inter antialiased scroll-smooth scrollbar-hide bg-fill-weak dark:bg-fill-strong;
+    @apply font-inter antialiased scroll-smooth bg-fill-weak dark:bg-fill-strong;
   }
-  /* ::-webkit-scrollbar {
+  ::-webkit-scrollbar {
     @apply bg-transparent w-2;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-[#c7c7c7] rounded-full;
-  } */
+    @apply bg-fill-strong dark:bg-fill-weak rounded-full;
+  }
 }
