@@ -9,11 +9,13 @@ import {
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
-import { useAppSelector } from '../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
+import { error, success } from '../Toasters'
+import { askToRequestAgain } from '../../store'
 
 timeago.register('en_short', en_short)
 
@@ -40,6 +42,7 @@ export const Replies = ({
   const [userByMetadata, setUserByMetadata] = useState<any>()
   const [toUsername, setToUsername] = useState(null)
   const [replyUser, setReplyUser] = useState('')
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     ;(async () => {
@@ -50,12 +53,11 @@ export const Replies = ({
     })()
   }, [])
 
-  const handleChange = (
-    event:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setReplyUser(event.target.value)
+  function handleActiveItemEditOnClick() {
+    activeItem === reply._id + 'EDIT'
+      ? setActiveItem('')
+      : setActiveItem(reply._id + 'EDIT')
+    setEditValue(reply.body)
   }
 
   const handleAddNewReply = async (
@@ -69,20 +71,27 @@ export const Replies = ({
       receiver,
       body: replyUser,
     })
-  }
-
-  function handleActiveItemEditOnClick() {
-    activeItem === reply._id + 'EDIT'
-      ? setActiveItem('')
-      : setActiveItem(reply._id + 'EDIT')
-    setEditValue(reply.body)
+    if (data.status === true) {
+      setActiveItem('')
+      success(data.msg)
+      dispatch(askToRequestAgain())
+    }
   }
 
   const editReply = async () => {
-    const { data } = await axios.post(updateReply, {
-      replyId: reply._id,
-      body: editValue,
-    })
+    if (editValue === reply.body) {
+      error('No change detected')
+    } else {
+      const { data } = await axios.post(updateReply, {
+        replyId: reply._id,
+        body: editValue,
+      })
+      if (data.status === true) {
+        setActiveItem('')
+        success(data.msg)
+        dispatch(askToRequestAgain())
+      }
+    }
   }
 
   function handleActiveItemDeleteOnClick() {
@@ -96,6 +105,11 @@ export const Replies = ({
       discussionId: reply.discussion,
       replyId: reply._id,
     })
+    if (data.status === true) {
+      setActiveItem('')
+      success(data.msg)
+      dispatch(askToRequestAgain())
+    }
   }
 
   return (
@@ -103,7 +117,7 @@ export const Replies = ({
       {toUsername !== null && (
         <div className="flex relative p-2 my-1 text-dusk-main dark:text-dawn-main items-start gap-3">
           {index < repliesLength - 1 && (
-            <div className="h-[110%] left-[29px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
+            <div className="h-[110%] left-[28px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
           )}
           <Link to={`/${userByMetadata.username}`}>
             <img
@@ -127,7 +141,7 @@ export const Replies = ({
                     value={editValue}
                     maxLength={255}
                     onChange={(e) => setEditValue(e.target.value)}
-                    className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+                    className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-blue border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
                   />
                   <div className="flex justify-end">
                     <Button
@@ -136,7 +150,7 @@ export const Replies = ({
                       }
                       title="Edit"
                       onClick={() => editReply()}
-                      className="!text-prime-purple !w-fit"
+                      className="!bg-prime-blue !text-base my-2 px-4 py-2 !w-fit"
                     />
                   </div>
                 </div>
@@ -161,8 +175,7 @@ export const Replies = ({
                     <i
                       onClick={handleActiveItemEditOnClick}
                       className={`${
-                        activeItem === reply._id + 'EDIT' &&
-                        '!text-prime-purple'
+                        activeItem === reply._id + 'EDIT' && '!text-prime-blue'
                       } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                     />
                     <div className="relative">
@@ -207,7 +220,7 @@ export const Replies = ({
                   />
                   <textarea
                     maxLength={255}
-                    onChange={(e) => handleChange(e)}
+                    onChange={(e) => setReplyUser(e.target.value)}
                     placeholder={`Reply to ${userByMetadata?.username}`}
                     className="w-full max-h-[180px] border-prime-blue placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] border p-2 outline-none"
                   />
@@ -222,7 +235,7 @@ export const Replies = ({
                         userByMetadata._id
                       )
                     }
-                    className="!text-prime-blue !w-fit"
+                    className="!bg-prime-blue !text-base my-2 px-4 py-2 !w-fit"
                   />
                 </div>
               </motion.section>

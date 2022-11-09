@@ -51,7 +51,7 @@ export const Account = (props: Props) => {
               userMetadata={userMetadata}
               currentAccount={currentAccount}
             />
-            <div className="p-4">
+            <div className="p-4 pb-14">
               <StatusBar />
               <Favorites />
               <LastPosts userMetadata={userMetadata} />

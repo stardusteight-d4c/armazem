@@ -179,8 +179,8 @@ export const lastFivePostsOfAccount = async (req, res, next) => {
     const postsData = await Account.findById(accountId).select('posts')
     const postsId = postsData.posts.reverse().slice(0, 4)
 
-   if (postsId.length === 0) return res
-   .json({ status: false, msg: 'No activity found' })
+    if (postsId.length === 0)
+      return res.json({ status: false, msg: 'No activity found' })
 
     const lastPosts = await Promise.all(
       postsId.map(async (id) => await Post.findById(id))
@@ -188,7 +188,11 @@ export const lastFivePostsOfAccount = async (req, res, next) => {
 
     return res
       .status(200)
-      .json({ status: true, msg: 'Operation performed successfully', lastPosts })
+      .json({
+        status: true,
+        msg: 'Operation performed successfully',
+        lastPosts,
+      })
   } catch (error) {
     next(error)
   }
@@ -239,7 +243,9 @@ export const sharedPostByPagination = async (req, res, next) => {
     sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post))
 
     const sharedPosts = await Promise.all(
-      sharedPostsIds.map(async (id) => await Post.find({_id: id.id })).reverse()
+      sharedPostsIds
+        .map(async (id) => await Post.find({ _id: id.id }))
+        .reverse()
     )
 
     function paginate(array, page_size, page_number) {
@@ -291,13 +297,11 @@ export const searchSharedPostByTitle = async (req, res, next) => {
 export const addComment = async (req, res, next) => {
   try {
     const { accountId, userId, comment } = req.body
-
     const accountComment = await Comment.create({
       in: accountId,
       by: userId,
       comment: comment,
     })
-
     await Account.findByIdAndUpdate(
       accountId,
       {
@@ -305,7 +309,6 @@ export const addComment = async (req, res, next) => {
       },
       { safe: true, upsert: true }
     )
-
     return res
       .status(200)
       .json({ status: true, msg: 'Comment made successfully' })
@@ -321,12 +324,10 @@ export const accountComments = async (req, res, next) => {
     const commentsMetadata = await Promise.all(
       commentsIds.comments.map(async (id) => await Comment.find({ _id: id }))
     )
-
     const comments = []
     commentsMetadata.map(
       (comment) => comment.length > 0 && comments.push(comment[0])
     )
-
     return res.status(200).json({ status: true, comments })
   } catch (error) {
     next(error)
@@ -345,7 +346,9 @@ export const updateComment = async (req, res, next) => {
       { safe: true, multi: false }
     )
 
-    return res.status(200)
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Comment edited successfully' })
   } catch (error) {
     next(error)
     return res.status(500).json({

@@ -6,6 +6,7 @@ import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
 import axios from 'axios'
 import { likePost, unlikedPost } from '../../services/api-routes'
+import { Menu } from '@headlessui/react'
 
 timeago.register('en_short', en_short)
 
@@ -22,6 +23,7 @@ export const LastPost = ({
 }: Props) => {
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
 
   const likedByUser = () => {
     if (post && currentUser) {
@@ -58,6 +60,11 @@ export const LastPost = ({
     }
   }
 
+  const sharedPosts = currentAccount?.sharedPosts?.map(
+    (postShared: any) => postShared.id
+  )
+  const isSharedPosts = currentAccount && sharedPosts?.includes(post?._id)
+
   return (
     <article className="cursor-default hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200 w-full h-fit p-4">
       <div className="flex items-center justify-between">
@@ -88,7 +95,9 @@ export const LastPost = ({
           >
             <i
               className={`${
-                likedByUser() ? 'ri-heart-3-fill text-prime-blue' : 'ri-heart-3-line'
+                likedByUser()
+                  ? 'ri-heart-3-fill text-prime-blue'
+                  : 'ri-heart-3-line'
               }  text-xl pr-1 `}
             />
             <span className="text-lg">
@@ -104,10 +113,19 @@ export const LastPost = ({
           </div>
         </div>
         {currentUser?._id !== userMetadata?._id && (
-          <div className="flex items-center cursor-pointer">
-            <i className="ri-share-box-line text-xl pr-1" />
-            <span className="text-lg">Share</span>
-          </div>
+          <>
+            {isSharedPosts ? (
+              <div className="text-orange flex items-center cursor-pointer">
+                <i className="ri-share-box-line pr-1 text-xl" />
+                <span className="text-lg">Shared</span>
+              </div>
+            ) : (
+              <div className="flex items-center cursor-pointer">
+                <i className="ri-share-box-line pr-1 text-xl" />
+                <span className="text-lg">Share</span>
+              </div>
+            )}
+          </>
         )}
       </div>
     </article>

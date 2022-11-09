@@ -17,12 +17,13 @@ import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { handleOpenModal } from '../../store'
+import { askToRequestAgain, handleOpenModal } from '../../store'
 import { Button } from '../Button'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Replies } from './Replies'
 import { Link } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
+import { error, success } from '../Toasters'
 
 timeago.register('en_short', en_short)
 
@@ -44,6 +45,9 @@ export const Discussions = ({
   const [replies, setReplies] = useState([])
   const [editValue, setEditValue] = useState('')
   const dispatch = useAppDispatch()
+  const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
+
+  const repliesLength = replies.length
 
   useEffect(() => {
     ;(async () => {
@@ -54,30 +58,7 @@ export const Discussions = ({
       )
       setReplies(replies.replies)
     })()
-  }, [discussion])
-
-  const repliesLength = replies.length
-
-  const handleAddNewReply = async (
-    discussionId: any,
-    sender: any,
-    receiver: any
-  ) => {
-    const { data } = await axios.post(addNewReply, {
-      discussionId,
-      sender,
-      receiver,
-      body: reply,
-    })
-  }
-
-  const handleChange = (
-    event:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setReply(event.target.value)
-  }
+  }, [discussion, requestAgain])
 
   function handleActiveItemEditOnClick() {
     activeItem === discussion._id + 'EDIT'
@@ -92,11 +73,38 @@ export const Discussions = ({
       : setActiveItem(discussion._id + 'DELETE')
   }
 
+  const handleAddNewReply = async (
+    discussionId: any,
+    sender: any,
+    receiver: any
+  ) => {
+    const { data } = await axios.post(addNewReply, {
+      discussionId,
+      sender,
+      receiver,
+      body: reply,
+    })    
+    if (data.status === true) {
+      setActiveItem('')
+      success(data.msg)
+      dispatch(askToRequestAgain())
+    }
+  }
+
   const editDiscussion = async () => {
-    const { data } = await axios.post(updateDiscussion, {
-      discussionId: discussion._id,
-      body: editValue,
-    })
+    if (editValue === discussion.body) {
+      error('No change detected')
+    } else {
+      const { data } = await axios.post(updateDiscussion, {
+        discussionId: discussion._id,
+        body: editValue,
+      })
+      if (data.status === true) {
+        setActiveItem('')
+        success(data.msg)
+        dispatch(askToRequestAgain())
+      }
+    }
   }
 
   const removeDiscussion = async () => {
@@ -104,13 +112,18 @@ export const Discussions = ({
       discussionId: discussion._id,
       postId: discussion.post,
     })
+    if (data.status === true) {
+      setActiveItem('')
+      success(data.msg)
+      dispatch(askToRequestAgain())
+    }
   }
 
   return (
     <>
       <div className="flex relative bg-dawn-weak/10 dark:bg-dusk-weak/10 p-2 text-dusk-main dark:text-dawn-main items-start gap-3">
         {replies.length !== 0 && (
-          <div className="h-[110%] top-3 left-[29px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
+          <div className="h-[110%] top-3 left-[28px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
         )}
         <Link to={`/${user?.username}`}>
           <img
@@ -135,14 +148,14 @@ export const Discussions = ({
                 value={editValue}
                 maxLength={255}
                 onChange={(e) => setEditValue(e.target.value)}
-                className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+                className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-blue border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
               />
               <div className="flex justify-end">
                 <Button
                   disabled={editValue.trim() === '' && editValue.length <= 5}
                   title="Edit"
                   onClick={() => editDiscussion()}
-                  className="!text-prime-purple !w-fit"
+                  className="!bg-prime-blue my-2 px-4 py-2 !w-fit"
                 />
               </div>
             </div>
@@ -169,7 +182,7 @@ export const Discussions = ({
                     onClick={handleActiveItemEditOnClick}
                     className={`${
                       activeItem === discussion._id + 'EDIT' &&
-                      '!text-prime-purple'
+                      '!text-prime-blue'
                     } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
                   />
                   <div className="relative">
@@ -214,7 +227,7 @@ export const Discussions = ({
                 />
                 <textarea
                   maxLength={255}
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e) => setReply(e.target.value)}
                   placeholder={`Reply to ${user?.username}`}
                   className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] border border-prime-blue p-2 outline-none"
                 />
@@ -229,7 +242,7 @@ export const Discussions = ({
                       user?._id
                     )
                   }
-                  className="!text-prime-blue !w-fit"
+                  className="!bg-prime-blue my-2 px-4 py-2 !w-fit"
                 />
               </div>
             </motion.section>

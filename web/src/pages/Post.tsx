@@ -424,8 +424,8 @@ export const Post = (props: Props) => {
                   <div className='flex items-center space-x-1'>
                       <i className="ri-discuss-line text-2xl pr-1" />
                       <span className="text-xl">
-                        {post!.discussions.length}{' '}
-                        {post!.discussions.length <= 1
+                        {discussions.length}{' '}
+                        {discussions.length <= 1
                           ? 'Discussion'
                           : 'Discussions'}
                       </span>
@@ -436,7 +436,7 @@ export const Post = (props: Props) => {
                   <img
                     src={currentUser?.user_img}
                     alt=""
-                    className="w-14 h-14 rounded-md border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+                    className="w-14 h-14 rounded-md object-cover"
                   />
                   <div className="flex flex-col w-full">
                     <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">

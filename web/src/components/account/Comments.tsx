@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import {
   accountComments,
   accountDataByUserId,
@@ -18,8 +19,8 @@ export const Comments = ({ userMetadata }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const [comment, setComment] = useState('')
   const [comments, setComments] = useState([])
-  const [edit, setEdit] = useState('')
   const [activeItem, setActiveItem] = useState('')
+  const [requestAgain, setRequestAgain] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -32,7 +33,7 @@ export const Comments = ({ userMetadata }: Props) => {
         }
       }
     })()
-  }, [])
+  }, [userMetadata, requestAgain])
 
   const sendComment = async () => {
     const { data } = await axios.post(addComment, {
@@ -42,6 +43,8 @@ export const Comments = ({ userMetadata }: Props) => {
     })
     if (data.status === true) {
       success(data.msg)
+      setComment('')
+      setRequestAgain(!requestAgain)
     }
   }
 
@@ -57,13 +60,14 @@ export const Comments = ({ userMetadata }: Props) => {
               <img
                 src={currentUser?.user_img}
                 alt=""
-                className="w-16 h-16 border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+                className="w-16 h-16 rounded-md object-cover"
               />
               <div className="flex flex-col w-full">
                 <span className="font-medium text-2xl text-dusk-main dark:text-dawn-main">
                   {currentUser?.name}
                 </span>
                 <textarea
+                  value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="Leave your comment"
                   className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
@@ -79,11 +83,12 @@ export const Comments = ({ userMetadata }: Props) => {
             </div>
           </>
         )}
-
         {comments.length > 0 ? (
           <>
             {comments?.map((comment, index) => (
               <Comment
+                requestAgain={requestAgain}
+                setRequestAgain={setRequestAgain}
                 userMetadata={userMetadata}
                 comment={comment}
                 key={index}

@@ -11,11 +11,13 @@ import {
 } from '../../services/api-routes'
 import { Button } from '../Button'
 import { Loader } from '../Loader'
-import { success } from '../Toasters'
+import { error, success } from '../Toasters'
 
 timeago.register('en_short', en_short)
 
 interface Props {
+  requestAgain: boolean
+  setRequestAgain: React.Dispatch<React.SetStateAction<boolean>>
   userMetadata: User
   comment: Comment
   activeItem: string
@@ -26,13 +28,13 @@ export const Comment = ({
   userMetadata,
   comment,
   activeItem,
+  requestAgain,
+  setRequestAgain,
   setActiveItem,
 }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const [commentAuthor, setCommentAuthor] = useState<User>()
   const [editValue, setEditValue] = useState('')
-
-  console.log('comment', comment)
 
   useEffect(() => {
     if (comment.by) {
@@ -41,7 +43,7 @@ export const Comment = ({
         setCommentAuthor(data.user)
       })()
     }
-  }, [])
+  }, [userMetadata])
 
   function handleEditComment() {
     activeItem === comment._id + 'EDIT'
@@ -57,10 +59,19 @@ export const Comment = ({
   }
 
   const editComment = async () => {
-    await axios.post(updateComment, {
-      commentId: comment._id,
-      body: editValue,
-    })
+    if (comment.comment === editValue) {
+      error('No change detected')
+    } else {
+      const { data } = await axios.post(updateComment, {
+        commentId: comment._id,
+        body: editValue,
+      })
+      if (data.status === true) {
+        setRequestAgain(!requestAgain)
+        success(data.msg)
+        setActiveItem('')
+      }
+    }
   }
 
   const removeComment = async () => {
@@ -69,6 +80,7 @@ export const Comment = ({
     })
     if (data.status === true) {
       success(data.msg)
+      setRequestAgain(!requestAgain)
     }
   }
 
@@ -77,7 +89,7 @@ export const Comment = ({
       <img
         src={commentAuthor?.user_img}
         alt="authorComment/img_profile"
-        className="w-12 h-12 border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+        className="w-12 h-12 rounded-md object-cover"
       />
       <div className="flex flex-col w-full ">
         <span className="-mt-5 ml-auto">
@@ -93,14 +105,14 @@ export const Comment = ({
               value={editValue}
               maxLength={255}
               onChange={(e) => setEditValue(e.target.value)}
-              className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-purple border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
+              className="p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-blue border max-h-48 min-h-[100px]  text-dusk-main/90 dark:text-dawn-main/90"
             />
             <div className="flex justify-end">
               <Button
                 disabled={editValue.trim() === '' && editValue.length <= 5}
                 title="Edit"
                 onClick={() => editComment()}
-                className="!text-prime-purple !w-fit"
+                className="!bg-prime-blue my-5 px-4 py-2 !w-fit"
               />
             </div>
           </div>
@@ -142,7 +154,7 @@ export const Comment = ({
               <i
                 onClick={handleEditComment}
                 className={`${
-                  activeItem === comment._id + 'EDIT' && '!text-prime-purple'
+                  activeItem === comment._id + 'EDIT' && '!text-prime-blue'
                 }
                 ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm text-lg cursor-pointer`}
               />

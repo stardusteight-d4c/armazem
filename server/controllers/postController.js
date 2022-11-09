@@ -14,7 +14,6 @@ export const createPostAndAddToUserAccount = async (req, res, next) => {
     })
 
     const user = await User.findById(userId).select('account')
-
     await Account.findByIdAndUpdate(
       user.account,
       { $push: { posts: post._id } },
@@ -22,10 +21,15 @@ export const createPostAndAddToUserAccount = async (req, res, next) => {
     )
 
     return res
-      .status(201)
+      .status(200)
       .json({ status: true, msg: 'Post created successfully' })
   } catch (error) {
     next(error)
+    return res.status(500).json({
+      status: false,
+      msg: 'Error creating post',
+      error: error.message,
+    })
   }
 }
 
@@ -37,6 +41,7 @@ export const postMetadataById = async (req, res, next) => {
     const authorUser = await User.findById(userRef.by)
     const accountRef = await User.findById(userRef.by).select('account')
     const authorAccount = await Account.findById(accountRef.account)
+
     return res.status(200).json({
       status: true,
       msg: 'Post metadata successfully acquired',
@@ -46,9 +51,10 @@ export const postMetadataById = async (req, res, next) => {
     })
   } catch (error) {
     next(error)
-    return res.status(500).json({
+    return res.status(404).json({
       status: false,
-      msg: 'Error', 
+      msg: 'Post not found',
+      error: error.message,
     })
   }
 }
@@ -66,6 +72,7 @@ export const addNewDiscussion = async (req, res, next) => {
       { $push: { discussions: { discussion: discussion._id } } },
       { safe: true, upsert: true }
     )
+
     return res
       .status(200)
       .json({ status: true, msg: 'New discussion started successfully' })
@@ -73,7 +80,8 @@ export const addNewDiscussion = async (req, res, next) => {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'There was an error adding a new thread',
+      msg: 'There was an error adding a new discussion',
+      error: error.message,
     })
   }
 }
@@ -82,6 +90,7 @@ export const discussionsByPostId = async (req, res, next) => {
   try {
     const postId = req.params.postId
     const discussions = await Discussion.find({ post: postId })
+
     return res.status(200).json({
       status: true,
       msg: 'Post discussions successfully acquired',
@@ -89,9 +98,10 @@ export const discussionsByPostId = async (req, res, next) => {
     })
   } catch (error) {
     next(error)
-    return res.status(500).json({
-      status: false,
-      msg: 'Error',
+    return res.status(404).json({
+      status: true,
+      msg: 'Error getting discussions',
+      error: error.message,
     })
   }
 }
@@ -108,12 +118,17 @@ export const updateDiscussion = async (req, res, next) => {
       },
       { safe: true, upsert: true }
     )
-    // retornar update feito com sucesso
+
+    return res.status(200).json({
+      status: true,
+      msg: 'Update done successfully',
+    })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: 'There was an error updating the discussion',
+      error: error.message,
     })
   }
 }
@@ -126,24 +141,29 @@ export const deleteDiscussion = async (req, res, next) => {
     const updatedDiscussions = await Discussion.find({ post: postId }).select(
       '_id'
     )
-    updatedDiscussions.map(
-      async (discussion) =>
-        await Post.findByIdAndUpdate(
-          postId,
-          {
-            $set: {
-              discussions: { discussion: discussion._id },
-            },
-          },
-          { safe: true, upsert: true }
-        )
+
+    const discussionsObj = []
+    updatedDiscussions.map((id) => discussionsObj.push({ discussion: id }))
+    await Post.findByIdAndUpdate(
+      postId,
+      {
+        $set: {
+          discussions: [...discussionsObj],
+        },
+      },
+      { safe: true, upsert: true }
     )
-    // retornar delete feito com sucesso
+
+    return res.status(200).json({
+      status: true,
+      msg: 'Delete done successfully',
+    })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: 'There was an error deleting the discussion',
+      error: error.message,
     })
   }
 }
@@ -162,11 +182,17 @@ export const addNewReply = async (req, res, next) => {
       { $push: { replies: reply._id } },
       { safe: true, upsert: true }
     )
+
+    return res.status(200).json({
+      status: true,
+      msg: 'New reply added',
+    })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: 'Error adding reply',
+      error: error.message,
     })
   }
 }
@@ -183,12 +209,17 @@ export const updateReply = async (req, res, next) => {
       },
       { safe: true, upsert: true }
     )
-    // retornar update feito com sucesso
+
+    return res.status(200).json({
+      status: true,
+      msg: 'Reply updated',
+    })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: 'Error editing reply',
+      error: error.message,
     })
   }
 }
@@ -200,6 +231,7 @@ export const deleteReply = async (req, res, next) => {
     const updatedReplies = await Reply.find({
       discussion: discussionId,
     }).select('_id')
+
     updatedReplies.map(
       async (replies) =>
         await Discussion.findByIdAndUpdate(
@@ -212,12 +244,17 @@ export const deleteReply = async (req, res, next) => {
           { safe: true, upsert: true }
         )
     )
-    // retornar delete feito com sucesso
+
+    return res.status(200).json({
+      status: true,
+      msg: 'Deleted reply',
+    })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: 'Error deleting reply',
+      error: error.message,
     })
   }
 }
@@ -226,14 +263,16 @@ export const repliesOfDiscussion = async (req, res, next) => {
   try {
     const discussionId = req.params.discussionId
     const replies = await Reply.find({ discussion: discussionId })
+
     return res
       .status(200)
-      .json({ status: true, msg: 'Operation performed successfully', replies })
+      .json({ status: true, msg: 'Replies acquired successfully', replies })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: 'Error searching for replies',
+      error: error.message,
     })
   }
 }
@@ -250,12 +289,14 @@ export const likePost = async (req, res, next) => {
       },
       { safe: true, upsert: true }
     )
+
     return res.status(200).json({ status: true })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: 'Error adding like',
+      error: error.message,
     })
   }
 }
@@ -270,12 +311,14 @@ export const unlikedPost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+
     return res.status(200).json({ status: true })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: 'Error removing like',
+      error: error.message,
     })
   }
 }
@@ -290,6 +333,7 @@ export const updatePost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+
     return res
       .status(200)
       .json({ status: true, msg: 'Post edited successfully' })
@@ -298,6 +342,7 @@ export const updatePost = async (req, res, next) => {
     return res.status(500).json({
       status: false,
       msg: 'There was an error editing',
+      error: error.message,
     })
   }
 }
@@ -306,9 +351,11 @@ export const deletePost = async (req, res, next) => {
   try {
     const { postId, accountId } = req.body
     const repliesRef = await Discussion.find({ post: postId }).select('replies')
+
     const replies = []
     repliesRef.map((reply) => replies.push(...reply.replies))
     replies.map(async (reply) => await Reply.findByIdAndDelete(reply))
+
     await Discussion.deleteMany({ post: postId })
     await Account.updateMany({
       $pullAll: {
@@ -323,6 +370,7 @@ export const deletePost = async (req, res, next) => {
       { safe: true, multi: false }
     )
     await Post.findByIdAndDelete(postId)
+
     return res
       .status(200)
       .json({ status: true, msg: 'Post successfully removed' })
@@ -345,6 +393,7 @@ export const sharePost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+
     return res
       .status(200)
       .json({ status: true, msg: 'Post shared successfully' })
@@ -367,6 +416,7 @@ export const unsharePost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+
     return res
       .status(200)
       .json({ status: true, msg: 'Post removed from shares' })
