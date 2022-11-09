@@ -59,13 +59,13 @@ export const LastPost = ({
   }
 
   return (
-    <article className="drop-shadow-md cursor-default text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-layer-heavy transition-all ease-in-out duration-200 hover:scale-105 w-full h-fit p-4">
+    <article className="cursor-default hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200 w-full h-fit p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
             src={userMetadata?.user_img}
             alt=""
-            className="w-12 h-12 object-cover"
+            className="w-12 rounded-md h-12 object-cover"
           />
           <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
             {userMetadata?.name}
@@ -84,26 +84,29 @@ export const LastPost = ({
         <div className="flex items-center gap-x-5">
           <div
             onClick={handleLikePost}
-            className="flex w-[75px] items-center cursor-pointer"
+            className="flex w-[84px] items-center cursor-pointer"
           >
             <i
               className={`${
-                likedByUser() ? 'ri-heart-3-fill text-red' : 'ri-heart-3-line'
-              }  text-xl p-1 `}
+                likedByUser() ? 'ri-heart-3-fill text-prime-blue' : 'ri-heart-3-line'
+              }  text-xl pr-1 `}
             />
-            <span className="text-sm">
+            <span className="text-lg">
               {post.likes.length} {post.likes.length <= 1 ? 'Like' : 'Likes'}
             </span>
           </div>
           <div className="flex items-center cursor-pointer">
-            <i className="ri-discuss-line p-1 text-xl" />
-            <span className="text-sm">Discuss</span>
+            <i className="ri-discuss-line pr-1 text-xl" />
+            <span className="text-lg">
+              {post.discussions.length}{' '}
+              {post.discussions.length <= 1 ? 'Discussion' : 'Discussions'}
+            </span>
           </div>
         </div>
         {currentUser?._id !== userMetadata?._id && (
           <div className="flex items-center cursor-pointer">
-            <i className="ri-share-box-line p-1 text-xl" />
-            <span className="text-sm">Share</span>
+            <i className="ri-share-box-line text-xl pr-1" />
+            <span className="text-lg">Share</span>
           </div>
         )}
       </div>

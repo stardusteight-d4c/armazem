@@ -4,7 +4,7 @@ interface Props {}
 
 export const PreviewPost = (props: Props) => {
   return (
-    <article className="max-w-[450px] drop-shadow-md min-w-[450px] h-[285px] p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-layer-heavy">
+    <article className="max-w-[450px] min-w-[450px] h-[285px] p-4 text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img

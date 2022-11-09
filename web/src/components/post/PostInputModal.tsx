@@ -60,7 +60,7 @@ export const PostInputModal = (props: Props) => {
         initial={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
         animate={{ opacity: 1 }}
-        className="absolute z-40 inset-0 w-screen h-screen bg-fill-strong/30"
+        className="fixed z-40 inset-0 w-screen h-screen bg-fill-strong/30"
       />
       <motion.section
         initial={{
@@ -71,7 +71,7 @@ export const PostInputModal = (props: Props) => {
         }}
         transition={{ type: 'spring', duration: 0.8 }}
         animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="absolute border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-14 pt-4 pb-16 z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-14 pt-4 pb-16 z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">New post</h1>
@@ -100,7 +100,7 @@ export const PostInputModal = (props: Props) => {
           </span>
           <img
             src={currentUser?.user_img}
-            className="w-16 h-16 absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
+            className="w-16 h-16 rounded-md absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
             alt=""
           />
           <div className="relative w-full">
@@ -113,8 +113,8 @@ export const PostInputModal = (props: Props) => {
             />
             <span
               className={`font-semibold absolute items-center flex gap-x-2 left-0 -bottom-7 font-inter ${
-                postTextLength >= 750 && '!text-orange'
-              } ${postTextLength >= 800 && '!text-red'}`}
+                postTextLength >= 750 && 'text-orange'
+              } ${postTextLength >= 830 && 'text-red'}`}
             >
               {postTextLength}/855
               <div className="text-xs text-dawn-weak dark:text-dusk-weak">(min. 50)</div>

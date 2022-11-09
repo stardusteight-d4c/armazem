@@ -47,8 +47,8 @@ export const postMetadataById = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
-      msg: 'Error', // melhorar mensagens de erros e testar
+      status: false,
+      msg: 'Error', 
     })
   }
 }
@@ -61,7 +61,6 @@ export const addNewDiscussion = async (req, res, next) => {
       by: userId,
       body,
     })
-
     await Post.findByIdAndUpdate(
       postId,
       { $push: { discussions: { discussion: discussion._id } } },
@@ -69,12 +68,12 @@ export const addNewDiscussion = async (req, res, next) => {
     )
     return res
       .status(200)
-      .json({ status: true, msg: 'Operation performed successfully' })
+      .json({ status: true, msg: 'New discussion started successfully' })
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: 'There was an error adding a new thread',
     })
   }
 }
@@ -91,7 +90,7 @@ export const discussionsByPostId = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -113,7 +112,7 @@ export const updateDiscussion = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -143,7 +142,7 @@ export const deleteDiscussion = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -166,7 +165,7 @@ export const addNewReply = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -188,7 +187,7 @@ export const updateReply = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -217,7 +216,7 @@ export const deleteReply = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -227,14 +226,13 @@ export const repliesOfDiscussion = async (req, res, next) => {
   try {
     const discussionId = req.params.discussionId
     const replies = await Reply.find({ discussion: discussionId })
-
     return res
       .status(200)
       .json({ status: true, msg: 'Operation performed successfully', replies })
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -256,7 +254,7 @@ export const likePost = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -276,7 +274,7 @@ export const unlikedPost = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
       msg: 'Error',
     })
   }
@@ -285,7 +283,6 @@ export const unlikedPost = async (req, res, next) => {
 export const updatePost = async (req, res, next) => {
   try {
     const { postId, body } = req.body
-
     await Post.findByIdAndUpdate(
       postId,
       {
@@ -293,11 +290,14 @@ export const updatePost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Post edited successfully' })
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: 'There was an error editing',
     })
   }
 }
@@ -310,13 +310,11 @@ export const deletePost = async (req, res, next) => {
     repliesRef.map((reply) => replies.push(...reply.replies))
     replies.map(async (reply) => await Reply.findByIdAndDelete(reply))
     await Discussion.deleteMany({ post: postId })
-
     await Account.updateMany({
       $pullAll: {
         sharedPosts: [{ id: postId }],
       },
     })
-
     await Account.findByIdAndUpdate(
       accountId,
       {
@@ -324,13 +322,15 @@ export const deletePost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
-
     await Post.findByIdAndDelete(postId)
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Post successfully removed' })
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: 'There was an error removing',
     })
   }
 }
@@ -338,7 +338,6 @@ export const deletePost = async (req, res, next) => {
 export const sharePost = async (req, res, next) => {
   try {
     const { postId, accountId } = req.body
-
     await Account.findByIdAndUpdate(
       accountId,
       {
@@ -346,11 +345,14 @@ export const sharePost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Post shared successfully' })
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: 'There was an error sharing',
     })
   }
 }
@@ -358,7 +360,6 @@ export const sharePost = async (req, res, next) => {
 export const unsharePost = async (req, res, next) => {
   try {
     const { postId, accountId } = req.body
-
     await Account.findByIdAndUpdate(
       accountId,
       {
@@ -366,11 +367,14 @@ export const unsharePost = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+    return res
+      .status(200)
+      .json({ status: true, msg: 'Post removed from shares' })
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: 'There was an error unshare',
     })
   }
 }

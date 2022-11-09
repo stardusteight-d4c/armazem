@@ -18,14 +18,14 @@ export const Navbar = (props: Props) => {
   const dispatch = useAppDispatch()
 
   const handleLogout = async () => {
-    sessionStorage.clear()
+    localStorage.clear()
     dispatch(clearAuthSession())
     dispatch(clearCurrentUser())
     navigate('/login')
   }
 
   return (
-    <nav className="bg-fill-weak dark:bg-fill-strong shadow-sm dark:shadow-md z-50 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between p-8 w-full flex items-center h-24">
+    <nav className="bg-fill-weak dark:bg-fill-strong z-50 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between p-8 w-full flex items-center h-24">
       <Search />
       <div className="flex items-center gap-x-5">
         <SwitchTheme />
@@ -44,7 +44,7 @@ export const Navbar = (props: Props) => {
               <img
                 referrerPolicy="no-referrer"
                 src={currentUser?.user_img}
-                className="w-12 h-12 cursor-pointer  auto-rows-auto"
+                className="w-12 h-12 rounded-md cursor-pointer  auto-rows-auto"
                 alt=""
               />
             </Menu.Button>

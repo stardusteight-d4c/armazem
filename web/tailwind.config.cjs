@@ -24,7 +24,7 @@ module.exports = {
       white: '#fff',
       black: '#000000',
       red: '#E44242',
-      green: '#57db1f',
+      green: '#15f463',
       orange: '#EB7140',
       prime: {
         purple: '#4D3BC9',
@@ -39,8 +39,8 @@ module.exports = {
         weak: '#888888',
       },
       fill: {
-        strong: '#252a27',
-        weak: '#f1eefe',
+        strong: '#1A1D1E',
+        weak: '#FFFFFF',
       },
       layer: {
         heavy: '#2e2e2e',

@@ -51,7 +51,7 @@ export const ConfirmVerificationToken = ({ data }: { data: Props }) => {
         error(data.msg)
       }
       if (data.status === true) {
-        sessionStorage.setItem('session', JSON.stringify(data.session))
+        localStorage.setItem('session', JSON.stringify(data.session))
         navigate('/')
       }
     }

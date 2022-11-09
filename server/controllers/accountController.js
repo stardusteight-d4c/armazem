@@ -239,7 +239,7 @@ export const sharedPostByPagination = async (req, res, next) => {
     sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post))
 
     const sharedPosts = await Promise.all(
-      sharedPostsIds.map(async (id) => await Post.find({ _id: id })).reverse()
+      sharedPostsIds.map(async (id) => await Post.find({_id: id.id })).reverse()
     )
 
     function paginate(array, page_size, page_number) {

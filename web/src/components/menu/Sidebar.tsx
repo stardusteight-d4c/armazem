@@ -10,7 +10,7 @@ export const Sidebar = (props: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
 
   return (
-    <aside className="scrollbar-hide drop-shadow-lg pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong">
+    <aside className="scrollbar-hide pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong">
       <Link
         to="/"
         className="flex cursor-pointer items-center justify-center mt-6 mb-8 gap-x-2"

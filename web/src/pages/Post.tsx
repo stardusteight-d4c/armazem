@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Button, Discussions, Navbar, Sidebar } from '../components'
 import { Loader } from '../components/Loader'
 import { error, success } from '../components/Toasters'
@@ -17,6 +17,8 @@ import {
 } from '../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { askToRequestAgain } from '../store'
+import { ConnectionStatus } from '../components/ConnectionStatus'
+import { PageNotFound } from './PageNotFound'
 
 interface Props {}
 
@@ -32,28 +34,32 @@ export const Post = (props: Props) => {
   const dispatch = useAppDispatch()
   const [editValue, setEditValue] = useState(post?.body)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
-
+  const navigate = useNavigate()
   const [activeItem, setActiveItem] = useState('')
+  const [notFound, setNotFound] = useState<boolean>(false)
 
   useEffect(() => {
     ;(async () => {
-      setLoading(true)
-      const [{ data: postData }, { data: discussionsData }] = await Promise.all(
-        [
-          axios.get(`${postMetadataById}/${postId}`),
-          axios.get(`${discussionsByPostId}/${postId}`),
-        ]
-      )
-      if (postData.status === true && discussionsData.status === true) {
-        // setAuthorAccount(postData.authorAccount)
-        // Tratar erro, caso não encontre o post(retorne algum erro), mostrar página 404
-        setAuthorUser(postData.authorUser)
-        setPost(postData.post)
-        setDiscussions(discussionsData.discussions)
-        setEditValue(postData.post.body)
-        setLoading(false)
-      } else {
-        error(postData.msg.error)
+      if (!post) {
+        setLoading(true)
+      }
+      try {
+        const [{ data: postData }, { data: discussionsData }] =
+          await Promise.all([
+            axios.get(`${postMetadataById}/${postId}`),
+            axios.get(`${discussionsByPostId}/${postId}`),
+          ])
+        if (postData.status === true && discussionsData.status === true) {
+          // setAuthorAccount(postData.authorAccount)
+          // Tratar erro, caso não encontre o post(retorne algum erro), mostrar página 404
+          setAuthorUser(postData.authorUser)
+          setPost(postData.post)
+          setDiscussions(discussionsData.discussions)
+          setEditValue(postData.post.body)
+          setLoading(false)
+        }
+      } catch (err) {
+        setNotFound(true)
       }
     })()
   }, [requestAgain])
@@ -76,9 +82,12 @@ export const Post = (props: Props) => {
       body: postComment.body,
     })
     if (data.status === true) {
-      setTimeout(() => {
-        dispatch(askToRequestAgain())
-      }, 200)
+      success(data.msg)
+      setPostComment({ body: '' })
+      dispatch(askToRequestAgain())
+    }
+    if (data.status === false) {
+      error(data.msg)
     }
   }
 
@@ -88,11 +97,13 @@ export const Post = (props: Props) => {
         userId: currentUser?._id,
         postId: post?._id,
       })
+      dispatch(askToRequestAgain())
     } else {
       await axios.post(likePost, {
         userId: currentUser?._id,
         postId: post?._id,
       })
+      dispatch(askToRequestAgain())
     }
   }
 
@@ -130,24 +141,50 @@ export const Post = (props: Props) => {
   }
 
   const editPost = async () => {
-    await axios.post(updatePost, {
+    const { data } = await axios.post(updatePost, {
       postId: post?._id,
       body: editValue,
     })
+    if (data.status === true) {
+      success(data.msg)
+      dispatch(askToRequestAgain())
+      setActiveItem('')
+    }
+    if (data.status === false) {
+      error(data.msg)
+    }
   }
 
   const addPostToSharedPosts = async () => {
-    await axios.post(sharePost, {
+    const { data } = await axios.post(sharePost, {
       postId: post?._id,
       accountId: currentUser?.account,
     })
+    if (data.status === true) {
+      success(data.msg)
+      dispatch(askToRequestAgain())
+      setActiveItem('')
+    }
+    if (data.status === false) {
+      error(data.msg)
+      setActiveItem('')
+    }
   }
 
   const removePostToSharedPosts = async () => {
-    await axios.post(unsharePost, {
+    const { data } = await axios.post(unsharePost, {
       postId: post?._id,
       accountId: currentUser?.account,
     })
+    if (data.status === true) {
+      success(data.msg)
+      dispatch(askToRequestAgain())
+      setActiveItem('')
+    }
+    if (data.status === false) {
+      error(data.msg)
+      setActiveItem('')
+    }
   }
 
   const removePost = async () => {
@@ -155,12 +192,26 @@ export const Post = (props: Props) => {
       postId: post?._id,
       accountId: currentUser?.account,
     })
+    if (data.status === true) {
+      success(data.msg)
+      navigate(`/${authorUser?.username}`)
+    }
   }
 
   const sharedPosts = currentAccount?.sharedPosts?.map(
     (postShared: any) => postShared.id
   )
   const isSharedPosts = currentAccount && sharedPosts?.includes(post?._id)
+
+  const PostNotFound = () => {
+    return (
+      <div className="flex flex-col gap-y-2 items-center justify-center">
+        <i className="ri-error-warning-line text-red text-7xl " />
+        <span className="font-semibold text-3xl">Post Not Found</span>
+      </div>
+    )
+  }
+  // Criar para conta tbm
 
   return (
     <div className={style.gridContainer}>
@@ -170,11 +221,15 @@ export const Post = (props: Props) => {
         <main className="px-4 pt-2 pb-20">
           {loading ? (
             <div className="w-full h-screen -mt-28 flex items-center justify-center">
-              <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
+              {notFound ? (
+                <PostNotFound />
+              ) : (
+                <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
+              )}
             </div>
           ) : (
             <>
-              <article className="px-4 pb-3 drop-shadow-md bg-white dark:bg-layer-heavy pt-4 mt-4">
+              <article className="px-4 pb-3 border border-dawn-weak/20 dark:border-dusk-weak/20 bg-white dark:bg-fill-strong pt-4 mt-4">
                 <header>
                   <div className="flex justify-between pb-4 items-center">
                     <span className="text-4xl font-inter font-semibold w-[700px]">
@@ -190,7 +245,7 @@ export const Post = (props: Props) => {
                       className="flex items-start justify-start gap-x-2"
                     >
                       <img
-                        className="w-14 h-14"
+                        className="w-14 rounded-md h-14"
                         src={authorUser?.user_img}
                         alt=""
                       />
@@ -201,7 +256,12 @@ export const Post = (props: Props) => {
                         <span className="text-lg">{authorUser?.username}</span>
                       </div>
                     </Link>
-                    <span className="text-green">Connected</span>
+                    {authorUser?._id !== currentUser?._id && (
+                      <ConnectionStatus
+                        userMetadata={authorUser!}
+                        currentAccount={currentAccount}
+                      />
+                    )}
                   </div>
                 </header>
 
@@ -219,9 +279,9 @@ export const Post = (props: Props) => {
                         disabled={
                           editValue?.trim() === '' && editValue?.length <= 50
                         }
-                        title="Update"
+                        title="Submit"
                         onClick={() => editPost()}
-                        className="!text-prime-blue !w-fit"
+                        className="!bg-prime-blue my-2 px-4 py-2 !w-fit"
                       />
                     </div>
                   </div>
@@ -233,24 +293,27 @@ export const Post = (props: Props) => {
                 <div className="h-[1px] w-[full] my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
                 <div className="flex items-center justify-between text-dusk-main dark:text-dawn-main">
                   <div className="flex items-center gap-x-5">
-                    <div className="flex items-center  cursor-pointer">
+                    <div
+                      onClick={handleLikePost}
+                      className="flex items-center  cursor-pointer"
+                    >
                       {likedByUser && (
                         <>
                           <i
-                            onClick={handleLikePost}
                             className={`${
                               likedByUser()
-                                ? 'ri-heart-3-fill text-red'
+                                ? 'ri-heart-3-fill text-prime-blue'
                                 : 'ri-heart-3-line'
                             }  text-2xl pr-1`}
                           />
                         </>
                       )}
                       <span className="text-xl">
-                        {post?.likes.length}
-                        {post?.likes.length <= 1 ? ' Like' : ' Likes'}
+                        {post?.likes.length}{' '}
+                        {post?.likes.length <= 1 ? 'Like' : 'Likes'}
                       </span>
                     </div>
+                   
                   </div>
                   <div className="flex items-center gap-x-5 cursor-pointer">
                     {authorUser?._id !== currentUser?._id && (
@@ -356,15 +419,24 @@ export const Post = (props: Props) => {
                 </div>
               </article>
               <div className="mb-5 px-4">
-             
                 <div className="flex items-center mt-16 mb-8">
-                  <span className="text-2xl font-semibold">Discussion</span>
+                  <span className="text-2xl font-semibold">
+                  <div className='flex items-center space-x-1'>
+                      <i className="ri-discuss-line text-2xl pr-1" />
+                      <span className="text-xl">
+                        {post!.discussions.length}{' '}
+                        {post!.discussions.length <= 1
+                          ? 'Discussion'
+                          : 'Discussions'}
+                      </span>
+                    </div>
+                  </span>
                 </div>
                 <div className="flex items-start gap-x-5">
                   <img
                     src={currentUser?.user_img}
                     alt=""
-                    className="w-14 h-14 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
+                    className="w-14 h-14 rounded-md border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
                   />
                   <div className="flex flex-col w-full">
                     <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
@@ -374,6 +446,7 @@ export const Post = (props: Props) => {
                       maxLength={255}
                       minLength={5}
                       id="body"
+                      value={postComment.body}
                       onChange={(e) => handleChange(e)}
                       placeholder="Type what you think about this subject"
                       className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"

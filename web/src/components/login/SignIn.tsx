@@ -42,7 +42,7 @@ export const SignIn = ({ setSignIn }: Props) => {
             id,
           })
           if (authData.status === true) {
-            sessionStorage.setItem('session', JSON.stringify(authData.session))
+            localStorage.setItem('session', JSON.stringify(authData.session))
             navigate('/')
           }
         }
@@ -63,7 +63,7 @@ export const SignIn = ({ setSignIn }: Props) => {
           error(data.msg)
         }
         if (data.status === true) {
-          sessionStorage.setItem('session', JSON.stringify(data.session))
+          localStorage.setItem('session', JSON.stringify(data.session))
           navigate('/')
         }
       }
@@ -117,8 +117,8 @@ export const SignIn = ({ setSignIn }: Props) => {
           </span>
         </div>
         <div className={style.flexContainer}>
-          {inputSignInData.map((input) => (
-            <Input {...input} onChange={(e) => handleChange(e)} />
+          {inputSignInData.map((input, index) => (
+            <Input {...input} key={index} onChange={(e) => handleChange(e)} />
           ))}
         </div>
         <Button

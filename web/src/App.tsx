@@ -29,13 +29,12 @@ export const App = (props: Props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const openModal = useAppSelector((state) => state.armazem.openModal)
-  const session = sessionStorage.getItem('session')
+  const session = localStorage.getItem('session')
   const usersSearch = useAppSelector((state) => state.armazem.usersSearch)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const [loading, setLoading] = useState(true)
 
   const location = useLocation()
-
 
   // After mounting, we have access to the theme in localStorage
   useEffect(() => {
@@ -65,17 +64,18 @@ export const App = (props: Props) => {
             }
             setLoading(false)
           } else {
+            setLoading(false)
             navigate('/login')
           }
         } catch (err) {
           console.error(err)
-          navigate('/login')
           setLoading(false)
+          navigate('/login')
         }
       })()
     } else {
-      navigate('/login')
       setLoading(false)
+      navigate('/login')
     }
   }, [session, requestAgain])
 
@@ -113,23 +113,17 @@ export const App = (props: Props) => {
   return (
     <>
       {openModal && handleOpenModal(openModal)}
-      <div onClick={handleSearchResults} className={style.wrapper}>
-        <Toaster position="top-left" />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Feed />} />
-          <Route path="/:username" element={<Account />} />
-          <Route path="/connections" element={<Connections />} />
-          <Route path="/post/:id" element={<Post />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </div>
+      <Toaster position="top-left" />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Feed />} />
+        <Route path="/:username" element={<Account />} />
+        <Route path="/connections" element={<Connections />} />
+        <Route path="/post/:id" element={<Post />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
     </>
   )
-}
-
-const style = {
-  wrapper: `max-h-screen overflow-x-hidden overflow-y-scroll`,
 }
 
 const loader = {
