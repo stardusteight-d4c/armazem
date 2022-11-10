@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { Account, Connections, Feed, Login, PageNotFound, Post } from './pages'
 import { activeUser, authorization } from './services/api-routes'
 import {
@@ -22,7 +22,6 @@ import {
   PostInputModal,
   SharedPostsModal,
 } from './components/modals'
-import { io } from 'socket.io-client'
 
 interface Props {}
 
@@ -37,24 +36,12 @@ export const App = (props: Props) => {
   const [loading, setLoading] = useState(true)
   const [active, setActive] = useState(false)
 
-  const location = useLocation()
+  // AFTER MOUTING, WE HAVE ACCESS TO THE THEME IN LOCALSTORAGE
+  useEffect(() => {
+    dispatch(handleSwitchTheme())
+  }, [])
 
-  // // Connect user to WB
-  // const socket = useRef<any>()
-  // useEffect(() => {
-  //   if (currentUser !== null) {
-  //      socket.current = io('http://localhost:5000', {
-  //       withCredentials: true,
-  //     })
-  //     socket.current.emit('logged-in', {
-  //       userId: currentUser._id,
-  //       username: currentUser.username,
-  //     })
-  //   }
-  // }, [currentUser, session])
-
-  // A cada um minuto atualizar o status de ativo do usuário, mandar data de agora
-
+  // SET ACTIVE USER MIDDLEWARE
   useEffect(() => {
     if (currentUser?._id !== undefined) {
       handleTimeout()
@@ -71,12 +58,7 @@ export const App = (props: Props) => {
     }, 60000)
   }
 
-  // After mounting, we have access to the theme in localStorage
-  useEffect(() => {
-    dispatch(handleSwitchTheme())
-  }, [])
-
-  // Session middleware
+  // SESSION MIDDLEWARE
   useEffect(() => {
     if (location.pathname === '/login' || location.pathname === '/') {
       setLoading(true)

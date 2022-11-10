@@ -19,8 +19,11 @@ import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { askToRequestAgain } from '../store'
 import { ConnectionStatus } from '../components/ConnectionStatus'
 import { PageNotFound } from './PageNotFound'
+import { io } from 'socket.io-client'
 
-interface Props {}
+interface Props {
+  // socket: React.MutableRefObject<any>
+}
 
 export const Post = (props: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
@@ -38,6 +41,25 @@ export const Post = (props: Props) => {
   const [activeItem, setActiveItem] = useState('')
   const [notFound, setNotFound] = useState<boolean>(false)
 
+  const socket = useRef<any>()
+  socket.current = io('http://localhost:5000')
+
+  useEffect(() => {
+    if (currentUser !== null && postId) {
+      socket.current.emit('enter-post', {
+        postId,
+        userId: currentUser._id,
+      })
+    }
+  }, [])
+
+  socket.current.on('post-update', (data: any) => {
+    console.log(data);
+    if (data.status === true) {
+      dispatch(askToRequestAgain())
+    }
+  })
+
   useEffect(() => {
     ;(async () => {
       if (!post) {
@@ -50,8 +72,6 @@ export const Post = (props: Props) => {
             axios.get(`${discussionsByPostId}/${postId}`),
           ])
         if (postData.status === true && discussionsData.status === true) {
-          // setAuthorAccount(postData.authorAccount)
-          // Tratar erro, caso não encontre o post(retorne algum erro), mostrar página 404
           setAuthorUser(postData.authorUser)
           setPost(postData.post)
           setDiscussions(discussionsData.discussions)
@@ -84,6 +104,11 @@ export const Post = (props: Props) => {
     if (data.status === true) {
       success(data.msg)
       setPostComment({ body: '' })
+      socket.current.emit('post-update', {
+        postId,
+        userId: currentUser?._id,
+        body: postComment.body,
+      })
       dispatch(askToRequestAgain())
     }
     if (data.status === false) {
@@ -313,7 +338,6 @@ export const Post = (props: Props) => {
                         {post?.likes.length <= 1 ? 'Like' : 'Likes'}
                       </span>
                     </div>
-                   
                   </div>
                   <div className="flex items-center gap-x-5 cursor-pointer">
                     {authorUser?._id !== currentUser?._id && (
@@ -421,13 +445,11 @@ export const Post = (props: Props) => {
               <div className="mb-5 px-4">
                 <div className="flex items-center mt-16 mb-8">
                   <span className="text-2xl font-semibold">
-                  <div className='flex items-center space-x-1'>
+                    <div className="flex items-center space-x-1">
                       <i className="ri-discuss-line text-2xl pr-1" />
                       <span className="text-xl">
                         {discussions.length}{' '}
-                        {discussions.length <= 1
-                          ? 'Discussion'
-                          : 'Discussions'}
+                        {discussions.length <= 1 ? 'Discussion' : 'Discussions'}
                       </span>
                     </div>
                   </span>
