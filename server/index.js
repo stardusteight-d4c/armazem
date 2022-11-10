@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import { Server } from 'socket.io'
 import { router as authRoutes } from './routes/authRoutes.js'
 import { router as userRoutes } from './routes/userRoutes.js'
 import { router as accountRoutes } from './routes/accountRoutes.js'
@@ -13,9 +14,11 @@ dotenv.config()
 // INSTANTING EXPRESS APP
 const app = express()
 
-// PAYLOAD LIMIT 
-app.use(express.json({limit: "10mb", extended: true}))
-app.use(express.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}))
+// PAYLOAD LIMIT
+app.use(express.json({ limit: '10mb', extended: true }))
+app.use(
+  express.urlencoded({ limit: '10mb', extended: true, parameterLimit: 50000 })
+)
 
 // CONVERTING REQUEST BODY TO JSON
 app.use(express.json())
@@ -44,6 +47,38 @@ mongoose
   })
 
 // STARTING SERVER
-const server = app.listen(process.env.PORT, () => {
+export const server = app.listen(process.env.PORT, () => {
   console.log(`Server listening on PORT: ${process.env.PORT}`)
 })
+
+// // STARTING WEB SOCKET SERVER
+// const io = new Server(server, {
+//   cors: {
+//     origin: 'http://localhost:5173',
+//     methods: ['GET', 'POST'],
+//     transports: ['websocket', 'polling'],
+//     credentials: true,
+//   },
+// })
+
+// // CONNECT WS
+// const onlineUsers = {}
+// io.on('connection', (socket) => {
+//   global.chatSocket = socket
+//   socket.on('logged-in', (data) => {
+//     onlineUsers[data.userId] = data.username
+//   })
+
+//   socket.on('logged-out', (userId) => {
+//     delete onlineUsers[userId]
+//   })
+
+//   console.log(onlineUsers)
+
+//   // socket.on('send-msg', (data) => {
+//   //   const sendUserSocket = onlineUsers.get(data.to)
+//   //   if (sendUserSocket) {
+//   //     socket.to(sendUserSocket).emit('msg-received', data.message)
+//   //   }
+//   // })
+// })

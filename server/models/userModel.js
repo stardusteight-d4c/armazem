@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'https://via.placeholder.com/1025x300',
   },
+  lastActivity: { type: Date },
   account: { type: Schema.Types.ObjectId, ref: 'Account' },
 })
 

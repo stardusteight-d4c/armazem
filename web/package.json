@@ -22,6 +22,7 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
     "remixicon": "^2.5.0",
+    "socket.io-client": "^4.5.3",
     "tailwind-scrollbar-hide": "^1.1.7",
     "timeago-react": "^3.0.5"
   },

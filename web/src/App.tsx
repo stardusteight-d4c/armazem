@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { Account, Connections, Feed, Login, PageNotFound, Post } from './pages'
-import { authorization } from './services/api-routes'
+import { activeUser, authorization } from './services/api-routes'
 import {
   getCurrentUserAccount,
   getUserData,
@@ -22,6 +22,7 @@ import {
   PostInputModal,
   SharedPostsModal,
 } from './components/modals'
+import { io } from 'socket.io-client'
 
 interface Props {}
 
@@ -32,9 +33,43 @@ export const App = (props: Props) => {
   const session = localStorage.getItem('session')
   const usersSearch = useAppSelector((state) => state.armazem.usersSearch)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
+  const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const [loading, setLoading] = useState(true)
+  const [active, setActive] = useState(false)
 
   const location = useLocation()
+
+  // // Connect user to WB
+  // const socket = useRef<any>()
+  // useEffect(() => {
+  //   if (currentUser !== null) {
+  //      socket.current = io('http://localhost:5000', {
+  //       withCredentials: true,
+  //     })
+  //     socket.current.emit('logged-in', {
+  //       userId: currentUser._id,
+  //       username: currentUser.username,
+  //     })
+  //   }
+  // }, [currentUser, session])
+
+  // A cada um minuto atualizar o status de ativo do usuário, mandar data de agora
+
+  useEffect(() => {
+    if (currentUser?._id !== undefined) {
+      handleTimeout()
+      ;(async () => {
+        await axios.post(`${activeUser}/${currentUser?._id}`)
+      })()
+      setLoading(false)
+    }
+  }, [currentUser, active])
+
+  function handleTimeout() {
+    setTimeout(() => {
+      setActive(!active)
+    }, 60000)
+  }
 
   // After mounting, we have access to the theme in localStorage
   useEffect(() => {

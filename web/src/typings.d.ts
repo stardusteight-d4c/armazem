@@ -33,6 +33,7 @@ interface User {
   username: string
   user_img: string
   cover_img: string
+  lastActivity: string
   account: string
 }
 

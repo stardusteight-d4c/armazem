@@ -245,6 +245,15 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
   //   }
   // }
 
+  function timeago() {
+    return Number(
+      Math.abs(
+        (new Date().getTime() - new Date(userMetadata.lastActivity).getTime()) /
+          1000
+      ).toFixed()
+    )
+  }
+
   return (
     <>
       <div className="relative">
@@ -272,7 +281,7 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
             className="ri-edit-2-fill transition-all duration-200 hover:brightness-125 flex justify-center items-center p-2 drop-shadow-md rounded-full text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong  w-10 h-10 text-xl absolute z-20 bottom-12 left-36 cursor-pointer"
           />
         )}
-        <div className="absolute left-[185px] -bottom-[75px]">
+        <div className="absolute left-[185px] -bottom-[80px]">
           <div className="flex items-center gap-x-4">
             <h2 className="text-4xl font-semibold mr-4 text-black dark:text-white">
               {userMetadata.name}
@@ -286,8 +295,21 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
               </>
             )}
           </div>
-          <div className="flex items-center text-lg">
-            @{userMetadata?.username}
+          <div className="flex items-center gap-x-2 text-lg">
+            <>
+              @{userMetadata?.username}{' '}
+              {timeago() <= 65 ? (
+                <div
+                  title="Online"
+                  className="ri-wifi-fill text-xl rounded-full p-1 cursor-pointer text-green"
+                />
+              ) : (
+                <div
+                  title="Offline"
+                  className="ri-wifi-off-line text-xl rounded-full p-1 cursor-pointer text-orange"
+                />
+              )}
+            </>
           </div>
         </div>
       </div>

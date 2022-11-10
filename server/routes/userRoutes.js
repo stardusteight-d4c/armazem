@@ -6,6 +6,7 @@ import {
   userById,
   userByUsername,
 } from '../controllers/userController'
+import { activeUser } from '../middlewares/active-user'
 
 const router = express.Router()
 
@@ -14,5 +15,6 @@ router.get('/username/:username', userByUsername)
 router.post('/updateCoverImage', updateCoverImage)
 router.post('/updateProfileImage', updateProfileImage)
 router.post('/searchUsersByQuery', searchUsersByQuery)
+router.post('/middleware/activeUser/:userId', activeUser)
 
 export { router }
