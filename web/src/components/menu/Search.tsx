@@ -12,6 +12,9 @@ export const Search = (props: Props) => {
   // const [usersSearch, setUsersSearch] = useState<any>([])
   const dispatch = useAppDispatch()
   const usersSearch = useAppSelector((state) => state.armazem.usersSearch)
+  const minimizeSidebar = useAppSelector(
+    (state) => state.armazem.minimizeSidebar
+  )
 
   const search = async (query: string) => {
     const { data } = await axios.post(searchUsersByQuery, {
@@ -30,18 +33,18 @@ export const Search = (props: Props) => {
   }
 
   return (
-    <div className="flex relative items-center rounded-full">
+    <div className="flex relative items-center">
       <i className="ri-search-line left-2 absolute text-dusk-main dark:text-dawn-main text-3xl" />
       <input
         type="text"
         placeholder="Search by manga or user"
         onChange={(e) => handleSearchTerm(e)}
-        className="w-full h-full border border-dawn-weak/20 dark:border-dusk-weak/20 placeholder:text-dusk-main dark:placeholder:text-dawn-main outline-none py-4 px-12 bg-transparent"
+        className={`${minimizeSidebar ? 'max-w-[522px] min-w-[522px]' : 'max-w-[337px] min-w-[337px]'}  h-full border border-dawn-weak/20 dark:border-dusk-weak/20 placeholder:text-dusk-main dark:placeholder:text-dawn-main outline-none py-4 px-12 bg-transparent`}
       />
       {usersSearch && usersSearch[0] !== null && (
         <div
           onClick={() => dispatch(handleResultUsersSearch(undefined))}
-          className="text-dusk-main drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 dark:text-dawn-main bg-fill-weak dark:bg-fill-strong z-50 min-w-[337px] max-w-[403px] absolute -bottom-10"
+          className={`${minimizeSidebar ? 'max-w-[522px] min-w-[522px]' : 'max-w-[337px] min-w-[337px]'} text-dusk-main drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 dark:text-dawn-main bg-fill-weak dark:bg-fill-strong z-50 absolute -bottom-10`}
         >
           {usersSearch.map((user: any, index: React.Key | null | undefined) => (
             <Link

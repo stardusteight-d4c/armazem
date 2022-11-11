@@ -40,7 +40,9 @@ export const Post = (props: Props) => {
   const navigate = useNavigate()
   const [activeItem, setActiveItem] = useState('')
   const [notFound, setNotFound] = useState<boolean>(false)
-
+  const minimizeSidebar = useAppSelector(
+    (state) => state.armazem.minimizeSidebar
+  )
   const socket = useRef<any>()
   // socket.current = io('http://localhost:5000')
 
@@ -237,9 +239,17 @@ export const Post = (props: Props) => {
   // Criar para conta tbm
 
   return (
-    <div className={style.gridContainer}>
-      <Sidebar />
-      <div className={style.mainContent}>
+    <div
+    className={`${style.gridContainer} ${
+      minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+    }`}
+  >
+    <Sidebar />
+    <div
+      className={`${style.mainContent} ${
+        minimizeSidebar ? 'col-span-17' : 'col-span-4'
+      }`}
+    >
         <Navbar />
         <main className="px-4 pt-2 pb-20">
           {loading ? (
@@ -509,6 +519,6 @@ export const Post = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid grid-cols-5 overflow-hidden max-w-screen-xl drop-shadow-xl dark:drop-shadow-2xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
-  mainContent: `col-start-2 col-span-4`,
+  gridContainer: `grid overflow-hidden max-w-screen-xl drop-shadow-sm border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  mainContent: `col-start-2`,
 }

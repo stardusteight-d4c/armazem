@@ -9,6 +9,7 @@ interface InitialState {
   requestAgain: boolean
   requestEditProfile: boolean
   usersSearch: [object] | null
+  minimizeSidebar: boolean
 }
 
 interface RegisterValues {

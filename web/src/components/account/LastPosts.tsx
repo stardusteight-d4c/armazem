@@ -39,8 +39,8 @@ export const LastPosts = ({ userMetadata }: Props) => {
       </h2>
       {lastPosts !== undefined ? (
         <>
-          <div className="flex gap-5">
-            <div className="flex flex-col gap-y-5 max-w-[50%]">
+          <div className="flex gap-5 min-w-full">
+            <div className="flex flex-col gap-y-5 flex-grow max-w-[50%]">
               {lastPosts
                 .slice(0, 2)
                 .map((post: any, index: React.Key | null | undefined) => (
@@ -48,7 +48,7 @@ export const LastPosts = ({ userMetadata }: Props) => {
                 ))}
             </div>
 
-            <div className="flex flex-col gap-y-5 max-w-[50%]">
+            <div className="flex flex-col gap-y-5 flex-grow max-w-[50%]">
               {lastPosts
                 .slice(2, 4)
                 .map((post: any, index: React.Key | null | undefined) => (

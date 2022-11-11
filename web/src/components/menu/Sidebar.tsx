@@ -2,21 +2,22 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { userData } from '../../services/api-routes'
-import { useAppSelector } from '../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { RecentConnectionOnline } from './RecentConnectionOnline'
-import { AnimatePresence, motion } from 'framer-motion'
+import { handleMinimizeSidebar } from '../../store'
 
-interface Props {
-  minimizeSidebar?: boolean
-  setMinimizeSidebar?: React.Dispatch<React.SetStateAction<boolean>>
-}
+interface Props {}
 
-export const Sidebar = ({ minimizeSidebar, setMinimizeSidebar }: Props) => {
+export const Sidebar = (props: Props) => {
   const location = useLocation()
   const path = location.pathname
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const [connections, setConnections] = useState<[User] | any>([])
+  const minimizeSidebar = useAppSelector(
+    (state) => state.armazem.minimizeSidebar
+  )
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (currentAccount.connections !== undefined && connections.length === 0) {
@@ -32,46 +33,43 @@ export const Sidebar = ({ minimizeSidebar, setMinimizeSidebar }: Props) => {
     }
   }, [])
 
-  const isMinimizedSidebar = minimizeSidebar
 
   return (
-    <motion.aside
-      layout
-      transition={{duration: 0.1}}
+    <aside
       className={`${
-        isMinimizedSidebar && '!px-2'
+        minimizeSidebar && '!px-2 ml-[1.2px]'
       } scrollbar-hide min-h-screen pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong`}
     >
       <Link
         to="/"
         className={`${
-          isMinimizedSidebar && '!mb-10 !mt-8'
+          minimizeSidebar && '!mb-10 !mt-8'
         } flex cursor-pointer items-center justify-center mt-6 mb-8 gap-x-2`}
       >
         <i className="ri-server-fill text-3xl text-fill-strong dark:text-fill-weak" />
-        {!isMinimizedSidebar && (
+        {!minimizeSidebar && (
           <h1 className="text-4xl font-inter text-fill-strong dark:text-fill-weak font-bold">
             Armazem
           </h1>
         )}
       </Link>
       <div>
-        {isMinimizedSidebar ? (
+        {minimizeSidebar ? (
           <i
-            onClick={() => setMinimizeSidebar!(!minimizeSidebar)}
+            onClick={() => dispatch(handleMinimizeSidebar())}
             className="ri-arrow-right-s-line p-[2px] w-4 h-4 flex items-center justify-center cursor-pointer rounded-full border border-dawn-weak/20 dark:border-dusk-weak/20 bg-dusk-weak/20 text-lg absolute left-[63px] top-[87px]"
           />
         ) : (
           <i
-            onClick={() => setMinimizeSidebar!(!minimizeSidebar)}
-            className="ri-close-fill p-[2px] w-4 h-4 flex items-center justify-center cursor-pointer rounded-full border border-dawn-weak/20 dark:border-dusk-weak/20 bg-dusk-weak/20 text-lg absolute left-[246px] top-[88px]"
+            onClick={() => dispatch(handleMinimizeSidebar())}
+            className="ri-arrow-left-s-line p-[2px] w-4 h-4 flex items-center justify-center cursor-pointer rounded-full border border-dawn-weak/20 dark:border-dusk-weak/20 bg-dusk-weak/20 text-lg absolute left-[246px] top-[88px]"
           />
         )}
         <ul className="space-y-2">
           <Link
             to="/"
-            className={`flex w-full cursor-pointer rounded-xl  items-center justify-start p-4 hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
-              path === '/' && 'bg-prime-blue text-white'
+            className={`flex max-w-full min-h-full cursor-pointer rounded-xl  items-center justify-start p-4 hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
+              path === '/' && 'bg-prime-blue mx-auto text-white'
             }`}
           >
             <i
@@ -81,7 +79,7 @@ export const Sidebar = ({ minimizeSidebar, setMinimizeSidebar }: Props) => {
                   : 'ri-lightbulb-flash-line'
               }`}
             />
-            {!isMinimizedSidebar && (
+            {!minimizeSidebar && (
               <span className="font-medium text-lg">New feed</span>
             )}
           </Link>
@@ -98,13 +96,13 @@ export const Sidebar = ({ minimizeSidebar, setMinimizeSidebar }: Props) => {
                   : 'ri-account-pin-box-line'
               }`}
             />
-            {!isMinimizedSidebar && (
+            {!minimizeSidebar && (
               <span className="font-medium text-lg">My account</span>
             )}
           </Link>
           <li className="flex w-full cursor-pointer rounded-xl items-center justify-start p-4 gap-4">
             <i className="ri-line-chart-line text-2xl" />
-            {!isMinimizedSidebar && (
+            {!minimizeSidebar && (
               <span className="font-medium text-lg">Trending</span>
             )}
           </li>
@@ -115,20 +113,26 @@ export const Sidebar = ({ minimizeSidebar, setMinimizeSidebar }: Props) => {
             }`}
           >
             <i className="ri-link text-2xl" />
-            {!isMinimizedSidebar && (
+            {!minimizeSidebar && (
               <span className="font-medium text-lg">Connections</span>
             )}
           </Link>
+          <li className="flex w-full cursor-pointer rounded-xl items-center justify-start p-4 gap-4">
+            <i className="ri-book-3-line text-2xl" />
+            {!minimizeSidebar && (
+              <span className="font-medium text-lg">Mangas</span>
+            )}
+          </li>
           <li className="flex w-full cursor-pointer rounded-xl  items-center justify-start p-4 gap-4">
             <i className="ri-book-mark-line text-2xl" />
-            {!isMinimizedSidebar && (
+            {!minimizeSidebar && (
               <span className="font-medium text-lg">My list</span>
             )}
           </li>
         </ul>
       </div>
       <div className="h-[1px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
-      {!isMinimizedSidebar && (
+      {!minimizeSidebar && (
         <div>
           <ul className="space-y-5">
             {connections.map(
@@ -139,6 +143,7 @@ export const Sidebar = ({ minimizeSidebar, setMinimizeSidebar }: Props) => {
           </ul>
         </div>
       )}
-    </motion.aside>
+    </aside>
+
   )
 }

@@ -1,8 +1,9 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import { Action } from '@remix-run/router'
-import { getCurrentUserAccount, getUserData } from './reducers/current-user-data'
-
-// import { } from '../Types'
+import {
+  getCurrentUserAccount,
+  getUserData,
+} from './reducers/current-user-data'
 
 const initialState: InitialState = {
   theme: 'dark',
@@ -24,6 +25,7 @@ const initialState: InitialState = {
   requestAgain: false,
   requestEditProfile: false,
   usersSearch: null,
+  minimizeSidebar: false,
 }
 
 const saveThemeToLocalStorage = (themeState: any) => {
@@ -58,6 +60,9 @@ const ArmazemSlice = createSlice({
         ...state.registerValues,
         [action.payload.target.id]: action.payload.target.value,
       }
+    },
+    handleMinimizeSidebar: (state) => {
+      state.minimizeSidebar = !state.minimizeSidebar
     },
     clearRegisterValuesEntries: (state) => {
       state.registerValues = initialState.registerValues
@@ -95,7 +100,6 @@ const ArmazemSlice = createSlice({
       action.payload && (state.currentAccount = action.payload)
     })
   },
-
 })
 
 export const store = configureStore({
@@ -121,6 +125,7 @@ export const {
   handleUserMetadata,
   askToRequestAgain,
   askToRequestEditProfile,
+  handleMinimizeSidebar,
   handleResultUsersSearch,
 } = ArmazemSlice.actions
 
