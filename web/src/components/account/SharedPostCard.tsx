@@ -25,10 +25,7 @@ export const SharedPostCard = ({ post }: Props) => {
   }, [])
 
   return (
-    <Link
-      to={`/post/${post?._id}`}
-      className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong"
-    >
+    <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong">
       <div className="flex items-center justify-between">
         <Link
           to={`/${authorPost?.username}`}
@@ -45,12 +42,14 @@ export const SharedPostCard = ({ post }: Props) => {
         </Link>
         <TimeAgo datetime={post.createdAt} locale="en_short" />
       </div>
-      <div>
-        <h2 className="font-semibold text-xl py-2 text-dusk-main dark:text-dawn-main">
-          {post?.title}
-        </h2>
-      </div>
-      <p>{post?.body}</p>
-    </Link>
+      <Link to={`/post/${post?._id}`}>
+        <div>
+          <h2 className="font-semibold text-xl py-2 text-dusk-main dark:text-dawn-main">
+            {post?.title}
+          </h2>
+        </div>
+        <p>{post?.body}</p>
+      </Link>
+    </article>
   )
 }

@@ -42,23 +42,22 @@ export const Post = (props: Props) => {
   const [notFound, setNotFound] = useState<boolean>(false)
 
   const socket = useRef<any>()
-  socket.current = io('http://localhost:5000')
+  // socket.current = io('http://localhost:5000')
 
-  useEffect(() => {
-    if (currentUser !== null && postId) {
-      socket.current.emit('enter-post', {
-        postId,
-        userId: currentUser._id,
-      })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (currentUser !== null && postId) {
+  //     socket.current.emit('enter-post', {
+  //       postId,
+  //       userId: currentUser._id,
+  //     })
+  //   }
+  // }, [postId])
 
-  socket.current.on('post-update', (data: any) => {
-    console.log(data);
-    if (data.status === true) {
-      dispatch(askToRequestAgain())
-    }
-  })
+  // socket.current.on('post-update', (data: any) => {
+  //   if (data.status === true) {
+  //     dispatch(askToRequestAgain())
+  //   }
+  // })
 
   useEffect(() => {
     ;(async () => {
@@ -107,7 +106,6 @@ export const Post = (props: Props) => {
       socket.current.emit('post-update', {
         postId,
         userId: currentUser?._id,
-        body: postComment.body,
       })
       dispatch(askToRequestAgain())
     }
@@ -492,6 +490,7 @@ export const Post = (props: Props) => {
                     (discussion: any, index: React.Key | null | undefined) => (
                       <section className="flex flex-col" key={index}>
                         <Discussions
+                        socket={socket}
                           activeItem={activeItem}
                           setActiveItem={setActiveItem}
                           discussion={discussion}

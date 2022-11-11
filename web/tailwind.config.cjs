@@ -6,7 +6,13 @@ module.exports = {
     extend: {
       animation: {
         'spin-fast': 'spin 0.8s linear infinite',
-      }
+      },
+      gridTemplateColumns: {
+        18: 'repeat(18, minmax(0, 1fr))',
+      },
+      gridColumn: {
+        'span-17': 'span 17 / span 17',
+      },
     },
     // screens: {
     //   'sm': '640px',
@@ -15,6 +21,7 @@ module.exports = {
     //   'xl': '1280px',
     //   '2xl': '1536px',
     // },
+    
     fontFamily: {
       inter: 'Inter, sans-serif',
       poppins: 'Poppins, sans-serif',
@@ -28,7 +35,7 @@ module.exports = {
       orange: '#EB7140',
       prime: {
         purple: '#4D3BC9',
-        blue: '#4B8BEC', 
+        blue: '#4B8BEC',
       },
       dusk: {
         main: '#3E3E3E',
@@ -48,6 +55,7 @@ module.exports = {
       },
     },
   },
+ 
   plugins: [
     require('@tailwindcss/line-clamp'),
     require('tailwind-scrollbar-hide'),

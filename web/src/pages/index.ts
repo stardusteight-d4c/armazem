@@ -3,5 +3,6 @@ export { Login } from './Login'
 export { Account } from './Account'
 export { Connections } from './Connections'
 export { Post } from './Post'
+export { Manga } from './Manga'
 export { PageNotFound } from './PageNotFound'
 

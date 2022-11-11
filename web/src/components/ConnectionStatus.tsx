@@ -209,10 +209,10 @@ export const ConnectionStatus = ({ userMetadata, currentAccount}: Props) => {
               </Menu.Button>
             </Menu>
           </div>
-          <div className="flex cursor-pointer items-center">
+          {/* <div className="flex cursor-pointer items-center">
             <i className="ri-message-3-line mr-1" />
             <span>Send message</span>
-          </div>
+          </div> */}
         </>
       )
     } else {

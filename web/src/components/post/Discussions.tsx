@@ -21,7 +21,7 @@ import { askToRequestAgain, handleOpenModal } from '../../store'
 import { Button } from '../Button'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Replies } from './Replies'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
 import { error, success } from '../Toasters'
 
@@ -31,6 +31,7 @@ interface Props {
   discussion: any
   currentUser: User | null
   activeItem: string
+  socket: React.MutableRefObject<any>
   setActiveItem: React.Dispatch<React.SetStateAction<string>>
 }
 
@@ -38,6 +39,7 @@ export const Discussions = ({
   discussion,
   currentUser,
   activeItem,
+  socket,
   setActiveItem,
 }: Props) => {
   const [user, setUser] = useState<User>()
@@ -45,6 +47,8 @@ export const Discussions = ({
   const [replies, setReplies] = useState([])
   const [editValue, setEditValue] = useState('')
   const dispatch = useAppDispatch()
+  const { id: postId } = useParams()
+
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
 
   const repliesLength = replies.length
@@ -87,6 +91,10 @@ export const Discussions = ({
     if (data.status === true) {
       setActiveItem('')
       success(data.msg)
+      socket.current.emit('post-update', {
+        postId,
+        userId: currentUser?._id,
+      })
       dispatch(askToRequestAgain())
     }
   }

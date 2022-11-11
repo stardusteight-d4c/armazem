@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import { Account, Connections, Feed, Login, PageNotFound, Post } from './pages'
+import { Account, Connections, Feed, Login, Manga, PageNotFound, Post } from './pages'
 import { activeUser, authorization } from './services/api-routes'
 import {
   getCurrentUserAccount,
@@ -79,19 +79,27 @@ export const App = (props: Props) => {
             if (location.pathname === '/login') {
               navigate('/')
             }
-            setLoading(false)
+            setTimeout(() => {
+              setLoading(false)
+            }, 5000)
           } else {
-            setLoading(false)
             navigate('/login')
+            setTimeout(() => {
+              setLoading(false)
+            }, 5000)
           }
         } catch (err) {
           console.error(err)
-          setLoading(false)
           navigate('/login')
+          setTimeout(() => {
+            setLoading(false)
+          }, 5000)
         }
       })()
     } else {
-      setLoading(false)
+      setTimeout(() => {
+        setLoading(false)
+      }, 5000)
       navigate('/login')
     }
   }, [session, requestAgain])
@@ -119,7 +127,7 @@ export const App = (props: Props) => {
     }
   }
 
-  if (loading) {
+  if (loading || !currentUser) {
     return (
       <div className={loader.container}>
         <Loader className={loader.loader} />
@@ -137,6 +145,7 @@ export const App = (props: Props) => {
         <Route path="/:username" element={<Account />} />
         <Route path="/connections" element={<Connections />} />
         <Route path="/post/:id" element={<Post />} />
+        <Route path="/manga/:id" element={<Manga />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

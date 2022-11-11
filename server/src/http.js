@@ -49,13 +49,14 @@ mongoose
   })
 
 // INSTANTING SOCKET IO SERVER
-const io = new Server(serverHttp, {
-  cors: {
-    origin: process.env.ORIGIN,
-    methods: ['GET', 'POST'],
-    transports: ['websocket', 'polling'],
-  },
-})
+// const io = new Server(serverHttp, {
+//   cors: {
+//     origin: process.env.ORIGIN,
+//     methods: ['GET', 'POST'],
+//     transports: ['websocket', 'polling'],
+//   },
+// })
 
-export { serverHttp, io }
+// export { serverHttp, io }
+export { serverHttp }
 
