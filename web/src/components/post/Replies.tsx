@@ -117,13 +117,13 @@ export const Replies = ({
       {toUsername !== null && (
         <div className="flex relative p-2 my-1 text-dusk-main dark:text-dawn-main items-start gap-3">
           {index < repliesLength - 1 && (
-            <div className="h-[110%] left-[28px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
+            <div className="h-[110%] left-[29px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
           )}
           <Link to={`/${userByMetadata.username}`}>
             <img
               src={userByMetadata.user_img}
               alt=""
-              className="w-10 h-10 rounded-md cursor-pointer border border-black/20 dark:border-white/20 object-cover"
+              className="w-11 h-11 cursor-pointer border border-black/20 dark:border-white/20 object-cover"
             />
           </Link>
           <div className="flex flex-col w-full ">

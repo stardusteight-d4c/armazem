@@ -131,17 +131,17 @@ export const Discussions = ({
     <>
       <div className="flex relative bg-dawn-weak/10 dark:bg-dusk-weak/10 p-2 text-dusk-main dark:text-dawn-main items-start gap-3">
         {replies.length !== 0 && (
-          <div className="h-[110%] top-3 left-[28px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
+          <div className="h-[110%] top-3 left-[29px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
         )}
         <Link to={`/${user?.username}`}>
           <img
             referrerPolicy="no-referrer"
             src={user?.user_img}
             alt=""
-            className="w-10 h-10 rounded-md border border-black/20 dark:border-white/20 object-cover"
+            className="w-11 h-11 border border-black/20 dark:border-white/20 object-cover"
           />
         </Link>
-        <div className="flex flex-col w-full ">
+        <div className="flex flex-col w-full">
           <div className="flex justify-between items-center">
             <span className="font-medium text-lg font-inter -mt-1 text-dusk-main dark:text-dawn-main">
               @{user?.username}

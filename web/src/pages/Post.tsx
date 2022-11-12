@@ -278,7 +278,7 @@ export const Post = (props: Props) => {
                       className="flex items-start justify-start gap-x-2"
                     >
                       <img
-                        className="w-14 rounded-md h-14"
+                        className="w-14 h-14"
                         src={authorUser?.user_img}
                         alt=""
                       />
@@ -466,7 +466,7 @@ export const Post = (props: Props) => {
                   <img
                     src={currentUser?.user_img}
                     alt=""
-                    className="w-14 h-14 rounded-md object-cover"
+                    className="w-14 h-14 object-cover"
                   />
                   <div className="flex flex-col w-full">
                     <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
@@ -500,7 +500,7 @@ export const Post = (props: Props) => {
                     (discussion: any, index: React.Key | null | undefined) => (
                       <section className="flex flex-col" key={index}>
                         <Discussions
-                        socket={socket}
+                          socket={socket}
                           activeItem={activeItem}
                           setActiveItem={setActiveItem}
                           discussion={discussion}

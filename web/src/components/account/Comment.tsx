@@ -89,7 +89,7 @@ export const Comment = ({
       <img
         src={commentAuthor?.user_img}
         alt="authorComment/img_profile"
-        className="w-12 h-12 rounded-md object-cover"
+        className="w-12 h-12 object-cover"
       />
       <div className="flex flex-col w-full ">
         <span className="-mt-5 ml-auto">
