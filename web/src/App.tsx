@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import { Account, Connections, Feed, Login, Manga, Collection, PageNotFound, Post } from './pages'
+import { PrivateRouteAddManga } from './services/PrivateRoutes'
 import { activeUser, authorization } from './services/api-routes'
 import {
   getCurrentUserAccount,
@@ -127,7 +128,7 @@ export const App = (props: Props) => {
     }
   }
 
-  if (loading || !currentUser) {
+  if (loading) {
     return (
       <div className={loader.container}>
         <Loader className={loader.loader} />
@@ -147,6 +148,7 @@ export const App = (props: Props) => {
         <Route path="/post/:id" element={<Post />} />
         <Route path="/collection" element={<Collection />} />
         <Route path="/manga/:id" element={<Manga />} />
+        <Route path="/addManga" element={<PrivateRouteAddManga />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

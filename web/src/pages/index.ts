@@ -5,5 +5,6 @@ export { Connections } from './Connections'
 export { Post } from './Post'
 export { Collection } from './Collection'
 export { Manga } from './Manga'
+export { AddManga } from './AddManga'
 export { PageNotFound } from './PageNotFound'
 

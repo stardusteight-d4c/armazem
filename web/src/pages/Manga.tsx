@@ -15,12 +15,13 @@ export const Manga = (props: Props) => {
   const [onDragRecommendations, setOnDragRecommendations] = useState(0)
 
   // CAROUSEL FRAMER MOTION
-  const recommendationsCarrousel = useRef() as React.MutableRefObject<HTMLInputElement>
+  const recommendationsCarrousel =
+    useRef() as React.MutableRefObject<HTMLInputElement>
   useEffect(() => {
-   recommendationsCarrousel.current &&
+    recommendationsCarrousel.current &&
       setRecommendationWidth(
-       recommendationsCarrousel.current.scrollWidth -
-         recommendationsCarrousel.current.offsetWidth
+        recommendationsCarrousel.current.scrollWidth -
+          recommendationsCarrousel.current.offsetWidth
       )
   }, [onDragRecommendations])
 
@@ -168,7 +169,7 @@ export const Manga = (props: Props) => {
                   <span className="text-xl font-semibold">28</span>
                 </div>
                 <div className="text-base flex items-center justify-between w-full py-2 font-medium">
-                  Resume
+                  Synopsis
                 </div>
                 <div>
                   <p
@@ -330,8 +331,10 @@ export const Manga = (props: Props) => {
               </h2>
               <motion.div
                 drag="x"
-                ref= {recommendationsCarrousel}
-                onDrag={(_event, info) => setOnDragRecommendations(info.offset.x)}
+                ref={recommendationsCarrousel}
+                onDrag={(_event, info) =>
+                  setOnDragRecommendations(info.offset.x)
+                }
                 dragConstraints={{ right: 0, left: -recommendationWidth }}
                 className="flex items-center gap-x-5 "
               >

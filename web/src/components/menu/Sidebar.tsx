@@ -19,6 +19,8 @@ export const Sidebar = (props: Props) => {
   )
   const dispatch = useAppDispatch()
 
+  const adminRole = import.meta.env.VITE_ADMIN_ROLE
+
   useEffect(() => {
     if (currentAccount.connections !== undefined && connections.length === 0) {
       const user: any[] = []
@@ -101,12 +103,6 @@ export const Sidebar = (props: Props) => {
               <span className="font-medium text-lg">My account</span>
             )}
           </Link>
-          <li className="flex w-full cursor-pointer rounded-xl items-center justify-start p-4 gap-4">
-            <i className="ri-line-chart-line text-2xl" />
-            {!minimizeSidebar && (
-              <span className="font-medium text-lg">Trending</span>
-            )}
-          </li>
           <Link
             to="/connections"
             className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4 hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
@@ -116,25 +112,22 @@ export const Sidebar = (props: Props) => {
             {/* <i className="ri-link text-2xl" /> */}
             <i
               className={`text-2xl ${
-                path === `/connections`
-                  ? 'ri-link-unlink'
-                  : 'ri-link'
-              }`} />
+                path === `/connections` ? 'ri-link-unlink' : 'ri-link'
+              }`}
+            />
             {!minimizeSidebar && (
               <span className="font-medium text-lg">Connections</span>
             )}
           </Link>
           <Link
-            to={`/collection`}
+            to="/collection"
             className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
               path === `/collection` && 'bg-prime-blue text-white'
             }`}
           >
             <i
               className={`text-2xl ${
-                path === `/collection`
-                  ? 'ri-book-3-fill'
-                  : 'ri-book-3-line'
+                path === `/collection` ? 'ri-book-3-fill' : 'ri-book-3-line'
               }`}
             />
             {!minimizeSidebar && (
@@ -147,6 +140,24 @@ export const Sidebar = (props: Props) => {
               <span className="font-medium text-lg">My list</span>
             )}
           </li>
+          {currentUser?.role && currentUser.role === adminRole && (
+            <Link
+              to="/addManga"
+              title="Add new work to database"
+              className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
+                path === `/addManga` && 'bg-prime-blue text-white'
+              }`}
+            >
+              <i
+                className={`text-2xl ${
+                  path === `/addManga` ? 'ri-add-box-fill' : 'ri-add-box-line'
+                }`}
+              />
+              {!minimizeSidebar && (
+                <span className="font-medium text-lg">Add manga</span>
+              )}
+            </Link>
+          )}
         </ul>
       </div>
       <div className="h-[1px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />

@@ -33,18 +33,18 @@ export const Search = (props: Props) => {
   }
 
   return (
-    <div className="flex relative items-center">
-      <i className="ri-search-line left-2 absolute text-dusk-main dark:text-dawn-main text-3xl" />
+    <div className="flex group relative items-center">
+      <i className="ri-search-line group-focus-within:text-prime-blue left-2 absolute text-dusk-main dark:text-dawn-main text-3xl" />
       <input
         type="text"
         placeholder="Search by manga or user"
         onChange={(e) => handleSearchTerm(e)}
-        className={`${minimizeSidebar ? 'max-w-[522px] min-w-[522px]' : 'max-w-[337px] min-w-[337px]'}  h-full border border-dawn-weak/20 dark:border-dusk-weak/20 placeholder:text-dusk-main dark:placeholder:text-dawn-main outline-none py-4 px-12 bg-transparent`}
+        className={`${minimizeSidebar ? 'max-w-[522px] min-w-[522px]' : 'max-w-[337px] min-w-[337px]'} h-full border border-dawn-weak/20 dark:border-dusk-weak/20 outline-none py-3 px-12 bg-transparent`}
       />
       {usersSearch && usersSearch[0] !== null && (
         <div
           onClick={() => dispatch(handleResultUsersSearch(undefined))}
-          className={`${minimizeSidebar ? 'max-w-[522px] min-w-[522px]' : 'max-w-[337px] min-w-[337px]'} text-dusk-main drop-shadow-xl border border-dawn-weak/20 dark:border-dusk-weak/20 dark:text-dawn-main bg-fill-weak dark:bg-fill-strong z-50 absolute -bottom-10`}
+          className={`${minimizeSidebar ? 'max-w-[522px] min-w-[522px]' : 'max-w-[337px] min-w-[337px]'} text-dusk-main shadow-lg border border-dawn-weak/20 dark:border-dusk-weak/20 dark:text-dawn-main bg-fill-weak dark:bg-fill-strong z-50 absolute -bottom-10`}
         >
           {usersSearch.map((user: any, index: React.Key | null | undefined) => (
             <Link
@@ -64,7 +64,7 @@ export const Search = (props: Props) => {
         >
           <i className="ri-equalizer-line" />
         </Menu.Button>
-        <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[14px] -bottom-[50px]">
+        <Menu.Items className="shadow-md border border-dawn-weak/20 dark:border-dusk-weak/20 z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[14px] -bottom-[50px]">
           <Menu.Item>
             <a className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
               Manga

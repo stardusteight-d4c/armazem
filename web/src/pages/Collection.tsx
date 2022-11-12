@@ -1,3 +1,4 @@
+import { Menu } from '@headlessui/react'
 import { Navbar, Sidebar } from '../components'
 import { Card } from '../components/collection/Card'
 import { useAppSelector } from '../store/hooks'
@@ -22,9 +23,38 @@ export const Collection = (props: Props) => {
         }`}
       >
         <Navbar />
-        <div className='px-4 py-1 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20'>
-          <input type="text" placeholder='search by name' />
-          {/* Filter by geners select genre */}
+        <div className="flex gap-x-2 px-4 py-1 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20">
+          <input
+            type="text"
+            placeholder="Search by title"
+            className="p-1 outline-none focus:ring-1 focus:ring-prime-blue rounded-sm bg-transparent border border-dawn-weak/20 dark:border-dusk-weak/20"
+          />
+          <div className="relative">
+            <Menu>
+              <Menu.Button>
+                <div className="rounded-sm hover:brightness-125 transition duration-300 cursor-pointer text-lg font-semibold px-4 py-[2px] text-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20">
+                  All
+                </div>
+              </Menu.Button>
+              <Menu.Items className="shadow-2xl border border-dawn-weak/20 dark:border-dusk-weak/20 whitespace-nowrap z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[6px] -bottom-[100px]">
+                <Menu.Item>
+                  <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                   Action
+                  </span>
+                </Menu.Item>
+                <Menu.Item>
+                  <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                    Sci-fi
+                  </span>
+                </Menu.Item>
+                <Menu.Item>
+                  <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
+                   Horror
+                  </span>
+                </Menu.Item>
+              </Menu.Items>
+            </Menu>
+          </div>
         </div>
         <main>
           <div
@@ -32,6 +62,9 @@ export const Collection = (props: Props) => {
               minimizeSidebar ? 'grid-cols-5' : 'grid-cols-4'
             } pb-14 grid p-4 gap-4 w-full`}
           >
+            <Card />
+            <Card />
+            <Card />
             <Card />
             <Card />
             <Card />
