@@ -48,7 +48,7 @@ export const Navbar = (props: Props) => {
                 alt=""
               />
             </Menu.Button>
-            <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[20px] -bottom-[62px]">
+            <Menu.Items className="shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[20px] -bottom-[62px]">
               <Menu.Item>
                 <a
                   onClick={() => navigate(`/${currentUser?.username}`)}

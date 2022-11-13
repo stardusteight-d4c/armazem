@@ -67,7 +67,7 @@ export const Input = ({
 const style = {
   fieldContainer: `w-full relative`,
   label: `text-dusk-main dark:text-dawn-main text-sm w-full block font-semibold`,
-  input: `w-full p-4 mt-4 bg-white dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg`,
+  input: `w-full p-4 mt-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg`,
 }
 
 const password = {

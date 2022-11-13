@@ -145,7 +145,7 @@ export const Sidebar = (props: Props) => {
               to="/addManga"
               title="Add new work to database"
               className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
-                path === `/addManga` && 'bg-prime-blue text-white'
+                path === `/addManga` && 'bg-prime-purple text-white'
               }`}
             >
               <i

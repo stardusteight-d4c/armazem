@@ -97,9 +97,7 @@ export const Manga = (props: Props) => {
                       <span>Chap. Read:</span>
                       <div className="flex items-center gap-x-1">
                         <input
-                          type="number"
-                          min={0}
-                          max={120}
+                          type="text"
                           placeholder="120"
                           maxLength={4}
                           className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
@@ -111,11 +109,9 @@ export const Manga = (props: Props) => {
                       <span>Your Score:</span>
                       <div className="flex items-center gap-x-1">
                         <input
-                          type="number"
-                          min={0}
-                          max={10}
-                          placeholder="8"
+                          type="text"
                           maxLength={2}
+                          placeholder="8"
                           className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
                         />
                       </div>

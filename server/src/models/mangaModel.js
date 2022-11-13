@@ -34,7 +34,7 @@ export const mangaSchema = new mongoose.Schema({
     require: true,
   },
   published: {
-    type: Number,
+    type: String,
     require: true,
   },
   score: [
@@ -45,6 +45,7 @@ export const mangaSchema = new mongoose.Schema({
   ],
   readers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+  insertedBy: { type: Schema.Types.ObjectId, ref: 'User' },
 })
 
 export default mongoose.model('Manga', mangaSchema)
