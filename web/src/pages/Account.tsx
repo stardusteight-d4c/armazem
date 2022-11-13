@@ -44,41 +44,43 @@ export const Account = (props: Props) => {
   const dataLoaded =
     currentAccount.user !== undefined && userMetadata !== null && username
 
+  // ver se tem como cachear os dados da conta do usuário para não aparecer o loader
+
   return (
+    <div
+      className={`${style.gridContainer} ${
+        minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+      }`}
+    >
+      <Sidebar />
       <div
-        className={`${style.gridContainer} ${
-          minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+        className={`${style.mainContent} ${
+          minimizeSidebar ? 'col-span-17' : 'col-span-4'
         }`}
       >
-        <Sidebar />
-        <div
-          className={`${style.mainContent} ${
-            minimizeSidebar ? 'col-span-17' : 'col-span-4'
-          }`}
-        >
-          <Navbar />
-          {dataLoaded && !loading ? (
-            <main>
-              <Header
-                userMetadata={userMetadata}
-                currentAccount={currentAccount}
-              />
-              <div className="p-4 pb-14">
-                <StatusBar />
-                <Favorites />
-                <LastPosts userMetadata={userMetadata} />
-                <SharedPosts userMetadata={userMetadata} />
-                <LastUpdates />
-                <Comments userMetadata={userMetadata} />
-              </div>
-            </main>
-          ) : (
-            <div className="w-full h-screen -mt-28 flex items-center justify-center">
-              <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
+        <Navbar />
+        {dataLoaded && !loading ? (
+          <main>
+            <Header
+              userMetadata={userMetadata}
+              currentAccount={currentAccount}
+            />
+            <div className="p-4 pb-14">
+              <StatusBar />
+              <Favorites />
+              <LastPosts userMetadata={userMetadata} />
+              <SharedPosts userMetadata={userMetadata} />
+              <LastUpdates />
+              <Comments userMetadata={userMetadata} />
             </div>
-          )}
-        </div>
+          </main>
+        ) : (
+          <div className="w-full h-screen -mt-28 flex items-center justify-center">
+            <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
+          </div>
+        )}
       </div>
+    </div>
   )
 }
 

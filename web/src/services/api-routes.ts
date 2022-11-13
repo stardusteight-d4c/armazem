@@ -55,3 +55,6 @@ export const unsharePost = `${hostServer}/api/post/unsharePost`
 
 // MANGA
 export const addManga = `${hostServer}/api/manga/addManga`
+export const searchByTitle = `${hostServer}/api/manga/searchByTitle`
+export const mangaByPagination = `${hostServer}/api/manga/mangaByPagination` // :page
+export const mangaByUid = `${hostServer}/api/manga/mangaByUid` 

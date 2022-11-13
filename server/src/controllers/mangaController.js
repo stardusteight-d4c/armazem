@@ -1,14 +1,25 @@
 import Manga from '../models/mangaModel.js'
+import ShortUniqueId from 'short-unique-id'
 
 export const addManga = async (req, res, next) => {
   try {
     const { data } = req.body
+    const uid = new ShortUniqueId({ length: 10 })
+    const mangaId = uid()
 
-    await Manga.create({
-      ...data,
-    })
-
-    console.log(data)
+    const alreadyExist = await Manga.findById(data._id)
+    if (alreadyExist) {
+      await Manga.findByIdAndUpdate(
+        data._id,
+        { $set: { ...data } },
+        { safe: true, upsert: true }
+      )
+    } else {
+      await Manga.create({
+        uid: mangaId,
+        ...data,
+      })
+    }
 
     return res
       .status(200)
@@ -20,5 +31,44 @@ export const addManga = async (req, res, next) => {
       msg: 'Error adding new manga to database',
       error: error.message,
     })
+  }
+}
+
+export const searchByTitle = async (req, res, next) => {
+  try {
+    const query = req.body.query
+    const mangas = await Manga.find({
+      title: { $regex: new RegExp(query, 'i') },
+    }).limit(5)
+
+    return res.json({ mangas })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const mangaByPagination = async (req, res, next) => {
+  try {
+    const page = req.params.page
+    const skip = (page - 1) * 2
+
+    // 5 out of 5 pagination
+    const mangas = await Manga.find().skip(skip).limit(10).sort('-createdAt')
+
+    return res.status(200).json({ status: true, mangas })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const mangaByUid = async (req, res, next) => {
+  try {
+    const uid = req.params.uid
+
+    const manga = await Manga.findOne({ uid: uid })
+     
+    return res.status(200).json({ status: true, manga })
+  } catch (error) {
+    next(error)
   }
 }

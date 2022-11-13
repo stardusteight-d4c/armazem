@@ -22,7 +22,7 @@ export const mangaSchema = new mongoose.Schema({
     require: true,
   },
   chapters: {
-    type: Number,
+    type: String,
     require: true,
   },
   status: {
@@ -35,6 +35,10 @@ export const mangaSchema = new mongoose.Schema({
   },
   published: {
     type: String,
+    require: true,
+  },
+  genres: {
+    type:  Array,
     require: true,
   },
   score: [

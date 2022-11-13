@@ -68,8 +68,31 @@ interface Post {
 
 
 interface Comment {
-  _id: string,
+  _id: string
   by: string
   comment: string
   createdAt: string
 }
+
+interface Manga {
+  uid: string
+  title: string
+  author: string
+  synopsis: string
+  cover: string
+  chapters: string
+  status: string
+  serialization: string
+  published: string
+  genres: array
+  score: [
+    {
+      userId: String,
+      score: Number,
+    },
+  ],
+  readers: Array,
+  reviews: Array,
+  insertedBy:string,
+}
+
