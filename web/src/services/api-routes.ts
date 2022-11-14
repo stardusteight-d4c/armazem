@@ -60,3 +60,4 @@ export const mangaByPagination = `${hostServer}/api/manga/mangaByPagination` // 
 export const mangaByUid = `${hostServer}/api/manga/mangaByUid` 
 export const mangaByGenre = `${hostServer}/api/manga/mangaByGenre` // /:genre
 export const mangaByGenreAndTitle = `${hostServer}/api/manga/mangaByGenreAndTitle` // /:genre /:title
+export const addMangaToListed = `${hostServer}/api/manga/addMangaToListed` 

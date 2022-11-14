@@ -43,11 +43,11 @@ export const mangaSchema = new mongoose.Schema({
   },
   score: [
     {
-      userId: String,
+      accountId: String,
       score: Number,
     },
   ],
-  readers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  readers: [{ type: Schema.Types.ObjectId, ref: 'Account' }],
   reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
   insertedBy: { type: Schema.Types.ObjectId, ref: 'User' },
 })

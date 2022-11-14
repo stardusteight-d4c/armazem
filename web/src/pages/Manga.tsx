@@ -5,8 +5,9 @@ import { useAppSelector } from '../store/hooks'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { mangaByUid } from '../services/api-routes'
+import { addMangaToListed, mangaByUid } from '../services/api-routes'
 import { Loader } from '../components/Loader'
+import { error } from '../components/Toasters'
 
 interface Props {}
 
@@ -20,6 +21,14 @@ export const Manga = (props: Props) => {
   const [onDragRecommendations, setOnDragRecommendations] = useState(0)
   const [manga, setManga] = useState<Manga>()
   const [loading, setLoading] = useState<boolean>(true)
+  const [addToMyList, setaddToMyList] = useState<boolean>(false)
+  const [status, setStatus] = useState<string | null>(null)
+  const [listInfos, setListInfos] = useState<any>({})
+  const currentAccount = useAppSelector<Account>(
+    (state) => state.armazem.currentAccount
+  )
+
+  const mangaListed = false
 
   useEffect(() => {
     ;(async () => {
@@ -30,6 +39,64 @@ export const Manga = (props: Props) => {
       }
     })()
   }, [uid])
+
+  console.log(listInfos);
+  
+
+  function handleValidation() {
+    if (status !== 'Plan to Read') {
+      if (status === null) {
+        error('Enter a valid status')
+        return false
+      } else if (
+        !Number.isInteger(Number(listInfos.chapRead)) ||
+        !Number.isInteger(Number(listInfos.score))
+      ) {
+        error('Only numbers must be entered')
+        return false
+      } else if (
+        (manga?.chapters !== '???' && listInfos.chapRead > manga!.chapters) ||
+        listInfos.chapRead < 0
+      ) {
+        error('Chapters read out of bounds')
+        return false
+      } else if (listInfos.score > 10 || listInfos.score < 0) {
+        error('The score must be between 0 and 10')
+        return false
+      } else if (listInfos.chapRead === '' || listInfos.score === '') {
+        error('The number cannot be null')
+        return false
+      }
+    }
+    return true
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setListInfos({
+      ...listInfos,
+      [event.target.id]: event.target.value,
+    })
+  }
+
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    if (status === 'Completed') {
+      setListInfos({...listInfos, chapRead: manga?.chapters})
+    }
+    if (handleValidation()) {
+   
+      const listData = {
+        mangaUid: manga!.uid,
+        ...listInfos,
+        status,
+      }
+      const { data } = await axios.post(addMangaToListed, {
+        accountId: currentAccount._id,
+        data: listData,
+      })
+    }
+  }
 
   // CAROUSEL FRAMER MOTION
   const recommendationsCarrousel =
@@ -74,73 +141,132 @@ export const Manga = (props: Props) => {
                         title="Not listed"
                         className="ri-bookmark-line cursor-pointer"
                       />
-                      <div
-                        title="Add to favorites"
-                        className="ri-star-line cursor-pointer"
-                      />
-                    </div>
-                    <form>
-                      {/* !mangaInMyList ? ('add to my list and open modal') : ('edit status') */}
-                      <h3 className="text-xl font-medium mt-2">Edit status</h3>
-                      <div className="flex flex-col gap-y-1 border-t-4 border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2">
-                        <div className="flex justify-between text-base">
-                          <span>Status:</span>
-                          <div className="relative">
-                            <Menu>
-                              <Menu.Button>
-                                <span className="text-prime-blue">
-                                  Completed
-                                </span>
-                              </Menu.Button>
-                              <Menu.Items className="drop-shadow-2xl whitespace-nowrap z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[21px] -bottom-[105px]">
-                                <Menu.Item>
-                                  <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
-                                    Completed
-                                  </span>
-                                </Menu.Item>
-                                <Menu.Item>
-                                  <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
-                                    Reading
-                                  </span>
-                                </Menu.Item>
-                                <Menu.Item>
-                                  <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
-                                    Plan to Read
-                                  </span>
-                                </Menu.Item>
-                              </Menu.Items>
-                            </Menu>
-                          </div>
-                        </div>
-                        <div className="flex justify-between text-base">
-                          <span>Chap. Read:</span>
-                          <div className="flex items-center gap-x-1">
-                            <input
-                              type="text"
-                              placeholder="120"
-                              maxLength={4}
-                              className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
-                            />
-                            <span>/</span>120
-                          </div>
-                        </div>
-                        <div className="flex justify-between text-base">
-                          <span>Your Score:</span>
-                          <div className="flex items-center gap-x-1">
-                            <input
-                              type="text"
-                              maxLength={2}
-                              placeholder="8"
-                              className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
-                            />
-                          </div>
-                        </div>
-                        <Button
-                          title="Submit"
-                          className="bg-prime-blue mt-1 !rounded-sm !px-2 !py-1"
+                      {mangaListed && (
+                        <div
+                          title="Add to favorites"
+                          className="ri-star-line cursor-pointer"
                         />
-                      </div>
-                    </form>
+                      )}
+                    </div>
+                    {mangaListed || addToMyList ? (
+                      <form onSubmit={handleSubmit}>
+                        {mangaListed ? (
+                          <h3 className="text-xl font-medium mt-2">
+                            Edit status
+                          </h3>
+                        ) : (
+                          <span
+                            onClick={() => setaddToMyList(false)}
+                            className="text-sm hover:underline font-medium cursor-pointer text-red"
+                          >
+                            Cancel
+                          </span>
+                        )}
+                        <div className="flex flex-col gap-y-1 border-t-4 border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2">
+                          <div className="flex justify-between text-base">
+                            <span>Status:</span>
+                            <div className="relative">
+                              <Menu>
+                                <Menu.Button>
+                                  {status == null ? (
+                                    <span className="text-red">Undefined</span>
+                                  ) : (
+                                    <span
+                                      className={`${
+                                        (status === 'Completed' &&
+                                          'text-prime-blue') ||
+                                        (status === 'Reading' &&
+                                          'text-green') ||
+                                        (status === 'Plan to Read' &&
+                                          'text-dusk-weak')
+                                      }`}
+                                    >
+                                      {status}
+                                    </span>
+                                  )}
+                                </Menu.Button>
+                                <Menu.Items className="shadow-2xl overflow-hidden overflow-y-scroll border border-dawn-weak/20 dark:border-dusk-weak/20 whitespace-nowrap z-40 duration-200 font-poppins font-light absolute flex flex-col -left-5 text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong">
+                                  {manga?.chapters !== '???' && (
+                                    <Menu.Item>
+                                      <span
+                                        onClick={() => setStatus('Completed')}
+                                        className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                      >
+                                        Completed
+                                      </span>
+                                    </Menu.Item>
+                                  )}
+                                  <Menu.Item>
+                                    <span
+                                      onClick={() => setStatus('Reading')}
+                                      className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                    >
+                                      Reading
+                                    </span>
+                                  </Menu.Item>
+                                  <Menu.Item>
+                                    <span
+                                      onClick={() => setStatus('Plan to Read')}
+                                      className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
+                                    >
+                                      Plan to Read
+                                    </span>
+                                  </Menu.Item>
+                                </Menu.Items>
+                              </Menu>
+                            </div>
+                          </div>
+                          {status !== 'Plan to Read' && (
+                            <>
+                              <div className="flex justify-between text-base">
+                                <span>Chap. Read:</span>
+                                <div className="flex items-center gap-x-1">
+                                  <input
+                                    onChange={(e) => handleChange(e)}
+                                    type="text"
+                                    id="chapRead"
+                                    value={
+                                      status === 'Completed'
+                                        ? manga?.chapters
+                                        : listInfos.chapRead
+                                    }
+                                    placeholder="???"
+                                    maxLength={4}
+                                    className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
+                                  />
+                                  <span>/</span>
+                                  {manga?.chapters}
+                                </div>
+                              </div>
+                              <div className="flex justify-between text-base">
+                                <span>Your Score:</span>
+                                <div className="flex items-center gap-x-1">
+                                  <input
+                                    type="text"
+                                    id="score"
+                                    onChange={(e) => handleChange(e)}
+                                    maxLength={2}
+                                    placeholder="???"
+                                    className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
+                                  />
+                                </div>
+                              </div>
+                            </>
+                          )}
+                          <Button
+                            title="Submit"
+                            className="bg-prime-blue mt-1 !rounded-sm !px-2 !py-1"
+                          />
+                        </div>
+                      </form>
+                    ) : (
+                      <span
+                        onClick={() => setaddToMyList(true)}
+                        className="text-sm hover:underline font-medium cursor-pointer text-prime-blue"
+                      >
+                        Add to my list
+                      </span>
+                    )}
                     <h3 className="text-xl font-medium mt-2">Information</h3>
                     <div className="flex text-base flex-col gap-[2px] border-t-4 border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2">
                       <div className="flex flex-col">
@@ -166,7 +292,7 @@ export const Manga = (props: Props) => {
                       <div className="flex flex-col">
                         <span>Serialization:</span>
                         <span className="text-xs font-medium p-1 border-b border-l rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20">
-                         {manga?.serialization}
+                          {manga?.serialization}
                         </span>
                       </div>
                       <div className="flex flex-col">
@@ -200,7 +326,7 @@ export const Manga = (props: Props) => {
                           showMore ? '' : 'line-clamp-4'
                         } cursor-default font-medium`}
                       >
-                       {manga?.synopsis}
+                        {manga?.synopsis}
                       </p>
                       <div>
                         {!showMore ? (

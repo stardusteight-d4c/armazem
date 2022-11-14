@@ -1,4 +1,5 @@
 import Manga from '../models/mangaModel.js'
+import Account from '../models/accountModel.js'
 import ShortUniqueId from 'short-unique-id'
 
 export const addManga = async (req, res, next) => {
@@ -53,7 +54,10 @@ export const mangaByPagination = async (req, res, next) => {
     const skip = (page - 1) * 10
 
     // 10 out of 10 pagination
-    const mangas = await Manga.find().select('uid cover -_id').skip(skip).limit(10)
+    const mangas = await Manga.find()
+      .select('uid cover -_id')
+      .skip(skip)
+      .limit(10)
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
@@ -95,6 +99,44 @@ export const mangaByGenreAndTitle = async (req, res, next) => {
     }).select('uid cover -_id')
 
     return res.status(200).json({ status: true, mangas })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const addMangaToListed = async (req, res, next) => {
+  try {
+    const { accountId, data } = req.body
+    console.log(data)
+    await Account.findByIdAndUpdate(
+      accountId,
+      {
+        $addToSet: { mangaList: { ...data } },
+      },
+      { safe: true, multi: false }
+    )
+
+    await Manga.findOneAndUpdate(
+      { uid: data.mangaUid },
+      {
+        $addToSet: { readers: accountId },
+        $addToSet: { score: { accountId: accountId, score: data.score } },
+      },
+      { safe: true, multi: false }
+    )
+
+// Não adicionar caso exista
+
+    // await Manga.findOneAndUpdate(
+    //   { uid: data.mangaUid },
+    //   {
+    //     $push: { score: accountId },
+    //   },
+    //   { safe: true, multi: false }
+    // )
+
+
+    console.log('operação realizada')
   } catch (error) {
     next(error)
   }

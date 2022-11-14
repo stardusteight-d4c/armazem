@@ -20,6 +20,13 @@ const accountSchema = new mongoose.Schema({
     id: { type: Schema.Types.ObjectId, ref: 'Post' },
   },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+  mangaList: {
+    type: Array,
+    mangaUid: String,
+    status: String,
+    chapRead: String,
+    score: Number,
+  },
 })
 
 export default mongoose.model('Account', accountSchema)
