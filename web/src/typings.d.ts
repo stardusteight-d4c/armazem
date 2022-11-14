@@ -8,7 +8,6 @@ interface InitialState {
   openModal: string | null
   requestAgain: boolean
   requestEditProfile: boolean
-  usersSearch: [object] | null
   minimizeSidebar: boolean
 }
 

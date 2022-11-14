@@ -46,18 +46,12 @@ export const AddManga = (props: Props) => {
     })
   }
 
-  const search = async (query: string) => {
-    const { data } = await axios.post(searchByTitle, {
-      query,
-    })
-    setSearchResults(data.mangas)
-  }
-
-  const handleSearchTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const eventValue = event.target.value
-    setTerm(eventValue)
-    if (term) {
-      search(term)
+  const search = async (term: string) => {
+    if (term !== '') {
+      const { data } = await axios.post(searchByTitle, {
+        query: term,
+      })
+      setSearchResults(data.mangas)
     } else {
       setSearchResults(null)
     }
@@ -120,8 +114,7 @@ export const AddManga = (props: Props) => {
             <div className="flex flex-col">
               <input
                 type="text"
-                onChange={(e) => handleSearchTerm(e)}
-                value={term}
+                onChange={(e) => search(e.target.value)}
                 placeholder="Edit an existing title"
                 className="p-1 outline-none focus:border-1 focus:!border-prime-blue rounded-sm bg-transparent border border-dawn-weak/20 dark:border-dusk-weak/20"
               />
@@ -133,8 +126,7 @@ export const AddManga = (props: Props) => {
                         onClick={() => {
                           setMangaMetadata({ ...result }),
                             setSearchResults(null),
-                            setTerm('')
-                          setSelectedGenres(result.genres)
+                            setSelectedGenres(result.genres)
                         }}
                         key={index}
                         className="min-w-full block p-2 cursor-pointer"
@@ -174,7 +166,7 @@ export const AddManga = (props: Props) => {
                     id="author"
                     required
                     value={mangaMetadata.author}
-                    maxLength={50}
+                    maxLength={80}
                     onChange={(e) => handleChange(e)}
                     placeholder="Author"
                     className={`${style.input} placeholder:text-sm text-xl`}
@@ -316,8 +308,9 @@ export const AddManga = (props: Props) => {
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {genres.map((genre) => (
+                    {genres.map((genre, index) => (
                       <div
+                        key={index}
                         onClick={() => handleSelectedGenres(genre)}
                         className={`${
                           selectedGenres.includes(genre) &&

@@ -12,7 +12,7 @@ import {
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import {
   handleAuthSession,
-  handleResultUsersSearch,
+  handleMinimizeSidebar,
   handleSwitchTheme,
 } from './store'
 import { Loader } from './components/Loader'
@@ -31,7 +31,6 @@ export const App = (props: Props) => {
   const navigate = useNavigate()
   const openModal = useAppSelector((state) => state.armazem.openModal)
   const session = localStorage.getItem('session')
-  const usersSearch = useAppSelector((state) => state.armazem.usersSearch)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const [loading, setLoading] = useState(true)
@@ -40,6 +39,10 @@ export const App = (props: Props) => {
   // AFTER MOUTING, WE HAVE ACCESS TO THE THEME IN LOCALSTORAGE
   useEffect(() => {
     dispatch(handleSwitchTheme())
+  }, [])
+
+  useEffect(() => {
+    dispatch(handleMinimizeSidebar())
   }, [])
 
   // SET ACTIVE USER MIDDLEWARE
@@ -104,14 +107,6 @@ export const App = (props: Props) => {
       navigate('/login')
     }
   }, [session, requestAgain])
-
-  const handleSearchResults = () => {
-    if (usersSearch !== undefined || usersSearch !== null) {
-      dispatch(handleResultUsersSearch(undefined))
-    } else {
-      return
-    }
-  }
 
   function handleOpenModal(openModal: string) {
     switch (openModal) {

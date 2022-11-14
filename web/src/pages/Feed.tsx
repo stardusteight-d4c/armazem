@@ -17,6 +17,7 @@ export const Feed = (props: Props) => {
     (state) => state.armazem.minimizeSidebar
   )
 
+
   // Hospedar imagens no IPFS
 
   //  setar este useState em um estado redux para seu utilizado em toda aplicação

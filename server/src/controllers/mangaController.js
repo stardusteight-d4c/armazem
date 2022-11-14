@@ -50,12 +50,10 @@ export const searchByTitle = async (req, res, next) => {
 export const mangaByPagination = async (req, res, next) => {
   try {
     const page = req.params.page
-    const skip = (page - 1) * 5
+    const skip = (page - 1) * 10
 
-    console.log(skip)
-
-    // 5 out of 5 pagination
-    const mangas = await Manga.find().select('uid cover -_id').skip(skip).limit(5)
+    // 10 out of 10 pagination
+    const mangas = await Manga.find().select('uid cover -_id').skip(skip).limit(10)
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
@@ -78,7 +76,7 @@ export const mangaByUid = async (req, res, next) => {
 export const mangaByGenre = async (req, res, next) => {
   try {
     const genre = req.params.genre
-    const mangas = await Manga.find({ genres: genre })
+    const mangas = await Manga.find({ genres: genre }).select('uid cover -_id')
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
@@ -91,15 +89,10 @@ export const mangaByGenreAndTitle = async (req, res, next) => {
     const genre = req.params.genre
     const title = req.params.title
 
-    console.log('genre', genre)
-    console.log('title', title)
-
     const mangas = await Manga.find({
       title: { $regex: new RegExp(title, 'i') },
       genres: genre,
-    })
-
-    console.log(mangas)
+    }).select('uid cover -_id')
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {

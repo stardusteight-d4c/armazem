@@ -24,31 +24,17 @@ export const Collection = (props: Props) => {
   const [term, setTerm] = useState('')
   const [filterValue, setFilterValue] = useState<string>('All')
   const [all, setAll] = useState<boolean>(true)
-  const [scrollPosition, setScrollPosition] = useState(0)
   const [page, setPage] = useState(1)
 
-  // const handleScroll = () => {
-  //   const position = window.pageYOffset
-  //   setScrollPosition(position)
-  // }
-
-  useEffect(() => {
-    window.onscroll = function () {
-      console.log('document.body.offsetHeight',  Math.ceil(document.body.offsetHeight))
-      console.log(
-        'window.innerHeight + window.scrollY',
-       Math.ceil(window.innerHeight + window.scrollY)
-      )
-
-      if (Math.ceil(window.innerHeight + window.scrollY) >= Math.ceil(document.body.offsetHeight)) {
-        // window is scrolled to bottom
-        console.log('TEEEEEEEEEEEEEEEEEEEEEEEEEI');
-        
-        setPage(page => page + 1)
-      }
+  window.onscroll = function () {
+    if (
+      Math.ceil(window.innerHeight + window.scrollY) >=
+      Math.ceil(document.body.offsetHeight)
+    ) {
+      // window is scrolled to bottom
+      setPage((page) => page + 1)
     }
-  }, [])
-  console.log(mangas)
+  }
 
   useEffect(() => {
     if (all && term === '') {
@@ -68,9 +54,6 @@ export const Collection = (props: Props) => {
       search(term)
     }
   }, [all, term, page])
-
-console.log(page);
-
 
   useEffect(() => {
     if (filterValue !== 'All' && term !== '') {
@@ -111,11 +94,10 @@ console.log(page);
     setMangas(data.mangas)
   }
 
-  console.log('term', term)
-
   const handleSearchTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
     const eventValue = event.target.value
     setTerm(eventValue)
+    setPage(1)
   }
 
   // Fazer infinite scroll, -> scrollbar chega no limite da página, gera um novo token de paginação 1 -> 2,

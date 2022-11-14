@@ -24,13 +24,20 @@ const initialState: InitialState = {
   openModal: null,
   requestAgain: false,
   requestEditProfile: false,
-  usersSearch: null,
   minimizeSidebar: false,
 }
 
 const saveThemeToLocalStorage = (themeState: any) => {
   try {
     localStorage.setItem('theme', themeState)
+  } catch (e) {
+    console.warn(e)
+  }
+}
+
+const saveMenuStatusToLocalStorage = (menuState: any) => {
+  try {
+    localStorage.setItem('menu', menuState)
   } catch (e) {
     console.warn(e)
   }
@@ -62,7 +69,13 @@ const ArmazemSlice = createSlice({
       }
     },
     handleMinimizeSidebar: (state) => {
+      const storage = localStorage.getItem('menu')
+      if (storage) {
+        storage == 'false' && (state.minimizeSidebar = false)
+        storage == 'true' && (state.minimizeSidebar = true)
+      }
       state.minimizeSidebar = !state.minimizeSidebar
+      saveMenuStatusToLocalStorage(state.minimizeSidebar)
     },
     clearRegisterValuesEntries: (state) => {
       state.registerValues = initialState.registerValues
@@ -87,9 +100,6 @@ const ArmazemSlice = createSlice({
     },
     askToRequestEditProfile: (state) => {
       state.requestAgain = !state.requestEditProfile
-    },
-    handleResultUsersSearch: (state, action) => {
-      state.usersSearch = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -126,7 +136,6 @@ export const {
   askToRequestAgain,
   askToRequestEditProfile,
   handleMinimizeSidebar,
-  handleResultUsersSearch,
 } = ArmazemSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>
