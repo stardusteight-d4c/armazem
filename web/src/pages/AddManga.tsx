@@ -4,6 +4,7 @@ import { Button, Navbar, Sidebar } from '../components'
 import { error, success } from '../components/Toasters'
 import { addManga, searchByTitle } from '../services/api-routes'
 import { useAppSelector } from '../store/hooks'
+import { genres } from '../utils/genres'
 
 interface Props {}
 
@@ -18,24 +19,6 @@ export const AddManga = (props: Props) => {
   const [term, setTerm] = useState('')
   const [selectedGenres, setSelectedGenres] = useState<any>([])
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
-  const genres = [
-    'Action',
-    'Award Winning',
-    'Sci-Fi',
-    'Fantasy',
-    'Adventure',
-    'Supernatural',
-    'Suspense',
-    'Drama',
-    'Comedy',
-    'Romance',
-    'Slice of Life',
-    'Sports',
-    'Mystery',
-    'Historical',
-    'Military',
-    'Horror',
-  ]
 
   const handleSelectedGenres = (genre: string) => {
     // separar melhor as operações lógicas ex.: se item estiver no array

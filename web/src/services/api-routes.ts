@@ -58,3 +58,5 @@ export const addManga = `${hostServer}/api/manga/addManga`
 export const searchByTitle = `${hostServer}/api/manga/searchByTitle`
 export const mangaByPagination = `${hostServer}/api/manga/mangaByPagination` // :page
 export const mangaByUid = `${hostServer}/api/manga/mangaByUid` 
+export const mangaByGenre = `${hostServer}/api/manga/mangaByGenre` // /:genre
+export const mangaByGenreAndTitle = `${hostServer}/api/manga/mangaByGenreAndTitle` // /:genre /:title
