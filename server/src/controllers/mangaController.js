@@ -107,34 +107,76 @@ export const mangaByGenreAndTitle = async (req, res, next) => {
 export const addMangaToListed = async (req, res, next) => {
   try {
     const { accountId, data } = req.body
-    console.log(data)
-    await Account.findByIdAndUpdate(
+
+    const mangaAlreadyListed = await Account.findOne({
       accountId,
-      {
-        $addToSet: { mangaList: { ...data } },
-      },
-      { safe: true, multi: false }
-    )
+      'mangaList.mangaUid': data.mangaUid,
+    })
+
+    // mangaAlreadyListed is null -> 'ADD', otherwise -> 'DELETE' and 'ADD NEW'
+    if (mangaAlreadyListed === null) {
+      await Account.findByIdAndUpdate(
+        accountId,
+        {
+          $push: { mangaList: { ...data } },
+        },
+        { safe: true, multi: false }
+      )
+    } else {
+      await Account.findByIdAndUpdate(
+        accountId,
+        {
+          $pull: { mangaList: { mangaUid: data.mangaUid } },
+        },
+        { safe: true, multi: false }
+      )
+      await Account.findByIdAndUpdate(
+        accountId,
+        {
+          $push: { mangaList: { ...data } },
+        },
+        { safe: true, multi: false }
+      )
+    }
+
+    const scoreAlreadyExist = await Manga.findOne({
+      uid: data.mangaUid,
+      'score.accountId': accountId,
+    })
+
+    // scoreAlreadyExist is null -> 'ADD', otherwise -> 'UPDATE'
+    if (scoreAlreadyExist === null) {
+      await Manga.findOneAndUpdate(
+        { uid: data.mangaUid },
+        {
+          $push: { score: { accountId: accountId, score: data.score } },
+        },
+        { safe: true, multi: false }
+      )
+    } else {
+      await Manga.findOneAndUpdate(
+        { uid: data.mangaUid, 'score.accountId': accountId },
+        {
+          $pull: { score: { accountId: accountId } },
+        },
+        { safe: true, multi: false }
+      )
+      await Manga.findOneAndUpdate(
+        { uid: data.mangaUid },
+        {
+          $push: { score: { accountId: accountId, score: data.score } },
+        },
+        { safe: true, multi: false }
+      )
+    }
 
     await Manga.findOneAndUpdate(
       { uid: data.mangaUid },
       {
         $addToSet: { readers: accountId },
-        $addToSet: { score: { accountId: accountId, score: data.score } },
       },
       { safe: true, multi: false }
     )
-
-// Não adicionar caso exista
-
-    // await Manga.findOneAndUpdate(
-    //   { uid: data.mangaUid },
-    //   {
-    //     $push: { score: accountId },
-    //   },
-    //   { safe: true, multi: false }
-    // )
-
 
     console.log('operação realizada')
   } catch (error) {
