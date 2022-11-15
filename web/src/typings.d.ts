@@ -44,6 +44,9 @@ interface Account {
   requestsReceived: [{ from: string }]
   requestsSent: [{ to: string }]
   connections: [{ with: string }]
+  mangaList: [
+    { chapRead: string; mangaUid: string; score: string; status: string }
+  ]
 }
 
 interface Posts {
@@ -65,7 +68,6 @@ interface Post {
   updatedAt: string
 }
 
-
 interface Comment {
   _id: string
   by: string
@@ -86,12 +88,11 @@ interface Manga {
   genres: array
   score: [
     {
-      userId: String,
-      score: Number,
-    },
-  ],
-  readers: Array,
-  reviews: Array,
-  insertedBy:string,
+      userId: String
+      score: Number
+    }
+  ]
+  readers: Array
+  reviews: Array
+  insertedBy: string
 }
-

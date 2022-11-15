@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { addMangaToListed, mangaByUid } from '../services/api-routes'
 import { Loader } from '../components/Loader'
-import { error } from '../components/Toasters'
+import { error, success } from '../components/Toasters'
 
 interface Props {}
 
@@ -24,24 +24,60 @@ export const Manga = (props: Props) => {
   const [addToMyList, setaddToMyList] = useState<boolean>(false)
   const [status, setStatus] = useState<string | null>(null)
   const [listInfos, setListInfos] = useState<any>({})
+  const [mangaListed, setMangaListed] = useState<any>(null)
+  const [avarageScore, setAvarageScore] = useState<any>()
   const currentAccount = useAppSelector<Account>(
     (state) => state.armazem.currentAccount
   )
 
-  const mangaListed = false
+  console.log(avarageScore)
+
+  useEffect(() => {
+    setLoading(true)
+    if (currentAccount.mangaList) {
+      const listed = currentAccount.mangaList.find((o) => o.mangaUid === uid)
+      if (listed) {
+        setMangaListed(listed)
+        setStatus(listed.status)
+        setListInfos({ chapRead: listed.chapRead, score: listed.score })
+        averageScore()
+        setTimeout(() => {
+          setLoading(false)
+        }, 200)
+      } else {
+        setMangaListed(null)
+        setTimeout(() => {
+          setLoading(false)
+        }, 200)
+      }
+    }
+  }, [currentAccount, manga])
+
+  console.log('mangaListed', mangaListed)
 
   useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${mangaByUid}/${uid}`)
       if (data.status === true) {
         setManga(data.manga)
-        setLoading(false)
       }
     })()
   }, [uid])
 
-  console.log(listInfos);
-  
+  function averageScore() {
+    if (manga?.score && manga.score.length > 0) {
+      const scoreArr: Number[] = []
+      manga?.score.map((score) => scoreArr.push(score.score))
+      const sum = scoreArr.reduce(
+        (accumulator, score) => Number(accumulator) + Number(score)
+      )
+      const avarage = Number(sum) / Number(scoreArr.length)
+      setAvarageScore(avarage)
+    }
+  }
+
+  // const sum = [1, 2, 3].reduce((partialSum, a) => partialSum + a, 0);
+  // console.log(sum); // 6
 
   function handleValidation() {
     if (status !== 'Plan to Read') {
@@ -78,23 +114,39 @@ export const Manga = (props: Props) => {
     })
   }
 
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     if (status === 'Completed') {
-      setListInfos({...listInfos, chapRead: manga?.chapters})
+      setListInfos({ ...listInfos, chapRead: manga?.chapters })
     }
     if (handleValidation()) {
-   
-      const listData = {
-        mangaUid: manga!.uid,
-        ...listInfos,
-        status,
+      if (status === 'Plan to Read') {
+        const listData = {
+          mangaUid: manga!.uid,
+          status,
+        }
+        setListInfos({})
+        const { data } = await axios.post(addMangaToListed, {
+          accountId: currentAccount._id,
+          data: listData,
+        })
+        if (data.status === true) {
+          success(data.msg)
+        }
+      } else {
+        const listData = {
+          mangaUid: manga!.uid,
+          ...listInfos,
+          status,
+        }
+        const { data } = await axios.post(addMangaToListed, {
+          accountId: currentAccount._id,
+          data: listData,
+        })
+        if (data.status === true) {
+          success(data.msg)
+        }
       }
-      const { data } = await axios.post(addMangaToListed, {
-        accountId: currentAccount._id,
-        data: listData,
-      })
     }
   }
 
@@ -137,11 +189,18 @@ export const Manga = (props: Props) => {
                       className="min-w-[225px] max-w-[225px] min-h-[300px] max-h-[300px]"
                     />
                     <div className="flex items-center gap-x-2">
-                      <div
-                        title="Not listed"
-                        className="ri-bookmark-line cursor-pointer"
-                      />
-                      {mangaListed && (
+                      {mangaListed && mangaListed.status !== 'Plan to Read' ? (
+                        <div
+                          title="Listed"
+                          className="ri-bookmark-fill text-prime-blue cursor-pointer"
+                        />
+                      ) : (
+                        <div
+                          title="Not listed"
+                          className="ri-bookmark-line cursor-pointer"
+                        />
+                      )}
+                      {mangaListed && mangaListed.status !== 'Plan to Read' && (
                         <div
                           title="Add to favorites"
                           className="ri-star-line cursor-pointer"
@@ -246,7 +305,9 @@ export const Manga = (props: Props) => {
                                     id="score"
                                     onChange={(e) => handleChange(e)}
                                     maxLength={2}
-                                    placeholder="???"
+                                    placeholder={
+                                      listInfos.score ? listInfos.score : '???'
+                                    }
                                     className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
                                   />
                                 </div>
@@ -309,13 +370,17 @@ export const Manga = (props: Props) => {
                       <div className="flex items-center gap-x-2">
                         <i className="ri-star-s-fill" /> Score
                       </div>
-                      <span className="text-xl font-semibold">??</span>
+                      <span className="text-xl font-semibold">
+                        {avarageScore ? avarageScore : 'No scores yet'}
+                      </span>
                     </div>
                     <div className="text-base flex items-center justify-between w-full border-y border-y-dawn-weak/20 dark:border-y-dusk-weak/20 py-2 font-medium">
                       <div className="flex items-center gap-x-2">
                         <i className="ri-book-3-fill" /> Readers
                       </div>
-                      <span className="text-xl font-semibold">??</span>
+                      <span className="text-xl font-semibold">
+                        {manga?.readers.length}
+                      </span>
                     </div>
                     <div className="text-base flex items-center justify-between w-full py-2 font-medium">
                       Synopsis

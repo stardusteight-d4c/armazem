@@ -7,7 +7,7 @@
     @apply font-inter antialiased scroll-smooth bg-fill-weak dark:bg-fill-strong;
   }
   ::-webkit-scrollbar {
-    @apply bg-transparent w-2;
+    @apply bg-transparent w-[4px];
   }
   ::-webkit-scrollbar-thumb {
     @apply bg-fill-strong dark:bg-fill-weak rounded-full;
