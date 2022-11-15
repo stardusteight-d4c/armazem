@@ -5,7 +5,11 @@ import { useAppSelector } from '../store/hooks'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { addMangaToListed, mangaByUid } from '../services/api-routes'
+import {
+  addMangaToListed,
+  mangaByUid,
+  removeMangaToListed,
+} from '../services/api-routes'
 import { Loader } from '../components/Loader'
 import { error, success } from '../components/Toasters'
 
@@ -112,6 +116,16 @@ export const Manga = (props: Props) => {
       ...listInfos,
       [event.target.id]: event.target.value,
     })
+  }
+
+  const handleRemove = async () => {
+    const { data } = await axios.post(removeMangaToListed, {
+      accountId: currentAccount._id,
+      mangaUid: manga?.uid,
+    })
+    if (data.status === true) {
+      success(data.msg)
+    }
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -237,7 +251,7 @@ export const Manga = (props: Props) => {
                                         (status === 'Reading' &&
                                           'text-green') ||
                                         (status === 'Plan to Read' &&
-                                          'text-dusk-weak')
+                                          'text-dusk-main')
                                       }`}
                                     >
                                       {status}
@@ -314,10 +328,21 @@ export const Manga = (props: Props) => {
                               </div>
                             </>
                           )}
-                          <Button
-                            title="Submit"
-                            className="bg-prime-blue mt-1 !rounded-sm !px-2 !py-1"
-                          />
+                          <div className="flex gap-x-2">
+                            <Button
+                              title="Submit"
+                              type="submit"
+                              className="bg-prime-blue mt-1 !rounded-sm !px-2 !py-1"
+                            />
+                            {mangaListed && (
+                              <Button
+                                title="Remove"
+                                type="button"
+                                onClick={handleRemove}
+                                className="bg-red mt-1 !rounded-sm !px-2 !py-1"
+                              />
+                            )}
+                          </div>
                         </div>
                       </form>
                     ) : (

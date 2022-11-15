@@ -6,5 +6,6 @@ export { Post } from './Post'
 export { Collection } from './Collection'
 export { Manga } from './Manga'
 export { AddManga } from './AddManga'
+export { MyList } from './MyList'
 export { PageNotFound } from './PageNotFound'
 

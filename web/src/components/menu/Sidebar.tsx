@@ -134,12 +134,21 @@ export const Sidebar = (props: Props) => {
               <span className="font-medium text-lg">Collection</span>
             )}
           </Link>
-          <li className="flex w-full cursor-pointer rounded-xl items-center justify-start p-4 gap-4">
-            <i className="ri-book-mark-line text-2xl" />
+          <Link
+            to="/MyList"
+            className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
+              path === `/MyList` && 'bg-prime-blue text-white'
+            }`}
+          >
+            <i
+              className={`text-2xl ${
+                path === `/MyList` ? 'ri-book-mark-fill' : 'ri-book-mark-line'
+              }`}
+            />
             {!minimizeSidebar && (
               <span className="font-medium text-lg">My list</span>
             )}
-          </li>
+          </Link>
           {currentUser?.role && currentUser.role === adminRole && (
             <Link
               to="/addManga"

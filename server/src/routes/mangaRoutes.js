@@ -6,6 +6,7 @@ import {
   mangaByGenreAndTitle,
   mangaByPagination,
   mangaByUid,
+  removeMangaToListed,
   searchByTitle,
 } from '../controllers/mangaController'
 
@@ -18,6 +19,6 @@ router.get('/mangaByUid/:uid', mangaByUid)
 router.get('/mangaByGenre/:genre', mangaByGenre)
 router.get('/mangaByGenreAndTitle/:genre/:title', mangaByGenreAndTitle)
 router.post('/addMangaToListed', addMangaToListed)
-
+router.post('/removeMangaToListed', removeMangaToListed)
 
 export { router }

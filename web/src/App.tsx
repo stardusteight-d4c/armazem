@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import { Account, Connections, Feed, Login, Manga, Collection, PageNotFound, Post } from './pages'
+import { Account, Connections, Feed, Login, Manga, Collection, PageNotFound, Post, MyList } from './pages'
 import { PrivateRouteAddManga } from './services/PrivateRoutes'
 import { activeUser, authorization } from './services/api-routes'
 import {
@@ -143,6 +143,7 @@ export const App = (props: Props) => {
         <Route path="/post/:id" element={<Post />} />
         <Route path="/collection" element={<Collection />} />
         <Route path="/manga/:id" element={<Manga />} />
+        <Route path="/MyList" element={<MyList />} />
         <Route path="/addManga" element={<PrivateRouteAddManga />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

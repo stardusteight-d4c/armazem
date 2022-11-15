@@ -14,7 +14,7 @@ export const Filter = ({
   return (
     <div>
       <ul
-        className={`flex gap-x-5 border-b ${
+        className={`flex text-lg border-b ${
           active === 'connections' && 'border-b-green'
         } ${active === 'pending' && 'border-b-orange'} ${
           active === 'accept' && 'border-b-prime-blue'
