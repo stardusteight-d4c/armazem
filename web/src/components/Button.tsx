@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes } from 'react'
 import { Loader } from './Loader'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  title: string
+  title?: string
   className: string
   loading?: boolean
 }

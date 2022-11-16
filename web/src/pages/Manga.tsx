@@ -1,7 +1,7 @@
 import { Menu } from '@headlessui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, CardManga, Favorites, Navbar, Sidebar } from '../components'
-import { useAppSelector } from '../store/hooks'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
@@ -9,9 +9,13 @@ import {
   addMangaToListed,
   mangaByUid,
   removeMangaToListed,
+  reviewsByPagination,
 } from '../services/api-routes'
 import { Loader } from '../components/Loader'
 import { error, success } from '../components/Toasters'
+import { Dropdown } from '../components/Dropdown'
+import { handleOpenModal } from '../store'
+import { Review } from '../components/manga/Review'
 
 interface Props {}
 
@@ -33,8 +37,18 @@ export const Manga = (props: Props) => {
   const currentAccount = useAppSelector<Account>(
     (state) => state.armazem.currentAccount
   )
+  const dispatch = useAppDispatch()
+  const [page, setPage] = useState(1)
+  const [reviews, setReviews] = useState([])
 
-  console.log(avarageScore)
+  useEffect(() => {
+    ;(async () => {
+      const { data } = await axios.get(`${reviewsByPagination}/${uid}/${page}`)
+      if (data.status === true) {
+        setReviews(data.reviews)
+      }
+    })()
+  }, [uid])
 
   useEffect(() => {
     setLoading(true)
@@ -57,8 +71,6 @@ export const Manga = (props: Props) => {
     }
   }, [currentAccount, manga])
 
-  console.log('mangaListed', mangaListed)
-
   useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${mangaByUid}/${uid}`)
@@ -79,9 +91,6 @@ export const Manga = (props: Props) => {
       setAvarageScore(avarage)
     }
   }
-
-  // const sum = [1, 2, 3].reduce((partialSum, a) => partialSum + a, 0);
-  // console.log(sum); // 6
 
   function handleValidation() {
     if (status !== 'Plan to Read') {
@@ -106,6 +115,13 @@ export const Manga = (props: Props) => {
       } else if (listInfos.chapRead === '' || listInfos.score === '') {
         error('The number cannot be null')
         return false
+      } else if (
+        mangaListed.chapRead === listInfos.chapRead &&
+        mangaListed.score === listInfos.score &&
+        mangaListed.status === status
+      ) {
+        error('No changes')
+        return false
       }
     }
     return true
@@ -127,6 +143,31 @@ export const Manga = (props: Props) => {
       success(data.msg)
     }
   }
+
+  const chooseStatus = [
+    manga?.chapters !== '???' && {
+      item: 'Completed',
+      function: () => setStatus('Completed'),
+    },
+    {
+      item: 'Reading',
+      function: () => setStatus('Reading'),
+    },
+    {
+      item: 'Plan to Read',
+      function: () => setStatus('Plan to Read'),
+    },
+  ]
+
+  const removeFromListed = [
+    {
+      item: 'Remove',
+      function: handleRemove,
+    },
+    {
+      item: 'Cancel',
+    },
+  ]
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -163,6 +204,26 @@ export const Manga = (props: Props) => {
       }
     }
   }
+
+  function renderStatus() {
+    if (status === null) {
+      return <span className="text-red">Undefined</span>
+    } else {
+      return (
+        <span
+          className={`${
+            (status === 'Completed' && 'text-prime-blue') ||
+            (status === 'Reading' && 'text-green') ||
+            (status === 'Plan to Read' && 'text-dusk-main')
+          }`}
+        >
+          {status}
+        </span>
+      )
+    }
+  }
+
+  console.log(reviews)
 
   // CAROUSEL FRAMER MOTION
   const recommendationsCarrousel =
@@ -238,56 +299,13 @@ export const Manga = (props: Props) => {
                         <div className="flex flex-col gap-y-1 border-t-4 border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2">
                           <div className="flex justify-between text-base">
                             <span>Status:</span>
-                            <div className="relative">
-                              <Menu>
-                                <Menu.Button>
-                                  {status == null ? (
-                                    <span className="text-red">Undefined</span>
-                                  ) : (
-                                    <span
-                                      className={`${
-                                        (status === 'Completed' &&
-                                          'text-prime-blue') ||
-                                        (status === 'Reading' &&
-                                          'text-green') ||
-                                        (status === 'Plan to Read' &&
-                                          'text-dusk-main')
-                                      }`}
-                                    >
-                                      {status}
-                                    </span>
-                                  )}
-                                </Menu.Button>
-                                <Menu.Items className="shadow-2xl overflow-hidden overflow-y-scroll border border-dawn-weak/20 dark:border-dusk-weak/20 whitespace-nowrap z-40 duration-200 font-poppins font-light absolute flex flex-col -left-5 text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong">
-                                  {manga?.chapters !== '???' && (
-                                    <Menu.Item>
-                                      <span
-                                        onClick={() => setStatus('Completed')}
-                                        className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-                                      >
-                                        Completed
-                                      </span>
-                                    </Menu.Item>
-                                  )}
-                                  <Menu.Item>
-                                    <span
-                                      onClick={() => setStatus('Reading')}
-                                      className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-                                    >
-                                      Reading
-                                    </span>
-                                  </Menu.Item>
-                                  <Menu.Item>
-                                    <span
-                                      onClick={() => setStatus('Plan to Read')}
-                                      className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-                                    >
-                                      Plan to Read
-                                    </span>
-                                  </Menu.Item>
-                                </Menu.Items>
-                              </Menu>
-                            </div>
+                            <Dropdown
+                              space="space-y-6"
+                              title="Choose status"
+                              items={chooseStatus}
+                            >
+                              {renderStatus()}
+                            </Dropdown>
                           </div>
                           {status !== 'Plan to Read' && (
                             <>
@@ -335,12 +353,17 @@ export const Manga = (props: Props) => {
                               className="bg-prime-blue mt-1 !rounded-sm !px-2 !py-1"
                             />
                             {mangaListed && (
-                              <Button
-                                title="Remove"
-                                type="button"
-                                onClick={handleRemove}
-                                className="bg-red mt-1 !rounded-sm !px-2 !py-1"
-                              />
+                              <Dropdown
+                                title="Remove from list"
+                                position="-bottom-[68px]"
+                                items={removeFromListed}
+                              >
+                                <Button
+                                  title="Remove"
+                                  type="button"
+                                  className="bg-red mt-1 !rounded-sm !px-2 !py-1"
+                                />
+                              </Dropdown>
                             )}
                           </div>
                         </div>
@@ -414,7 +437,7 @@ export const Manga = (props: Props) => {
                       <p
                         className={`${
                           showMore ? '' : 'line-clamp-4'
-                        } cursor-default font-medium`}
+                        } cursor-default break-words whitespace-pre-wrap font-medium`}
                       >
                         {manga?.synopsis}
                       </p>
@@ -439,7 +462,10 @@ export const Manga = (props: Props) => {
                     <div className="text-base border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 mt-2 flex items-center justify-between w-full py-2 font-medium">
                       <span>Reviews</span>
                       <div className="space-x-2">
-                        <span className="text-sm hover:underline cursor-pointer text-prime-blue">
+                        <span
+                          onClick={() => dispatch(handleOpenModal('AddReview'))}
+                          className="text-sm hover:underline cursor-pointer text-prime-blue"
+                        >
                           Add review
                         </span>
                         <span>•</span>
@@ -448,107 +474,18 @@ export const Manga = (props: Props) => {
                         </span>
                       </div>
                     </div>
-                    <div className="mb-5 border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2">
-                      <div className="flex">
-                        <img
-                          src="https://github.com/stardusteight-d4c.png"
-                          alt=""
-                          className="w-14 h-14 object-cover"
-                        />
-                        <div className="flex flex-col pl-2">
-                          <div className="flex justify-between -mt-1">
-                            <span className="font-semibold">
-                              @stardusteight-d4c
-                            </span>
-                            <span className="text-[#707070] dark:text-[#9B9B9B]">
-                              12/11/2022
-                            </span>
-                          </div>
-                          <p className="">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing
-                            elit. Architecto facere voluptatibus praesentium
-                            aliquam alias ratione, distinctio, dignissimos, ea
-                            minima esse pariatur quaerat. Et voluptatibus maxime
-                            beatae. Fugiat odio sit illum. Lorem ipsum dolor sit
-                            amet consectetur, adipisicing elit. Blanditiis atque
-                            ullam corporis explicabo nobis minus cupiditate
-                            totam aliquam natus, numquam quam voluptate,
-                            accusamus excepturi dolorum amet laudantium illum
-                            dolore nostrum. Lorem ipsum dolor sit amet
-                            consectetur adipisicing elit. Itaque quidem dolores
-                            nisi, rem sapiente quis. Suscipit ut, iusto
-                            voluptatem, qui sunt deserunt hic magni obcaecati
-                            corporis, quisquam quas saepe iure!
-                          </p>
-                        </div>
+                    {/* Clicar na review e abrir um modal da review com o texto completo height definida e scrollável */}
+                    {reviews.length > 0 ? (
+                      <>
+                        {reviews?.map((review: any) => (
+                          <Review review={review} />
+                        ))}
+                      </>
+                    ) : (
+                      <div className="flex items-center justify-center text-3xl my-14">
+                        No reviews yet
                       </div>
-                    </div>
-                    <div className="mb-5 border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2">
-                      <div className="flex">
-                        <img
-                          src="https://github.com/stardusteight-d4c.png"
-                          alt=""
-                          className="w-14 h-14 object-cover"
-                        />
-                        <div className="flex flex-col pl-2">
-                          <div className="flex justify-between -mt-1">
-                            <span className="font-semibold">@pedroca</span>
-                            <span className="text-[#707070] dark:text-[#9B9B9B]">
-                              12/11/2022
-                            </span>
-                          </div>
-                          <p className="">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing
-                            elit. Architecto facere voluptatibus praesentium
-                            aliquam alias ratione, distinctio, dignissimos, ea
-                            minima esse pariatur quaerat. Et voluptatibus maxime
-                            beatae. Fugiat odio sit illum. Lorem ipsum dolor sit
-                            amet consectetur, adipisicing elit. Blanditiis atque
-                            ullam corporis explicabo nobis minus cupiditate
-                            totam aliquam natus, numquam quam voluptate,
-                            accusamus excepturi dolorum amet laudantium illum
-                            dolore nostrum. Lorem ipsum dolor sit amet
-                            consectetur adipisicing elit. Itaque quidem dolores
-                            nisi, rem sapiente quis. Suscipit ut, iusto
-                            voluptatem, qui sunt deserunt hic magni obcaecati
-                            corporis, quisquam quas saepe iure!
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mb-5 border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2">
-                      <div className="flex">
-                        <img
-                          src="https://github.com/stardusteight-d4c.png"
-                          alt=""
-                          className="w-14 h-14 object-cover"
-                        />
-                        <div className="flex flex-col pl-2">
-                          <div className="flex justify-between -mt-1">
-                            <span className="font-semibold">@pedroca</span>
-                            <span className="text-[#707070] dark:text-[#9B9B9B]">
-                              12/11/2022
-                            </span>
-                          </div>
-                          <p className="">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing
-                            elit. Architecto facere voluptatibus praesentium
-                            aliquam alias ratione, distinctio, dignissimos, ea
-                            minima esse pariatur quaerat. Et voluptatibus maxime
-                            beatae. Fugiat odio sit illum. Lorem ipsum dolor sit
-                            amet consectetur, adipisicing elit. Blanditiis atque
-                            ullam corporis explicabo nobis minus cupiditate
-                            totam aliquam natus, numquam quam voluptate,
-                            accusamus excepturi dolorum amet laudantium illum
-                            dolore nostrum. Lorem ipsum dolor sit amet
-                            consectetur adipisicing elit. Itaque quidem dolores
-                            nisi, rem sapiente quis. Suscipit ut, iusto
-                            voluptatem, qui sunt deserunt hic magni obcaecati
-                            corporis, quisquam quas saepe iure!
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
                 {/* Recomendação por genêro */}

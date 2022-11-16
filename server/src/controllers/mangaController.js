@@ -1,5 +1,6 @@
 import Manga from '../models/mangaModel.js'
 import Account from '../models/accountModel.js'
+import Review from '../models/reviewModel.js'
 import ShortUniqueId from 'short-unique-id'
 
 export const addManga = async (req, res, next) => {
@@ -236,9 +237,46 @@ export const removeMangaToListed = async (req, res, next) => {
       { safe: true, multi: false }
     )
 
+    return res.status(200).json({ status: true, msg: 'Successfully removed' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const addReview = async (req, res, next) => {
+  try {
+    const { from, by, review, authorImage, authorUsername } = req.body
+    const reviewDoc = await Review.create({
+      from,
+      by,
+      authorImage,
+      authorUsername,
+      review,
+    })
+
+    await Manga.findOneAndUpdate(
+      { uid: from },
+      {
+        $addToSet: { reviews: reviewDoc._id },
+      }
+    )
+
     return res
       .status(200)
-      .json({ status: true, msg: 'Successfully removed' })
+      .json({ status: true, msg: 'The review has been added' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const reviewsByPagination = async (req, res, next) => {
+  try {
+    const { uid, page } = req.params
+    const skip = (page - 1) * 3
+
+    const reviews = await Review.find({ from: uid }).skip(skip).limit(3)
+
+    return res.status(200).json({ status: true, reviews })
   } catch (error) {
     next(error)
   }

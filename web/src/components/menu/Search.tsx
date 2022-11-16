@@ -4,6 +4,7 @@ import axios from 'axios'
 import { searchByTitle, searchUsersByQuery } from '../../services/api-routes'
 import { Link } from 'react-router-dom'
 import { useAppSelector } from '../../store/hooks'
+import { Dropdown } from '../Dropdown'
 
 interface Props {}
 
@@ -39,6 +40,23 @@ export const Search = (props: Props) => {
     }
   }
 
+  const filterItems = [
+    {
+      item: 'Manga',
+      function: () => {
+        setUsersSearch(null)
+        setActiveFilter('Manga')
+      },
+    },
+    {
+      item: 'User',
+      function: () => {
+        setMangaSearch(null)
+        setActiveFilter('User')
+      },
+    },
+  ]
+
   return (
     <div className="flex flex-col space-y-12">
       <div className="flex group relative items-center">
@@ -53,38 +71,9 @@ export const Search = (props: Props) => {
               : 'max-w-[337px] min-w-[337px]'
           } h-full border border-dawn-weak/20 dark:border-dusk-weak/20 outline-none py-3 px-12 bg-transparent`}
         />
-        <Menu>
-          <Menu.Button
-            title="Filter"
-            className="right-3 mt-[4px] cursor-pointer absolute text-dusk-main dark:text-dawn-main text-2xl"
-          >
-            <i className="ri-equalizer-line" />
-          </Menu.Button>
-          <Menu.Items className="shadow-md border border-dawn-weak/20 dark:border-dusk-weak/20 z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[14px] -bottom-[55px]">
-            <Menu.Item>
-              <a
-                onClick={() => {
-                  setUsersSearch(null)
-                  setActiveFilter('Manga')
-                }}
-                className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-              >
-                Manga
-              </a>
-            </Menu.Item>
-            <Menu.Item>
-              <a
-                onClick={() => {
-                  setMangaSearch(null)
-                  setActiveFilter('User')
-                }}
-                className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-              >
-                User
-              </a>
-            </Menu.Item>
-          </Menu.Items>
-        </Menu>
+        <Dropdown title="filter" position='-bottom-[80px] -left-[60px]' items={filterItems}>
+          <i className="ri-equalizer-line right-3 text-2xl -mt-4 absolute" />
+        </Dropdown>
       </div>
       {usersSearch && usersSearch[0] !== null && (
         <div

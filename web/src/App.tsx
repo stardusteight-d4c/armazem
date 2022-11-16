@@ -17,6 +17,7 @@ import {
 } from './store'
 import { Loader } from './components/Loader'
 import {
+  AddReviewModal,
   AllPostsModal,
   EditCoverImageModal,
   EditProfileImageModal,
@@ -120,6 +121,8 @@ export const App = (props: Props) => {
         return <AllPostsModal />
       case 'SharedPosts':
         return <SharedPostsModal />
+      case 'AddReview':
+        return <AddReviewModal />
     }
   }
 
