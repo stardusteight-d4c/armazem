@@ -2,7 +2,17 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import { Account, Connections, Feed, Login, Manga, Collection, PageNotFound, Post, MyList } from './pages'
+import {
+  Account,
+  Connections,
+  Feed,
+  Login,
+  Manga,
+  Collection,
+  PageNotFound,
+  Post,
+  MyList,
+} from './pages'
 import { PrivateRouteAddManga } from './services/PrivateRoutes'
 import { activeUser, authorization } from './services/api-routes'
 import {
@@ -22,6 +32,7 @@ import {
   EditCoverImageModal,
   EditProfileImageModal,
   PostInputModal,
+  ReviewModal,
   SharedPostsModal,
 } from './components/modals'
 
@@ -123,6 +134,8 @@ export const App = (props: Props) => {
         return <SharedPostsModal />
       case 'AddReview':
         return <AddReviewModal />
+      case 'Review':
+        return <ReviewModal />
     }
   }
 
@@ -132,6 +145,13 @@ export const App = (props: Props) => {
         <Loader className={loader.loader} />
       </div>
     )
+  }
+
+  const html = document.querySelector('html')
+  if (html) {
+    openModal
+      ? (html.style.overflow = 'hidden')
+      : (html.style.overflow = 'auto')
   }
 
   return (

@@ -281,3 +281,36 @@ export const reviewsByPagination = async (req, res, next) => {
     next(error)
   }
 }
+
+export const review = async (req, res, next) => {
+  try {
+    const id = req.params.id
+
+    const review = await Review.findById(id)
+
+    return res.status(200).json({ status: true, review })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const randomMangasByGenre = async (req, res, next) => {
+  try {
+    const genre = req.params.genre
+
+    const mangas = await Manga.find({ genres: genre }).select('uid cover score -_id').limit(10)
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[array[i], array[j]] = [array[j], array[i]]
+      }
+    }
+
+    shuffleArray(mangas)
+
+    return res.status(200).json({ status: true, mangas })
+  } catch (error) {
+    next(error)
+  }
+}

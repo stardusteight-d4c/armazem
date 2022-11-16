@@ -7,7 +7,9 @@ import {
   mangaByGenreAndTitle,
   mangaByPagination,
   mangaByUid,
+  randomMangasByGenre,
   removeMangaToListed,
+  review,
   reviewsByPagination,
   searchByTitle,
 } from '../controllers/mangaController'
@@ -24,5 +26,7 @@ router.post('/addMangaToListed', addMangaToListed)
 router.post('/removeMangaToListed', removeMangaToListed)
 router.post('/addReview', addReview)
 router.get('/reviewsByPagination/:uid/:page', reviewsByPagination)
+router.get('/review/:id', review)
+router.get('/randomMangasByGenre/:genre', randomMangasByGenre)
 
 export { router }

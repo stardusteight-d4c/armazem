@@ -64,3 +64,5 @@ export const addMangaToListed = `${hostServer}/api/manga/addMangaToListed`
 export const removeMangaToListed = `${hostServer}/api/manga/removeMangaToListed` 
 export const addReview = `${hostServer}/api/manga/addReview` 
 export const reviewsByPagination = `${hostServer}/api/manga/reviewsByPagination` // /:uid/:page
+export const review = `${hostServer}/api/manga/review` // /:id
+export const randomMangasByGenre = `${hostServer}/api/manga/randomMangasByGenre` // /:genre

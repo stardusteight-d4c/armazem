@@ -8,6 +8,7 @@ import axios from 'axios'
 import {
   addMangaToListed,
   mangaByUid,
+  randomMangasByGenre,
   removeMangaToListed,
   reviewsByPagination,
 } from '../services/api-routes'
@@ -34,6 +35,7 @@ export const Manga = (props: Props) => {
   const [listInfos, setListInfos] = useState<any>({})
   const [mangaListed, setMangaListed] = useState<any>(null)
   const [avarageScore, setAvarageScore] = useState<any>()
+  const [recMangas, setRecMangas] = useState<any>([])
   const currentAccount = useAppSelector<Account>(
     (state) => state.armazem.currentAccount
   )
@@ -48,7 +50,25 @@ export const Manga = (props: Props) => {
         setReviews(data.reviews)
       }
     })()
-  }, [uid])
+  }, [uid, page])
+
+  useEffect(() => {
+    if (manga) {
+      const randomGenreFromManga =
+        manga?.genres[Math.floor(Math.random() * manga?.genres.length)]
+        console.log(randomGenreFromManga);
+      ;(async () => {
+        const { data } = await axios.get(
+          `${randomMangasByGenre}/${randomGenreFromManga}`
+        )
+        if (data.status === true) {
+          setRecMangas(data.mangas)
+        }
+      })()
+    }
+  }, [uid, manga])
+
+ 
 
   useEffect(() => {
     setLoading(true)
@@ -222,8 +242,6 @@ export const Manga = (props: Props) => {
       )
     }
   }
-
-  console.log(reviews)
 
   // CAROUSEL FRAMER MOTION
   const recommendationsCarrousel =
@@ -468,22 +486,45 @@ export const Manga = (props: Props) => {
                         >
                           Add review
                         </span>
-                        <span>•</span>
-                        <span className="text-sm hover:underline cursor-pointer text-prime-blue">
-                          More reviews
-                        </span>
+                        {reviews.length > 0 && page === 1 && (
+                          <>
+                            <span>•</span>
+                            <span
+                              onClick={() => setPage((page) => page + 1)}
+                              className="text-sm hover:underline cursor-pointer text-prime-blue"
+                            >
+                              More reviews
+                            </span>
+                          </>
+                        )}
+                        {page !== 1 && (
+                          <>
+                            <span>•</span>
+                            <span
+                              onClick={() => setPage((page) => page - 1)}
+                              className="text-sm hover:underline cursor-pointer text-prime-blue"
+                            >
+                              Return
+                            </span>
+                          </>
+                        )}
                       </div>
                     </div>
-                    {/* Clicar na review e abrir um modal da review com o texto completo height definida e scrollável */}
-                    {reviews.length > 0 ? (
+                    {reviews.length > 0 && (
                       <>
                         {reviews?.map((review: any) => (
                           <Review review={review} />
                         ))}
                       </>
-                    ) : (
+                    )}
+                    {reviews.length === 0 && page === 1 && (
                       <div className="flex items-center justify-center text-3xl my-14">
                         No reviews yet
+                      </div>
+                    )}
+                    {reviews.length === 0 && page !== 1 && (
+                      <div className="flex items-center justify-center text-3xl my-14">
+                        End of results
                       </div>
                     )}
                   </div>
@@ -502,14 +543,15 @@ export const Manga = (props: Props) => {
                     dragConstraints={{ right: 0, left: -recommendationWidth }}
                     className="flex items-center gap-x-5 "
                   >
-                    <CardManga className="!min-w-[200px] !max-w-[180px] !h-[290px]" />
-                    <CardManga className="!min-w-[200px] !max-w-[180px] !h-[290px]" />
-                    <CardManga className="!min-w-[200px] !max-w-[180px] !h-[290px]" />
-                    <CardManga className="!min-w-[200px] !max-w-[180px] !h-[290px]" />
-                    <CardManga className="!min-w-[200px] !max-w-[180px] !h-[290px]" />
-                    <CardManga className="!min-w-[200px] !max-w-[180px] !h-[290px]" />
-                    <CardManga className="!min-w-[200px] !max-w-[180px] !h-[290px]" />
-                    <CardManga className="!min-w-[200px] !max-w-[180px] !h-[290px]" />
+                    {recMangas.map(
+                      (manga: any, index: React.Key | null | undefined) => (
+                        <CardManga
+                          manga={manga}
+                          key={index}
+                          className="!min-w-[200px] !max-w-[180px] !h-[290px]"
+                        />
+                      )
+                    )}
                   </motion.div>
                 </section>
               </div>
