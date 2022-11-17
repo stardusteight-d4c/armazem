@@ -71,4 +71,4 @@ export const addReview = `${hostServer}/api/manga/addReview`
 export const reviewsByPagination = `${hostServer}/api/manga/reviewsByPagination` // /:uid/:page
 export const review = `${hostServer}/api/manga/review` // /:id
 export const randomMangasByGenre = `${hostServer}/api/manga/randomMangasByGenre` // /:genre
-
+export const mostRead = `${hostServer}/api/manga/mostRead` 

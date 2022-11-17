@@ -51,9 +51,7 @@ export const PreviewPost = ({ postId }: Props) => {
         if (data.status === true) {
           setPost(data.post)
           setAuthorUser(data.authorUser)
-          setTimeout(() => {
             setLoading(false)
-          }, 100)
         }
       })()
     }
@@ -163,50 +161,3 @@ export const PreviewPost = ({ postId }: Props) => {
     </>
   )
 }
-
-//   return (
-//     <article  title={post.title}  className="max-w-[450px] flex flex-col justify-between min-w-[450px] max-h-[285px] min-h-[285px] cursor-default hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200 w-full p-4">
-//       <div>
-//         <div className="flex items-center justify-between">
-//           <div className="flex items-center gap-3">
-//             <img
-//               src="https://avatars.githubusercontent.com/u/87643260?v=4"
-//               alt=""
-//               className="w-8 h-8 object-cover"
-//             />
-//             <span className="font-medium text-dusk-main dark:text-dawn-main">
-//               Gabriel Sena
-//             </span>
-//           </div>
-//           <TimeAgo datetime={post.createdAt} />
-//         </div>
-//         <div>
-//           <h2 className="font-semibold line-clamp-1 text-lg py-2 text-dusk-main dark:text-dawn-main">
-//             {post.title}
-//           </h2>
-//         </div>
-//         <p className='line-clamp-5'>{post.body}</p>
-//       </div>
-//       <div>
-//         <div className="h-[1px] w-full my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
-//         <div className="flex items-center justify-between text-dusk-main dark:text-dawn-main">
-//           <div className="flex items-center gap-x-5">
-//             <div className="flex items-center cursor-pointer">
-//               <span className="text-sm">{post.likes}</span>
-//               <i className="ri-heart-3-line p-1 text-xl" />
-//             </div>
-//             <div className="flex items-center cursor-pointer">
-//               <i className="ri-discuss-line p-1 text-xl" />
-//             <span className="text-sm">{post.discussions}</span>
-//               <span className="text-sm">Discuss</span>
-//             </div>
-//           </div>
-//           <div className="flex items-center cursor-pointer">
-//             <i className="ri-share-box-line p-1 text-xl" />
-//             <span className="text-sm">Share</span>
-//           </div>
-//         </div>
-//       </div>
-//     </article>
-//   )
-// }

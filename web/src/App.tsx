@@ -154,6 +154,10 @@ export const App = (props: Props) => {
       : (html.style.overflow = 'auto')
   }
 
+  // Deixar o componente da página com o loader, só settar para falso quando seus filhos carregarem
+  // Assim toda informação aparece de uma vez, o menu permanece e o usúario não verá os componentes
+  // filhos carregando. (mandar o um state pros filhos, sei lá)
+
   return (
     <>
       {openModal && handleOpenModal(openModal)}

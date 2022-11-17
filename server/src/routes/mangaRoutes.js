@@ -7,6 +7,7 @@ import {
   mangaByGenreAndTitle,
   mangaByPagination,
   mangaByUid,
+  mostRead,
   randomMangasByGenre,
   removeMangaToListed,
   review,
@@ -28,5 +29,6 @@ router.post('/addReview', addReview)
 router.get('/reviewsByPagination/:uid/:page', reviewsByPagination)
 router.get('/review/:id', review)
 router.get('/randomMangasByGenre/:genre', randomMangasByGenre)
+router.get('/mostRead', mostRead)
 
 export { router }

@@ -27,7 +27,8 @@ export const RatedPosts = ({ topRatedPosts }: Props) => {
   return (
     <section>
       <h2 className="text-2xl flex items-center gap-x-2 pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
-        Top rated posts <div className='text-base font-medium mt-1'>(last 24h)</div> 
+        Top rated posts 
+        {/* <div className='text-base font-medium mt-1'>(last 24h)</div>  */}
       </h2>
       <div className="w-full">
         <motion.div

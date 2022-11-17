@@ -11,10 +11,6 @@ export const CardManga = ({ className, manga }: Props) => {
   const [click, setClick] = useState<any>()
   const navigate = useNavigate()
 
-  if (!manga) {
-    return <div></div>
-  }
-
   function averageScore() {
     if (manga?.score && manga.score.length > 0) {
       const scoreArr: Number[] = []
