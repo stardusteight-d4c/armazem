@@ -27,6 +27,7 @@ const accountSchema = new mongoose.Schema({
     chapRead: String,
     score: Number,
   },
+  favorites: [{ type: Schema.Types.ObjectId, ref: 'Manga' }],
 })
 
 export default mongoose.model('Account', accountSchema)

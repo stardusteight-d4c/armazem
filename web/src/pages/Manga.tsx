@@ -6,9 +6,11 @@ import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import {
+  addMangaToFavorites,
   addMangaToListed,
   mangaByUid,
   randomMangasByGenre,
+  removeMangaToFavorites,
   removeMangaToListed,
   reviewsByPagination,
 } from '../services/api-routes'
@@ -42,6 +44,7 @@ export const Manga = (props: Props) => {
   const dispatch = useAppDispatch()
   const [page, setPage] = useState(1)
   const [reviews, setReviews] = useState([])
+  const [favorited, setFavorited] = useState<boolean>(false)
 
   useEffect(() => {
     ;(async () => {
@@ -56,7 +59,6 @@ export const Manga = (props: Props) => {
     if (manga) {
       const randomGenreFromManga =
         manga?.genres[Math.floor(Math.random() * manga?.genres.length)]
-        console.log(randomGenreFromManga);
       ;(async () => {
         const { data } = await axios.get(
           `${randomMangasByGenre}/${randomGenreFromManga}`
@@ -67,8 +69,6 @@ export const Manga = (props: Props) => {
       })()
     }
   }, [uid, manga])
-
- 
 
   useEffect(() => {
     setLoading(true)
@@ -96,6 +96,7 @@ export const Manga = (props: Props) => {
       const { data } = await axios.get(`${mangaByUid}/${uid}`)
       if (data.status === true) {
         setManga(data.manga)
+        setFavorited(currentAccount.favorites.includes(data.manga._id))
       }
     })()
   }, [uid])
@@ -136,6 +137,7 @@ export const Manga = (props: Props) => {
         error('The number cannot be null')
         return false
       } else if (
+        mangaListed &&
         mangaListed.chapRead === listInfos.chapRead &&
         mangaListed.score === listInfos.score &&
         mangaListed.status === status
@@ -146,6 +148,38 @@ export const Manga = (props: Props) => {
     }
     return true
   }
+
+  const handleFavorites = async () => {
+    console.log('eeeee')
+
+    if (currentAccount.favorites.length < 10) {
+      if (!favorited) {
+        const { data } = await axios.post(addMangaToFavorites, {
+          accountId: currentAccount._id,
+          mangaId: manga?._id,
+        })
+        if (data.status === true) {
+          success(data.msg)
+        }
+      }
+    } else {
+      error('10 favorites have already been added')
+    }
+
+    if (favorited) {
+      console.log('iiii')
+
+      const { data } = await axios.post(removeMangaToFavorites, {
+        accountId: currentAccount._id,
+        mangaId: manga?._id,
+      })
+      if (data.status === true) {
+        success(data.msg)
+      }
+    }
+  }
+
+  console.log(favorited)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setListInfos({
@@ -294,10 +328,31 @@ export const Manga = (props: Props) => {
                         />
                       )}
                       {mangaListed && mangaListed.status !== 'Plan to Read' && (
-                        <div
-                          title="Add to favorites"
-                          className="ri-star-line cursor-pointer"
-                        />
+                        <>
+                          {favorited ? (
+                            <div
+                              onClick={handleFavorites}
+                              title="Remove to favorites"
+                              className="ri-star-fill text-prime-purple cursor-pointer"
+                            />
+                          ) : (
+                            <>
+                              {currentAccount.favorites.length < 10 ? (
+                                <div
+                                  onClick={handleFavorites}
+                                  title="Add to favorites"
+                                  className="ri-star-line cursor-pointer"
+                                />
+                              ) : (
+                                <div
+                                  onClick={handleFavorites}
+                                  title="Maximum limit reached"
+                                  className="ri-star-fill text-dusk-weak cursor-pointer"
+                                />
+                              )}
+                            </>
+                          )}
+                        </>
                       )}
                     </div>
                     {mangaListed || addToMyList ? (

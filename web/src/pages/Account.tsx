@@ -11,7 +11,7 @@ import {
 } from '../components'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import axios from 'axios'
-import { dataByUsername } from '../services/api-routes'
+import { dataByUsername, mangaFavorites } from '../services/api-routes'
 import { useLocation, useParams } from 'react-router-dom'
 import { Comments } from '../components/account/Comments'
 import { Loader } from '../components/Loader'
@@ -25,7 +25,9 @@ export const Account = (props: Props) => {
   const { username } = useParams()
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
-  const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
+  const currentAccount: Account = useAppSelector(
+    (state) => state.armazem.currentAccount
+  )
   const [loading, setLoading] = useState(true)
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
@@ -43,8 +45,6 @@ export const Account = (props: Props) => {
 
   const dataLoaded =
     currentAccount.user !== undefined && userMetadata !== null && username
-
-  // ver se tem como cachear os dados da conta do usuário para não aparecer o loader
 
   return (
     <div
@@ -66,7 +66,7 @@ export const Account = (props: Props) => {
               currentAccount={currentAccount}
             />
             <div className="p-4 pb-14">
-              <StatusBar />
+              <StatusBar userMetadata={userMetadata} />
               <Favorites />
               <LastPosts userMetadata={userMetadata} />
               <SharedPosts userMetadata={userMetadata} />

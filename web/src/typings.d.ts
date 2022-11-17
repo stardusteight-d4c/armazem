@@ -48,6 +48,7 @@ interface Account {
   mangaList: [
     { chapRead: string; mangaUid: string; score: string; status: string }
   ]
+  favorites: [string]
 }
 
 interface Posts {
@@ -77,6 +78,7 @@ interface Comment {
 }
 
 interface Manga {
+  _id: string
   uid: string
   title: string
   author: string

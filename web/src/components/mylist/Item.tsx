@@ -13,7 +13,6 @@ const Item = ({ item }: Props) => {
 
   useEffect(() => {
     ;(async () => {
-      console.log('item ex', item)
       const { data } = await axios.get(`${mangaByUid}/${item.mangaUid}`)
       setItemData(data.manga)
     })()

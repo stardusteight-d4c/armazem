@@ -4,11 +4,15 @@ import {
   accountDataByUserId,
   addComment,
   addConnection,
+  addMangaToFavorites,
   deleteComment,
   lastFivePostsOfAccount,
+  mangaFavorites,
+  mangaListedByAccountId,
   postByPagination,
   rejectConnection,
   removeConnection,
+  removeMangaToFavorites,
   searchSharedPostByTitle,
   searchUserPostByTitle,
   sendRequest,
@@ -34,6 +38,9 @@ router.post('/addComment', addComment)
 router.post('/updateComment', updateComment)
 router.get('/accountComments/:accountId', accountComments)
 router.post('/deleteComment', deleteComment)
-
+router.post('/addMangaToFavorites', addMangaToFavorites)
+router.post('/removeMangaToFavorites', removeMangaToFavorites)
+router.get('/mangaFavorites/:accountId', mangaFavorites)
+router.get('/mangaListedByAccountId/:accountId', mangaListedByAccountId)
 
 export { router }

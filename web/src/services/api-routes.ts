@@ -34,6 +34,10 @@ export const addComment = `${hostServer}/api/account/addComment`
 export const updateComment = `${hostServer}/api/account/updateComment`
 export const accountComments = `${hostServer}/api/account/accountComments` // /:accountId
 export const deleteComment = `${hostServer}/api/account/deleteComment`
+export const addMangaToFavorites = `${hostServer}/api/account/addMangaToFavorites` 
+export const removeMangaToFavorites = `${hostServer}/api/account/removeMangaToFavorites` 
+export const mangaFavorites = `${hostServer}/api/account/mangaFavorites` // /:accountId
+export const mangaListedByAccountId = `${hostServer}/api/account/mangaListedByAccountId` // /:accountId
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`
@@ -66,3 +70,4 @@ export const addReview = `${hostServer}/api/manga/addReview`
 export const reviewsByPagination = `${hostServer}/api/manga/reviewsByPagination` // /:uid/:page
 export const review = `${hostServer}/api/manga/review` // /:id
 export const randomMangasByGenre = `${hostServer}/api/manga/randomMangasByGenre` // /:genre
+

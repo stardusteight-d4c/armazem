@@ -109,8 +109,6 @@ export const addMangaToListed = async (req, res, next) => {
   try {
     const { accountId, data } = req.body
 
-    console.log()
-
     const mangaAlreadyListed = await Account.findOne({
       accountId,
       'mangaList.mangaUid': data.mangaUid,

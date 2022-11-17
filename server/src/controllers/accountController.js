@@ -2,6 +2,7 @@ import Account from '../models/accountModel.js'
 import User from '../models/userModel.js'
 import Post from '../models/postModel.js'
 import Comment from '../models/commentModel.js'
+import Manga from '../models/mangaModel.js'
 import ShortUniqueId from 'short-unique-id'
 const uid = new ShortUniqueId({ length: 10 })
 
@@ -186,13 +187,11 @@ export const lastFivePostsOfAccount = async (req, res, next) => {
       postsId.map(async (id) => await Post.findById(id))
     )
 
-    return res
-      .status(200)
-      .json({
-        status: true,
-        msg: 'Operation performed successfully',
-        lastPosts,
-      })
+    return res.status(200).json({
+      status: true,
+      msg: 'Operation performed successfully',
+      lastPosts,
+    })
   } catch (error) {
     next(error)
   }
@@ -367,6 +366,84 @@ export const deleteComment = async (req, res, next) => {
     return res
       .status(200)
       .json({ status: true, msg: 'Comment successfully deleted' })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const addMangaToFavorites = async (req, res, next) => {
+  try {
+    const { mangaId, accountId } = req.body
+
+    await Account.findByIdAndUpdate(accountId, {
+      $addToSet: { favorites: mangaId },
+    })
+
+    return res.status(200).json({ status: true, msg: 'Add to favorites' })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const removeMangaToFavorites = async (req, res, next) => {
+  try {
+    const { mangaId, accountId } = req.body
+
+    await Account.findByIdAndUpdate(accountId, {
+      $pull: { favorites: mangaId },
+    })
+
+    return res.status(200).json({ status: true, msg: 'Removed to favorites' })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const mangaFavorites = async (req, res, next) => {
+  try {
+    const accountId = req.params.accountId
+    const mangaIds = await Account.find({ _id: accountId }).select(
+      'favorites -_id'
+    )
+
+    const mangas = await Manga.find({
+      _id: {
+        $in: [...mangaIds[0].favorites],
+      },
+    }).select('cover uid score -_id')
+
+    return res.status(200).json({ status: true, mangas })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}
+
+export const mangaListedByAccountId = async (req, res, next) => {
+  try {
+    const accountId = req.params.accountId
+    const mangasListed = await Account.find({ _id: accountId }).select(
+      'mangaList -_id'
+    )
+
+    const mangas = mangasListed[0].mangaList
+
+    return res.status(200).json({ status: true, mangas })
   } catch (error) {
     next(error)
     return res.status(500).json({

@@ -1,6 +1,6 @@
 import { Menu } from '@headlessui/react'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { Key, useEffect, useState } from 'react'
 import { Navbar, Sidebar } from '../components'
 import { Card } from '../components/collection/Card'
 import { Loader } from '../components/Loader'
@@ -156,8 +156,8 @@ export const Collection = (props: Props) => {
           >
             {!loading ? (
               <>
-                {mangas?.map((manga: Manga) => (
-                  <Card manga={manga} />
+                {mangas?.map((manga: Manga, index: Key | null | undefined) => (
+                  <Card manga={manga} key={index} />
                 ))}
               </>
             ) : (
