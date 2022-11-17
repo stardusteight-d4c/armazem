@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Hero,
   Navbar,
@@ -9,6 +9,8 @@ import {
 } from '../components'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAppSelector } from '../store/hooks'
+import axios from 'axios'
+import { topRatedPost } from '../services/api-routes'
 
 interface Props {}
 
@@ -16,11 +18,18 @@ export const Feed = (props: Props) => {
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
   )
+  const [topRatedPosts, setTopRatedPosts] = useState<any>([])
 
-
-  // Hospedar imagens no IPFS
-
-  //  setar este useState em um estado redux para seu utilizado em toda aplicação
+  useEffect(() => {
+    ;(async () => {
+      const { data } = await axios.get(topRatedPost)
+      if (data.status === true) {
+        setTopRatedPosts(data.posts)
+        console.log('feed', data.posts);
+        
+      }
+    })()
+  }, [])
 
   return (
     <div
@@ -29,7 +38,6 @@ export const Feed = (props: Props) => {
       }`}
     >
       <Sidebar />
-      {/* Tranformar em componentes estes wrappers, aceitando children */}
       <div
         className={`${style.mainContent} ${
           minimizeSidebar ? 'col-span-17' : 'col-span-4'
@@ -38,7 +46,7 @@ export const Feed = (props: Props) => {
         <Navbar />
         <main className="p-8">
           <Hero />
-          <RatedPosts />
+          <RatedPosts topRatedPosts={topRatedPosts} />
           <PopularReadings />
           <RatedMangas />
         </main>

@@ -428,3 +428,54 @@ export const unsharePost = async (req, res, next) => {
     })
   }
 }
+
+export const topRatedPost = async (req, res, next) => {
+  try {
+    // Sorting with two fields returns the error:
+    // MongoServerError: Executor error during find command :: caused by :: cannot sort with keys that are parallel arrays
+    // const posts = await Post.find()
+    //   .select('discussions likes')
+    //   .sort({ likes: 'descending', discussions: 'descending' })
+
+    /* Aggregate operations process data records and return computed results.
+     * Aggregate operations group values ​​from multiple documents and can perform
+     * a variety of operations on the grouped data to return a single result.
+     *
+     * It is a more advanced concept of mongoDB, to make more elaborate queries
+     */
+
+    // Top 10 rated posts by more likes and discussions in the last 24 hours (returns only _id)
+    const posts = await Post.aggregate([
+      {
+        $match: {
+          // createdAt: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+        },
+      },
+      {
+        $set: {
+          likes: {
+            $size: '$likes',
+          },
+          discussions: {
+            $size: '$discussions',
+          },
+        },
+      },
+      {
+        $sort: {
+          likes: -1,
+          discussions: -1,
+        },
+      },
+      { $project: { _id: '$_id' } },
+    ]).limit(10)
+
+    return res.status(200).json({ status: true, posts })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: false,
+      msg: 'An error occurred while querying the most rated posts',
+    })
+  }
+}

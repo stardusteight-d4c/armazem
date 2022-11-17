@@ -46,6 +46,7 @@ export const Favorites = (props: Props) => {
       </h2>
       <motion.div
         drag="x"
+        whileTap={{ cursor: 'grabbing' }}
         ref={favoritesCarousel}
         onDrag={(_event, info) => setOnDragFavorites(info.offset.x)}
         dragConstraints={{ right: 0, left: -favoritesWidth }}

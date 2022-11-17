@@ -1,14 +1,15 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { mangaByUid } from '../../services/api-routes'
-import { motion } from 'framer-motion'
+import { Loader } from '../Loader'
 
 interface Props {
   item: any
 }
 
-export const StatusItems = ({ item }: Props) => {
-  const [itemData, setItemData] = useState<any>(null)
+const StatusItem = ({ item }: Props) => {
+  const [itemData, setItemData] = useState<Manga | null>(null)
 
   useEffect(() => {
     ;(async () => {
@@ -18,15 +19,32 @@ export const StatusItems = ({ item }: Props) => {
   }, [item])
 
   return (
-    <div
-      className="flex items-center transition-all duration-300 border-b border-b-transparent hover:border-b-white/50 cursor-pointer justify-between"
-    >
-      <h3 className="text-lg font-semibold">
-        {itemData?.title}
-      </h3>
-      {item.status !== 'Plan to Read' && (
-        <span className="font-medium">Chap. Read: {item.chapRead}</span>
-      )}
+    <div className="px-4 py-1 hover:bg-dusk-weak/10  border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20  justify-between flex items-center">
+      <div className="flex items-center">
+        <Link
+          to={`/manga/${item.mangaUid}`}
+          className="text-lg cursor-pointer hover:underline font-bold min-w-[300px] max-w-[300px] truncate px-4"
+        >
+          {itemData?.title}
+        </Link>
+      </div>
+      <div className="flex items-center">
+        <div
+          className={`min-w-[200px] text-center max-w-[200px] px-4 text-lg font-base ${
+            itemData?.status === 'Finished' ? 'text-prime-blue' : 'text-green'
+          }`}
+        >
+          {itemData?.status}
+        </div>
+        <div className="min-w-[200px] text-center max-w-[200px] px-4 text-lg font-semibold">
+          {item.score}
+        </div>
+        <div className="min-w-[200px] text-center max-w-[200px] px-4 text-lg font-semibold">
+          {item.chapRead}
+        </div>
+      </div>
     </div>
   )
 }
+
+export default memo(StatusItem)

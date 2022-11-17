@@ -56,6 +56,7 @@ export const updatePost = `${hostServer}/api/post/updatePost`
 export const deletePost = `${hostServer}/api/post/deletePost`
 export const sharePost = `${hostServer}/api/post/sharePost`
 export const unsharePost = `${hostServer}/api/post/unsharePost`
+export const topRatedPost = `${hostServer}/api/post/topRatedPost`
 
 // MANGA
 export const addManga = `${hostServer}/api/manga/addManga`

@@ -2,11 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import { PreviewPost } from './PreviewPost'
 import { motion } from 'framer-motion'
 
-interface Props {}
+interface Props {
+  topRatedPosts: any
+}
 
-export const RatedPosts = (props: Props) => {
+export const RatedPosts = ({ topRatedPosts }: Props) => {
   const [previewPostCarouselWidth, setPreviewPostCarouselWidth] = useState(0)
   const [onDragPreviewPost, setOnDragPreviewPost] = useState(0)
+  const [click, setClick] = useState<any>()
+
   // CAROUSEL FRAMER MOTION
   const previewPostCarousel =
     useRef() as React.MutableRefObject<HTMLInputElement>
@@ -18,14 +22,16 @@ export const RatedPosts = (props: Props) => {
       )
   }, [onDragPreviewPost])
 
+   
+
   return (
     <section>
-      <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
-        Top rated posts
+      <h2 className="text-2xl flex items-center gap-x-2 pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
+        Top rated posts <div className='text-base font-medium mt-1'>(last 24h)</div> 
       </h2>
       <div className="w-full">
         <motion.div
-          // whileTap={{ cursor: 'grabbing' }}
+          whileTap={{ cursor: 'grabbing' }}
           drag="x"
           ref={previewPostCarousel}
           onDrag={(_event, info) => setOnDragPreviewPost(info.offset.x)}
@@ -35,12 +41,9 @@ export const RatedPosts = (props: Props) => {
           }}
           className="flex items-center gap-x-5"
         >
-          <PreviewPost />
-          <PreviewPost />
-          <PreviewPost />
-          <PreviewPost />
-          <PreviewPost />
-          <PreviewPost />
+          {topRatedPosts.map((post: any) => (
+            <PreviewPost postId={post._id}  />
+          ))}
         </motion.div>
       </div>
     </section>
