@@ -26,6 +26,7 @@ const accountSchema = new mongoose.Schema({
     status: String,
     chapRead: String,
     score: Number,
+    date: Date,
   },
   favorites: [{ type: Schema.Types.ObjectId, ref: 'Manga' }],
 })

@@ -19,6 +19,7 @@ import {
   sharedPostByPagination,
   sharedPosts,
   updateComment,
+  updatesMangaList,
 } from '../controllers/accountController'
 
 const router = express.Router()
@@ -42,5 +43,6 @@ router.post('/addMangaToFavorites', addMangaToFavorites)
 router.post('/removeMangaToFavorites', removeMangaToFavorites)
 router.get('/mangaFavorites/:accountId', mangaFavorites)
 router.get('/mangaListedByAccountId/:accountId', mangaListedByAccountId)
+router.get('/updatesMangaList/:accountId', updatesMangaList)
 
 export { router }

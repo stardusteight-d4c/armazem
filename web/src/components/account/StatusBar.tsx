@@ -158,7 +158,7 @@ export const StatusBar = ({}: Props) => {
           />
         </div>
       </div>
-      {userMetadata?._id !== currentUser?._id && (
+      {/* {userMetadata?._id !== currentUser?._id && (
         <>
           {items.length > 0 && (
             <div className="px-4 bg-dusk-weak/10 py-1 mt-4 flex justify-between items-center font-semibold  border-y border-y-dawn-weak/20 dark:border-y-dusk-weak/20 ">
@@ -188,7 +188,7 @@ export const StatusBar = ({}: Props) => {
             ))}
           </div>
         </>
-      )}
+      )} */}
     </section>
   )
 }

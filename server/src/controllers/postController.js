@@ -479,3 +479,27 @@ export const topRatedPost = async (req, res, next) => {
     })
   }
 }
+
+export const recentPostsWithPagination = async (req, res, next) => {
+  try {
+    const page = req.params.page
+    const skip = (page - 1) * 4
+
+    const posts =
+      page < 50
+        ? await Post.find({}).skip(skip).limit(4).sort('-createdAt')
+        : []
+
+    return res.status(200).json({ status: true, posts })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: false,
+      msg: 'An error occurred while querying recent posts',
+    })
+  }
+}
+
+
+
+

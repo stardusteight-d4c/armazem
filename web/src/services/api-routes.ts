@@ -38,6 +38,7 @@ export const addMangaToFavorites = `${hostServer}/api/account/addMangaToFavorite
 export const removeMangaToFavorites = `${hostServer}/api/account/removeMangaToFavorites` 
 export const mangaFavorites = `${hostServer}/api/account/mangaFavorites` // /:accountId
 export const mangaListedByAccountId = `${hostServer}/api/account/mangaListedByAccountId` // /:accountId
+export const updatesMangaList = `${hostServer}/api/account/updatesMangaList` // /:accountId
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`
@@ -57,6 +58,7 @@ export const deletePost = `${hostServer}/api/post/deletePost`
 export const sharePost = `${hostServer}/api/post/sharePost`
 export const unsharePost = `${hostServer}/api/post/unsharePost`
 export const topRatedPost = `${hostServer}/api/post/topRatedPost`
+export const recentPostsWithPagination = `${hostServer}/api/post/recentPostsWithPagination` // /:page
 
 // MANGA
 export const addManga = `${hostServer}/api/manga/addManga`

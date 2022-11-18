@@ -233,6 +233,7 @@ export const Manga = (props: Props) => {
         const listData = {
           mangaUid: manga!.uid,
           status,
+          date: new Date()
         }
         setListInfos({})
         const { data } = await axios.post(addMangaToListed, {
@@ -247,6 +248,7 @@ export const Manga = (props: Props) => {
           mangaUid: manga!.uid,
           ...listInfos,
           status,
+          date: new Date()
         }
         const { data } = await axios.post(addMangaToListed, {
           accountId: currentAccount._id,

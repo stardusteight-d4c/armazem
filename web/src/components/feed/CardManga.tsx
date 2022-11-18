@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 interface Props {
   className?: string
@@ -49,12 +50,13 @@ export const CardManga = ({ className, manga }: Props) => {
   })
 
   return (
-    <div
+    <motion.div
+      whileTap={{ cursor: 'grabbing' }}
       onClick={() => {
         click && navigate(`/manga/${manga.uid}`)
         setClick(false)
       }}
-      className="hover:bg-fill-strong hover:drop-shadow-xl dark:hover:bg-fill-weak cursor-pointer relative transition-all ease-in-out duration-200 border-b-[4px] border-b-transparent hover:border-b-fill-strong dark:hover:border-b-fill-weak hover:scale-105 hover:brightness-110"
+      className="hover:bg-fill-strong  border border-dawn-weak/20 dark:border-dusk-weak/20 hover:shadow-xl dark:shadow-white/10 shadow-black/10 dark:hover:bg-dawn-weak/20 relative transition-all ease-in-out duration-200 border-b-[4px] hover:border-fill-strong dark:hover:border-fill-weak hover:scale-105 hover:brightness-110"
     >
       <div className="absolute bottom-0 left-0 z-10 bg-fill-weak dark:bg-fill-strong text-base gap-x-2 flex items-center px-2 py-1 font-semibold">
         <i className="ri-star-half-line" />
@@ -64,8 +66,8 @@ export const CardManga = ({ className, manga }: Props) => {
         src={manga.cover}
         alt=""
         draggable="false"
-        className={`object-fill min-w-[215px] h-[325px] !pointer-events-none ${className}`}
+        className={`object-fill min-w-[215px] h-[325px] ${className}`}
       />
-    </div>
+    </motion.div>
   )
 }

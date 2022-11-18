@@ -3,7 +3,6 @@ import {
   Hero,
   Navbar,
   PopularReadings,
-  RatedMangas,
   RatedPosts,
   Sidebar,
 } from '../components'
@@ -11,6 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useAppSelector } from '../store/hooks'
 import axios from 'axios'
 import { topRatedPost } from '../services/api-routes'
+import { RecentPosts } from '../components/feed/RecentPosts'
 
 interface Props {}
 
@@ -25,8 +25,6 @@ export const Feed = (props: Props) => {
       const { data } = await axios.get(topRatedPost)
       if (data.status === true) {
         setTopRatedPosts(data.posts)
-        console.log('feed', data.posts);
-        
       }
     })()
   }, [])
@@ -48,7 +46,7 @@ export const Feed = (props: Props) => {
           <Hero />
           <RatedPosts topRatedPosts={topRatedPosts} />
           <PopularReadings />
-          <RatedMangas />
+          <RecentPosts />
         </main>
       </div>
     </div>

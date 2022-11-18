@@ -1,114 +1,36 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { updatesMangaList } from '../../services/api-routes'
+import { useAppSelector } from '../../store/hooks'
+import { LastUpdate } from './LastUpdate'
+
 
 interface Props {}
 
 export const LastUpdates = (props: Props) => {
+  const [lastUpdates, setLastUpdates] = useState([])
+  const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
+
+  useEffect(() => {
+    ;(async () => {
+      const { data } = await axios.get(
+        `${updatesMangaList}/${userMetadata?.account}`
+      )
+      if (data.status === true) {
+        setLastUpdates(data.updates)
+      }
+    })()
+  }, [])
+
   return (
     <section>
       <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
         Last updates
       </h2>
       <div className="flex flex-col gap-y-5">
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
-          <img
-            src="https://avatars.githubusercontent.com/u/87643260?v=4"
-            alt=""
-            className="w-12 h-12 object-cover"
-          />
-          <div className="flex flex-col w-[500px] ">
-            <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
-              Gabriel Sena
-            </span>
-            <span className="text-dusk-weak  -mt-1">
-              Reading 491 of Dragon Ball
-            </span>
-          </div>
-          <div className="flex w-full self-center justify-end">
-            <span className="w-fit text-lg h-fit font-semibold">
-              11 hours ago
-            </span>
-          </div>
-        </div>
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
-          <img
-            src="https://avatars.githubusercontent.com/u/87643260?v=4"
-            alt=""
-            className="w-12 h-12 object-cover"
-          />
-          <div className="flex flex-col w-[500px] ">
-            <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
-              Gabriel Sena
-            </span>
-            <span className="text-dusk-weak  -mt-1">
-              Reading 491 of Dragon Ball
-            </span>
-          </div>
-          <div className="flex w-full self-center justify-end">
-            <span className="w-fit text-lg h-fit font-semibold">
-              11 hours ago
-            </span>
-          </div>
-        </div>
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
-          <img
-            src="https://avatars.githubusercontent.com/u/87643260?v=4"
-            alt=""
-            className="w-12 h-12 object-cover"
-          />
-          <div className="flex flex-col w-[500px] ">
-            <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
-              Gabriel Sena
-            </span>
-            <span className="text-dusk-weak  -mt-1">
-              Reading 491 of Dragon Ball
-            </span>
-          </div>
-          <div className="flex w-full self-center justify-end">
-            <span className="w-fit text-lg h-fit font-semibold">
-              11 hours ago
-            </span>
-          </div>
-        </div>
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
-          <img
-            src="https://avatars.githubusercontent.com/u/87643260?v=4"
-            alt=""
-            className="w-12 h-12 object-cover"
-          />
-          <div className="flex flex-col w-[500px] ">
-            <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
-              Gabriel Sena
-            </span>
-            <span className="text-dusk-weak  -mt-1">
-              Reading 491 of Dragon Ball
-            </span>
-          </div>
-          <div className="flex w-full self-center justify-end">
-            <span className="w-fit text-lg h-fit font-semibold">
-              11 hours ago
-            </span>
-          </div>
-        </div>
-        <div className="flex p-2 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong items-start gap-3">
-          <img
-            src="https://avatars.githubusercontent.com/u/87643260?v=4"
-            alt=""
-            className="w-12 h-12 object-cover"
-          />
-          <div className="flex flex-col w-[500px] ">
-            <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
-              Gabriel Sena
-            </span>
-            <span className="text-dusk-weak  -mt-1">
-              Reading 491 of Dragon Ball
-            </span>
-          </div>
-          <div className="flex w-full self-center justify-end">
-            <span className="w-fit text-lg h-fit font-semibold">
-              11 hours ago
-            </span>
-          </div>
-        </div>
+        {lastUpdates.map((update) => (
+          <LastUpdate lastUpdate={update} />
+        ))}
       </div>
     </section>
   )

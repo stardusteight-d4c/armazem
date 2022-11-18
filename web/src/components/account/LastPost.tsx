@@ -66,7 +66,7 @@ export const LastPost = ({
   const isSharedPosts = currentAccount && sharedPosts?.includes(post?._id)
 
   return (
-    <article className="cursor-default hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200 w-full h-fit p-4">
+    <article className="cursor-default border border-dawn-weak/20 dark:border-dusk-weak/20 hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200 w-full h-fit p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img

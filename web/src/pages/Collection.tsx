@@ -100,10 +100,6 @@ export const Collection = (props: Props) => {
     setPage(1)
   }
 
-  // Fazer infinite scroll, -> scrollbar chega no limite da página, gera um novo token de paginação 1 -> 2,
-  // função no useEffect com o token como dependência -> fazer nova requisição -> pegar novos dados e icrementar no array
-  // array.length <= 150 -> e atinge limite
-
   return (
     <div
       className={`${style.gridContainer} ${

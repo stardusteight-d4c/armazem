@@ -452,3 +452,22 @@ export const mangaListedByAccountId = async (req, res, next) => {
     })
   }
 }
+
+export const updatesMangaList = async (req, res, next) => {
+  try {
+    const accountId = req.params.accountId
+    const activities = await Account.find({ _id: accountId }).select(
+      'mangaList -_id'
+    ).limit(10)
+
+    const updates = activities[0].mangaList.reverse()
+
+    return res.status(200).json({ status: true, updates })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: true,
+      msg: 'Error',
+    })
+  }
+}

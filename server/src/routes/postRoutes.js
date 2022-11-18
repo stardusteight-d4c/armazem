@@ -9,6 +9,7 @@ import {
   discussionsByPostId,
   likePost,
   postMetadataById,
+  recentPostsWithPagination,
   repliesOfDiscussion,
   sharePost,
   topRatedPost,
@@ -38,5 +39,6 @@ router.post('/deletePost', deletePost)
 router.post('/sharePost', sharePost)
 router.post('/unsharePost', unsharePost)
 router.get('/topRatedPost', topRatedPost)
+router.get('/recentPostsWithPagination/:page', recentPostsWithPagination)
 
 export { router }

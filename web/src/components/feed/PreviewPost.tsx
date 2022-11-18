@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
@@ -51,7 +52,7 @@ export const PreviewPost = ({ postId }: Props) => {
         if (data.status === true) {
           setPost(data.post)
           setAuthorUser(data.authorUser)
-            setLoading(false)
+          setLoading(false)
         }
       })()
     }
@@ -80,14 +81,17 @@ export const PreviewPost = ({ postId }: Props) => {
   return (
     <>
       {!loading ? (
-        <article className="max-w-[450px] min-w-[450px] max-h-[269px] min-h-[269px] flex flex-col justify-between cursor-default hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200 w-full h-fit p-4">
+        <motion.article
+          whileTap={{ cursor: 'grabbing' }}
+          className="max-w-[450px] border border-dawn-weak/20 dark:border-dusk-weak/20 min-w-[450px] max-h-[269px] min-h-[269px] flex flex-col justify-between hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200 w-full h-fit p-4"
+        >
           <div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <img
                   src={authorUser?.user_img}
                   alt=""
-                  className="w-12 h-12 object-cover"
+                  className="w-12 h-12 rounded-md object-cover"
                 />
                 <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
                   {authorUser?.name}
@@ -97,7 +101,7 @@ export const PreviewPost = ({ postId }: Props) => {
             </div>
             <div
               onClick={() => click && navigate(`/post/${post._id}`)}
-              className="cursor-pointer"
+              className=""
             >
               <h2 className="font-semibold line-clamp-1 text-xl my-1 inline-block text-dusk-main dark:text-dawn-main">
                 {post.title}
@@ -111,7 +115,7 @@ export const PreviewPost = ({ postId }: Props) => {
               <div className="flex items-center gap-x-5">
                 <div
                   // onClick={handleLikePost}
-                  className="flex w-[84px] items-center cursor-pointer"
+                  className="flex w-[84px] items-center "
                 >
                   <i
                     className={`${
@@ -125,7 +129,7 @@ export const PreviewPost = ({ postId }: Props) => {
                     {post.likes.length <= 1 ? 'Like' : 'Likes'}
                   </span>
                 </div>
-                <div className="flex items-center cursor-pointer">
+                <div className="flex items-center ">
                   <i className="ri-discuss-line pr-1 text-xl" />
                   <span className="text-lg">
                     {post.discussions.length}{' '}
@@ -136,23 +140,23 @@ export const PreviewPost = ({ postId }: Props) => {
                 </div>
               </div>
               {currentUser?._id !== authorUser?._id && (
-            <>
-              {isSharedPosts ? (
-                <div className="text-orange flex items-center cursor-pointer">
-                  <i className="ri-share-box-line pr-1 text-xl" />
-                  <span className="text-lg">Shared</span>
-                </div>
-              ) : (
-                <div className="flex items-center cursor-pointer">
-                  <i className="ri-share-box-line pr-1 text-xl" />
-                  <span className="text-lg">Share</span>
-                </div>
+                <>
+                  {isSharedPosts ? (
+                    <div className="text-orange flex items-center ">
+                      <i className="ri-share-box-line pr-1 text-xl" />
+                      <span className="text-lg">Shared</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center ">
+                      <i className="ri-share-box-line pr-1 text-xl" />
+                      <span className="text-lg">Share</span>
+                    </div>
+                  )}
+                </>
               )}
-            </>
-          )}
             </div>
           </div>
-        </article>
+        </motion.article>
       ) : (
         <div className="w-full h-screen -mt-28 flex items-center justify-center">
           <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />

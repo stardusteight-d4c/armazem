@@ -34,7 +34,7 @@ export const PopularReadings = (props: Props) => {
         Most read mangas
       </h2>
       <motion.div
-        // whileTap={{ cursor: 'grabbing' }}
+        whileTap={{ cursor: 'grabbing' }}
         drag="x"
         ref={cardCarousel}
         onDrag={(_event, info) => setOnDrag(info.offset.x)}
@@ -43,7 +43,6 @@ export const PopularReadings = (props: Props) => {
       >
         {mangas.map((manga) => (
           <CardManga manga={manga} />
-
         ))}
       </motion.div>
     </section>

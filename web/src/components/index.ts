@@ -5,7 +5,6 @@ export { Hero } from './feed/Hero'
 export { PreviewPost } from './feed/PreviewPost'
 export { CardManga } from './feed/CardManga'
 export { TopManga } from './feed/TopManga'
-export { RatedMangas } from './feed/RatedMangas'
 export { RatedPosts } from './feed/RatedPosts'
 export { PopularReadings } from './feed/PopularReadings'
 
