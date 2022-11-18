@@ -40,7 +40,7 @@ export const ReviewModal = (props: Props) => {
           initial={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
           animate={{ opacity: 1 }}
-          className="fixed z-40 inset-0 w-screen h-screen bg-fill-strong/30"
+          className="fixed z-40 inset-0 w-screen h-screen dark:bg-fill-weak/10 bg-fill-strong/10"
         />
         <motion.section
           initial={{

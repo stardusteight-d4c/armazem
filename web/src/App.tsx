@@ -29,6 +29,7 @@ import { Loader } from './components/Loader'
 import {
   AddReviewModal,
   AllPostsModal,
+  ChatModal,
   EditCoverImageModal,
   EditProfileImageModal,
   PostInputModal,
@@ -136,6 +137,8 @@ export const App = (props: Props) => {
         return <AddReviewModal />
       case 'Review':
         return <ReviewModal />
+      case 'Chat':
+        return <ChatModal />
     }
   }
 
@@ -154,9 +157,13 @@ export const App = (props: Props) => {
       : (html.style.overflow = 'auto')
   }
 
+  // não permitir espaços no username
+
   // Deixar o componente da página com o loader, só settar para falso quando seus filhos carregarem
   // Assim toda informação aparece de uma vez, o menu permanece e o usúario não verá os componentes
   // filhos carregando. (mandar o um state pros filhos, sei lá)
+
+  // todas consultar com post fazer com get utilizando query params
 
   return (
     <>

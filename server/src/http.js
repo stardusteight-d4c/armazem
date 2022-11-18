@@ -7,6 +7,7 @@ import { router as userRoutes } from './routes/userRoutes'
 import { router as accountRoutes } from './routes/accountRoutes'
 import { router as postRoutes } from './routes/postRoutes'
 import { router as mangaRoutes } from './routes/mangaRoutes'
+import { router as messageRoutes } from './routes/messageRoutes'
 import { Server } from 'socket.io'
 import http from 'http'
 
@@ -39,6 +40,7 @@ app.use('/api/user', userRoutes)
 app.use('/api/account', accountRoutes)
 app.use('/api/post', postRoutes)
 app.use('/api/manga', mangaRoutes)
+app.use('/api/message', messageRoutes)
 
 // CONNECTING WITH DATABASE
 mongoose

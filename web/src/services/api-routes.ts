@@ -74,3 +74,8 @@ export const reviewsByPagination = `${hostServer}/api/manga/reviewsByPagination`
 export const review = `${hostServer}/api/manga/review` // /:id
 export const randomMangasByGenre = `${hostServer}/api/manga/randomMangasByGenre` // /:genre
 export const mostRead = `${hostServer}/api/manga/mostRead` 
+
+// MESSAGE
+export const addMessage = `${hostServer}/api/message/addMessage`
+export const allMessages = `${hostServer}/api/message/allMessages` // ?to=userId&from=userId
+export const lastMessage = `${hostServer}/api/message/lastMessage`

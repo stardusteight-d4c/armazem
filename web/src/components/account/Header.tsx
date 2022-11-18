@@ -295,6 +295,7 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
               </>
             )}
           </div>
+          {/* As salas serão criadas juntando o id do usúario corrente + usúario */}
           <div className="flex items-center gap-x-2 text-lg">
             <>
               @{userMetadata?.username}{' '}

@@ -46,7 +46,10 @@ export const Navbar = (props: Props) => {
           className="ri-article-line text-3xl p-2 cursor-pointer"
           onClick={() => dispatch(handleOpenModal('PostInput'))}
         />
-        <i className="ri-question-answer-line text-3xl p-2 cursor-pointer" />
+        <i
+          onClick={() => dispatch(handleOpenModal('Chat'))}
+          className="ri-question-answer-line text-3xl p-2 cursor-pointer"
+        />
         <i className="ri-notification-2-line text-3xl p-2 cursor-pointer" />
         <i className="ri-settings-2-line text-3xl p-2 cursor-pointer" />
         <Dropdown title="Account" space="space-y-14" items={accountItems}>
