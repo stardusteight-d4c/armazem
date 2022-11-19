@@ -9,6 +9,7 @@ import {
   lastFivePostsOfAccount,
   mangaFavorites,
   mangaListedByAccountId,
+  notifications,
   postByPagination,
   rejectConnection,
   removeConnection,
@@ -44,5 +45,6 @@ router.post('/removeMangaToFavorites', removeMangaToFavorites)
 router.get('/mangaFavorites/:accountId', mangaFavorites)
 router.get('/mangaListedByAccountId/:accountId', mangaListedByAccountId)
 router.get('/updatesMangaList/:accountId', updatesMangaList)
+router.get('/notifications/:accountId', notifications)
 
 export { router }

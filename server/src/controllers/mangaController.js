@@ -1,6 +1,7 @@
 import Manga from '../models/mangaModel.js'
 import Account from '../models/accountModel.js'
 import Review from '../models/reviewModel.js'
+import Notification from '../models/notificationModel.js'
 import ShortUniqueId from 'short-unique-id'
 
 export const addManga = async (req, res, next) => {
@@ -21,6 +22,11 @@ export const addManga = async (req, res, next) => {
         uid: mangaId,
         ...data,
       })
+      const general = {
+        message: 'has been added to the database',
+        infos: [data.title, data.uid],
+      }
+      await Notification.create({ ...general })
     }
 
     return res
@@ -296,7 +302,9 @@ export const randomMangasByGenre = async (req, res, next) => {
   try {
     const genre = req.params.genre
 
-    const mangas = await Manga.find({ genres: genre }).select('uid cover score -_id').limit(10)
+    const mangas = await Manga.find({ genres: genre })
+      .select('uid cover score -_id')
+      .limit(10)
 
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {

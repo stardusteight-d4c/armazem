@@ -39,6 +39,7 @@ export const removeMangaToFavorites = `${hostServer}/api/account/removeMangaToFa
 export const mangaFavorites = `${hostServer}/api/account/mangaFavorites` // /:accountId
 export const mangaListedByAccountId = `${hostServer}/api/account/mangaListedByAccountId` // /:accountId
 export const updatesMangaList = `${hostServer}/api/account/updatesMangaList` // /:accountId
+export const notifications = `${hostServer}/api/account/notifications` // /:accountId
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`

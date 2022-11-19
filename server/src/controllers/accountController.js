@@ -2,6 +2,7 @@ import Account from '../models/accountModel.js'
 import User from '../models/userModel.js'
 import Post from '../models/postModel.js'
 import Comment from '../models/commentModel.js'
+import Notification from '../models/notificationModel.js'
 import Manga from '../models/mangaModel.js'
 import ShortUniqueId from 'short-unique-id'
 const uid = new ShortUniqueId({ length: 10 })
@@ -27,6 +28,13 @@ export const sendRequest = async (req, res, next) => {
       _id: toAccountRef.account,
       requestsReceived: from,
     })
+
+    // const direct = {
+    //   message: 'has been added to the database',
+    //   infos: [data.title, data.uid],
+    // }
+
+    // await Notification.create({...general})
 
     if (
       requestAlreadyReceived?.requestsReceived?.length === 0 ||
@@ -456,9 +464,9 @@ export const mangaListedByAccountId = async (req, res, next) => {
 export const updatesMangaList = async (req, res, next) => {
   try {
     const accountId = req.params.accountId
-    const activities = await Account.find({ _id: accountId }).select(
-      'mangaList -_id'
-    ).limit(10)
+    const activities = await Account.find({ _id: accountId })
+      .select('mangaList -_id')
+      .limit(10)
 
     const updates = activities[0].mangaList.reverse()
 
@@ -466,7 +474,30 @@ export const updatesMangaList = async (req, res, next) => {
   } catch (error) {
     next(error)
     return res.status(500).json({
-      status: true,
+      status: false,
+      msg: 'Error',
+    })
+  }
+}
+
+export const notifications = async (req, res, next) => {
+  try {
+    const accountId = req.params.accountId
+
+    const general = await Notification.find({})
+    const direct = await Notification.find({ account: accountId })
+
+    const mergeArr = [...general, ...direct]
+
+    const notifications = mergeArr.sort((current, next) => {
+      return new Date(next.createdAt) - new Date(current.createdAt)
+    })
+
+    return res.status(200).json({ status: true, notifications })
+  } catch (error) {
+    next(error)
+    return res.status(500).json({
+      status: false,
       msg: 'Error',
     })
   }
