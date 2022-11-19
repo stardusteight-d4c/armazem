@@ -12,6 +12,7 @@ import {
   PageNotFound,
   Post,
   MyList,
+  Settings,
 } from './pages'
 import { PrivateRouteAddManga } from './services/PrivateRoutes'
 import { activeUser, authorization } from './services/api-routes'
@@ -178,6 +179,7 @@ export const App = (props: Props) => {
         <Route path="/collection" element={<Collection />} />
         <Route path="/manga/:id" element={<Manga />} />
         <Route path="/MyList" element={<MyList />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/addManga" element={<PrivateRouteAddManga />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

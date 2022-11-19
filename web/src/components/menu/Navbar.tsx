@@ -56,12 +56,6 @@ export const Navbar = (props: Props) => {
     },
   ]
 
-  const configItem = [
-    {
-      item: 'Settings',
-    },
-  ]
-
   return (
     <nav className="bg-fill-weak dark:bg-fill-strong z-50 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between p-8 w-full flex items-center h-24">
       <Search />
@@ -135,9 +129,7 @@ export const Navbar = (props: Props) => {
           )}
         </div>
 
-        <Dropdown items={configItem} space='space-y-10 mt-[3px]' title="Settings">
-          <i className="ri-settings-2-line text-3xl  p-2 cursor-pointer" />
-        </Dropdown>
+          <i title='Settings' onClick={() => navigate('/settings')} className="ri-settings-2-line text-3xl  p-2 cursor-pointer transition duration-1000 transform hover:rotate-[360deg]" />
 
         <Dropdown title="Account" space="space-y-14" items={accountItems}>
           <img
