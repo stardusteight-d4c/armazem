@@ -14,7 +14,7 @@ export const Messages = ({ message, currentChat }: Props) => {
       {message.fromSelf ? (
         <div className="flex justify-end">
           <div>
-            <div className="">@{currentUser?.username}</div>
+            <div className="text-right">@{currentUser?.username}</div>
             <div className="bg-dawn-weak/20 dark:bg-dusk-weak/20 ml-auto  p-2 w-fit h-fi rounded-sm my-2">
               {message.message}
             </div>

@@ -3,6 +3,7 @@ import mongoose, { Schema } from 'mongoose'
 const notificationSchema = new mongoose.Schema(
   {
     account: { type: Schema.Types.ObjectId, ref: 'Account' },
+    type: String,
     message: String,
     infos: Array,
     expireAt: { type: Date, expires: 604800 },

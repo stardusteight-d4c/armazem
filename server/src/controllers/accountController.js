@@ -21,32 +21,33 @@ export const accountDataByUserId = async (req, res, next) => {
 export const sendRequest = async (req, res, next) => {
   const { to, from } = req.body
   try {
-    const toAccountRef = await User.findById(to).select('account')
-    const fromAccountRef = await User.findById(from).select('account')
+    const toUserRef = await User.findById(to)
+    const fromUserRef = await User.findById(from)
 
     const requestAlreadyReceived = await Account.find({
-      _id: toAccountRef.account,
+      _id: toUserRef.account,
       requestsReceived: from,
     })
 
-    // const direct = {
-    //   message: 'has been added to the database',
-    //   infos: [data.title, data.uid],
-    // }
-
-    // await Notification.create({...general})
+    const direct = {
+      account: toUserRef.account,
+      type: 'direct',
+      message: 'sent you a connection request',
+      infos: [fromUserRef.username],
+    }
+    await Notification.create({ ...direct })
 
     if (
       requestAlreadyReceived?.requestsReceived?.length === 0 ||
       requestAlreadyReceived?.requestsReceived === undefined
     ) {
       await Account.findByIdAndUpdate(
-        fromAccountRef.account,
+        fromUserRef.account,
         { $push: { requestsSent: { to } } },
         { safe: true, upsert: true }
       )
       await Account.findByIdAndUpdate(
-        toAccountRef.account,
+        toUserRef.account,
         { $push: { requestsReceived: { from } } },
         { safe: true, upsert: true }
       )
@@ -67,27 +68,34 @@ export const sendRequest = async (req, res, next) => {
 export const addConnection = async (req, res, next) => {
   const { to, from } = req.body
   try {
-    const toAccountRef = await User.findById(to).select('account')
-    const fromAccountRef = await User.findById(from).select('account')
+    const toUserRef = await User.findById(to)
+    const fromUserRef = await User.findById(from)
 
     // Link connection
-    await Account.findByIdAndUpdate(toAccountRef.account, {
+    await Account.findByIdAndUpdate(toUserRef.account, {
       connections: { with: from },
     })
-    await Account.findByIdAndUpdate(fromAccountRef.account, {
+    await Account.findByIdAndUpdate(fromUserRef.account, {
       connections: { with: to },
     })
+    const direct = {
+      account: toUserRef.account,
+      type: 'direct',
+      message: 'accepted your request',
+      infos: [fromUserRef.username],
+    }
+    await Notification.create({ ...direct })
 
     // Delete request
     await Account.findByIdAndUpdate(
-      fromAccountRef.account,
+      fromUserRef.account,
       {
         $pull: { requestsReceived: { from: to } },
       },
       { safe: true, multi: false }
     )
     await Account.findByIdAndUpdate(
-      toAccountRef.account,
+      toUserRef.account,
       {
         $pull: { requestsSent: { to: from } },
       },
@@ -484,7 +492,7 @@ export const notifications = async (req, res, next) => {
   try {
     const accountId = req.params.accountId
 
-    const general = await Notification.find({})
+    const general = await Notification.find({ type: 'general' })
     const direct = await Notification.find({ account: accountId })
 
     const mergeArr = [...general, ...direct]

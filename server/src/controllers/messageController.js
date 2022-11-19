@@ -27,7 +27,6 @@ export const allMessages = async (req, res, next) => {
       },
     }).sort({ updatedAt: 1 })
     const projectMessages = messages.map((msg) => {
-      console.log(msg);
       return {
         fromSelf: msg.sender.toString() === from,
         message: msg.message.text,

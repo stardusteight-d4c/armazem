@@ -17,21 +17,24 @@ export const addManga = async (req, res, next) => {
         { $set: { ...data } },
         { safe: true, upsert: true }
       )
+      return res
+        .status(200)
+        .json({ status: true, msg: 'The changes have been saved' })
     } else {
       await Manga.create({
         uid: mangaId,
         ...data,
       })
       const general = {
+        type: 'general',
         message: 'has been added to the database',
-        infos: [data.title, data.uid],
+        infos: [data.title, mangaId],
       }
       await Notification.create({ ...general })
+      return res
+        .status(200)
+        .json({ status: true, msg: 'New manga added to the database' })
     }
-
-    return res
-      .status(200)
-      .json({ status: true, msg: 'New manga added to the database' })
   } catch (error) {
     next(error)
     return res.status(500).json({

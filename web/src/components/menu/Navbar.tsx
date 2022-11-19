@@ -30,6 +30,8 @@ export const Navbar = (props: Props) => {
     navigate('/login')
   }
 
+  console.log(userNotifications)
+
   useEffect(() => {
     if (currentAccount._id) {
       ;(async () => {
@@ -51,6 +53,12 @@ export const Navbar = (props: Props) => {
     {
       item: 'Logout',
       function: () => handleLogout(),
+    },
+  ]
+
+  const configItem = [
+    {
+      item: 'Settings',
     },
   ]
 
@@ -76,37 +84,61 @@ export const Navbar = (props: Props) => {
           {showNotification && (
             <div className="absolute shadow-md flex flex-col overflow-x-hidden overflow-y-scroll w-[300px] h-[400px] bg-fill-weak dark:bg-fill-strong z-50 border border-dawn-weak/20 dark:border-dusk-weak/20">
               {userNotifications.map((item: any) => (
-                <div className="text-center font-medium py-1 px-2 border-b border-dawn-weak/20 dark:border-dusk-weak/20">
-                  <span className="block text-sm text-dusk-weak">
-                    {item.createdAt}
-                  </span>
-                  <div>
-                    <Link
-                      to={`/manga/${item.infos[1]}`}
-                      className="hover:underline text-prime-blue cursor-pointer"
-                    >
-                      {item.infos[0]}
-                    </Link>{' '}
-                    {item.message}
-                  </div>
-                </div>
+                <>
+                  {(item.type === 'general' && (
+                    <div className="text-center font-medium py-1 px-2 border-b border-dawn-weak/20 dark:border-dusk-weak/20">
+                      <span className="block text-sm text-dusk-weak">
+                        {new Date(item.createdAt).getFullYear()}/
+                        {new Date(item.createdAt).getMonth() + 1}/
+                        {new Date(item.createdAt).getDate()} •{' '}
+                        {new Date(item.createdAt).getHours()}:
+                        {new Date(item.createdAt).getMinutes() <= 9
+                          ? '0' + new Date(item.createdAt).getMinutes()
+                          : new Date(item.createdAt).getMinutes()}
+                      </span>
+                      <div>
+                        <Link
+                          to={`/manga/${item.infos[1]}`}
+                          className="hover:underline text-prime-blue cursor-pointer"
+                        >
+                          {item.infos[0]}
+                        </Link>{' '}
+                        {item.message}
+                      </div>
+                    </div>
+                  )) ||
+                    (item.type === 'direct' && (
+                      <div className="text-center font-medium py-1 px-2 border-b border-dawn-weak/20 dark:border-dusk-weak/20">
+                        <span className="block text-sm text-dusk-weak">
+                          {new Date(item.createdAt).getFullYear()}/
+                          {new Date(item.createdAt).getMonth() + 1}/
+                          {new Date(item.createdAt).getDate()} •{' '}
+                          {new Date(item.createdAt).getHours()}:
+                          {new Date(item.createdAt).getMinutes() <= 9
+                            ? '0' + new Date(item.createdAt).getMinutes()
+                            : new Date(item.createdAt).getMinutes()}
+                        </span>
+                        <div>
+                          <Link
+                            to={`/${item.infos[0]}`}
+                            className="hover:underline text-prime-blue cursor-pointer"
+                          >
+                            {item.infos[0]}
+                          </Link>{' '}
+                          {item.message}
+                        </div>
+                      </div>
+                    ))}
+                </>
               ))}
-              <div className="text-center font-medium py-1 px-2 border-b border-dawn-weak/20 dark:border-dusk-weak/20">
-                <span className="block text-sm text-dusk-weak">
-                  19/11/22 07:00
-                </span>
-                <div>
-                  <span className="hover:underline text-prime-blue cursor-pointer">
-                    Fulano
-                  </span>{' '}
-                  te mandou um pedido de conexão
-                </div>
-              </div>
             </div>
           )}
         </div>
 
-        <i className="ri-settings-2-line text-3xl p-2 cursor-pointer" />
+        <Dropdown items={configItem} space='space-y-10 mt-[3px]' title="Settings">
+          <i className="ri-settings-2-line text-3xl  p-2 cursor-pointer" />
+        </Dropdown>
+
         <Dropdown title="Account" space="space-y-14" items={accountItems}>
           <img
             referrerPolicy="no-referrer"
