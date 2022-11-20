@@ -1,13 +1,160 @@
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Button, Navbar, Sidebar } from '../components'
+import { validateEmail } from '../components/login/integrate/validate-form'
+import { error, success } from '../components/Toasters'
+import {
+  changeUserEmail,
+  changeUserPassword,
+  sendTokenChangeEmailVerification,
+} from '../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
+import bcryptjs from 'bcryptjs'
 
 interface Props {}
 
 export const Settings = (props: Props) => {
+  const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const [changePassword, setChangePassword] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  })
+  const [changeEmail, setChangeEmail] = useState({
+    newEmail: '',
+    confirmToken: '',
+  })
+  const [changeUsername, setChangeUsername] = useState({
+    newUsername: '',
+  })
+  const [requestToken, setRequestToken] = useState<any>(undefined)
+  const [token, setToken] = useState<any>(undefined)
+  const [backendEmail, setBackendEmail] = useState<any>(undefined)
+  const [isTokenValid, setIsTokenValid] = useState<any>(undefined)
+  const [loading, setLoading] = useState<boolean>(false)
+
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
   )
+
+  // definir loading para sent email to
+
+  function handleToken(event: React.ChangeEvent<HTMLInputElement>) {
+    const newEmailValue = event.target.value
+    const isGmailAddress = newEmailValue.match(/gmail.com/)
+
+    if (validateEmail(newEmailValue) && !currentUser?.password) {
+      if (!isGmailAddress) {
+        newEmailValue.match(/.com/) && error('Email is not a gmail address')
+      } else {
+        success('Email is a gmail address')
+        setRequestToken(false)
+      }
+    } else {
+      setRequestToken(undefined)
+    }
+
+    if (currentUser?.password) {
+      if (validateEmail(newEmailValue)) {
+        setRequestToken(false)
+      } else {
+        setRequestToken(undefined)
+      }
+    }
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      if (token) {
+        setIsTokenValid(bcryptjs.compareSync(changeEmail.confirmToken, token))
+      }
+    })()
+  }, [changeEmail.confirmToken])
+
+  async function handleSubmitChangeEmail() {
+    if (!isTokenValid) {
+      error('Invalid token')
+      return false
+    }
+    if (changeEmail.newEmail !== backendEmail) {
+      error('Do not change the entered email')
+      return false
+    }
+    if (
+      validateEmail(changeEmail.newEmail)) {
+      const { data } = await axios.post(changeUserEmail, {
+        userId: currentUser?._id,
+        newEmail: changeEmail.newEmail,
+      })
+      if (data.status === true) {
+        success(data.msg)
+        setChangeEmail({
+          newEmail: '',
+          confirmToken: '',
+        })
+        setBackendEmail(null)
+        setToken(null)
+        setRequestToken(undefined)
+      }
+    }
+  }
+
+  async function sendToken() {
+    setLoading(true)
+    const { data } = await axios.post(sendTokenChangeEmailVerification, {
+      userId: currentUser?._id,
+      email: changeEmail.newEmail,
+    })
+    if (data.status === true) {
+      success(data.msg)
+      setToken(data.token)
+      setRequestToken(true)
+      setBackendEmail(data.email)
+      setLoading(false)
+    } else if (data.status === false) {
+      error(data.msg)
+      setLoading(false)
+    }
+  }
+
+  async function handleSubmitChangePassword() {
+    if (changePassword.newPassword.length < 8) {
+      error('Password must contain at least 8 characters')
+      return false
+    } else if (changePassword.newPassword !== changePassword.confirmPassword) {
+      error('Passwords do not match')
+      return false
+    }
+    const { data } = await axios.post(changeUserPassword, {
+      userId: currentUser?._id,
+      currentPassword: changePassword.currentPassword,
+      newPassword: changePassword.newPassword,
+    })
+    if (data.status === true) {
+      success(data.msg)
+      setChangePassword({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      })
+    } else if (data.status === false) {
+      error(data.msg)
+    }
+  }
+
+  const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChangePassword({
+      ...changePassword,
+      [event.target.id]: event.target.value,
+    })
+  }
+
+  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChangeEmail({
+      ...changeEmail,
+      [event.target.id]: event.target.value,
+    })
+  }
 
   return (
     <div
@@ -24,7 +171,7 @@ export const Settings = (props: Props) => {
         <Navbar />
         <main>
           <div className="p-4 pb-14">
-            <h2 className="text-2xl flex items-center gap-x-2 pb-1 mb-4 border-b border-dawn-weak/20 dark:border-dusk-weak/20 font-bold">
+            <h2 className="text-2xl flex  items-center gap-x-2 pb-1 mb-4 border-b border-dawn-weak/20 dark:border-dusk-weak/20 font-bold">
               Settings
             </h2>
             <div className="flex w-full items-center justify-between pr-28">
@@ -32,43 +179,88 @@ export const Settings = (props: Props) => {
                 Change password
               </h2>
               <div className="w-[50%] flex flex-col gap-y-5">
-                <div>
-                  <label htmlFor="newPassword" className={style.label}>
-                    New password
-                  </label>
-                  <input
-                    type="text"
-                    id="newPassword"
-                    required
-                    maxLength={50}
-                    placeholder="New password"
-                    className={`${style.input} placeholder:text-sm text-xl`}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="confirmPassword" className={style.label}>
-                    Confirm password
-                  </label>
-                  <input
-                    type="text"
-                    id="confirmPassword"
-                    required
-                    maxLength={50}
-                    placeholder="Confirm password"
-                    className={`${style.input} placeholder:text-sm text-xl`}
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  title="Submit"
-                  className="bg-prime-blue !w-[50%] -mt-2"
-                />
+                {currentUser?.password ? (
+                  <>
+                    <div>
+                      <label htmlFor="currentPassword" className={style.label}>
+                        Current password
+                      </label>
+                      <input
+                        type="password"
+                        id="currentPassword"
+                        onChange={(e) => handleChangePassword(e)}
+                        required
+                        value={changePassword.currentPassword}
+                        maxLength={50}
+                        placeholder="Current password"
+                        className={`${style.input} placeholder:text-sm text-xl`}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="newPassword" className={style.label}>
+                        New password
+                      </label>
+                      <input
+                        type="password"
+                        id="newPassword"
+                        onChange={(e) => handleChangePassword(e)}
+                        required
+                        value={changePassword.newPassword}
+                        maxLength={50}
+                        placeholder="New password"
+                        className={`${style.input} placeholder:text-sm text-xl`}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="confirmPassword" className={style.label}>
+                        Confirm password
+                      </label>
+                      <input
+                        type="password"
+                        id="confirmPassword"
+                        value={changePassword.confirmPassword}
+                        onChange={(e) => handleChangePassword(e)}
+                        required
+                        maxLength={50}
+                        placeholder="Confirm password"
+                        className={`${style.input} placeholder:text-sm text-xl`}
+                      />
+                    </div>
+                    <Button
+                      type="submit"
+                      title="Submit"
+                      onClick={handleSubmitChangePassword}
+                      className="bg-prime-blue !w-[50%] -mt-2"
+                    />
+                  </>
+                ) : (
+                  <span className="text-base my-16 text-dusk-weak">
+                    Your account was created using the{' '}
+                    <a
+                      href="https://cloud.google.com/identity-platform/docs/web/google"
+                      target="_blank"
+                      className="text-prime-blue hover:underline"
+                    >
+                      google provider
+                    </a>
+                    , so you don't have a password defined. Don't worry, even
+                    without a password your account remains protected.
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex w-full items-center justify-between pt-10 pr-28">
-              <h2 className="text-xl flex items-center gap-x-2 pb-1 mb-4 font-bold">
-                Change email
-              </h2>
+              <div className="w-[45%]">
+                <h2 className="text-xl flex items-center gap-x-2  font-bold">
+                  Change email
+                </h2>
+                {!currentUser?.password && (
+                  <span className="text-sm text-dusk-weak">
+                    You authenticated via google provider, so only gmail email
+                    addresses will be allowed.
+                  </span>
+                )}
+              </div>
               <div className="w-[50%] flex flex-col gap-y-5">
                 <div>
                   <label htmlFor="newEmail" className={style.label}>
@@ -78,15 +270,36 @@ export const Settings = (props: Props) => {
                     <input
                       type="text"
                       id="newEmail"
+                      onChange={(e) => {
+                        handleChangeEmail(e)
+                        handleToken(e)
+                      }}
+                      value={changeEmail.newEmail}
                       required
                       maxLength={50}
                       placeholder="New email"
                       className={`${style.input} placeholder:text-sm text-xl`}
                     />
-                    <div className="flex items-center gap-x-1 cursor-pointer">
-                      <i className="ri-checkbox-blank-line text-xl" />
-                      <span className="text-dusk-weak">Request token</span>
-                    </div>
+                    {requestToken && (
+                      <div className="flex font-medium text-white items-center gap-x-1 cursor-pointer">
+                        <Button
+                          title="Token sent"
+                          className="py-1 px-2 mt-2 bg-green rounded-sm"
+                        />
+                      </div>
+                    )}
+                    {requestToken === false && (
+                      <div
+                        onClick={sendToken}
+                        className="flex font-medium text-white items-center gap-x-1 cursor-pointer"
+                      >
+                        <Button
+                          title={`Send token to ${changeEmail.newEmail}`}
+                          loading={loading}
+                          className="py-1 px-2 mt-2 bg-prime-blue rounded-sm"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -95,15 +308,23 @@ export const Settings = (props: Props) => {
                   </label>
                   <input
                     type="text"
-                    id="token"
+                    id="confirmToken"
+                    onChange={(e) => {
+                      handleChangeEmail(e)
+                    }}
+                    value={changeEmail.confirmToken}
                     required
                     maxLength={50}
                     placeholder="Paste token here"
-                    className={`${style.input} placeholder:text-sm text-xl`}
+                    className={`${style.input} ${
+                      (isTokenValid === true && '!ring-green') ||
+                      (isTokenValid === false && '!ring-red')
+                    } placeholder:text-sm text-xl`}
                   />
                 </div>
                 <Button
-                  type="submit"
+                  onClick={handleSubmitChangeEmail}
+                  disabled={!token && !backendEmail}
                   title="Submit"
                   className="bg-prime-blue !w-[50%] -mt-2"
                 />
@@ -161,8 +382,7 @@ export const Settings = (props: Props) => {
                   <strong className="text-red">permanent</strong>. You cannot
                   reactivate a deleted account or recover any account
                   information after requesting a deletion. This includes Armazem
-                  supporter status, anime/manga lists, private messages, and
-                  more.
+                  supporter status, manga lists, private messages, and more.
                 </div>
                 <Button
                   type="submit"

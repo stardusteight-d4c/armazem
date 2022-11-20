@@ -34,6 +34,7 @@ interface User {
   username: string
   user_img: string
   cover_img: string
+  password: string
   lastActivity: string
   role: string
   account: string

@@ -30,8 +30,6 @@ export const Navbar = (props: Props) => {
     navigate('/login')
   }
 
-  console.log(userNotifications)
-
   useEffect(() => {
     if (currentAccount._id) {
       ;(async () => {

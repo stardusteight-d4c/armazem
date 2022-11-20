@@ -17,6 +17,9 @@ export const updateCoverImage = `${hostServer}/api/user/updateCoverImage`
 export const updateProfileImage = `${hostServer}/api/user/updateProfileImage`
 export const searchUsersByQuery = `${hostServer}/api/user/searchUsersByQuery`
 export const activeUser = `${hostServer}/api/user/middleware/activeUser` // /:userId
+export const changeUserPassword = `${hostServer}/api/user/changeUserPassword`
+export const changeUserEmail = `${hostServer}/api/user/changeUserEmail`
+export const sendTokenChangeEmailVerification = `${hostServer}/api/user/sendTokenChangeEmailVerification`
 
 // ACCOUNT
 export const sendRequest = `${hostServer}/api/account/sendRequest`

@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
     require: false,
     min: 8,
   },
+  lastModifiedPassword: {
+    type: Date,
+  },
   user_img: {
     type: String,
     default: 'https://i.ibb.co/2PYJg8D/profile.jpg',

@@ -3,7 +3,7 @@ import Account from '../models/accountModel.js'
 import brcypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import ShortUniqueId from 'short-unique-id'
-import { SendEmailVerification } from '../services/nodemailer.js'
+import { sendEmailVerification } from '../services/nodemailer.js'
 
 export const verifyUsername = async (req, res, next) => {
   try {
@@ -30,7 +30,7 @@ export const emailConfirmation = async (req, res, next) => {
     if (emailCheck) {
       return res.json({ msg: 'Email is already in use', status: false })
     } else {
-      await SendEmailVerification(email, name, token).catch(console.error)
+      await sendEmailVerification(email, name, token).catch(console.error)
       const encryptedToken = await brcypt.hash(token, 10)
       return res.json({
         msg: `Email sent to ${email}`,

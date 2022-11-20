@@ -5,6 +5,8 @@ import Comment from '../models/commentModel.js'
 import Notification from '../models/notificationModel.js'
 import Manga from '../models/mangaModel.js'
 import ShortUniqueId from 'short-unique-id'
+import brcypt from 'bcrypt'
+
 const uid = new ShortUniqueId({ length: 10 })
 
 export const accountDataByUserId = async (req, res, next) => {
@@ -510,3 +512,4 @@ export const notifications = async (req, res, next) => {
     })
   }
 }
+
