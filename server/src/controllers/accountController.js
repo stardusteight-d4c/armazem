@@ -7,12 +7,7 @@ import Manga from '../models/mangaModel.js'
 import Reply from '../models/replyModel.js'
 import Discussion from '../models/discussionModel.js'
 import Review from '../models/reviewModel.js'
-import Message from '../models/messageModel.js'
 import ShortUniqueId from 'short-unique-id'
-import brcypt from 'bcrypt'
-import mongoose from 'mongoose'
-
-const uid = new ShortUniqueId({ length: 10 })
 
 export const accountDataByUserId = async (req, res, next) => {
   try {
@@ -520,7 +515,7 @@ export const notifications = async (req, res, next) => {
 
 export const deleteAccount = async (req, res, next) => {
   try {
-    const { userId, accountId } = req.params
+    const { userId, accountId } = req.query
 
     const posts = await Post.find({ by: userId })
     const postIds = []

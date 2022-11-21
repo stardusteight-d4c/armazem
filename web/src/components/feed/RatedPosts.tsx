@@ -22,14 +22,10 @@ export const RatedPosts = ({ topRatedPosts }: Props) => {
       )
   }, [onDragPreviewPost])
 
-   
-
   return (
     <section>
       <h2 className="text-2xl flex items-center gap-x-2 pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
-        Trending posts 
-        {/* <div className='text-base font-medium mt-1'>(last 24h)</div>  */}
-        {/* se não haver trending posts? */}
+        Trending posts
       </h2>
       <div className="w-full">
         <motion.div
@@ -43,9 +39,17 @@ export const RatedPosts = ({ topRatedPosts }: Props) => {
           }}
           className="flex items-center gap-x-5"
         >
-          {topRatedPosts.map((post: any) => (
-            <PreviewPost postId={post._id}  />
-          ))}
+          {topRatedPosts.length > 0 ? (
+            <>
+              {topRatedPosts.map((post: any) => (
+                <PreviewPost postId={post._id} />
+              ))}
+            </>
+          ) : (
+            <div className="flex w-full items-center justify-center my-8 text-2xl">
+              There are no trending posts yet
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

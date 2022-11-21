@@ -3,6 +3,7 @@ import User from '../models/userModel.js'
 import Post from '../models/postModel.js'
 import Discussion from '../models/discussionModel.js'
 import Reply from '../models/replyModel.js'
+import Notification from '../models/notificationModel.js'
 
 export const createPostAndAddToUserAccount = async (req, res, next) => {
   try {
@@ -73,11 +74,25 @@ export const addNewDiscussion = async (req, res, next) => {
       { safe: true, upsert: true }
     )
 
+    const postAuthorUser = await Post.findById(postId).select('by')
+    const postAuthorAccount = await Account.findOne({ user: postAuthorUser.by })
+
+    const discussionAuthor = await User.findById(userId)
+
+    const newDiscussion = {
+      account: postAuthorAccount._id,
+      type: 'newDiscussion',
+      message: 'started a new discussion on your',
+      infos: [discussionAuthor.username, postId],
+    }
+    await Notification.create({ ...newDiscussion })
+
     return res
       .status(200)
       .json({ status: true, msg: 'New discussion started successfully' })
   } catch (error) {
     next(error)
+    console.error(error.message);
     return res.status(500).json({
       status: false,
       msg: 'There was an error adding a new discussion',
@@ -499,7 +514,3 @@ export const recentPostsWithPagination = async (req, res, next) => {
     })
   }
 }
-
-
-
-

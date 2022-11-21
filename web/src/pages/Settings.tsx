@@ -7,10 +7,12 @@ import {
   changeUserEmail,
   changeUserPassword,
   changeUserUsername,
+  deleteAccount,
   sendTokenChangeEmailVerification,
 } from '../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import bcryptjs from 'bcryptjs'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {}
 
@@ -33,7 +35,9 @@ export const Settings = (props: Props) => {
   const [backendEmail, setBackendEmail] = useState<any>(undefined)
   const [isTokenValid, setIsTokenValid] = useState<any>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
-
+  const [confirmDeleteAccount, setConfirmDeleteAccount] =
+    useState<boolean>(false)
+  const navigate = useNavigate()
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
   )
@@ -152,6 +156,23 @@ export const Settings = (props: Props) => {
       setChangeUsername({
         newUsername: '',
       })
+    } else if (data.status === false) {
+      error(data.msg)
+    }
+  }
+
+  async function handleSubmitDeleteAccount() {
+    const { data } = await axios.delete(deleteAccount, {
+      params: {
+        userId: currentUser?._id,
+        accountId: currentUser?.account,
+      },
+    })
+    if (data.status === true) {
+      success(data.msg)
+      localStorage.removeItem('session')
+      localStorage.removeItem('menu')
+      navigate('/login')
     } else if (data.status === false) {
       error(data.msg)
     }
@@ -406,11 +427,29 @@ export const Settings = (props: Props) => {
                   information after requesting a deletion. This includes Armazem
                   supporter status, manga lists, private messages, and more.
                 </div>
-                <Button
-                  type="submit"
-                  title="Delete my account"
-                  className="bg-red -mt-2 !w-[50%] my-1"
-                />
+                <div className="relative ">
+                  <Button
+                    type="submit"
+                    onClick={(e) => setConfirmDeleteAccount(true)}
+                    title="Delete my account"
+                    className="bg-red -mt-2 w-[50%] my-1"
+                  />
+                  {confirmDeleteAccount && (
+                    <div className="absolute space-x-2">
+                      <span>Really want to delete your account?</span>
+                      <span onClick={handleSubmitDeleteAccount} className="text-red font-medium cursor-pointer hover:underline">
+                        Delete
+                      </span>
+                      <span>/</span>
+                      <span
+                        onClick={() => setConfirmDeleteAccount(false)}
+                        className="text-prime-blue font-medium cursor-pointer hover:underline"
+                      >
+                        Cancel
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

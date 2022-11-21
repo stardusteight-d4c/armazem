@@ -47,6 +47,6 @@ router.get('/mangaFavorites/:accountId', mangaFavorites)
 router.get('/mangaListedByAccountId/:accountId', mangaListedByAccountId)
 router.get('/updatesMangaList/:accountId', updatesMangaList)
 router.get('/notifications/:accountId', notifications)
-router.delete('/deleteAccount/:userId/:accountId', deleteAccount)
+router.delete('/deleteAccount', deleteAccount)
 
 export { router }

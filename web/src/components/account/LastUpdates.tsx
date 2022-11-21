@@ -4,7 +4,6 @@ import { updatesMangaList } from '../../services/api-routes'
 import { useAppSelector } from '../../store/hooks'
 import { LastUpdate } from './LastUpdate'
 
-
 interface Props {}
 
 export const LastUpdates = (props: Props) => {
@@ -22,16 +21,22 @@ export const LastUpdates = (props: Props) => {
     })()
   }, [])
 
+  console.log('lastUpdates', lastUpdates)
+
   return (
-    <section>
-      <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
-        Last updates
-      </h2>
-      <div className="flex flex-col gap-y-5">
-        {lastUpdates.map((update) => (
-          <LastUpdate lastUpdate={update} />
-        ))}
-      </div>
-    </section>
+    <>
+      {lastUpdates.length > 0 && (
+        <section>
+          <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
+            Last updates
+          </h2>
+          <div className="flex flex-col gap-y-5">
+            {lastUpdates.map((update) => (
+              <LastUpdate lastUpdate={update} />
+            ))}
+          </div>
+        </section>
+      )}
+    </>
   )
 }

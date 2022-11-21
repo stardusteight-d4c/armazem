@@ -49,60 +49,64 @@ export const Comments = ({ userMetadata }: Props) => {
   }
 
   return (
-    <section className="mb-7">
-      <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
-        Comments
-      </h2>
-      <div>
-        {currentUser?._id !== userMetadata._id && (
-          <>
-            <div className="flex items-start gap-x-5">
-              <img
-                src={currentUser?.user_img}
-                alt=""
-                className="w-16 h-16 object-cover"
-              />
-              <div className="flex flex-col w-full">
-                <span className="font-medium text-2xl text-dusk-main dark:text-dawn-main">
-                  {currentUser?.name}
-                </span>
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Leave your comment"
-                  className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
-                />
+    <>
+      {comments.length > 0 && (
+        <section className="mb-7">
+          <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
+            Comments
+          </h2>
+          <div>
+            {currentUser?._id !== userMetadata._id && (
+              <>
+                <div className="flex items-start gap-x-5">
+                  <img
+                    src={currentUser?.user_img}
+                    alt=""
+                    className="w-16 h-16 object-cover"
+                  />
+                  <div className="flex flex-col w-full">
+                    <span className="font-medium text-2xl text-dusk-main dark:text-dawn-main">
+                      {currentUser?.name}
+                    </span>
+                    <textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      placeholder="Leave your comment"
+                      className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] focus:border-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20 p-2 outline-none"
+                    />
+                  </div>
+                </div>
+                <div className=" flex justify-end ">
+                  <Button
+                    title="Submit"
+                    onClick={sendComment}
+                    className="bg-prime-blue my-5 !w-fit px-4 py-2"
+                  />
+                </div>
+              </>
+            )}
+            {comments.length > 0 ? (
+              <>
+                {comments?.map((comment, index) => (
+                  <Comment
+                    requestAgain={requestAgain}
+                    setRequestAgain={setRequestAgain}
+                    userMetadata={userMetadata}
+                    comment={comment}
+                    key={index}
+                    activeItem={activeItem}
+                    setActiveItem={setActiveItem}
+                  />
+                ))}
+              </>
+            ) : (
+              <div className="flex items-center justify-center text-2xl my-8">
+                No comments yet
               </div>
-            </div>
-            <div className=" flex justify-end ">
-              <Button
-                title="Submit"
-                onClick={sendComment}
-                className="bg-prime-blue my-5 !w-fit px-4 py-2"
-              />
-            </div>
-          </>
-        )}
-        {comments.length > 0 ? (
-          <>
-            {comments?.map((comment, index) => (
-              <Comment
-                requestAgain={requestAgain}
-                setRequestAgain={setRequestAgain}
-                userMetadata={userMetadata}
-                comment={comment}
-                key={index}
-                activeItem={activeItem}
-                setActiveItem={setActiveItem}
-              />
-            ))}
-          </>
-        ) : (
-          <div className="flex items-center justify-center text-2xl my-8">
-            No comments yet
+            )}
           </div>
-        )}
-      </div>
-    </section>
+        </section>
+      )}
+    </>
   )
 }
