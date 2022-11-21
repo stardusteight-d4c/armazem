@@ -20,6 +20,7 @@ export const activeUser = `${hostServer}/api/user/middleware/activeUser` // /:us
 export const changeUserPassword = `${hostServer}/api/user/changeUserPassword`
 export const changeUserEmail = `${hostServer}/api/user/changeUserEmail`
 export const sendTokenChangeEmailVerification = `${hostServer}/api/user/sendTokenChangeEmailVerification`
+export const changeUserUsername = `${hostServer}/api/user/changeUserUsername`
 
 // ACCOUNT
 export const sendRequest = `${hostServer}/api/account/sendRequest`
@@ -81,5 +82,5 @@ export const mostRead = `${hostServer}/api/manga/mostRead`
 
 // MESSAGE
 export const addMessage = `${hostServer}/api/message/addMessage`
-export const allMessages = `${hostServer}/api/message/allMessages` // ?to=userId&from=userId
+export const allMessages = `${hostServer}/api/message/allMessages` // ?to=<userId>&from=<userId>
 export const lastMessage = `${hostServer}/api/message/lastMessage`

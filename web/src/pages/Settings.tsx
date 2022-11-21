@@ -6,6 +6,7 @@ import { error, success } from '../components/Toasters'
 import {
   changeUserEmail,
   changeUserPassword,
+  changeUserUsername,
   sendTokenChangeEmailVerification,
 } from '../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
@@ -71,34 +72,6 @@ export const Settings = (props: Props) => {
     })()
   }, [changeEmail.confirmToken])
 
-  async function handleSubmitChangeEmail() {
-    if (!isTokenValid) {
-      error('Invalid token')
-      return false
-    }
-    if (changeEmail.newEmail !== backendEmail) {
-      error('Do not change the entered email')
-      return false
-    }
-    if (
-      validateEmail(changeEmail.newEmail)) {
-      const { data } = await axios.post(changeUserEmail, {
-        userId: currentUser?._id,
-        newEmail: changeEmail.newEmail,
-      })
-      if (data.status === true) {
-        success(data.msg)
-        setChangeEmail({
-          newEmail: '',
-          confirmToken: '',
-        })
-        setBackendEmail(null)
-        setToken(null)
-        setRequestToken(undefined)
-      }
-    }
-  }
-
   async function sendToken() {
     setLoading(true)
     const { data } = await axios.post(sendTokenChangeEmailVerification, {
@@ -136,6 +109,48 @@ export const Settings = (props: Props) => {
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
+      })
+    } else if (data.status === false) {
+      error(data.msg)
+    }
+  }
+
+  async function handleSubmitChangeEmail() {
+    if (!isTokenValid) {
+      error('Invalid token')
+      return false
+    }
+    if (changeEmail.newEmail !== backendEmail) {
+      error('Do not change the entered email')
+      return false
+    }
+    if (validateEmail(changeEmail.newEmail)) {
+      const { data } = await axios.post(changeUserEmail, {
+        userId: currentUser?._id,
+        newEmail: changeEmail.newEmail,
+      })
+      if (data.status === true) {
+        success(data.msg)
+        setChangeEmail({
+          newEmail: '',
+          confirmToken: '',
+        })
+        setBackendEmail(null)
+        setToken(null)
+        setRequestToken(undefined)
+      }
+    }
+  }
+
+  async function handleSubmitChangeUsername() {
+    const { data } = await axios.post(changeUserUsername, {
+      username: changeUsername.newUsername,
+      userId: currentUser?._id,
+    })
+    if (data.status === true) {
+      success(data.msg)
+      setChangeUsername({
+        newUsername: '',
       })
     } else if (data.status === false) {
       error(data.msg)
@@ -359,6 +374,12 @@ export const Settings = (props: Props) => {
                   <input
                     type="text"
                     id="newUsername"
+                    onChange={(e) =>
+                      setChangeUsername({
+                        ...changeUsername,
+                        [e.target.id]: e.target.value,
+                      })
+                    }
                     required
                     maxLength={50}
                     placeholder="New username"
@@ -368,6 +389,7 @@ export const Settings = (props: Props) => {
                 <Button
                   type="submit"
                   title="Submit"
+                  onClick={handleSubmitChangeUsername}
                   className="bg-prime-blue -mt-2 !w-[50%]"
                 />
               </div>

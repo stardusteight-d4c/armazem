@@ -319,7 +319,7 @@ export const Post = (props: Props) => {
                     </div>
                   </div>
                 ) : (
-                  <pre className="py-2 font-inter break-words whitespace-pre-wrap text-xl leading-9 mt-2">
+                  <pre className="py-2 font-inter break-words break-all whitespace-pre-wrap text-xl leading-9 mt-2">
                     {post!.body}
                   </pre>
                 )}

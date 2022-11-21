@@ -4,8 +4,13 @@ import Post from '../models/postModel.js'
 import Comment from '../models/commentModel.js'
 import Notification from '../models/notificationModel.js'
 import Manga from '../models/mangaModel.js'
+import Reply from '../models/replyModel.js'
+import Discussion from '../models/discussionModel.js'
+import Review from '../models/reviewModel.js'
+import Message from '../models/messageModel.js'
 import ShortUniqueId from 'short-unique-id'
 import brcypt from 'bcrypt'
+import mongoose from 'mongoose'
 
 const uid = new ShortUniqueId({ length: 10 })
 
@@ -485,7 +490,7 @@ export const updatesMangaList = async (req, res, next) => {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: error.message,
     })
   }
 }
@@ -508,8 +513,104 @@ export const notifications = async (req, res, next) => {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: error.message,
     })
   }
 }
 
+export const deleteAccount = async (req, res, next) => {
+  try {
+    const { userId, accountId } = req.params
+
+    const posts = await Post.find({ by: userId })
+    const postIds = []
+    posts && posts.map((post) => postIds.push(post._id))
+
+    const discussions =
+      postIds && (await Discussion.find({ post: { $in: postIds } }))
+    const discussionIds = []
+    discussions &&
+      discussions.map((discussion) => discussionIds.push(discussion._id))
+
+    await Account.updateMany(null, {
+      $pull: { connections: { with: userId } },
+    })
+
+    await Account.updateMany(null, { $pull: { requestsReceived: { userId } } })
+    await Account.updateMany(null, {
+      $pull: { requestsSent: { to: userId } },
+    })
+    await Comment.deleteMany(null, { by: userId })
+
+    postIds &&
+      (await Promise.all(
+        postIds.map(
+          async (id) =>
+            await Account.updateMany(null, {
+              $pullAll: {
+                sharedPosts: [{ id: id.toString() }],
+              },
+            })
+        )
+      ))
+
+    // TEST
+    // // const postId = '637b683de494c8c0492d60b0'
+    // // postId &&
+    // //   (await Account.updateMany(null, {
+    // //     $pullAll: {
+    // //       sharedPosts: [{ id: postId  }],
+    // //     },
+    // //   }))
+
+    // const id1 = mongoose.Types.ObjectId('637b7ab69b9f43264f630797')
+    // const id2 = mongoose.Types.ObjectId('637b7a349b9f43264f630629')
+    // const id3 = mongoose.Types.ObjectId('637b682fe494c8c0492d60ad')
+    // const discussionIds = [id1, id2, id3]
+
+    discussionIds &&
+      (await Reply.updateMany(null, {
+        $pullAll: [{ discussion: { $in: discussionIds } }],
+      }))
+    discussionIds &&
+      (await Post.updateMany(null, {
+        $pull: { discussions: { discussion: { $in: discussionIds } } },
+      }))
+    postIds &&
+      (await Discussion.updateMany(null, {
+        $pullAll: [{ post: { $in: postIds } }],
+      }))
+
+    await Reply.deleteMany({ by: userId })
+    await Reply.deleteMany({ to: userId })
+    await Discussion.deleteMany({ by: userId })
+    await Post.deleteMany({ by: userId })
+    await Review.deleteMany({ by: accountId })
+    await User.findByIdAndDelete(userId)
+    await Account.findByIdAndDelete(accountId)
+
+    await Manga.updateMany(
+      { 'score.accountId': accountId },
+      {
+        $pull: { score: { accountId: accountId } },
+      },
+      { safe: true, multi: false }
+    )
+
+    await Manga.updateMany(
+      null,
+      {
+        $pull: { readers: accountId  },
+      },
+      { safe: true, multi: false }
+    )
+
+    return res.status(200).json({ status: true, msg: 'Account deleted' })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
+  }
+}

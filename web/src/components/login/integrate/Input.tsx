@@ -37,7 +37,7 @@ export const Input = ({
         <input
           {...props}
           className={`${style.input} ${styles && styles}`}
-          maxLength={20}
+          maxLength={100}
         />
       )}
 

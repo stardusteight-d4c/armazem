@@ -83,7 +83,7 @@ export const RecentPost = ({ post }: Props) => {
           </h3>
         </div>
         <h2 className="font-semibold text-xl my-1">{post.title}</h2>
-        <p className="line-clamp-[10] font-inter break-words whitespace-pre-wrap">
+        <p className="line-clamp-[10] font-inter break-all break-words whitespace-pre-wrap">
           {post.body}
         </p>
       </div>

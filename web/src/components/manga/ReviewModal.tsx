@@ -69,7 +69,7 @@ export const ReviewModal = (props: Props) => {
                   className="ri-close-circle-fill text-4xl cursor-pointer"
                 />
               </div>
-              <div className="flex break-words mt-4 px-4 py-2 text-justify text-lg overflow-x-hidden overflow-y-scroll whitespace-pre-line  border-t h-full max-h-[400px] border-dawn-weak/20 dark:border-dusk-weak/20 relative">
+              <div className="flex break-words break-all mt-4 px-4 py-2 text-justify text-lg overflow-x-hidden overflow-y-scroll whitespace-pre-line  border-t h-full max-h-[400px] border-dawn-weak/20 dark:border-dusk-weak/20 relative">
                 {reviewData.review}
               </div>
             </>

@@ -34,7 +34,7 @@ export const Review = ({ review }: Props) => {
               </>
             </span>
           </div>
-          <p className="break-words whitespace-pre-wrap line-clamp-[8]">
+          <p className="break-all whitespace-pre-wrap line-clamp-[8]">
             {review.review}
           </p>
         </div>

@@ -512,7 +512,7 @@ export const Manga = (props: Props) => {
                       <p
                         className={`${
                           showMore ? '' : 'line-clamp-4'
-                        } cursor-default break-words whitespace-pre-wrap font-medium`}
+                        } cursor-default break-words break-all whitespace-pre-wrap font-medium`}
                       >
                         {manga?.synopsis}
                       </p>
