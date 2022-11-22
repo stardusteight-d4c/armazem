@@ -3,6 +3,13 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1040px',
+      xl: '1250px',
+      '2xl': '1536px',
+    },
     extend: {
       animation: {
         'spin-fast': 'spin 0.8s linear infinite',
@@ -14,13 +21,6 @@ module.exports = {
         'span-17': 'span 17 / span 17',
       },
     },
-    // screens: {
-    //   'sm': '640px',
-    //   'md': '800px',
-    //   'lg': '1024px',
-    //   'xl': '1275px',
-    //   '2xl': '1536px',
-    // },
     fontFamily: {
       inter: 'Inter, sans-serif',
       poppins: 'Poppins, sans-serif',
@@ -54,7 +54,7 @@ module.exports = {
       },
     },
   },
- 
+
   plugins: [
     require('@tailwindcss/line-clamp'),
     require('tailwind-scrollbar-hide'),

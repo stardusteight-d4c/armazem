@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { CardManga } from '../feed/CardManga'
+import { CardManga } from '../feed/integrate/CardManga'
 import { motion } from 'framer-motion'
 import { useAppSelector } from '../../store/hooks'
 import { mangaFavorites } from '../../services/api-routes'

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Menu } from '@headlessui/react'
 import axios from 'axios'
-import { searchByTitle, searchUsersByQuery } from '../../services/api-routes'
+import { searchByTitle, searchUsersByQuery } from '../../../services/api-routes'
 import { Link } from 'react-router-dom'
-import { useAppSelector } from '../../store/hooks'
-import { Dropdown } from '../Dropdown'
+import { useAppSelector } from '../../../store/hooks'
+import { Dropdown } from '../../Dropdown'
 
 interface Props {}
 
@@ -58,7 +58,7 @@ export const Search = (props: Props) => {
   ]
 
   return (
-    <div className="flex flex-col space-y-12">
+    <div className="hidden md:flex flex-col space-y-12">
       <div className="flex group relative items-center">
         <i className="ri-search-line group-focus-within:text-prime-blue left-2 absolute text-dusk-main dark:text-dawn-main text-3xl" />
         <input

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Navbar, Sidebar } from '../components/menu'
-import { Hero, MostRead, RatedPosts, RecentPosts } from '../components/feed'
+import { Hero, MostRead, TrendingPosts, RecentPosts } from '../components/feed'
 import axios from 'axios'
 import { useAppSelector } from '../store/hooks'
 import { topRatedPost } from '../services/api-routes'
+import useWindowDimensions from '../hooks/useWindowDimensions'
 
 interface Props {}
 
@@ -12,6 +13,7 @@ export const Feed = (props: Props) => {
     (state) => state.armazem.minimizeSidebar
   )
   const [topRatedPosts, setTopRatedPosts] = useState<any>([])
+  const { height, width } = useWindowDimensions()
 
   useEffect(() => {
     ;(async () => {
@@ -25,19 +27,21 @@ export const Feed = (props: Props) => {
   return (
     <div
       className={`${style.gridContainer} ${
-        minimizeSidebar ? 'lg:grid-cols-18' : 'lg:grid-cols-5'
+        minimizeSidebar ? 'grid-cols-1 md:grid-cols-18' : 'grid-cols-1 md:grid-cols-5'
       }`}
     >
       <Sidebar />
       <div
-        className={
-          style.mainContent && minimizeSidebar ? 'col-span-17' : 'col-span-4'
+        className={`
+          ${style.mainContent}  ${
+          minimizeSidebar ? 'col-span-1 md:col-span-17' : 'col-span-1 md:col-span-4'
         }
+        `}
       >
         <Navbar />
-        <main className="p-8">
+        <main className="p-3 w-screen md:p-8 md:w-full">
           <Hero />
-          <RatedPosts topRatedPosts={topRatedPosts} />
+          <TrendingPosts topRatedPosts={topRatedPosts} />
           <MostRead />
           <RecentPosts />
         </main>
@@ -47,6 +51,6 @@ export const Feed = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2`,
 }

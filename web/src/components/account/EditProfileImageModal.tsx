@@ -52,7 +52,7 @@ export const EditProfileImageModal = (props: Props) => {
         initial={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
         animate={{ opacity: 1 }}
-        className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen overflow-hidden bg-fill-strong/30"
+        className="fixed top-0 left-0 z-40 flex items-center justify-center w-screen h-screen overflow-hidden bg-fill-strong/30"
       />
       {/* Colocar a overlay/backdrop como componente que aceita children*/}
       <motion.section

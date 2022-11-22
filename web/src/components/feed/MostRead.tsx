@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { CardManga } from './CardManga'
+import { CardManga } from './integrate/CardManga'
 import axios from 'axios'
 import { mostRead } from '../../services/api-routes'
 

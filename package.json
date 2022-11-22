@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@types/react-responsive": "^8.0.5"
+  }
+}

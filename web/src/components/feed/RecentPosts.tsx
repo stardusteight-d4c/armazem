@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { TopManga } from './TopManga'
 import { AnimatePresence, motion } from 'framer-motion'
-import { RecentPost } from './RecentPost'
+import { RecentPost } from './integrate/RecentPost'
 import axios from 'axios'
 import {
   postMetadataById,
@@ -76,13 +75,13 @@ export const RecentPosts = (props: Props) => {
             Most recent posts
           </h2>
           {/* Limite de 100 */}
-          <div className="flex min-w-full gap-4 pb-[40px]">
-            <motion.div className="flex flex-col gap-y-3 flex-grow max-w-[50%]">
+          <div className="flex min-w-full md:gap-4 pb-[40px]">
+            <motion.div className="flex flex-col gap-y-3 flex-grow md:max-w-[50%]">
               {recentPostsFirstSection.map((post: Post) => (
                 <RecentPost post={post} />
               ))}
             </motion.div>
-            <motion.div className="flex flex-col gap-y-3 flex-grow max-w-[50%]">
+            <motion.div className="flex flex-col gap-y-3 flex-grow md:max-w-[50%]">
               {recentPostsSecondSection.map((post: Post) => (
                 <RecentPost post={post} />
               ))}

@@ -6,16 +6,16 @@ import { motion } from 'framer-motion'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
-import { postMetadataById, unlikedPost } from '../../services/api-routes'
-import { useAppSelector } from '../../store/hooks'
-import { Loader } from '../Loader'
+import { postMetadataById, unlikedPost } from '../../../services/api-routes'
+import { useAppSelector } from '../../../store/hooks'
+import { Loader } from '../../Loader'
 timeago.register('en_short', en_short)
 
 interface Props {
   postId: any
 }
 
-export const PreviewPost = ({ postId }: Props) => {
+export const TrendingPost = ({ postId }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const [post, setPost] = useState<any>([])
@@ -83,7 +83,7 @@ export const PreviewPost = ({ postId }: Props) => {
       {!loading ? (
         <motion.article
           whileTap={{ cursor: 'grabbing' }}
-          className="max-w-[450px] border border-dawn-weak/20 dark:border-dusk-weak/20 min-w-[450px] max-h-[269px] min-h-[269px] flex flex-col justify-between hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200 w-full h-fit p-4"
+          className="max-w-[400px] min-w-[400px] md:max-w-[450px] md:min-w-[450px] md:w-full border border-dawn-weak/20 dark:border-dusk-weak/20 max-h-[269px] min-h-[269px] flex flex-col justify-between hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200  h-fit p-4"
         >
           <div>
             <div className="flex items-center justify-between">

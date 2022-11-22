@@ -4,8 +4,8 @@ import {
   likePost,
   postMetadataById,
   unlikedPost,
-} from '../../services/api-routes'
-import { useAppSelector } from '../../store/hooks'
+} from '../../../services/api-routes'
+import { useAppSelector } from '../../../store/hooks'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'

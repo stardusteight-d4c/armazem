@@ -1,10 +1,8 @@
 export { Button } from './Button'
 export { SwitchTheme } from './SwitchTheme'
 
-export { Hero } from './feed/Hero'
-export { PreviewPost } from './feed/PreviewPost'
-export { CardManga } from './feed/CardManga'
-export { RatedPosts } from './feed/RatedPosts'
+export { CardManga } from './feed/integrate/CardManga'
+export { TrendingPosts } from './feed/TrendingPosts'
 
 export { Navbar } from './menu/Navbar'
 export { Sidebar } from './menu/Sidebar'

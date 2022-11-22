@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { banners } from './banners-data'
+import { banners } from './integrate/banners-data'
 
 interface Props {}
 
@@ -49,7 +49,7 @@ export const Hero = (props: Props) => {
               setIndex(idx)
             }}
             className={`${style.slideshowDot} ${
-              index === idx ? '!bg-white !w-8' : ''
+              index === idx && '!bg-white !w-8' 
             }`}
           />
         ))}
@@ -59,7 +59,7 @@ export const Hero = (props: Props) => {
 }
 
 const style = {
-  slideshow: `my-0 relative rounded-lg min-h-[300px] max-h-[300px] mx-auto overflow-hidden max-w-full`,
+  slideshow: `my-0 relative rounded-lg min-h-[300px] max-h-[300px] mx-auto overflow-hidden`,
   slideshowSlider: `whitespace-nowrap rounded-lg transition-all duration-1000`,
   slide: `w-full cursor-pointer h-[300px] inline-block rounded-lg`,
   slideshowDots: `absolute bottom-2 flex gap-x-2 left-[48%] -translate-x-1/2`,

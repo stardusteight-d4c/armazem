@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { PreviewPost } from './PreviewPost'
+import { TrendingPost } from './integrate/TrendingPost'
 import { motion } from 'framer-motion'
 
 interface Props {
   topRatedPosts: any
 }
 
-export const RatedPosts = ({ topRatedPosts }: Props) => {
+export const TrendingPosts = ({ topRatedPosts }: Props) => {
   const [previewPostCarouselWidth, setPreviewPostCarouselWidth] = useState(0)
   const [onDragPreviewPost, setOnDragPreviewPost] = useState(0)
   const [click, setClick] = useState<any>()
@@ -42,7 +42,7 @@ export const RatedPosts = ({ topRatedPosts }: Props) => {
           {topRatedPosts.length > 0 ? (
             <>
               {topRatedPosts.map((post: any) => (
-                <PreviewPost postId={post._id} />
+                <TrendingPost postId={post._id} />
               ))}
             </>
           ) : (

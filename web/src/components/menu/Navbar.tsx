@@ -6,12 +6,13 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import {
   clearAuthSession,
   clearCurrentUser,
+  handleMinimizeSidebar,
   handleOpenModal,
 } from '../../store'
-import { Search } from './Search'
 import { Dropdown } from '../Dropdown'
 import axios from 'axios'
 import { notifications } from '../../services/api-routes'
+import { Search } from './integrate/Search'
 
 interface Props {}
 
@@ -24,14 +25,16 @@ export const Navbar = (props: Props) => {
   const [disableHookEffect, setDisableHookEffect] = useState(false)
   const [userNotifications, setUserNotifications] = useState<any>([])
   const [prevNotifyLength, setPrevNotifyLength] = useState<any>(null)
-
+  const minimizeSidebar = useAppSelector(
+    (state) => state.armazem.minimizeSidebar
+  )
   // Hook that alerts clicks outside of the passed ref
   function useOutsideAlerter(ref: any) {
     useEffect(() => {
       function handleClickOutside(event: { target: any }) {
         if (ref.current && !ref.current.contains(event.target)) {
           // alert("You clicked outside of me!")
-         !disableHookEffect && setShowNotification(false)
+          !disableHookEffect && setShowNotification(false)
         }
       }
       // Bind the event listener
@@ -87,19 +90,46 @@ export const Navbar = (props: Props) => {
     setPrevNotifyLength(localStorage.getItem('notifyLength'))
   }
 
+  function rendersBreakMenu() {
+    return (
+      <>
+        {minimizeSidebar ? (
+          <i
+            title="Undo"
+            onClick={() => dispatch(handleMinimizeSidebar())}
+            className=" dark:text-dusk-main hidden md:block transition duration-700 transform hover:rotate-[360deg] hover:scale-105 text-dawn-main font-bold p-[2px] w-4 h-4 cursor-pointer rounded-full border-2 border-l-0 border-dawn-weak/50 dark:border-dusk-weak/50 bg-transparent text-xl absolute -left-2 -bottom-2"
+          />
+        ) : (
+          <i
+            title="Break"
+            onClick={() => dispatch(handleMinimizeSidebar())}
+            className="dark:text-dusk-main hidden md:block transition duration-700 transform hover:rotate-[360deg] hover:scale-105 text-dawn-main font-bold p-[2px] w-4 h-4 cursor-pointer rounded-full border-2 border-l-0 border-dawn-weak/50 dark:border-dusk-weak/50 bg-transparent text-xl absolute -left-2 -bottom-2"
+          />
+        )}
+      </>
+    )
+  }
+
   return (
-    <nav className="bg-fill-weak dark:bg-fill-strong z-50 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between p-8 w-full flex items-center h-24">
+    <nav className="bg-fill-weak w-screen lg:w-full relative dark:bg-fill-strong z-40 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between md:px-12 flex items-center md:h-24">
+      {rendersBreakMenu()}
+      <div className="flex text-xl md:hidden items-center gap-x-2">
+        <i className="ri-server-fill text-fill-strong dark:text-fill-weak" />
+        <h1 className="font-inter text-fill-strong dark:text-fill-weak font-bold">
+          Armazem
+        </h1>
+      </div>
       <Search />
       <div className="flex items-center gap-x-5">
         <SwitchTheme />
         <i
           title="New post"
-          className="ri-article-line text-3xl p-2 cursor-pointer"
+          className="ri-article-line hidden md:block  text-3xl p-2 cursor-pointer"
           onClick={() => dispatch(handleOpenModal('PostInput'))}
         />
         <i
           onClick={() => dispatch(handleOpenModal('Chat'))}
-          className="ri-question-answer-line text-3xl p-2 cursor-pointer"
+          className="ri-question-answer-line  hidden md:block text-3xl p-2 cursor-pointer"
         />
         <div className="flex flex-col space-y-12 items-center">
           <div className="relative">
@@ -107,7 +137,7 @@ export const Navbar = (props: Props) => {
               onMouseEnter={() => setDisableHookEffect(true)}
               onMouseLeave={() => setDisableHookEffect(false)}
               onClick={handleNotification}
-              className="ri-notification-2-line text-3xl p-2 cursor-pointer"
+              className="ri-notification-2-line hidden md:block  text-3xl p-2 cursor-pointer"
             />
             {userNotifications.length > 0 &&
               prevNotifyLength < userNotifications.length && (
@@ -212,7 +242,7 @@ export const Navbar = (props: Props) => {
         <i
           title="Settings"
           onClick={() => navigate('/settings')}
-          className="ri-settings-2-line text-3xl  p-2 cursor-pointer transition duration-1000 transform hover:rotate-[360deg]"
+          className="ri-settings-2-line hidden md:block text-3xl  p-2 cursor-pointer transition duration-1000 transform hover:rotate-[360deg]"
         />
 
         <Dropdown title="Account" space="space-y-14" items={accountItems}>

@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { userData } from '../../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { RecentConnectionOnline } from './RecentConnectionOnline'
+import { RecentConnectionOnline } from './integrate/RecentConnectionOnline'
 import { handleMinimizeSidebar } from '../../store'
+import useWindowDimensions from '../../hooks/useWindowDimensions'
+import { motion } from 'framer-motion'
+import { MobileMenu } from './integrate/MobileMenu'
 
 interface Props {}
 
@@ -18,7 +21,8 @@ export const Sidebar = (props: Props) => {
     (state) => state.armazem.minimizeSidebar
   )
   const dispatch = useAppDispatch()
-
+  const [openMobileMenu, setOpenMobileMenu] = useState(false)
+  const { height, width } = useWindowDimensions()
   const adminRole = import.meta.env.VITE_ADMIN_ROLE
 
   useEffect(() => {
@@ -35,11 +39,34 @@ export const Sidebar = (props: Props) => {
     }
   }, [])
 
+
+
+  const isTabletOrMobile = width < 600
+
+  // const html = document.querySelector('html')
+  // if (html) {
+  //   {
+  //     openMobileMenu
+  //       ? (html.style.overflow = 'hidden')
+  //       : (html.style.overflow = 'auto')
+  //   }
+  // }
+  
+  // if (isTabletOrMobile && openMobileMenu) {
+
+  //   return (
+  //     <MobileMenu
+  //       openMobileMenu={openMobileMenu}
+  //       setOpenMobileMenu={setOpenMobileMenu}
+  //     />
+  //   )
+  //     }
+
   return (
     <aside
       className={`${
         minimizeSidebar && '!px-2 pl-[1.2px]'
-      } scrollbar-hide relative min-h-screen pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong`}
+      } scrollbar-hide hidden md:block relative min-h-screen pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 md:col-span-1 md:row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong`}
     >
       <Link
         to="/"
@@ -55,19 +82,7 @@ export const Sidebar = (props: Props) => {
         )}
       </Link>
       <div>
-        {minimizeSidebar ? (
-          <i
-            title="Undo"
-            onClick={() => dispatch(handleMinimizeSidebar())}
-            className="dark:text-dusk-main transition duration-700 transform hover:rotate-[360deg] hover:scale-105 text-dawn-main font-bold p-[2px] w-4 h-4 cursor-pointer rounded-full border-2 border-l-0 border-dawn-weak/50 dark:border-dusk-weak/50 bg-transparent text-xl absolute left-[63px] top-[87px]"
-          />
-        ) : (
-          <i
-            title="Break"
-            onClick={() => dispatch(handleMinimizeSidebar())}
-            className="dark:text-dusk-main transition duration-700 transform hover:rotate-[360deg] hover:scale-105 text-dawn-main font-bold p-[2px] w-4 h-4 cursor-pointer rounded-full border-2 border-l-0 border-dawn-weak/50 dark:border-dusk-weak/50 bg-transparent text-xl absolute  left-[248px] top-[88px]"
-          />
-        )}
+      
         <ul className="space-y-2">
           <Link
             to="/"
