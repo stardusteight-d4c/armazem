@@ -127,19 +127,19 @@ export const SignIn = ({ setSignIn }: Props) => {
           className="mt-2 bg-prime-purple"
         />
         <span className={style.alternativeSignIn}>Or continue with</span>
-      </div>
       <Button
         type="button"
         onClick={() => signInWithGoogle(setUser)}
         title="Google"
         className="bg-prime-blue"
-      />
+        />
+        </div>
     </motion.form>
   )
 }
 
 const style = {
-  wrapper: `flex flex-col items-center justify-center w-full md:min-w-[400px] xl:w-[550px] 2xl:w-[650px] max-h-fit h-screen relative z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
+  wrapper: `flex flex-col items-center justify-center w-full md:min-w-[400px] xl:w-[550px] 2xl:w-[650px] max-h-fit h-screen relative z-10 px-6 py-4 bg-fill-weak dark:bg-fill-strong`,
   formContainer: `relative w-full`,
   enterUserIcon: `ri-user-shared-line absolute text-2xl top-0 right-0`,
   signIn: `text-4xl font-bold`,

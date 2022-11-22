@@ -6,7 +6,7 @@ import { mostRead } from '../../services/api-routes'
 
 interface Props {}
 
-export const PopularReadings = (props: Props) => {
+export const MostRead = (props: Props) => {
   const [cardCarouselWidth, setCardCarouselWidth] = useState(0)
   const [onDrag, setOnDrag] = useState(0)
   const [mangas, setMangas] = useState([])

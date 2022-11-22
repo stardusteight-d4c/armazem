@@ -90,5 +90,5 @@ export const ConfirmVerificationToken = ({ data }: { data: Props }) => {
 
 const style = {
   arrowBack: `ri-arrow-left-line z-30 absolute top-5 left-5 text-3xl p-2 cursor-pointer`,
-  wrapper: `flex flex-col items-start justify-center w-full md:min-w-[400px] xl:w-[550px] 2xl:w-[650px] max-h-fit h-screen z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
+  wrapper: `flex flex-col items-start justify-center w-full md:min-w-[400px] xl:w-[550px] 2xl:w-[650px] max-h-fit h-screen z-10 px-6 sm:p-12 bg-fill-weak dark:bg-fill-strong`,
 }

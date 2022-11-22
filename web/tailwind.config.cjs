@@ -18,10 +18,9 @@ module.exports = {
     //   'sm': '640px',
     //   'md': '800px',
     //   'lg': '1024px',
-    //   'xl': '1280px',
+    //   'xl': '1275px',
     //   '2xl': '1536px',
     // },
-    
     fontFamily: {
       inter: 'Inter, sans-serif',
       poppins: 'Poppins, sans-serif',

@@ -16,13 +16,16 @@ const router = express.Router()
 
 router.get('/:id', userById)
 router.get('/username/:username', userByUsername)
-router.post('/updateCoverImage', updateCoverImage)
-router.post('/updateProfileImage', updateProfileImage)
+router.put('/updateCoverImage', updateCoverImage)
+router.put('/updateProfileImage', updateProfileImage)
 router.post('/searchUsersByQuery', searchUsersByQuery)
 router.post('/middleware/activeUser/:userId', activeUser)
 router.post('/changeUserPassword', changeUserPassword)
 router.post('/changeUserEmail', changeUserEmail)
-router.post('/sendTokenChangeEmailVerification', sendTokenChangeEmailVerification)
+router.post(
+  '/sendTokenChangeEmailVerification',
+  sendTokenChangeEmailVerification
+)
 router.post('/changeUserUsername', changeUserUsername)
 
 export { router }

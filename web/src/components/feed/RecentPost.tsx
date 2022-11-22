@@ -82,7 +82,7 @@ export const RecentPost = ({ post }: Props) => {
             <TimeAgo datetime={post.createdAt} />
           </h3>
         </div>
-        <h2 className="font-semibold text-xl my-1">{post.title}</h2>
+        <h2 className="font-semibold break-all line-clamp-2 text-xl my-1">{post.title}</h2>
         <p className="line-clamp-[10] font-inter break-all break-words whitespace-pre-wrap">
           {post.body}
         </p>

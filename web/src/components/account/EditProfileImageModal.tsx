@@ -30,7 +30,7 @@ export const EditProfileImageModal = (props: Props) => {
 
   const updateProfileImageById = async () => {
     setLoading(true)
-    const { data } = await axios.post(updateProfileImage, {
+    const { data } = await axios.put(updateProfileImage, {
       user_img: selectedFile,
       id: currentUser?._id,
     })

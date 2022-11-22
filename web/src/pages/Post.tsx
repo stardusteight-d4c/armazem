@@ -265,7 +265,7 @@ export const Post = (props: Props) => {
               <article className="px-4 pb-3 border border-dawn-weak/20 dark:border-dusk-weak/20 bg-white dark:bg-fill-strong pt-4 mt-4">
                 <header>
                   <div className="flex justify-between pb-4 items-center">
-                    <span className="text-4xl font-inter font-semibold w-[700px]">
+                    <span className="text-4xl break-all font-inter font-semibold w-[700px]">
                       {post?.title}
                     </span>
                     <span className="text-lg w-fit mt-2">

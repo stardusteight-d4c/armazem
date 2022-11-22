@@ -32,7 +32,7 @@ export const EditCoverImageModal = (props: Props) => {
 
   const updateCoverImageById = async () => {
     setLoading(true)
-    const { data } = await axios.post(updateCoverImage, {
+    const { data } = await axios.put(updateCoverImage, {
       cover_img: selectedFile,
       id: currentUser?._id,
     })

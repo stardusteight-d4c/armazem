@@ -7,7 +7,6 @@ import Manga from '../models/mangaModel.js'
 import Reply from '../models/replyModel.js'
 import Discussion from '../models/discussionModel.js'
 import Review from '../models/reviewModel.js'
-import ShortUniqueId from 'short-unique-id'
 
 export const accountDataByUserId = async (req, res, next) => {
   try {

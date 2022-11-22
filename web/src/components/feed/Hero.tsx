@@ -59,7 +59,7 @@ export const Hero = (props: Props) => {
 }
 
 const style = {
-  slideshow: `my-0 relative drop-shadow-lg rounded-lg min-h-[300px] max-h-[300px] mx-auto overflow-hidden max-w-full`,
+  slideshow: `my-0 relative rounded-lg min-h-[300px] max-h-[300px] mx-auto overflow-hidden max-w-full`,
   slideshowSlider: `whitespace-nowrap rounded-lg transition-all duration-1000`,
   slide: `w-full cursor-pointer h-[300px] inline-block rounded-lg`,
   slideshowDots: `absolute bottom-2 flex gap-x-2 left-[48%] -translate-x-1/2`,

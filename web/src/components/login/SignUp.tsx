@@ -152,7 +152,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
 }
 
 const style = {
-  wrapper: `flex flex-col items-center justify-center w-full md:min-w-[400px] xl:w-[550px] 2xl:w-[650px] max-h-fit h-screen relative z-10 p-12 bg-fill-weak dark:bg-fill-strong`,
+  wrapper: `flex flex-col items-center justify-center w-full md:min-w-[400px] xl:w-[550px] 2xl:w-[650px] max-h-fit h-screen relative z-10 px-6 py-4 bg-fill-weak dark:bg-fill-strong`,
   formContainer: `relative w-full`,
   addUserIcon: `ri-user-add-line absolute text-2xl top-0 right-0`,
   signUp: `text-4xl font-semibold`,

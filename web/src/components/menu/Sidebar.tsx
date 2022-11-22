@@ -39,7 +39,7 @@ export const Sidebar = (props: Props) => {
     <aside
       className={`${
         minimizeSidebar && '!px-2 pl-[1.2px]'
-      } scrollbar-hide min-h-screen pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong`}
+      } scrollbar-hide relative min-h-screen pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong`}
     >
       <Link
         to="/"
@@ -59,13 +59,13 @@ export const Sidebar = (props: Props) => {
           <i
             title="Undo"
             onClick={() => dispatch(handleMinimizeSidebar())}
-            className="dark:text-dusk-main transition duration-700 transform hover:rotate-[360deg] hover:scale-105 text-dawn-main font-bold p-[2px] w-4 h-4 flex items-center justify-center cursor-pointer rounded-full border-2 border-l-0 border-dawn-weak/50 dark:border-dusk-weak/50 bg-transparent text-xl absolute left-[63px] top-[87px]"
+            className="dark:text-dusk-main transition duration-700 transform hover:rotate-[360deg] hover:scale-105 text-dawn-main font-bold p-[2px] w-4 h-4 cursor-pointer rounded-full border-2 border-l-0 border-dawn-weak/50 dark:border-dusk-weak/50 bg-transparent text-xl absolute left-[63px] top-[87px]"
           />
         ) : (
           <i
             title="Break"
             onClick={() => dispatch(handleMinimizeSidebar())}
-            className="dark:text-dusk-main transition duration-700 transform hover:rotate-[360deg] hover:scale-105 text-dawn-main font-bold p-[2px] w-4 h-4 flex items-center justify-center cursor-pointer rounded-full border-2 border-l-0 border-dawn-weak/50 dark:border-dusk-weak/50 bg-transparent text-xl absolute left-[248px] top-[88px]"
+            className="dark:text-dusk-main transition duration-700 transform hover:rotate-[360deg] hover:scale-105 text-dawn-main font-bold p-[2px] w-4 h-4 cursor-pointer rounded-full border-2 border-l-0 border-dawn-weak/50 dark:border-dusk-weak/50 bg-transparent text-xl absolute  left-[248px] top-[88px]"
           />
         )}
         <ul className="space-y-2">

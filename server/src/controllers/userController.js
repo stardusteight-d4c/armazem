@@ -3,27 +3,35 @@ import brcypt from 'bcrypt'
 import ShortUniqueId from 'short-unique-id'
 import { sendChangeEmailVerification } from '../services/nodemailer.js'
 
-export const userById = async (req, res, next) => {
+export const userById = async (req, res) => {
   try {
     const userId = req.params.id
     const user = await User.findById(userId)
-    return res.json({ user })
+    return res.status(200).json({ user })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const userByUsername = async (req, res, next) => {
+export const userByUsername = async (req, res) => {
   try {
     const username = req.params.username
     const user = await User.findOne({ username })
     return res.json({ user })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const searchUsersByQuery = async (req, res, next) => {
+export const searchUsersByQuery = async (req, res) => {
   try {
     const query = req.body.query
     const users = await User.findOne({
@@ -33,48 +41,53 @@ export const searchUsersByQuery = async (req, res, next) => {
       .limit(5)
     return res.json({ users })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const updateCoverImage = async (req, res, next) => {
+export const updateCoverImage = async (req, res) => {
   try {
     const { id, cover_img } = req.body
-    const user = await User.findByIdAndUpdate(id, {
+    await User.findByIdAndUpdate(id, {
       cover_img,
     })
     return res
       .status(200)
-      .json({ status: true, msg: 'Image successfully updated' })
+      .json({ status: true, msg: 'Cover image successfully updated' })
   } catch (error) {
-    return res.json({
+    console.error(error.message)
+    return res.status(500).json({
       status: false,
-      msg: 'A failure has occurred. Try compressing the image',
+      msg: error.message,
     })
   }
 }
 
-export const updateProfileImage = async (req, res, next) => {
+export const updateProfileImage = async (req, res) => {
   try {
     const { id, user_img } = req.body
-    const user = await User.findByIdAndUpdate(id, {
+    await User.findByIdAndUpdate(id, {
       user_img,
     })
     return res
       .status(200)
-      .json({ status: true, msg: 'Image successfully updated' })
+      .json({ status: true, msg: 'Profile image successfully updated' })
   } catch (error) {
-    return res.json({
+    console.error(error.message)
+    return res.status(500).json({
       status: false,
-      msg: 'A failure has occurred. Try compressing the image',
+      msg: error.message,
     })
   }
 }
 
-export const changeUserPassword = async (req, res, next) => {
+export const changeUserPassword = async (req, res) => {
   try {
     const { userId, currentPassword, newPassword } = req.body
-
     const user = await User.findById(userId)
     const isPasswordValid =
       user && (await brcypt.compare(currentPassword, user.password))
@@ -91,20 +104,20 @@ export const changeUserPassword = async (req, res, next) => {
         },
       })
     }
+
     return res.status(200).json({ status: true, msg: 'Password changed' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: error.message,
     })
   }
 }
 
-export const changeUserEmail = async (req, res, next) => {
+export const changeUserEmail = async (req, res) => {
   try {
     const { userId, newEmail } = req.body
-
     await User.findByIdAndUpdate(userId, {
       $set: {
         email: newEmail,
@@ -113,25 +126,22 @@ export const changeUserEmail = async (req, res, next) => {
 
     return res.status(200).json({ status: true, msg: 'Email changed' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: error.message,
     })
   }
 }
 
-export const sendTokenChangeEmailVerification = async (req, res, next) => {
+export const sendTokenChangeEmailVerification = async (req, res) => {
   try {
     const { userId, email } = req.body
-
     const user = await User.findById(userId)
-
     const uid = new ShortUniqueId({ length: 10 })
     const token = uid()
-
-    const emailCheck = await User.findOne({ email })
-    if (emailCheck) {
+    const findEmail = await User.findOne({ email })
+    if (findEmail) {
       return res.json({ msg: 'Email is already in use', status: false })
     } else {
       await sendChangeEmailVerification(email, user.name, token).catch(
@@ -146,19 +156,18 @@ export const sendTokenChangeEmailVerification = async (req, res, next) => {
       })
     }
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: error.message,
     })
   }
 }
 
-export const changeUserUsername = async (req, res, next) => {
+export const changeUserUsername = async (req, res) => {
   try {
     const { username, userId } = req.body
-
-    const usernameAlreadyExist = await User.findOne({ username: username })
+    const findUsername = await User.findOne({ username: username })
     const user = await User.findById(userId).select('lastModifiedPassword')
     const currentDate = new Date(Date.now())
     const aMonthAgo = new Date(Date.now()) - 1 * 28 * 24 * 60 * 60
@@ -174,7 +183,7 @@ export const changeUserUsername = async (req, res, next) => {
       }
     }
 
-    if (usernameAlreadyExist) {
+    if (findUsername) {
       return res.json({ msg: 'Username is already in use', status: false })
     } else {
       await User.findByIdAndUpdate(userId, {
@@ -187,9 +196,10 @@ export const changeUserUsername = async (req, res, next) => {
 
     return res.status(200).json({ status: true, msg: 'Username changed' })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error',
+      msg: error.message,
     })
   }
 }
