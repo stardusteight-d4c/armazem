@@ -1,10 +1,14 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { userData } from '../../../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { RecentConnectionOnline } from './RecentConnectionOnline'
-import { handleMinimizeSidebar } from '../../../store'
+import {
+  clearAuthSession,
+  clearCurrentUser,
+  handleMinimizeSidebar,
+} from '../../../store'
 import useWindowDimensions from '../../../hooks/useWindowDimensions'
 import { motion } from 'framer-motion'
 
@@ -16,6 +20,7 @@ interface Props {
 export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
   const location = useLocation()
   const path = location.pathname
+  const navigate = useNavigate()
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const [connections, setConnections] = useState<[User] | any>([])
@@ -25,6 +30,27 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
   const dispatch = useAppDispatch()
   const { height, width } = useWindowDimensions()
   const adminRole = import.meta.env.VITE_ADMIN_ROLE
+  const [disableHookEffect, setDisableHookEffect] = useState(false)
+
+  function useOutsideAlerter(ref: any) {
+    useEffect(() => {
+      function handleClickOutside(event: { target: any }) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          // alert("You clicked outside of me!")
+          !disableHookEffect && setOpenMobileMenu(false)
+        }
+      }
+      // Bind the event listener
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }, [ref, disableHookEffect])
+  }
+
+  const wrapperRef = useRef(null)
+  useOutsideAlerter(wrapperRef)
 
   useEffect(() => {
     if (currentAccount.connections !== undefined && connections.length === 0) {
@@ -40,39 +66,36 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
     }
   }, [])
 
+  const handleLogout = async () => {
+    localStorage.clear()
+    dispatch(clearAuthSession())
+    dispatch(clearCurrentUser())
+    navigate('/login')
+  }
 
   return (
     <>
-      <motion.div
-        onClick={() => setOpenMobileMenu(false)}
-        initial={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
-        animate={{ opacity: 1 }}
-        className="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen  overflow-hidden bg-fill-strong/30"
-      />
-      <i
-        onClick={() => setOpenMobileMenu(!openMobileMenu)}
-        className="ri-arrow-right-s-fill text-2xl fixed cursor-pointer top-1/2 -translate-y-1/2 xl:hidden"
-      />
-      <aside
-        className={`${
-          minimizeSidebar && '!px-2 pl-[1.2px]'
-        } scrollbar-hide absolute top-0 w-screen z-50 min-h-screen pb-10  border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 col-span-1 row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong`}
+      <motion.aside
+        initial={{ x: -500 }}
+        animate={{ x: 0 }}
+        exit={{ x: -500 }}
+        ref={wrapperRef}
+        className="scrollbar-hide absolute md:hidden inset-0 z-50 min-h-screen pb-10  border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20   text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong"
       >
-        <Link
-          to="/"
-          className={`${
-            minimizeSidebar && '!mb-10 !mt-8'
-          } flex cursor-pointer items-center justify-center mt-6 mb-8 gap-x-2`}
-        >
-          <i className="ri-server-fill text-3xl text-fill-strong dark:text-fill-weak" />
-          {!minimizeSidebar && (
-            <h1 className="text-4xl font-inter text-fill-strong dark:text-fill-weak font-bold">
+        <div className="bg-fill-weak w-screen lg:w-full relative dark:bg-fill-strong z-30 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between px-3 h-16 md:px-12 flex items-center md:hidden">
+          <i
+            onClick={() => setOpenMobileMenu(!openMobileMenu)}
+            className="ri-menu-2-line text-3xl p-1 cursor-pointer"
+          />
+          <div className="flex items-center justify-center mt-6 mb-8 gap-x-2">
+            <i className="ri-server-fill text-xl text-fill-strong dark:text-fill-weak" />
+            <h1 className=" font-inter text-2xl  text-fill-strong dark:text-fill-weak font-bold">
               Armazem
             </h1>
-          )}
-        </Link>
-        <div>
+          </div>
+        </div>
+
+        <div className="px-4 mt-4">
           <ul className="space-y-2">
             <Link
               to="/"
@@ -87,9 +110,8 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
                     : 'ri-lightbulb-flash-line'
                 }`}
               />
-              {!minimizeSidebar && (
-                <span className="font-medium text-lg">New feed</span>
-              )}
+
+              <span className="font-medium text-lg">New feed</span>
             </Link>
             <Link
               to={`/${currentUser?.username}`}
@@ -105,9 +127,8 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
                     : 'ri-account-pin-box-line'
                 }`}
               />
-              {!minimizeSidebar && (
-                <span className="font-medium text-lg">My account</span>
-              )}
+
+              <span className="font-medium text-lg">My account</span>
             </Link>
             <Link
               to="/connections"
@@ -121,9 +142,8 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
                   path === `/connections` ? 'ri-link-unlink' : 'ri-link'
                 }`}
               />
-              {!minimizeSidebar && (
-                <span className="font-medium text-lg">Connections</span>
-              )}
+
+              <span className="font-medium text-lg">Connections</span>
             </Link>
             <Link
               to="/collection"
@@ -136,9 +156,8 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
                   path === `/collection` ? 'ri-book-3-fill' : 'ri-book-3-line'
                 }`}
               />
-              {!minimizeSidebar && (
-                <span className="font-medium text-lg">Collection</span>
-              )}
+
+              <span className="font-medium text-lg">Collection</span>
             </Link>
             <Link
               to="/MyList"
@@ -151,9 +170,8 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
                   path === `/MyList` ? 'ri-book-mark-fill' : 'ri-book-mark-line'
                 }`}
               />
-              {!minimizeSidebar && (
-                <span className="font-medium text-lg">My list</span>
-              )}
+
+              <span className="font-medium text-lg">My list</span>
             </Link>
             {currentUser?.role && currentUser.role === adminRole && (
               <Link
@@ -168,26 +186,20 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
                     path === `/addManga` ? 'ri-add-box-fill' : 'ri-add-box-line'
                   }`}
                 />
-                {!minimizeSidebar && (
-                  <span className="font-medium text-lg">Add manga</span>
-                )}
+
+                <span className="font-medium text-lg">Add manga</span>
               </Link>
             )}
           </ul>
         </div>
-        <div className="h-[1px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
-        {!minimizeSidebar && (
-          <div>
-            <ul className="space-y-5">
-              {connections.map(
-                (connection: User, index: React.Key | null | undefined) => (
-                  <RecentConnectionOnline key={index} connection={connection} />
-                )
-              )}
-            </ul>
-          </div>
-        )}
-      </aside>
+        <div
+          onClick={handleLogout}
+          className="flex flex-col items-center justify-center gap-x-2 p-1 cursor-pointer text-red font-medium text-2xl mt-14"
+        >
+          <i className="ri-logout-box-line" />
+          Logout
+        </div>
+      </motion.aside>
     </>
   )
 }

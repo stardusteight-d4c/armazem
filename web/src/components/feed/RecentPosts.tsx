@@ -74,7 +74,7 @@ export const RecentPosts = (props: Props) => {
           <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
             Most recent posts
           </h2>
-          <div className="flex min-w-full md:gap-4 pb-[40px]">
+          <div className="flex flex-col md:flex-row min-w-full gap-4 pb-[40px]">
             <motion.div className="flex flex-col gap-y-3 flex-grow md:max-w-[50%]">
               {recentPostsFirstSection.map((post: Post) => (
                 <RecentPost post={post} />

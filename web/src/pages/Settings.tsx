@@ -13,6 +13,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import bcryptjs from 'bcryptjs'
 import { useNavigate } from 'react-router-dom'
+import { MobileNav } from '../components/menu'
 
 interface Props {}
 
@@ -195,26 +196,31 @@ export const Settings = (props: Props) => {
   return (
     <div
       className={`${style.gridContainer} ${
-        minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+        minimizeSidebar
+        ? 'grid-cols-1 md:grid-cols-18'
+        : 'grid-cols-1 md:grid-cols-5'
       }`}
     >
       <Sidebar />
       <div
         className={`${style.mainContent} ${
-          minimizeSidebar ? 'col-span-17' : 'col-span-4'
+        minimizeSidebar
+            ? 'col-span-1 md:col-span-17'
+            : 'col-span-1 md:col-span-4'
         }`}
       >
         <Navbar />
+        <MobileNav />
         <main>
-          <div className="p-4 pb-14">
-            <h2 className="text-2xl flex  items-center gap-x-2 pb-1 mb-4 border-b border-dawn-weak/20 dark:border-dusk-weak/20 font-bold">
+          <div className="p-4 pb-24 md:pb-14">
+            <h2 className="text-2xl flex items-center gap-x-2 pb-1 mb-4 border-b border-dawn-weak/20 dark:border-dusk-weak/20 font-bold">
               Settings
             </h2>
-            <div className="flex w-full items-center justify-between pr-28">
+            <div className="md:flex w-full items-center justify-between md:pr-28">
               <h2 className="text-xl flex items-center gap-x-2 pb-1 mb-4 font-bold">
                 Change password
               </h2>
-              <div className="w-[50%] flex flex-col gap-y-5">
+              <div className="w-full md:w-[50%] flex flex-col gap-y-5">
                 {currentUser?.password ? (
                   <>
                     <div>
@@ -266,11 +272,11 @@ export const Settings = (props: Props) => {
                       type="submit"
                       title="Submit"
                       onClick={handleSubmitChangePassword}
-                      className="bg-prime-blue !w-[50%] -mt-2"
+                      className="bg-prime-blue md:!w-[50%] -mt-2"
                     />
                   </>
                 ) : (
-                  <span className="text-base my-16 text-dusk-weak">
+                  <span className="text-base mx-auto w-fit md:mx-0 text-center md:text-left md:my-8 text-dusk-weak">
                     Your account was created using the{' '}
                     <a
                       href="https://cloud.google.com/identity-platform/docs/web/google"
@@ -285,19 +291,19 @@ export const Settings = (props: Props) => {
                 )}
               </div>
             </div>
-            <div className="flex w-full items-center justify-between pt-10 pr-28">
-              <div className="w-[45%]">
-                <h2 className="text-xl flex items-center gap-x-2  font-bold">
+            <div className="md:flex w-full items-center justify-between pt-10 md:pr-28">
+              <div className="md:w-[45%]">
+                <h2 className="text-xl flex items-center gap-x-2 font-bold">
                   Change email
                 </h2>
                 {!currentUser?.password && (
-                  <span className="text-sm text-dusk-weak">
+                  <span className="text-sm text-dusk-weak md:pb-0">
                     You authenticated via google provider, so only gmail email
                     addresses will be allowed.
                   </span>
                 )}
               </div>
-              <div className="w-[50%] flex flex-col gap-y-5">
+              <div className="md:w-[50%] mt-5 md:mt-0 flex flex-col gap-y-5">
                 <div>
                   <label htmlFor="newEmail" className={style.label}>
                     New email
@@ -362,13 +368,13 @@ export const Settings = (props: Props) => {
                   onClick={handleSubmitChangeEmail}
                   disabled={!token && !backendEmail}
                   title="Submit"
-                  className="bg-prime-blue !w-[50%] -mt-2"
+                  className="bg-prime-blue md:!w-[50%] -mt-2"
                 />
               </div>
             </div>
-            <div className="flex w-full items-center pt-10 justify-between pr-28">
-              <div className="w-[45%]">
-                <h2 className="text-xl flex items-center gap-x-2  font-bold">
+            <div className="md:flex w-full items-center pt-10 justify-between md:pr-28">
+              <div className="md:w-[45%] mb-4 md:mb-0">
+                <h2 className="text-xl flex items-center gap-x-2 mb-4 md:mb-0 font-bold">
                   Change username
                 </h2>
                 <span className="text-sm text-dusk-weak">
@@ -387,7 +393,7 @@ export const Settings = (props: Props) => {
                   no longer work.
                 </span>
               </div>
-              <div className="w-[50%] flex flex-col gap-y-5">
+              <div className="md:w-[50%] flex flex-col gap-y-5">
                 <div>
                   <label htmlFor="newUsername" className={style.label}>
                     New username
@@ -411,15 +417,15 @@ export const Settings = (props: Props) => {
                   type="submit"
                   title="Submit"
                   onClick={handleSubmitChangeUsername}
-                  className="bg-prime-blue -mt-2 !w-[50%]"
+                  className="bg-prime-blue -mt-2 md:!w-[50%]"
                 />
               </div>
             </div>
-            <div className="flex w-full items-center mt-16 justify-between pr-28">
-              <h2 className="text-xl flex items-center gap-x-2 text-red font-bold">
+            <div className="md:flex w-full items-center mt-16 justify-between md:pr-28">
+              <h2 className="text-xl mb-4 md:mb-0 flex items-center gap-x-2 text-red font-bold">
                 Delete account
               </h2>
-              <div className="w-[50%] flex flex-col gap-y-5">
+              <div className="md:w-[50%] flex flex-col gap-y-5">
                 <div>
                   All account deletion requests are{' '}
                   <strong className="text-red">permanent</strong>. You cannot
@@ -432,12 +438,15 @@ export const Settings = (props: Props) => {
                     type="submit"
                     onClick={(e) => setConfirmDeleteAccount(true)}
                     title="Delete my account"
-                    className="bg-red -mt-2 w-[50%] my-1"
+                    className="bg-red -mt-2 md:w-[50%] my-1"
                   />
                   {confirmDeleteAccount && (
                     <div className="absolute space-x-2">
                       <span>Really want to delete your account?</span>
-                      <span onClick={handleSubmitDeleteAccount} className="text-red font-medium cursor-pointer hover:underline">
+                      <span
+                        onClick={handleSubmitDeleteAccount}
+                        className="text-red font-medium cursor-pointer hover:underline"
+                      >
                         Delete
                       </span>
                       <span>/</span>
@@ -460,8 +469,8 @@ export const Settings = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden max-w-screen-xl drop-shadow-sm border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2`,
-  label: `text-dusk-main pb-1 dark:text-dawn-main text-xl w-full block font-semibold`,
+  label: `text-dusk-main pb-1 dark:text-dawn-main text-lg md:text-xl w-full block font-semibold`,
   input: `w-full p-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg`,
 }

@@ -91,12 +91,11 @@ export const StatusBar = ({}: Props) => {
   }
 
   return (
-    <section className="mt-16 py-5">
+    <section className="py-5 mt-16 md:mt-0">
       <div className="flex items-center text-lg font-semibold">
         <div className="flex justify-between items-center w-full">
-          <div className="flex gap-x-7">
+          <div className="flex flex-col md:flex-row gap-x-7">
             <div className="flex justify-between gap-x-2 items-center cursor-pointer">
-              {/* clicar e abrir modal */}
               <span
                 onClick={() => {
                   items == reading ? setItems([]) : setItems(reading)
@@ -130,7 +129,7 @@ export const StatusBar = ({}: Props) => {
         </div>
       </div>
 
-      <div className="w-full">
+      <div className="w-full mt-2 md:mt-0">
         <div className="bg-dusk-weak/10 overflow-hidden cursor-pointer rounded-full flex h-4  w-[100%] relative">
           <div
             onClick={() => {
@@ -154,7 +153,7 @@ export const StatusBar = ({}: Props) => {
             }}
             style={{ width: planToReadPercentage + '%' }}
             title={`${planToReadPercentage}%`}
-            className="h-fullflex items-center justify-center bg-dusk-weak"
+            className="h-full flex items-center justify-center bg-dusk-weak"
           />
         </div>
       </div>

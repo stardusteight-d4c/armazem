@@ -25,7 +25,7 @@ export const SharedPostCard = ({ post }: Props) => {
   }, [])
 
   return (
-    <article className="w-full cursor-pointer  h-fit p-4 text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong">
+    <article className="w-full cursor-pointer  h-fit  text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong">
       <div className="flex items-center justify-between">
         <Link
           to={`/${authorPost?.username}`}

@@ -17,6 +17,7 @@ import { Comments } from '../components/account/Comments'
 import { Loader } from '../components/Loader'
 import { askToRequestAgain, handleUserMetadata } from '../store'
 import { AnimatePresence, motion } from 'framer-motion'
+import { MobileNav } from '../components/menu'
 
 interface Props {}
 
@@ -49,18 +50,23 @@ export const Account = (props: Props) => {
   return (
     <div
       className={`${style.gridContainer} ${
-        minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+        minimizeSidebar
+          ? 'grid-cols-1 md:grid-cols-18'
+          : 'grid-cols-1 md:grid-cols-5'
       }`}
     >
       <Sidebar />
       <div
         className={`${style.mainContent} ${
-          minimizeSidebar ? 'col-span-17' : 'col-span-4'
+          minimizeSidebar
+            ? 'col-span-1 md:col-span-17'
+            : 'col-span-1 md:col-span-4'
         }`}
       >
         <Navbar />
+        <MobileNav />
         {dataLoaded && !loading ? (
-          <main>
+          <main className='w-screen md:w-full'>
             <Header
               userMetadata={userMetadata}
               currentAccount={currentAccount}
@@ -85,6 +91,6 @@ export const Account = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden max-w-screen-xl drop-shadow-sm border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2`,
 }

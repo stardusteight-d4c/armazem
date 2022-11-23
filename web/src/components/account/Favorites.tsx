@@ -23,6 +23,8 @@ export const Favorites = (props: Props) => {
           `${mangaFavorites}/${userMetadata?.account}`
         )
         if (data.status === true) {
+          console.log(data);
+          
           setFavorites(data.mangas)
         }
       })()
@@ -38,6 +40,7 @@ export const Favorites = (props: Props) => {
           favoritesCarousel.current.offsetWidth
       )
   }, [onDragFavorites])
+
 
   return (
     <section>

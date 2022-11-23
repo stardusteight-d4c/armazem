@@ -27,7 +27,7 @@ export const SharedPosts = ({ userMetadata }: Props) => {
 
 
   return (
-    <section>
+    <section className='break-all'>
       <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
         Shared posts
       </h2>
@@ -47,7 +47,7 @@ export const SharedPosts = ({ userMetadata }: Props) => {
       </div>
         </>
       ) : (
-        <div className="flex items-center justify-center text-2xl my-8">
+        <div className="flex items-center justify-center text-2xl my-8 mb-14 md:mb-0">
           No posts shared yet
         </div>
       )}

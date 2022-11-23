@@ -28,7 +28,9 @@ export const MobileNav = (props: Props) => {
       function handleClickOutside(event: { target: any }) {
         if (ref.current && !ref.current.contains(event.target)) {
           // alert("You clicked outside of me!")
-          !disableHookEffect && setShowNotification(false)
+          setTimeout(() => {
+            !disableHookEffect && setShowNotification(false)
+          }, 200)
         }
       }
       // Bind the event listener
@@ -57,9 +59,11 @@ export const MobileNav = (props: Props) => {
   }, [currentAccount])
 
   function handleNotification() {
+    setDisableHookEffect(true)
     setShowNotification(!showNotification)
     localStorage.setItem('notifyLength', userNotifications.length)
     setPrevNotifyLength(localStorage.getItem('notifyLength'))
+    setDisableHookEffect(false)
   }
 
   const html = document.querySelector('html')
@@ -89,8 +93,6 @@ export const MobileNav = (props: Props) => {
         <div className="flex flex-col -space-y-[410px] items-center">
           <div className="relative">
             <i
-              onMouseEnter={() => setDisableHookEffect(true)}
-              onMouseLeave={() => setDisableHookEffect(false)}
               onClick={handleNotification}
               className={`${
                 showNotification

@@ -13,6 +13,9 @@ import { Dropdown } from '../Dropdown'
 import axios from 'axios'
 import { notifications } from '../../services/api-routes'
 import { Search } from './integrate/Search'
+import { MobileMenu } from './integrate/MobileMenu'
+import { AnimatePresence } from 'framer-motion'
+import useWindowDimensions from '../../hooks/useWindowDimensions'
 
 interface Props {}
 
@@ -23,7 +26,9 @@ export const Navbar = (props: Props) => {
   const dispatch = useAppDispatch()
   const [showNotification, setShowNotification] = useState(false)
   const [disableHookEffect, setDisableHookEffect] = useState(false)
+  const [openMobileMenu, setOpenMobileMenu] = useState(false)
   const [userNotifications, setUserNotifications] = useState<any>([])
+  const { width } = useWindowDimensions()
   const [prevNotifyLength, setPrevNotifyLength] = useState<any>(null)
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
@@ -90,6 +95,13 @@ export const Navbar = (props: Props) => {
     setPrevNotifyLength(localStorage.getItem('notifyLength'))
   }
 
+  const html = document.querySelector('html')
+  if (html) {
+    openMobileMenu
+      ? (html.style.overflow = 'hidden')
+      : (html.style.overflow = 'auto')
+  }
+
   function rendersBreakMenu() {
     return (
       <>
@@ -111,9 +123,20 @@ export const Navbar = (props: Props) => {
   }
 
   return (
-    <nav className="bg-fill-weak w-screen lg:w-full relative dark:bg-fill-strong z-30 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between px-3 h-16 md:px-12 flex items-center md:h-24">
+    <nav className="bg-fill-weak w-screen lg:w-full relative dark:bg-fill-strong z-30 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between px-3 h-16 md:px-8 flex items-center md:h-24">
       {rendersBreakMenu()}
-      <div className="block p-1 cursor-pointer mt-[5px] md:hidden">
+      <AnimatePresence>
+        {openMobileMenu && (
+          <MobileMenu
+            openMobileMenu={openMobileMenu}
+            setOpenMobileMenu={setOpenMobileMenu}
+          />
+        )}
+      </AnimatePresence>
+      <div
+        onClick={() => setOpenMobileMenu(!openMobileMenu)}
+        className="block p-1 cursor-pointer mt-[5px] md:hidden"
+      >
         <i className="ri-menu-fill text-3xl" />
       </div>
       <Link
@@ -149,7 +172,7 @@ export const Navbar = (props: Props) => {
             />
             {userNotifications.length > 0 &&
               prevNotifyLength < userNotifications.length && (
-                <i className="w-2 h-2 rounded-full bg-red absolute top-1 right-2 animate-bounce" />
+                <i className="w-2 h-2 hidden md:block rounded-full bg-red absolute top-1 right-2 animate-bounce" />
               )}
           </div>
           {showNotification && (
@@ -253,14 +276,23 @@ export const Navbar = (props: Props) => {
           className="ri-settings-2-line hidden md:block text-3xl  p-2 cursor-pointer transition duration-1000 transform hover:rotate-[360deg]"
         />
 
-        <Dropdown title="Account" space="space-y-14" items={accountItems}>
+        <div className="hidden md:block">
+          <Dropdown title="Account" space="space-y-14" items={accountItems}>
+            <img
+              referrerPolicy="no-referrer"
+              src={currentUser?.user_img}
+              className="w-12 h-12 rounded-md cursor-pointer"
+            />
+          </Dropdown>
+        </div>
+        <div className='md:hidden'>
           <img
             referrerPolicy="no-referrer"
             src={currentUser?.user_img}
-            className="w-10 h-10 md:w-12 md:h-12 rounded-md cursor-pointer"
-            alt=""
+            className="w-10 h-10 md:w-12 md:hidden rounded-md cursor-pointer"
+            onClick={() => navigate(`/${currentUser?.username}`)}
           />
-        </Dropdown>
+        </div>
       </div>
     </nav>
   )

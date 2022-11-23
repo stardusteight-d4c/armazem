@@ -43,25 +43,6 @@ export const Sidebar = (props: Props) => {
 
   const isTabletOrMobile = width < 600
 
-  // const html = document.querySelector('html')
-  // if (html) {
-  //   {
-  //     openMobileMenu
-  //       ? (html.style.overflow = 'hidden')
-  //       : (html.style.overflow = 'auto')
-  //   }
-  // }
-  
-  // if (isTabletOrMobile && openMobileMenu) {
-
-  //   return (
-  //     <MobileMenu
-  //       openMobileMenu={openMobileMenu}
-  //       setOpenMobileMenu={setOpenMobileMenu}
-  //     />
-  //   )
-  //     }
-
   return (
     <aside
       className={`${
