@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SwitchTheme } from '../SwitchTheme'
-import { Menu } from '@headlessui/react'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import {
   clearAuthSession,
@@ -14,8 +13,9 @@ import axios from 'axios'
 import { notifications } from '../../services/api-routes'
 import { Search } from './integrate/Search'
 import { MobileMenu } from './integrate/MobileMenu'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
+import { MobileSearch } from './integrate/MobileSearch'
 
 interface Props {}
 
@@ -29,6 +29,7 @@ export const Navbar = (props: Props) => {
   const [openMobileMenu, setOpenMobileMenu] = useState(false)
   const [userNotifications, setUserNotifications] = useState<any>([])
   const { width } = useWindowDimensions()
+
   const [prevNotifyLength, setPrevNotifyLength] = useState<any>(null)
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
@@ -124,6 +125,7 @@ export const Navbar = (props: Props) => {
 
   return (
     <nav className="bg-fill-weak w-screen lg:w-full relative dark:bg-fill-strong z-30 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between px-3 h-16 md:px-8 flex items-center md:h-24">
+      <MobileSearch />
       {rendersBreakMenu()}
       <AnimatePresence>
         {openMobileMenu && (
@@ -285,7 +287,7 @@ export const Navbar = (props: Props) => {
             />
           </Dropdown>
         </div>
-        <div className='md:hidden'>
+        <div className="md:hidden">
           <img
             referrerPolicy="no-referrer"
             src={currentUser?.user_img}

@@ -87,7 +87,7 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
             onClick={() => setOpenMobileMenu(!openMobileMenu)}
             className="ri-menu-2-line text-3xl p-1 cursor-pointer"
           />
-          <div className="flex items-center justify-center mt-6 mb-8 gap-x-2">
+          <div className="flex items-center justify-center gap-x-2">
             <i className="ri-server-fill text-xl text-fill-strong dark:text-fill-weak" />
             <h1 className=" font-inter text-2xl  text-fill-strong dark:text-fill-weak font-bold">
               Armazem
