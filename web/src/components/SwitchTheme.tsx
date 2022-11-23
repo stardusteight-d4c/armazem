@@ -1,6 +1,7 @@
 import { handleSwitchTheme } from '../store'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { motion } from 'framer-motion'
+import useWindowDimensions from '../hooks/useWindowDimensions'
 
 interface Props {}
 
@@ -13,6 +14,7 @@ const spring = {
 export const SwitchTheme = (props: Props) => {
   const dispatch = useAppDispatch()
   const theme = useAppSelector((state) => state.armazem.theme)
+  const { width } = useWindowDimensions()
 
   return (
     <div
@@ -38,7 +40,7 @@ export const SwitchTheme = (props: Props) => {
 }
 
 const style = {
-  wrapper: `bg-fill-strong  hidden  dark:bg-fill-weak dark:text-fill-strong text-fill-weak md:flex items-center px-0.5 cursor-pointer rounded-full h-6 w-12 flex-shrink-0 relative`,
+  wrapper: `bg-fill-strong dark:bg-fill-weak dark:text-fill-strong text-fill-weak flex items-center px-0.5 cursor-pointer rounded-full h-6 w-12 flex-shrink-0 relative`,
   lightIconContainer: `absolute left-0.5`,
   lighIcon: `ri-flashlight-fill w-4 h-4`,
   cylinderWrapper: `z-40 w-5 h-5 bg-fill-weak dark:bg-fill-strong rounded-full`,

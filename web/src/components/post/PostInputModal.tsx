@@ -71,16 +71,16 @@ export const PostInputModal = (props: Props) => {
         }}
         transition={{ type: 'spring', duration: 0.8 }}
         animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-14 pt-4 pb-16 z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl md:px-14 pt-4 pb-16 z-50 w-full h-full md:w-[800px] md:h-fit text-dusk-main dark:text-dawn-main  bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex px-4 md:px-0 items-center justify-between">
           <h1 className="text-2xl font-semibold">New post</h1>
           <i
             onClick={() => dispatch(handleOpenModal(null))}
             className="ri-close-circle-fill text-4xl cursor-pointer"
           />
         </div>
-        <div className="mt-4 flex flex-col items-start">
+        <div className="mt-4 px-4 md:px-0 flex flex-col items-start">
           <div className="flex gap-x-2 items-center font-semibold">
             <label className="text-xl">Title</label>
             <div className="font-inter text-xs text-dawn-weak dark:text-dusk-weak">(min. 10)</div>
@@ -94,13 +94,13 @@ export const PostInputModal = (props: Props) => {
             className="p-2 bg-transparent w-full focus:outline-none border border-dawn-weak/20 dark:border-dusk-weak/20"
           />
         </div>
-        <div className="flex mt-14 border min-h-[80px] max-h-[325px] border-dawn-weak/20 dark:border-dusk-weak/20 relative">
-          <span className="-top-6 left-10 absolute font-semibold text-[#707070] dark:text-[#9B9B9B]">
+        <div className="flex mx-4 md:mx-0  mt-14 border min-h-[80px] max-h-[325px] border-dawn-weak/20 dark:border-dusk-weak/20 relative">
+          <span className="-top-6 left-0 md:left-10 absolute font-semibold text-[#707070] dark:text-[#9B9B9B]">
             {currentUser?.name}
           </span>
           <img
             src={currentUser?.user_img}
-            className="w-16 h-16 rounded-md absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
+            className="w-16 h-16 hidden md:block rounded-md absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
             alt=""
           />
           <div className="relative w-full">
@@ -109,7 +109,7 @@ export const PostInputModal = (props: Props) => {
               id="body"
               maxLength={855}
               placeholder="Type your text"
-              className="w-full max-h-full min-h-[80px] px-10 py-4 bg-transparent outline-none"
+              className="w-full h-[100px] md:h-fit max-h-full min-h-[80px] p-2 md:px-10 md:py-4 bg-transparent outline-none"
             />
             <span
               className={`font-semibold absolute items-center flex gap-x-2 left-0 -bottom-7 font-inter ${

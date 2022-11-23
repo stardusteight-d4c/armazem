@@ -24,7 +24,7 @@ export const TrendingPosts = ({ topRatedPosts }: Props) => {
 
   return (
     <section>
-      <h2 className="text-2xl flex items-center gap-x-2 pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
+      <h2 className="text-2xl md:flex items-center gap-x-2 pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
         Trending posts
       </h2>
       <div className="w-full">

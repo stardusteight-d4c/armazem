@@ -51,16 +51,16 @@ export const ChatContainer = ({ currentChat }: Props) => {
 
   return (
     <>
-      <div className="flex items-center gap-x-2 px-4 bg-dawn-weak/20 dark:bg-dusk-weak/20 h-[78px]">
+      <div className="w-screen md:w-full flex items-center gap-x-2 px-4 bg-dawn-weak/20 dark:bg-dusk-weak/20 h-[78px]">
         <img src={currentChat.user_img} className="w-14 h-14 rounded-sm" />
         <div className="text-lg font-medium">{currentChat.username}</div>
       </div>
-      <div className="p-2 overflow-hidden overflow-y-scroll h-[410px]">
+      <div className="p-2 overflow-hidden overflow-y-scroll break-all w-full h-[90vh] pb-28 md:h-[410px]">
         {messages.map((message: any) => (
           <Messages message={message} currentChat={currentChat} />
         ))}
       </div>
-      <div className="absolute flex items-center bottom-0 w-full p-2">
+      <div className="absolute bg-fill-weak dark:bg-fill-strong  mt-auto flex items-center bottom-0 w-full p-2">
         <input
           onChange={(e) => setMessage(e.target.value)}
           maxLength={300}

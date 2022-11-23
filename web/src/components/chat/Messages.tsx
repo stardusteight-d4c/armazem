@@ -21,10 +21,10 @@ export const Messages = ({ message, currentChat }: Props) => {
           </div>
         </div>
       ) : (
-        <div className="flex justify-start">
+        <div className="flex justify-start w-full">
           <div>
             <div className="text-left">@{currentChat.username}</div>
-            <div className="bg-dawn-weak/20 dark:bg-dusk-weak/20 p-2 w-fit h-fi rounded-sm my-2">
+            <div className="bg-dawn-weak/20 dark:bg-dusk-weak/20 p-2 max-w-full h-fi rounded-sm my-2">
               {message.message}
             </div>
           </div>

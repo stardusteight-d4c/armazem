@@ -83,7 +83,7 @@ export const TrendingPost = ({ postId }: Props) => {
       {!loading ? (
         <motion.article
           whileTap={{ cursor: 'grabbing' }}
-          className="max-w-[400px] min-w-[400px] md:max-w-[450px] md:min-w-[450px] md:w-full border border-dawn-weak/20 dark:border-dusk-weak/20 max-h-[269px] min-h-[269px] flex flex-col justify-between hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200  h-fit p-4"
+          className="md:max-w-[450px] md:min-w-[450px] min-w-full max-w-full w-full border border-dawn-weak/20 dark:border-dusk-weak/20 max-h-[269px] min-h-[269px] flex flex-col justify-between hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200  h-fit p-4"
         >
           <div>
             <div className="flex items-center justify-between">
@@ -115,7 +115,7 @@ export const TrendingPost = ({ postId }: Props) => {
               <div className="flex items-center gap-x-5">
                 <div
                   // onClick={handleLikePost}
-                  className="flex w-[84px] items-center "
+                  className="flex md:w-[84px] items-center "
                 >
                   <i
                     className={`${
@@ -126,16 +126,22 @@ export const TrendingPost = ({ postId }: Props) => {
                   />
                   <span className="text-lg">
                     {post.likes.length}{' '}
-                    {post.likes.length <= 1 ? 'Like' : 'Likes'}
+                    {post.likes.length <= 1 ? (
+                      <div className="hidden md:inline-block">Like</div>
+                    ) : (
+                      <div className="hidden md:inline-block">Likes</div>
+                    )}
                   </span>
                 </div>
                 <div className="flex items-center ">
                   <i className="ri-discuss-line pr-1 text-xl" />
                   <span className="text-lg">
                     {post.discussions.length}{' '}
-                    {post.discussions.length <= 1
-                      ? 'Discussion'
-                      : 'Discussions'}
+                    {post.discussions.length <= 1 ? (
+                      <div className="hidden md:inline-block">Discussion</div>
+                    ) : (
+                      <div className="hidden md:inline-block">Discussions</div>
+                    )}
                   </span>
                 </div>
               </div>
@@ -144,12 +150,12 @@ export const TrendingPost = ({ postId }: Props) => {
                   {isSharedPosts ? (
                     <div className="text-orange flex items-center ">
                       <i className="ri-share-box-line pr-1 text-xl" />
-                      <span className="text-lg">Shared</span>
+                      <span className="text-lg hidden md:inline-block">Shared</span>
                     </div>
                   ) : (
                     <div className="flex items-center ">
                       <i className="ri-share-box-line pr-1 text-xl" />
-                      <span className="text-lg">Share</span>
+                      <span className="text-lg hidden md:inline-block">Share</span>
                     </div>
                   )}
                 </>
@@ -158,7 +164,7 @@ export const TrendingPost = ({ postId }: Props) => {
           </div>
         </motion.article>
       ) : (
-        <div className="w-full h-screen -mt-28 flex items-center justify-center">
+        <div className="w-full h-screen my-0 -mt-28 flex items-center justify-center">
           <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
         </div>
       )}

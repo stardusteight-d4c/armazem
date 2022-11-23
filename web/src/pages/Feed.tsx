@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Navbar, Sidebar } from '../components/menu'
+import { MobileNav, Navbar, Sidebar } from '../components/menu'
 import { Hero, MostRead, TrendingPosts, RecentPosts } from '../components/feed'
 import axios from 'axios'
 import { useAppSelector } from '../store/hooks'
 import { topRatedPost } from '../services/api-routes'
 import useWindowDimensions from '../hooks/useWindowDimensions'
+import { SwitchTheme } from '../components'
 
 interface Props {}
 
@@ -27,18 +28,23 @@ export const Feed = (props: Props) => {
   return (
     <div
       className={`${style.gridContainer} ${
-        minimizeSidebar ? 'grid-cols-1 md:grid-cols-18' : 'grid-cols-1 md:grid-cols-5'
+        minimizeSidebar
+          ? 'grid-cols-1 md:grid-cols-18'
+          : 'grid-cols-1 md:grid-cols-5'
       }`}
     >
       <Sidebar />
       <div
         className={`
           ${style.mainContent}  ${
-          minimizeSidebar ? 'col-span-1 md:col-span-17' : 'col-span-1 md:col-span-4'
+          minimizeSidebar
+            ? 'col-span-1 md:col-span-17'
+            : 'col-span-1 md:col-span-4'
         }
         `}
       >
         <Navbar />
+        <MobileNav />
         <main className="p-3 w-screen md:p-8 md:w-full">
           <Hero />
           <TrendingPosts topRatedPosts={topRatedPosts} />

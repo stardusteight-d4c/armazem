@@ -37,6 +37,7 @@ import {
   ReviewModal,
   SharedPostsModal,
 } from './components/modals'
+import { MobileChatModal } from './components/chat/MobileChatModal'
 
 interface Props {}
 
@@ -140,6 +141,8 @@ export const App = (props: Props) => {
         return <ReviewModal />
       case 'Chat':
         return <ChatModal />
+      case 'ChatMobile':
+        return <MobileChatModal />
     }
   }
 

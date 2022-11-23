@@ -74,7 +74,6 @@ export const RecentPosts = (props: Props) => {
           <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
             Most recent posts
           </h2>
-          {/* Limite de 100 */}
           <div className="flex min-w-full md:gap-4 pb-[40px]">
             <motion.div className="flex flex-col gap-y-3 flex-grow md:max-w-[50%]">
               {recentPostsFirstSection.map((post: Post) => (
@@ -90,11 +89,11 @@ export const RecentPosts = (props: Props) => {
           {endRecentPosts && (
             <>
               {loading ? (
-                <div className="w-full h-fit flex items-center justify-center">
+                <div className="w-full h-fit flex mb-14 md:mb-0 items-center justify-center">
                   <Loader className="border-fill-strong dark:border-white !w-12 !h-12 !border-[4px]" />
                 </div>
               ) : (
-                <div className="flex w-full items-center justify-center my-8 text-2xl">
+                <div className="flex w-full text-center items-center justify-center md:my-8 mt-4 mb-20 text-2xl">
                   There are no more recent posts
                 </div>
               )}
