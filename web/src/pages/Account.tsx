@@ -18,6 +18,7 @@ import { Loader } from '../components/Loader'
 import { askToRequestAgain, handleUserMetadata } from '../store'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MobileNav } from '../components/menu'
+import { MobileSearch } from '../components/menu/MobileSearch'
 
 interface Props {}
 
@@ -64,6 +65,7 @@ export const Account = (props: Props) => {
         }`}
       >
         <Navbar />
+        <MobileSearch />
         <MobileNav />
         {dataLoaded && !loading ? (
           <main className='w-screen md:w-full'>
@@ -71,7 +73,7 @@ export const Account = (props: Props) => {
               userMetadata={userMetadata}
               currentAccount={currentAccount}
             />
-            <div className="p-4 pb-14">
+            <div className="mt-6 md:mt-0 p-4 pb-14">
               <StatusBar userMetadata={userMetadata} />
               <Favorites />
               <LastPosts userMetadata={userMetadata} />

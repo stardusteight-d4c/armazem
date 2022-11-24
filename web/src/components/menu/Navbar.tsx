@@ -15,7 +15,7 @@ import { Search } from './integrate/Search'
 import { MobileMenu } from './integrate/MobileMenu'
 import { AnimatePresence, motion } from 'framer-motion'
 import useWindowDimensions from '../../hooks/useWindowDimensions'
-import { MobileSearch } from './integrate/MobileSearch'
+import { MobileSearch } from './MobileSearch'
 
 interface Props {}
 
@@ -125,7 +125,6 @@ export const Navbar = (props: Props) => {
 
   return (
     <nav className="bg-fill-weak w-screen lg:w-full relative dark:bg-fill-strong z-30 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between px-3 h-16 md:px-8 flex items-center md:h-24">
-      <MobileSearch />
       {rendersBreakMenu()}
       <AnimatePresence>
         {openMobileMenu && (

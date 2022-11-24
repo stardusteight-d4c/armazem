@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks'
 import bcryptjs from 'bcryptjs'
 import { useNavigate } from 'react-router-dom'
 import { MobileNav } from '../components/menu'
+import { MobileSearch } from '../components/menu/MobileSearch'
 
 interface Props {}
 
@@ -210,6 +211,7 @@ export const Settings = (props: Props) => {
         }`}
       >
         <Navbar />
+        <MobileSearch />
         <MobileNav />
         <main>
           <div className="p-4 pb-24 md:pb-14">

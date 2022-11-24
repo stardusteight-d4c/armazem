@@ -62,17 +62,17 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
             )}
           </div>
           <div className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:-bottom-1 md:left-44">
-            <div className="flex items-center gap-x-2">
-              <h2 className="text-3xl text-center md:text-4xl font-semibold text-black dark:text-white">
+            <div className="flex flex-col md:flex-row items-center gap-x-2">
+              <h2 className="text-3xl w-[80vw] md:w-fit line-clamp-1 text-center md:text-4xl font-semibold text-black dark:text-white">
                 {userMetadata.name}
               </h2>
               {userMetadata._id !== currentUser?._id && (
-                <>
+                <div>
                   <ConnectionStatus
                     userMetadata={userMetadata}
                     currentAccount={currentAccount}
                   />
-                </>
+                </div>
               )}
             </div>
             <div className="flex items-center justify-center md:justify-start gap-x-2 text-lg">

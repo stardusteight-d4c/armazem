@@ -19,27 +19,27 @@ const Item = ({ item }: Props) => {
   }, [item])
 
   return (
-    <div className="p-4  border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20  justify-between flex items-center">
+    <div className="py-4 md:p-4  border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20  justify-between flex items-center">
       <div className="flex items-center">
         <Link
           to={`/manga/${item.mangaUid}`}
-          className="text-2xl cursor-pointer hover:underline font-bold min-w-[300px] max-w-[300px] truncate px-4"
+          className="text-sm md:text-2xl cursor-pointer hover:underline font-bold  max-w-[180px] xsm:max-w-[220px] md:min-w-[300px] md:max-w-[300px] truncate px-4"
         >
           {itemData?.title}
         </Link>
       </div>
       <div className="flex items-center">
         <div
-          className={`min-w-[200px] text-center max-w-[200px] px-4 text-xl font-base ${
+          className={`min-w-[115px] max-w-[115px] md:min-w-[200px] md:max-w-[200px] text-center px-4 md:text-xl font-base ${
             itemData?.status === 'Finished' ? 'text-prime-blue' : 'text-green'
           }`}
         >
           {itemData?.status}
         </div>
-        <div className="min-w-[200px] text-center max-w-[200px] px-4 text-xl font-semibold">
+        <div className="hidden md:inline-block min-w-[200px] max-w-[200px] text-center px-4 text-xl font-semibold">
           {item.score}
         </div>
-        <div className="min-w-[200px] text-center max-w-[200px] px-4 text-xl font-semibold">
+        <div className="min-w-[80px] max-w-[80px] md:min-w-[200px] md:max-w-[200px] text-center md:px-4 md:text-xl font-semibold">
           {item.chapRead}
         </div>
       </div>

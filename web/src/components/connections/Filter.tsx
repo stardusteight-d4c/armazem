@@ -6,11 +6,7 @@ interface Props {
   accept: User[]
 }
 
-export const Filter = ({
-  active,
-  setActive,
-  accept,
-}: Props) => {
+export const Filter = ({ active, setActive, accept }: Props) => {
   return (
     <div>
       <ul
@@ -22,23 +18,24 @@ export const Filter = ({
       >
         <li
           onClick={() => setActive('connections')}
-          className={`cursor-pointer px-4 py-2 transition-all duration-200 hover:brightness-125 ${
+          className={`cursor-pointer text-center w-1/3 md:w-fit md:px-4 py-2 transition-all duration-200 hover:brightness-125 ${
             active === 'connections' && 'bg-green text-white'
           }`}
         >
-          My connections
+          <span className="hidden md:inline-block">My</span>{' '}
+          <span className=" capitalize md:lowercase">connections</span>
         </li>
         <li
           onClick={() => setActive('pending')}
-          className={`cursor-pointer px-4 py-2 transition-all duration-200 hover:brightness-125 ${
+          className={`cursor-pointer text-center w-1/3 md:w-fit md:px-4 py-2 transition-all duration-200 hover:brightness-125 ${
             active === 'pending' && 'bg-orange text-white '
           }`}
         >
-          Pending requests
+          Pending <span className="hidden md:inline-block">requests</span>
         </li>
         <li
           onClick={() => setActive('accept')}
-          className={`cursor-pointer relative px-4 py-2 transition-all duration-200 hover:brightness-125 ${
+          className={`cursor-pointer text-center w-1/3 md:w-fit relative md:px-4 py-2 transition-all duration-200 hover:brightness-125 ${
             active === 'accept' && 'bg-prime-blue text-white '
           }`}
         >
@@ -47,7 +44,7 @@ export const Filter = ({
               !
             </span>
           )}
-          Accept connection
+          Accept <span className="hidden md:inline-block">connection</span>
         </li>
       </ul>
     </div>

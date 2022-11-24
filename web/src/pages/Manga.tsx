@@ -233,7 +233,7 @@ export const Manga = (props: Props) => {
         const listData = {
           mangaUid: manga!.uid,
           status,
-          date: new Date()
+          date: new Date(),
         }
         setListInfos({})
         const { data } = await axios.post(addMangaToListed, {
@@ -248,7 +248,7 @@ export const Manga = (props: Props) => {
           mangaUid: manga!.uid,
           ...listInfos,
           status,
-          date: new Date()
+          date: new Date(),
         }
         const { data } = await axios.post(addMangaToListed, {
           accountId: currentAccount._id,
@@ -293,17 +293,21 @@ export const Manga = (props: Props) => {
   return (
     <div
       className={`${style.gridContainer} ${
-        minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+        minimizeSidebar
+          ? 'grid-cols-1 md:grid-cols-18'
+          : 'grid-cols-1 md:grid-cols-5'
       }`}
     >
       <Sidebar />
       <div
         className={`${style.mainContent} ${
-          minimizeSidebar ? 'col-span-17' : 'col-span-4'
+          minimizeSidebar
+          ? 'col-span-1 md:col-span-17'
+          : 'col-span-1 md:col-span-4'
         }`}
       >
         <Navbar />
-        <main>
+        <main className='w-screen md:w-full'>
           {!loading ? (
             <>
               <div className="py-2 cursor-default px-4 flex items-center justify-between bg-prime-blue text-fill-weak text-2xl font-semibold">
@@ -312,12 +316,12 @@ export const Manga = (props: Props) => {
               </div>
               <div className="p-4 pb-14">
                 <div className="flex">
-                  <div className="max-w-[225px]">
+                  <div className="w-full max-w-[225px]">
                     <img
                       src={manga?.cover}
                       className="min-w-[225px] max-w-[225px] min-h-[300px] max-h-[300px]"
                     />
-                    <div className="flex items-center gap-x-2">
+                    <div className="max-w-[225px] flex items-center gap-x-2">
                       {mangaListed && mangaListed.status !== 'Plan to Read' ? (
                         <div
                           title="Listed"
@@ -625,6 +629,6 @@ export const Manga = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden max-w-screen-xl drop-shadow-sm border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2`,
 }

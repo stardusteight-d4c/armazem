@@ -3,7 +3,10 @@ import axios from 'axios'
 import { Key, useEffect, useState } from 'react'
 import { Navbar, Sidebar } from '../components'
 import { Card } from '../components/collection/Card'
+import { Dropdown } from '../components/Dropdown'
 import { Loader } from '../components/Loader'
+import { MobileNav } from '../components/menu'
+import { MobileSearch } from '../components/menu/MobileSearch'
 import {
   mangaByGenre,
   mangaByGenreAndTitle,
@@ -103,32 +106,38 @@ export const Collection = (props: Props) => {
   return (
     <div
       className={`${style.gridContainer} ${
-        minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+        minimizeSidebar
+          ? 'grid-cols-1 md:grid-cols-18'
+          : 'grid-cols-1 md:grid-cols-5'
       }`}
     >
       <Sidebar />
       <div
         className={`${style.mainContent} ${
-          minimizeSidebar ? 'col-span-17' : 'col-span-4'
+          minimizeSidebar
+            ? 'col-span-1 md:col-span-17'
+            : 'col-span-1 md:col-span-4'
         }`}
       >
         <Navbar />
-        <div className="flex gap-x-2 px-4 py-1 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20">
+        <MobileSearch />
+        <MobileNav />
+        <div className="flex w-screen gap-x-2 px-4 py-1 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20">
           <input
             type="text"
             onChange={(e) => handleSearchTerm(e)}
             placeholder="Search by title"
-            className="p-1 outline-none focus:ring-1 focus:ring-prime-blue rounded-sm bg-transparent border border-dawn-weak/20 dark:border-dusk-weak/20"
+            className="p-1 outline-none w-[60vw] md:w-fit focus:ring-1 focus:ring-prime-blue rounded-sm bg-transparent border border-dawn-weak/20 dark:border-dusk-weak/20"
           />
           <div>
             <Menu>
               <div className="flex flex-col space-y-10">
                 <Menu.Button>
-                  <div className="rounded-sm hover:brightness-125 transition duration-300 cursor-pointer text-lg font-semibold px-4 py-[2px] text-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20">
+                  <div className="rounded-sm truncate max-w-[110px] sm:max-w-fit hover:brightness-125 transition duration-300 cursor-pointer text-lg font-semibold px-4 py-[2px] text-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20">
                     {filterValue}
                   </div>
                 </Menu.Button>
-                <Menu.Items className="shadow-2xl h-52 overflow-hidden overflow-y-scroll border border-dawn-weak/20 dark:border-dusk-weak/20 whitespace-nowrap z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong">
+                <Menu.Items className="shadow-2xl -ml-12 h-52 overflow-hidden overflow-y-scroll border border-dawn-weak/20 dark:border-dusk-weak/20 whitespace-nowrap z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong">
                   {genresFilter.map((genre, index) => (
                     <Menu.Item key={index}>
                       <span
@@ -147,7 +156,9 @@ export const Collection = (props: Props) => {
         <main>
           <div
             className={`${
-              minimizeSidebar ? 'grid-cols-5' : 'grid-cols-4'
+              minimizeSidebar
+                ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'
+                : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
             } pb-14 grid p-4 gap-4 w-full`}
           >
             {!loading ? (
@@ -169,6 +180,6 @@ export const Collection = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid  max-w-screen-xl drop-shadow-sm border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto  text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2`,
 }

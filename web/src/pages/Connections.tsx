@@ -10,6 +10,8 @@ import {
   Sidebar,
 } from '../components'
 import { Loader } from '../components/Loader'
+import { MobileNav } from '../components/menu'
+import { MobileSearch } from '../components/menu/MobileSearch'
 import { removeConnection, userData } from '../services/api-routes'
 import { askToRequestAgain } from '../store'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
@@ -88,20 +90,26 @@ export const Connections = (props: Props) => {
     <>
       <div
         className={`${style.gridContainer} ${
-          minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+          minimizeSidebar
+            ? 'grid-cols-1 md:grid-cols-18'
+            : 'grid-cols-1 md:grid-cols-5'
         }`}
       >
         <Sidebar />
         <div
           className={`${style.mainContent} ${
-            minimizeSidebar ? 'col-span-17' : 'col-span-4'
+            minimizeSidebar
+              ? 'col-span-1 md:col-span-17'
+              : 'col-span-1 md:col-span-4'
           }`}
         >
           <Navbar />
-          <main>
+          <MobileSearch />
+          <MobileNav />
+          <main className="min-h-screen">
             <Filter active={active} setActive={setActive} accept={accept} />
             {active === 'connections' && connections.length === 0 && (
-              <div className="text-3xl mt-28 h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
+              <div className="text-3xl mt-28 text-center h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
                 You don't have connections yet
               </div>
             )}
@@ -114,7 +122,7 @@ export const Connections = (props: Props) => {
             )}
 
             {active === 'pending' && pending.length === 0 && (
-              <div className="text-3xl mt-28 h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
+              <div className="text-3xl mt-28 text-center h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
                 There are no requests sent
               </div>
             )}
@@ -127,7 +135,7 @@ export const Connections = (props: Props) => {
             )}
 
             {active === 'accept' && accept.length === 0 && (
-              <div className="text-3xl mt-28 h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
+              <div className="text-3xl mt-28 text-center h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
                 There are no requests received
               </div>
             )}
@@ -145,8 +153,7 @@ export const Connections = (props: Props) => {
   )
 }
 
-
 const style = {
-  gridContainer: `grid overflow-hidden max-w-screen-xl drop-shadow-sm border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2`,
 }

@@ -6,6 +6,7 @@ import { useAppSelector } from '../store/hooks'
 import { topRatedPost } from '../services/api-routes'
 import useWindowDimensions from '../hooks/useWindowDimensions'
 import { SwitchTheme } from '../components'
+import { MobileSearch } from '../components/menu/MobileSearch'
 
 interface Props {}
 
@@ -34,6 +35,7 @@ export const Feed = (props: Props) => {
       }`}
     >
       <Sidebar />
+      {/* criar um componente wrapper que aceita childreen e aceita o main content */}
       <div
         className={`
           ${style.mainContent}  ${
@@ -44,6 +46,7 @@ export const Feed = (props: Props) => {
         `}
       >
         <Navbar />
+        <MobileSearch />
         <MobileNav />
         <main className="p-3 w-screen md:p-8 md:w-full">
           <Hero />

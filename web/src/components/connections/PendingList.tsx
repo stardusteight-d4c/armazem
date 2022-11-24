@@ -48,11 +48,11 @@ export const PendingList = ({
                 <img
                   src={pending.user_img}
                   alt=""
-                  className="w-20 h-20 object-cover"
+                  className="w-14 h-14 md:w-20 md:h-20 object-cover"
                 />
                 <div className="flex flex-col px-2 -mt-1">
-                  <span className="text-2xl">{pending.name}</span>
-                  <span>{pending.username}</span>
+                  <span className="text-2xl truncate w-60 md:w-96">{pending.name}</span>
+                  <span>@{pending.username}</span>
                 </div>
               </Link>
               <div className="flex relative items-center space-x-2 justify-end">

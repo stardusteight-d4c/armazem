@@ -1,0 +1,134 @@
+"filename", "language", "JSON", "HTML", "JavaScript", "TypeScript", "JSON with Comments", "XML", "TypeScript React", "PostCSS", "comment", "blank", "total"
+"/home/sena/Documents/ANiStorage/server/package-lock.json", "JSON", 3682, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3683
+"/home/sena/Documents/ANiStorage/server/package.json", "JSON", 27, 0, 0, 0, 0, 0, 0, 0, 0, 1, 28
+"/home/sena/Documents/ANiStorage/server/src/controllers/accountController.js", "JavaScript", 0, 0, 513, 0, 0, 0, 0, 0, 18, 80, 611
+"/home/sena/Documents/ANiStorage/server/src/controllers/authController.js", "JavaScript", 0, 0, 216, 0, 0, 0, 0, 0, 0, 22, 238
+"/home/sena/Documents/ANiStorage/server/src/controllers/mangaController.js", "JavaScript", 0, 0, 306, 0, 0, 0, 0, 0, 3, 44, 353
+"/home/sena/Documents/ANiStorage/server/src/controllers/messageController.js", "JavaScript", 0, 0, 51, 0, 0, 0, 0, 0, 0, 5, 56
+"/home/sena/Documents/ANiStorage/server/src/controllers/postController.js", "JavaScript", 0, 0, 456, 0, 0, 0, 0, 0, 13, 48, 517
+"/home/sena/Documents/ANiStorage/server/src/controllers/userController.js", "JavaScript", 0, 0, 190, 0, 0, 0, 0, 0, 0, 16, 206
+"/home/sena/Documents/ANiStorage/server/src/http.js", "JavaScript", 0, 0, 40, 0, 0, 0, 0, 0, 16, 11, 67
+"/home/sena/Documents/ANiStorage/server/src/middlewares/active-user.js", "JavaScript", 0, 0, 18, 0, 0, 0, 0, 0, 0, 3, 21
+"/home/sena/Documents/ANiStorage/server/src/middlewares/authorization.js", "JavaScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 2, 12
+"/home/sena/Documents/ANiStorage/server/src/models/accountModel.js", "JavaScript", 0, 0, 32, 0, 0, 0, 0, 0, 0, 3, 35
+"/home/sena/Documents/ANiStorage/server/src/models/commentModel.js", "JavaScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 3, 13
+"/home/sena/Documents/ANiStorage/server/src/models/discussionModel.js", "JavaScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 3, 16
+"/home/sena/Documents/ANiStorage/server/src/models/mangaModel.js", "JavaScript", 0, 0, 53, 0, 0, 0, 0, 0, 0, 3, 56
+"/home/sena/Documents/ANiStorage/server/src/models/messageModel.js", "JavaScript", 0, 0, 21, 0, 0, 0, 0, 0, 0, 2, 23
+"/home/sena/Documents/ANiStorage/server/src/models/notificationModel.js", "JavaScript", 0, 0, 12, 0, 0, 0, 0, 0, 5, 3, 20
+"/home/sena/Documents/ANiStorage/server/src/models/postModel.js", "JavaScript", 0, 0, 22, 0, 0, 0, 0, 0, 0, 3, 25
+"/home/sena/Documents/ANiStorage/server/src/models/replyModel.js", "JavaScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 3, 16
+"/home/sena/Documents/ANiStorage/server/src/models/reviewModel.js", "JavaScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 3, 18
+"/home/sena/Documents/ANiStorage/server/src/models/userModel.js", "JavaScript", 0, 0, 45, 0, 0, 0, 0, 0, 0, 3, 48
+"/home/sena/Documents/ANiStorage/server/src/routes/accountRoutes.js", "JavaScript", 0, 0, 49, 0, 0, 0, 0, 0, 0, 3, 52
+"/home/sena/Documents/ANiStorage/server/src/routes/authRoutes.js", "JavaScript", 0, 0, 21, 0, 0, 0, 0, 0, 0, 4, 25
+"/home/sena/Documents/ANiStorage/server/src/routes/mangaRoutes.js", "JavaScript", 0, 0, 31, 0, 0, 0, 0, 0, 0, 3, 34
+"/home/sena/Documents/ANiStorage/server/src/routes/messageRoutes.js", "JavaScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 3, 12
+"/home/sena/Documents/ANiStorage/server/src/routes/postRoutes.js", "JavaScript", 0, 0, 41, 0, 0, 0, 0, 0, 0, 4, 45
+"/home/sena/Documents/ANiStorage/server/src/routes/userRoutes.js", "JavaScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 4, 32
+"/home/sena/Documents/ANiStorage/server/src/server.js", "JavaScript", 0, 0, 5, 0, 0, 0, 0, 0, 1, 4, 10
+"/home/sena/Documents/ANiStorage/server/src/services/nodemailer.js", "JavaScript", 0, 0, 48, 0, 0, 0, 0, 0, 3, 5, 56
+"/home/sena/Documents/ANiStorage/server/src/websocket.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 9, 3, 12
+"/home/sena/Documents/ANiStorage/web/index.html", "HTML", 0, 23, 0, 0, 0, 0, 0, 0, 0, 1, 24
+"/home/sena/Documents/ANiStorage/web/package-lock.json", "JSON", 6630, 0, 0, 0, 0, 0, 0, 0, 0, 1, 6631
+"/home/sena/Documents/ANiStorage/web/package.json", "JSON", 40, 0, 0, 0, 0, 0, 0, 0, 0, 1, 41
+"/home/sena/Documents/ANiStorage/web/postcss.config.cjs", "JavaScript", 0, 0, 6, 0, 0, 0, 0, 0, 0, 1, 7
+"/home/sena/Documents/ANiStorage/web/public/armazem.svg", "XML", 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4
+"/home/sena/Documents/ANiStorage/web/src/App.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 173, 0, 8, 16, 197
+"/home/sena/Documents/ANiStorage/web/src/assets/react.svg", "XML", 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/home/sena/Documents/ANiStorage/web/src/components/Button.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 17, 0, 0, 3, 20
+"/home/sena/Documents/ANiStorage/web/src/components/ConnectionStatus.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 230, 0, 7, 13, 250
+"/home/sena/Documents/ANiStorage/web/src/components/Dropdown.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 53, 0, 0, 5, 58
+"/home/sena/Documents/ANiStorage/web/src/components/Loader.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 16, 0, 0, 3, 19
+"/home/sena/Documents/ANiStorage/web/src/components/ScrollToTop.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 10, 0, 0, 4, 14
+"/home/sena/Documents/ANiStorage/web/src/components/SwitchTheme.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 44, 0, 0, 6, 50
+"/home/sena/Documents/ANiStorage/web/src/components/Toasters.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 29, 0, 0, 4, 33
+"/home/sena/Documents/ANiStorage/web/src/components/account/AllPostsModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 144, 0, 0, 10, 154
+"/home/sena/Documents/ANiStorage/web/src/components/account/Comment.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 178, 0, 0, 12, 190
+"/home/sena/Documents/ANiStorage/web/src/components/account/Comments.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 107, 0, 0, 6, 113
+"/home/sena/Documents/ANiStorage/web/src/components/account/EditCoverImageModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 115, 0, 1, 6, 122
+"/home/sena/Documents/ANiStorage/web/src/components/account/EditProfileImageModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 109, 0, 1, 7, 117
+"/home/sena/Documents/ANiStorage/web/src/components/account/Favorites.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 67, 0, 1, 9, 77
+"/home/sena/Documents/ANiStorage/web/src/components/account/Header.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 95, 0, 0, 5, 100
+"/home/sena/Documents/ANiStorage/web/src/components/account/LastPost.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 126, 0, 0, 8, 134
+"/home/sena/Documents/ANiStorage/web/src/components/account/LastPosts.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 68, 0, 0, 7, 75
+"/home/sena/Documents/ANiStorage/web/src/components/account/LastUpdate.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 66, 0, 0, 6, 72
+"/home/sena/Documents/ANiStorage/web/src/components/account/LastUpdates.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 37, 0, 0, 6, 43
+"/home/sena/Documents/ANiStorage/web/src/components/account/SharedPostCard.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 50, 0, 0, 6, 56
+"/home/sena/Documents/ANiStorage/web/src/components/account/SharedPosts.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 51, 0, 0, 6, 57
+"/home/sena/Documents/ANiStorage/web/src/components/account/SharedPostsModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 141, 0, 0, 11, 152
+"/home/sena/Documents/ANiStorage/web/src/components/account/StatusBar.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 149, 0, 34, 11, 194
+"/home/sena/Documents/ANiStorage/web/src/components/account/StatusItems.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 45, 0, 0, 5, 50
+"/home/sena/Documents/ANiStorage/web/src/components/chat/ChatContainer.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 64, 0, 8, 8, 80
+"/home/sena/Documents/ANiStorage/web/src/components/chat/ChatModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 89, 0, 0, 5, 94
+"/home/sena/Documents/ANiStorage/web/src/components/chat/Messages.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 32, 0, 0, 4, 36
+"/home/sena/Documents/ANiStorage/web/src/components/chat/MobileChatModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 105, 0, 0, 5, 110
+"/home/sena/Documents/ANiStorage/web/src/components/collection/Card.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 16, 0, 0, 3, 19
+"/home/sena/Documents/ANiStorage/web/src/components/connections/AcceptList.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 117, 0, 0, 6, 123
+"/home/sena/Documents/ANiStorage/web/src/components/connections/ConnectionsList.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 85, 0, 0, 5, 90
+"/home/sena/Documents/ANiStorage/web/src/components/connections/Filter.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 53, 0, 0, 3, 56
+"/home/sena/Documents/ANiStorage/web/src/components/connections/PendingList.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 82, 0, 0, 5, 87
+"/home/sena/Documents/ANiStorage/web/src/components/feed/Hero.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 60, 0, 0, 8, 68
+"/home/sena/Documents/ANiStorage/web/src/components/feed/MostRead.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 45, 0, 0, 6, 51
+"/home/sena/Documents/ANiStorage/web/src/components/feed/RecentPosts.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 108, 0, 1, 7, 116
+"/home/sena/Documents/ANiStorage/web/src/components/feed/TrendingPosts.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 52, 0, 1, 5, 58
+"/home/sena/Documents/ANiStorage/web/src/components/feed/index.ts", "TypeScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 1, 5
+"/home/sena/Documents/ANiStorage/web/src/components/feed/integrate/CardManga.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 64, 0, 2, 8, 74
+"/home/sena/Documents/ANiStorage/web/src/components/feed/integrate/RecentPost.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 127, 0, 2, 8, 137
+"/home/sena/Documents/ANiStorage/web/src/components/feed/integrate/TrendingPost.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 161, 0, 3, 10, 174
+"/home/sena/Documents/ANiStorage/web/src/components/feed/integrate/banners-data.ts", "TypeScript", 0, 0, 0, 17, 0, 0, 0, 0, 0, 2, 19
+"/home/sena/Documents/ANiStorage/web/src/components/index.ts", "TypeScript", 0, 0, 0, 17, 0, 0, 0, 0, 0, 7, 24
+"/home/sena/Documents/ANiStorage/web/src/components/login/SignIn.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 143, 0, 0, 9, 152
+"/home/sena/Documents/ANiStorage/web/src/components/login/SignUp.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 150, 0, 0, 15, 165
+"/home/sena/Documents/ANiStorage/web/src/components/login/index.ts", "TypeScript", 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2
+"/home/sena/Documents/ANiStorage/web/src/components/login/integrate/ChooseUsername.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 95, 0, 0, 7, 102
+"/home/sena/Documents/ANiStorage/web/src/components/login/integrate/ConfirmEmail.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 102, 0, 0, 7, 109
+"/home/sena/Documents/ANiStorage/web/src/components/login/integrate/ConfirmVerificationToken.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 88, 0, 0, 7, 95
+"/home/sena/Documents/ANiStorage/web/src/components/login/integrate/Input.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 71, 0, 0, 6, 77
+"/home/sena/Documents/ANiStorage/web/src/components/login/integrate/input-data.ts", "TypeScript", 0, 0, 0, 71, 0, 0, 0, 0, 0, 6, 77
+"/home/sena/Documents/ANiStorage/web/src/components/login/integrate/validate-form.ts", "TypeScript", 0, 0, 0, 68, 0, 0, 0, 0, 0, 7, 75
+"/home/sena/Documents/ANiStorage/web/src/components/manga/AddReviewModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 103, 0, 0, 8, 111
+"/home/sena/Documents/ANiStorage/web/src/components/manga/Review.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 41, 0, 0, 4, 45
+"/home/sena/Documents/ANiStorage/web/src/components/manga/ReviewModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 81, 0, 0, 5, 86
+"/home/sena/Documents/ANiStorage/web/src/components/menu/MobileNav.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 204, 0, 4, 8, 216
+"/home/sena/Documents/ANiStorage/web/src/components/menu/Navbar.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 283, 0, 4, 15, 302
+"/home/sena/Documents/ANiStorage/web/src/components/menu/Sidebar.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 173, 0, 1, 8, 182
+"/home/sena/Documents/ANiStorage/web/src/components/menu/index.ts", "TypeScript", 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 3
+"/home/sena/Documents/ANiStorage/web/src/components/menu/integrate/MobileMenu.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 187, 0, 4, 15, 206
+"/home/sena/Documents/ANiStorage/web/src/components/menu/integrate/MobileSearch.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 56, 0, 0, 5, 61
+"/home/sena/Documents/ANiStorage/web/src/components/menu/integrate/RecentConnectionOnline.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 19, 0, 0, 3, 22
+"/home/sena/Documents/ANiStorage/web/src/components/menu/integrate/Search.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 116, 0, 0, 7, 123
+"/home/sena/Documents/ANiStorage/web/src/components/modals/index.ts", "TypeScript", 0, 0, 0, 8, 0, 0, 0, 0, 0, 1, 9
+"/home/sena/Documents/ANiStorage/web/src/components/mylist/Item.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 45, 0, 0, 6, 51
+"/home/sena/Documents/ANiStorage/web/src/components/post/Discussions.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 264, 0, 0, 13, 277
+"/home/sena/Documents/ANiStorage/web/src/components/post/PostInputModal.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 127, 0, 0, 8, 135
+"/home/sena/Documents/ANiStorage/web/src/components/post/Replies.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 238, 0, 0, 11, 249
+"/home/sena/Documents/ANiStorage/web/src/hooks/useWindowDimensions.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 21, 0, 0, 6, 27
+"/home/sena/Documents/ANiStorage/web/src/index.css", "PostCSS", 0, 0, 0, 0, 0, 0, 0, 22, 2, 5, 29
+"/home/sena/Documents/ANiStorage/web/src/main.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 19, 0, 0, 2, 21
+"/home/sena/Documents/ANiStorage/web/src/pages/Account.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 90, 0, 0, 7, 97
+"/home/sena/Documents/ANiStorage/web/src/pages/AddManga.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 333, 0, 2, 10, 345
+"/home/sena/Documents/ANiStorage/web/src/pages/Collection.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 163, 0, 1, 11, 175
+"/home/sena/Documents/ANiStorage/web/src/pages/Connections.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 141, 0, 0, 12, 153
+"/home/sena/Documents/ANiStorage/web/src/pages/Feed.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 57, 0, 0, 6, 63
+"/home/sena/Documents/ANiStorage/web/src/pages/Login.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 67, 0, 0, 9, 76
+"/home/sena/Documents/ANiStorage/web/src/pages/Manga.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 605, 0, 2, 24, 631
+"/home/sena/Documents/ANiStorage/web/src/pages/MyList.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 109, 0, 0, 7, 116
+"/home/sena/Documents/ANiStorage/web/src/pages/PageNotFound.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 7, 0, 0, 2, 9
+"/home/sena/Documents/ANiStorage/web/src/pages/Post.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 486, 0, 16, 23, 525
+"/home/sena/Documents/ANiStorage/web/src/pages/Settings.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 459, 0, 1, 17, 477
+"/home/sena/Documents/ANiStorage/web/src/pages/index.ts", "TypeScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 2, 13
+"/home/sena/Documents/ANiStorage/web/src/services/PrivateRoutes.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 17, 0, 0, 4, 21
+"/home/sena/Documents/ANiStorage/web/src/services/api-routes.ts", "TypeScript", 0, 0, 0, 75, 0, 0, 0, 0, 6, 6, 87
+"/home/sena/Documents/ANiStorage/web/src/services/firebase.ts", "TypeScript", 0, 0, 0, 12, 0, 0, 0, 0, 0, 3, 15
+"/home/sena/Documents/ANiStorage/web/src/store/hooks.ts", "TypeScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 1, 5
+"/home/sena/Documents/ANiStorage/web/src/store/index.ts", "TypeScript", 0, 0, 0, 138, 0, 0, 0, 0, 1, 9, 148
+"/home/sena/Documents/ANiStorage/web/src/store/reducers/current-user-data.ts", "TypeScript", 0, 0, 0, 28, 0, 0, 0, 0, 0, 3, 31
+"/home/sena/Documents/ANiStorage/web/src/typings.d.ts", "TypeScript", 0, 0, 0, 94, 0, 0, 0, 0, 0, 9, 103
+"/home/sena/Documents/ANiStorage/web/src/utils/genres.tsx", "TypeScript React", 0, 0, 0, 0, 0, 0, 19, 0, 0, 2, 21
+"/home/sena/Documents/ANiStorage/web/src/vite-env.d.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2
+"/home/sena/Documents/ANiStorage/web/tailwind.config.cjs", "JavaScript", 0, 0, 60, 0, 0, 0, 0, 0, 1, 2, 63
+"/home/sena/Documents/ANiStorage/web/tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 21, 0, 0, 0, 0, 1, 22
+"/home/sena/Documents/ANiStorage/web/tsconfig.node.json", "JSON", 9, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/sena/Documents/ANiStorage/web/vite.config.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 1, 2, 8
+"Total", "-", 10388, 23, 2334, 557, 21, 5, 8559, 22, 184, 948, 23041

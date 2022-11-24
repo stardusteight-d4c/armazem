@@ -11,7 +11,7 @@ export const Card = ({manga}: Props) => {
       <img
         src={manga.cover}
         alt=""
-        className="object-fill w-full min-w-[215px] h-[325px] pointer-events-none"
+        className="object-fill w-full min-h-[250px] max-h-[250px] md:max-h-fit md:min-w-[215px] md:h-[325px] pointer-events-none"
       />
     </Link>
   )
