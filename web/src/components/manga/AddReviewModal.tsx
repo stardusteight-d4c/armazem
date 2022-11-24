@@ -60,7 +60,7 @@ export const AddReviewModal = (props: Props) => {
         }}
         transition={{ type: 'spring', duration: 0.8 }}
         animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-14 pt-4 pb-16 z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-4 md:px-14 pt-4 pb-16 z-50 w-full max-w-[95vw] md:max-w-none md:w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Add review</h1>
@@ -75,7 +75,7 @@ export const AddReviewModal = (props: Props) => {
           </span>
           <img
             src={currentUser?.user_img}
-            className="w-16 h-16 rounded-sm absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
+            className="w-16 h-16 hidden md:block rounded-sm absolute -top-8 -left-8 border-[2px] border-dawn-weak/20 dark:border-dusk-weak/20 "
             alt=""
           />
           <div className="relative w-full">

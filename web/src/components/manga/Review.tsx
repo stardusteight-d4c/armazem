@@ -15,7 +15,7 @@ export const Review = ({ review }: Props) => {
         dispatch(handleOpenModal('Review'))
         dispatch(handleActiveReview(review._id))
       }}
-      className="mb-5 cursor-pointer border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2"
+      className="mb-5 px-2 md:px-0 cursor-pointer border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2"
     >
       <div className="flex">
         <img

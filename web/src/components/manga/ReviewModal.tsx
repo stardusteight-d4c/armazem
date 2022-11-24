@@ -56,7 +56,7 @@ export const ReviewModal = (props: Props) => {
             translateX: '-50%',
             translateY: '-50%',
           }}
-          className="fixed border cursor-default border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl py-5 z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+          className="fixed border cursor-default border-dawn-weak/20 dark:border-dusk-weak/20 shadow-2xl py-5 z-50 w-full max-w-[95vw] md:max-w-none md:w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
         >
           {!loading ? (
             <>
