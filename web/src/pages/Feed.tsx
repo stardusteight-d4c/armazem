@@ -4,7 +4,7 @@ import { GridWrapper } from '../components/GridWrapper'
 export const Feed = () => {
   return (
     <GridWrapper>
-      <main className={style.wrapperMainContent}>
+      <main className={style.wrapper}>
         <Hero />
         <TrendingPosts />
         <MostRead />
@@ -15,5 +15,5 @@ export const Feed = () => {
 }
 
 const style = {
-  wrapperMainContent: `p-2 w-screen md:p-8 md:w-full`,
+  wrapper: `p-2 w-screen md:p-8 md:w-full`,
 }

@@ -1,19 +1,22 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
-import { postMetadataById, unlikedPost } from '../../../services/api-routes'
-import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { Loader } from '../../Loader'
-import { handleLoading } from '../../../store'
+import {
+  likePost,
+  postMetadataById,
+  unlikedPost,
+} from '../../../services/api-routes'
+import { useAppSelector } from '../../../store/hooks'
+import { Link } from '../../Link'
 timeago.register('en_short', en_short)
 
 interface Props {
-  postId: any
+  postId: string
 }
 
 export const TrendingPost = ({ postId }: Props) => {
@@ -22,34 +25,10 @@ export const TrendingPost = ({ postId }: Props) => {
   const [post, setPost] = useState<any>([])
   const [authorUser, setAuthorUser] = useState<User>()
   const [loading, setLoading] = useState<boolean>(true)
-  const [click, setClick] = useState<any>()
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-
-  // Prevents image dragging
-  window.ondragstart = function () {
-    return false
-  }
-
-  // Distinguishes drag and true click
-  const delta = 6
-  let startX: number
-  let startY: number
-  window.addEventListener('mousedown', function (event) {
-    startX = event.pageX
-    startY = event.pageY
-  })
-  window.addEventListener('mouseup', function (event) {
-    const diffX = Math.abs(event.pageX - startX)
-    const diffY = Math.abs(event.pageY - startY)
-    if (diffX < delta && diffY < delta) {
-      setClick(true)
-    }
-  })
 
   useEffect(() => {
-    if (postId) {
-      ;(async () => {
+    postId &&
+      (async () => {
         const { data } = await axios.get(`${postMetadataById}/${postId}`)
         if (data.status === true) {
           setPost(data.post)
@@ -57,8 +36,21 @@ export const TrendingPost = ({ postId }: Props) => {
           setLoading(false)
         }
       })()
-    }
   }, [postId])
+
+  const handleLikePost = async () => {
+    if (likedByUser()) {
+      await axios.post(unlikedPost, {
+        userId: currentUser?._id,
+        postId: post?._id,
+      })
+    } else {
+      await axios.post(likePost, {
+        userId: currentUser?._id,
+        postId: post?._id,
+      })
+    }
+  }
 
   const likedByUser = () => {
     if (post && currentUser) {
@@ -80,96 +72,95 @@ export const TrendingPost = ({ postId }: Props) => {
   )
   const isSharedPosts = currentAccount && sharedPosts?.includes(post?._id)
 
+  if (loading) {
+    return <></>
+  }
+
+  // deixar like dinâmico e separar responsabilidade de renderizações das 'actions/social' pois possuem maior lógica de renderização
   return (
-    <>
-      {!loading && (
-        <motion.article
-          whileTap={{ cursor: 'grabbing' }}
-          className="md:max-w-[450px] md:min-w-[450px] min-w-full max-w-full w-full border border-dawn-weak/20 dark:border-dusk-weak/20 max-h-[269px] min-h-[269px] flex flex-col justify-between hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200  h-fit p-4"
+    <motion.article className={style.wrapper}>
+      <div>
+        <Link
+          to={`/${authorUser?.username}`}
+          className={style.authorFlexContainer}
         >
-          <div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img
-                  src={authorUser?.user_img}
-                  alt=""
-                  className="w-12 h-12 rounded-md object-cover"
-                />
-                <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
-                  {authorUser?.name}
-                </span>
-              </div>
-              <TimeAgo datetime={post.createdAt} locale="en_short" />
+          <div className={style.authorInfo}>
+            <img className={style.authorImg} src={authorUser?.user_img} />
+            <span className={style.authorName}>{authorUser?.name}</span>
+          </div>
+          <TimeAgo datetime={post.createdAt} locale="en_short" />
+        </Link>
+        <Link to={`/post/${post._id}`}>
+          <h2 className={style.postTitle}>{post.title}</h2>
+          <p className={style.postBody}>{post.body}</p>
+        </Link>
+      </div>
+      <div>
+        <div className={style.divider} />
+        <div className={style.postActionsFlexContainer}>
+          <div className={style.firstSectionContainer}>
+            <div onClick={handleLikePost} className={style.likeContainer}>
+              <i
+                className={`${
+                  likedByUser() ? style.likedIcon : style.likeIcon
+                }`}
+              />
+              <span className="text-lg">
+                {post.likes.length}{' '}
+                {post.likes.length <= 1 ? (
+                  <div className="inline-block">Like</div>
+                ) : (
+                  <div className="inline-block">Likes</div>
+                )}
+              </span>
             </div>
-            <div
-              onClick={() => click && navigate(`/post/${post._id}`)}
-              className=""
-            >
-              <h2 className="font-semibold line-clamp-1 text-xl my-1 inline-block text-dusk-main dark:text-dawn-main">
-                {post.title}
-              </h2>
-              <p className="line-clamp-4">{post.body}</p>
+            <div className={style.discussionContainer}>
+              <i className={style.discussionIcon} />
+              <span className="text-lg">
+                {post.discussions.length}{' '}
+                {post.discussions.length <= 1 ? (
+                  <div className="inline-block">Discussion</div>
+                ) : (
+                  <div className="inline-block">Discussions</div>
+                )}
+              </span>
             </div>
           </div>
-          <div>
-            <div className="h-[1px] w-full my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20" />
-            <div className="flex items-center justify-between text-dusk-main dark:text-dawn-main">
-              <div className="flex items-center gap-x-5">
-                <div
-                  // onClick={handleLikePost}
-                  className="flex md:w-[84px] items-center "
-                >
-                  <i
-                    className={`${
-                      likedByUser()
-                        ? 'ri-heart-3-fill text-prime-blue'
-                        : 'ri-heart-3-line'
-                    }  text-xl pr-1 `}
-                  />
-                  <span className="text-lg">
-                    {post.likes.length}{' '}
-                    {post.likes.length <= 1 ? (
-                      <div className="hidden md:inline-block">Like</div>
-                    ) : (
-                      <div className="hidden md:inline-block">Likes</div>
-                    )}
-                  </span>
+          {currentUser?._id !== authorUser?._id && (
+            <>
+              {isSharedPosts ? (
+                <div className="text-orange flex items-center">
+                  <i className="ri-share-box-line pr-1 text-xl" />
+                  <span className="text-lg hidden md:inline-block">Shared</span>
                 </div>
+              ) : (
                 <div className="flex items-center ">
-                  <i className="ri-discuss-line pr-1 text-xl" />
-                  <span className="text-lg">
-                    {post.discussions.length}{' '}
-                    {post.discussions.length <= 1 ? (
-                      <div className="hidden md:inline-block">Discussion</div>
-                    ) : (
-                      <div className="hidden md:inline-block">Discussions</div>
-                    )}
-                  </span>
+                  <i className="ri-share-box-line pr-1 text-xl" />
+                  <span className="text-lg hidden md:inline-block">Share</span>
                 </div>
-              </div>
-              {currentUser?._id !== authorUser?._id && (
-                <>
-                  {isSharedPosts ? (
-                    <div className="text-orange flex items-center ">
-                      <i className="ri-share-box-line pr-1 text-xl" />
-                      <span className="text-lg hidden md:inline-block">
-                        Shared
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center ">
-                      <i className="ri-share-box-line pr-1 text-xl" />
-                      <span className="text-lg hidden md:inline-block">
-                        Share
-                      </span>
-                    </div>
-                  )}
-                </>
               )}
-            </div>
-          </div>
-        </motion.article>
-      )}
-    </>
+            </>
+          )}
+        </div>
+      </div>
+    </motion.article>
   )
+}
+
+const style = {
+  wrapper: `flex flex-col justify-between h-fit p-4 min-w-full max-h-[269px] min-h-[269px] md:max-w-[450px] md:min-w-[450px] w-full border border-dawn-weak/20 dark:border-dusk-weak/20 text-neutral-weak dark:text-neutral-main bg-white dark:bg-fill-strong transition-all ease-in-out duration-200`,
+  authorFlexContainer: `flex items-center justify-between`,
+  authorInfo: `flex items-center gap-3`,
+  authorImg: `w-12 h-12 rounded-md object-cover`,
+  authorName: `font-medium text-xl text-dusk-main dark:text-dawn-main`,
+  postTitle: `font-semibold w-full truncate text-xl my-1 inline-block text-dusk-main dark:text-dawn-main`,
+  postBody: `line-clamp-4 break-words`,
+  divider: `h-[1px] w-full my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20`,
+  postActionsFlexContainer: `flex items-center justify-between text-dusk-main dark:text-dawn-main`,
+  firstSectionContainer: `flex items-center gap-x-5`,
+  likeContainer: `flex md:w-[84px] items-center cursor-pointer`,
+  likeIcon: `ri-heart-3-line text-xl pr-1`,
+  likedIcon: `ri-heart-3-fill text-prime-blue text-xl pr-1`,
+  discussionContainer: `flex items-center`,
+  discussionIcon: `ri-discuss-line pr-1 text-xl`,
 }
