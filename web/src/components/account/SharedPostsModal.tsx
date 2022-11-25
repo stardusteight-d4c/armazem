@@ -63,7 +63,7 @@ export const SharedPostsModal = (props: Props) => {
         }}
         transition={{ type: 'spring', duration: 0.8 }}
         animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-14 pt-4 pb-16 z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-4 md:px-14 pt-4 pb-16 z-50 w-full max-w-[95vw] md:max-w-none md:w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Shared Posts</h1>
@@ -143,8 +143,8 @@ const ListPost = ({ post }: PropsList) => {
     <div className="flex space-x-2 cursor-pointer">
       <img className="w-12 h-12" src={authorPost?.user_img} alt="avatar/img" />
       <div className="flex flex-col -mt-1">
-        <h2 className="text-lg font-semibold">{post?.title}</h2>
-        <p className="truncate w-96">{post?.body}</p>
+        <h2 className="text-lg font-semibold break-all">{post?.title}</h2>
+        <p className="truncate w-[70vw] md:w-96">{post?.body}</p>
       </div>
     </div>
   )

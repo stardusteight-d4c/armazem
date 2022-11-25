@@ -20,6 +20,8 @@ import { askToRequestAgain } from '../store'
 import { ConnectionStatus } from '../components/ConnectionStatus'
 import { PageNotFound } from './PageNotFound'
 import { io } from 'socket.io-client'
+import { MobileSearch } from '../components/menu/MobileSearch'
+import { MobileNav } from '../components/menu'
 
 interface Props {
   // socket: React.MutableRefObject<any>
@@ -240,18 +242,24 @@ export const Post = (props: Props) => {
 
   return (
     <div
-    className={`${style.gridContainer} ${
-      minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
-    }`}
-  >
-    <Sidebar />
-    <div
-      className={`${style.mainContent} ${
-        minimizeSidebar ? 'col-span-17' : 'col-span-4'
+      className={`${style.gridContainer} ${
+        minimizeSidebar
+          ? 'grid-cols-1 md:grid-cols-18'
+          : 'grid-cols-1 md:grid-cols-5'
       }`}
     >
+      <Sidebar />
+      <div
+        className={`${style.mainContent} ${
+          minimizeSidebar
+            ? 'col-span-1 md:col-span-17'
+            : 'col-span-1 md:col-span-4'
+        }`}
+      >
         <Navbar />
-        <main className="px-4 pt-2 pb-20">
+        <MobileSearch />
+        <MobileNav />
+        <main className="w-screen md:w-full px-2 md:px-4 pt-2 pb-20">
           {loading ? (
             <div className="w-full h-screen -mt-28 flex items-center justify-center">
               {notFound ? (
@@ -264,8 +272,8 @@ export const Post = (props: Props) => {
             <>
               <article className="px-4 pb-3 border border-dawn-weak/20 dark:border-dusk-weak/20 bg-white dark:bg-fill-strong pt-4 mt-4">
                 <header>
-                  <div className="flex justify-between pb-4 items-center">
-                    <span className="text-4xl break-all font-inter font-semibold w-[700px]">
+                  <div className="flex flex-col md:flex-row md:justify-between pb-4 md:items-center">
+                    <span className="text-3xl text-left md:text-left md:text-4xl break-all font-inter font-semibold md:w-[700px]">
                       {post?.title}
                     </span>
                     <span className="text-lg w-fit mt-2">
@@ -289,12 +297,14 @@ export const Post = (props: Props) => {
                         <span className="text-lg">{authorUser?.username}</span>
                       </div>
                     </Link>
-                    {authorUser?._id !== currentUser?._id && (
-                      <ConnectionStatus
-                        userMetadata={authorUser!}
-                        currentAccount={currentAccount}
-                      />
-                    )}
+                    <div className="hidden md:inline-block">
+                      {authorUser?._id !== currentUser?._id && (
+                        <ConnectionStatus
+                          userMetadata={authorUser!}
+                          currentAccount={currentAccount}
+                        />
+                      )}
+                    </div>
                   </div>
                 </header>
 
@@ -450,7 +460,7 @@ export const Post = (props: Props) => {
                   </div>
                 </div>
               </article>
-              <div className="mb-5 px-4">
+              <div className="mb-5 md:px-4">
                 <div className="flex items-center mt-16 mb-8">
                   <span className="text-2xl font-semibold">
                     <div className="flex items-center space-x-1">
@@ -462,7 +472,7 @@ export const Post = (props: Props) => {
                     </div>
                   </span>
                 </div>
-                <div className="flex items-start gap-x-5">
+                <div className="flex items-start gap-x-2 md:gap-x-5">
                   <img
                     src={currentUser?.user_img}
                     alt=""
@@ -492,7 +502,7 @@ export const Post = (props: Props) => {
                 </div>
               </div>
 
-              <div className="space-y-10 px-4">
+              <div className="space-y-10 md:px-4">
                 {discussions
                   .slice(0)
                   .reverse()
@@ -519,6 +529,6 @@ export const Post = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden max-w-screen-xl drop-shadow-sm border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2`,
 }

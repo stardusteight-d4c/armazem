@@ -10,6 +10,7 @@ interface InitialState {
   requestEditProfile: boolean
   minimizeSidebar: boolean
   activeReview: string
+  loading: string
 }
 
 interface RegisterValues {

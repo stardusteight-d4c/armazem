@@ -85,6 +85,8 @@ export const addNewDiscussion = async (req, res, next) => {
       message: 'started a new discussion on your',
       infos: [discussionAuthor.username, postId],
     }
+
+    // se ser o próprio autor do post não notificar...
     await Notification.create({ ...newDiscussion })
 
     return res

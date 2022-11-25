@@ -130,15 +130,15 @@ export const Discussions = ({
   return (
     <>
       <div className="flex relative bg-dawn-weak/10 dark:bg-dusk-weak/10 p-2 text-dusk-main dark:text-dawn-main items-start gap-3">
-        {replies.length !== 0 && (
+        {/* {replies.length !== 0 && (
           <div className="h-[110%] top-3 left-[29px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
-        )}
+        )} */}
         <Link to={`/${user?.username}`}>
           <img
             referrerPolicy="no-referrer"
             src={user?.user_img}
             alt=""
-            className="w-11 h-11 border border-black/20 dark:border-white/20 object-cover"
+            className="w-11 h-11 min-w-[44px] border border-black/20 dark:border-white/20 object-cover"
           />
         </Link>
         <div className="flex flex-col w-full">
@@ -168,12 +168,12 @@ export const Discussions = ({
               </div>
             </div>
           ) : (
-            <span className="pr-2 text-lg text-dusk-main/90 dark:text-dawn-main/90">
+            <span className="pr-2 break-all text-lg text-dusk-main/90 dark:text-dawn-main/90">
               {discussion.body}
             </span>
           )}
           <div>
-            <div className="flex items-center text-dusk-main dark:text-dusk-weak py-2 space-x-2 justify-end w-full">
+            <div className="flex items-center text-dusk-main dark:text-dusk-weak py-2 space-x-2 justify-start md:justify-end w-full">
               <i
                 onClick={() => {
                   activeItem === discussion._id
@@ -227,7 +227,7 @@ export const Discussions = ({
               transition={{ duration: 0.5 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <div className="flex gap-x-2 mt-2">
+              <div className="flex -ml-[55px] md:ml-0 gap-x-2 mt-2">
                 <img
                   src={currentUser?.user_img}
                   alt=""

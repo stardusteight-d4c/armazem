@@ -194,7 +194,7 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
         </div>
         <div
           onClick={handleLogout}
-          className="flex flex-col items-center justify-center gap-x-2 p-1 cursor-pointer text-red font-medium text-2xl mt-14"
+          className="flex flex-col items-center justify-center gap-x-2 p-1 cursor-pointer text-red font-medium text-2xl mt-4"
         >
           <i className="ri-logout-box-line" />
           Logout

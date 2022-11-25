@@ -7,8 +7,9 @@ import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
 import { postMetadataById, unlikedPost } from '../../../services/api-routes'
-import { useAppSelector } from '../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { Loader } from '../../Loader'
+import { handleLoading } from '../../../store'
 timeago.register('en_short', en_short)
 
 interface Props {
@@ -23,6 +24,7 @@ export const TrendingPost = ({ postId }: Props) => {
   const [loading, setLoading] = useState<boolean>(true)
   const [click, setClick] = useState<any>()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   // Prevents image dragging
   window.ondragstart = function () {
@@ -80,7 +82,7 @@ export const TrendingPost = ({ postId }: Props) => {
 
   return (
     <>
-      {!loading ? (
+      {!loading && (
         <motion.article
           whileTap={{ cursor: 'grabbing' }}
           className="md:max-w-[450px] md:min-w-[450px] min-w-full max-w-full w-full border border-dawn-weak/20 dark:border-dusk-weak/20 max-h-[269px] min-h-[269px] flex flex-col justify-between hover:scale-105 hover:drop-shadow-md text-[#707070] dark:text-[#9B9B9B] bg-white dark:bg-fill-strong transition-all ease-in-out duration-200  h-fit p-4"
@@ -150,12 +152,16 @@ export const TrendingPost = ({ postId }: Props) => {
                   {isSharedPosts ? (
                     <div className="text-orange flex items-center ">
                       <i className="ri-share-box-line pr-1 text-xl" />
-                      <span className="text-lg hidden md:inline-block">Shared</span>
+                      <span className="text-lg hidden md:inline-block">
+                        Shared
+                      </span>
                     </div>
                   ) : (
                     <div className="flex items-center ">
                       <i className="ri-share-box-line pr-1 text-xl" />
-                      <span className="text-lg hidden md:inline-block">Share</span>
+                      <span className="text-lg hidden md:inline-block">
+                        Share
+                      </span>
                     </div>
                   )}
                 </>
@@ -163,10 +169,6 @@ export const TrendingPost = ({ postId }: Props) => {
             </div>
           </div>
         </motion.article>
-      ) : (
-        <div className="w-full h-screen my-0 -mt-28 flex items-center justify-center">
-          <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
-        </div>
       )}
     </>
   )

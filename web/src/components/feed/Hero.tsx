@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { banners } from './integrate/banners-data'
 
-interface Props {}
-
-export const Hero = (props: Props) => {
-  const [index, setIndex] = useState(0)
+export const Hero = () => {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const [index, setIndex] = useState<number>(0)
   const delay = 3500
-  const timeoutRef = useRef<any>(null)
 
-  function resetTimeout() {
+  const resetTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
@@ -23,7 +21,6 @@ export const Hero = (props: Props) => {
         ),
       delay
     )
-
     return () => {
       resetTimeout()
     }
@@ -49,7 +46,7 @@ export const Hero = (props: Props) => {
               setIndex(idx)
             }}
             className={`${style.slideshowDot} ${
-              index === idx && '!bg-white !w-8' 
+              index === idx && '!bg-white !w-8'
             }`}
           />
         ))}

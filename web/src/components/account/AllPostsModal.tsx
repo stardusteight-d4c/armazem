@@ -56,7 +56,7 @@ export const AllPostsModal = (props: Props) => {
         initial={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
         animate={{ opacity: 1 }}
-        className="fixed z-40 inset-0 w-screen h-screen bg-fill-strong/30"
+        className="fixed z-40 inset-0 w-screen h-screen dark:bg-fill-weak/10 bg-fill-strong/10"
       />
       <motion.section
         initial={{
@@ -67,7 +67,7 @@ export const AllPostsModal = (props: Props) => {
         }}
         transition={{ type: 'spring', duration: 0.8 }}
         animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-14 pt-4 pb-16 z-50 w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl px-4 md:px-14 pt-4 pb-16 z-50 w-full max-w-[95vw] md:max-w-none md:w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
       >
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">All posts</h1>
@@ -143,10 +143,10 @@ const ListPost = ({ post }: PropsList) => {
         alt="avatar/img"
       />
       <Link to={`/post/${post?._id}`} className="flex cursor-pointer flex-col -mt-1">
-        <h2 className="text-lg font-semibold transition-all duration-200">
+        <h2 className="text-lg font-semibold transition-all break-all duration-200">
           {post.title}
         </h2>
-        <p className="truncate w-96">{post.body}</p>
+        <p className="truncate w-[70vw] md:w-96">{post.body}</p>
       </Link>
     </div>
   )

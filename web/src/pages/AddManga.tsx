@@ -99,13 +99,17 @@ export const AddManga = (props: Props) => {
   return (
     <div
       className={`${style.gridContainer} ${
-        minimizeSidebar ? 'grid-cols-18' : 'grid-cols-5'
+        minimizeSidebar
+          ? 'grid-cols-1 md:grid-cols-18'
+          : 'grid-cols-1 md:grid-cols-5'
       }`}
     >
       <Sidebar />
       <div
         className={`${style.mainContent} ${
-          minimizeSidebar ? 'col-span-17' : 'col-span-4'
+          minimizeSidebar
+            ? 'col-span-1 md:col-span-17'
+            : 'col-span-1 md:col-span-4'
         }`}
       >
         <Navbar />
@@ -139,9 +143,9 @@ export const AddManga = (props: Props) => {
               </div>
             </div>
           </div>
-          <div className="p-4 pb-14">
-            <form onSubmit={handleSubmit} className="px-[100px] space-y-5">
-              <div className="flex gap-x-4 w-full">
+          <div className="p-2 md:p-4 pb-14">
+            <form onSubmit={handleSubmit} className="md:px-[100px] space-y-5">
+              <div className="md:flex gap-x-4 w-full">
                 <div className="space-y-2 w-full">
                   <label htmlFor="title" className={style.label}>
                     Title
@@ -187,23 +191,7 @@ export const AddManga = (props: Props) => {
                   className="w-full resize-none h-[250px] p-4 text-xl bg-layer-light dark:bg-layer-heavy placeholder:text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg"
                 />
               </div>
-              <div className="flex gap-x-4 w-full">
-                {mangaMetadata.cover && mangaMetadata.cover !== '' ? (
-                  <div className="relative">
-                    <div className="min-w-[218px] max-w-[218px] h-[327px] border-2 border-dashed">
-                      <img
-                        className="min-w-[215px] bg-transparent max-w-[215px] h-[325px] object-fill"
-                        src={mangaMetadata.cover}
-                        alt=""
-                      />
-                      <i className="ri-file-damage-fill -z-10 absolute -top-8 left-1/2 -translate-x-1/2 text-[#707070] dark:text-[#9B9B9B] h-full text-5xl flex flex-col items-center justify-evenly" />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="min-w-[218px] max-w-[218px] h-[327px] border-2 border-dashed">
-                    <i className="ri-image-fill text-[#707070] dark:text-[#9B9B9B] h-full text-5xl flex flex-col items-center justify-evenly" />
-                  </div>
-                )}
+              <div className="md:hidden inline-block space-y-2 w-full">
                 <div className="space-y-2 w-full">
                   <label htmlFor="cover" className={style.label}>
                     Cover URL
@@ -217,7 +205,41 @@ export const AddManga = (props: Props) => {
                     placeholder="Add a valid url for cover image"
                     className={`${style.input} placeholder:text-sm text-xl`}
                   />
-                  <div className="grid grid-cols-3 gap-5">
+                </div>
+              </div>
+              <div className="md:flex gap-x-4 w-full">
+                {mangaMetadata.cover && mangaMetadata.cover !== '' ? (
+                  <div className="relative">
+                    <div className="min-w-[218px] mb-4 md:mb-0 w-fit mx-auto md:mx-0 max-w-[218px] h-[327px] border-2 border-dashed">
+                      <img
+                        className="min-w-[215px] bg-transparent max-w-[213px] h-[323px] object-fill"
+                        src={mangaMetadata.cover}
+                        alt=""
+                      />
+                      <i className="ri-file-damage-fill -z-10 absolute -top-8 left-1/2 -translate-x-1/2 text-[#707070] dark:text-[#9B9B9B] h-full text-5xl flex flex-col items-center justify-evenly" />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="min-w-[218px] mb-4 md:mb-0 w-fit mx-auto md:mx-0 max-w-[218px] h-[327px] border-2 border-dashed">
+                    <i className="ri-image-fill text-[#707070] dark:text-[#9B9B9B] h-full text-5xl flex flex-col items-center justify-evenly" />
+                  </div>
+                )}
+                <div className="space-y-2 w-full">
+                  <div className="space-y-2 w-full hidden md:inline-block ">
+                    <label htmlFor="cover" className={style.label}>
+                      Cover URL
+                    </label>
+                    <input
+                      onChange={(e) => handleChange(e)}
+                      type="text"
+                      id="cover"
+                      required
+                      value={mangaMetadata.cover}
+                      placeholder="Add a valid url for cover image"
+                      className={`${style.input} placeholder:text-sm text-xl`}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                     <div className="space-y-2 w-full col-span-1">
                       <label htmlFor="chapters" className={style.label}>
                         Chapters
@@ -292,8 +314,7 @@ export const AddManga = (props: Props) => {
                         className={`${style.input} placeholder:text-sm`}
                       />
                     </div>
-                  </div>
-                  <div className="space-y-2 w-full col-span-1">
+                    <div className="md:hidden space-y-2 w-full col-span-1">
                     <label htmlFor="published" className={style.label}>
                       Published
                     </label>
@@ -307,7 +328,22 @@ export const AddManga = (props: Props) => {
                       className={`${style.input} placeholder:text-sm`}
                     />
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  </div>
+                  <div className="hidden md:inline-block space-y-2 w-full col-span-1">
+                    <label htmlFor="published" className={style.label}>
+                      Published
+                    </label>
+                    <input
+                      onChange={(e) => handleChange(e)}
+                      type="date"
+                      id="published"
+                      value={mangaMetadata.published}
+                      required
+                      placeholder="Published"
+                      className={`${style.input} placeholder:text-sm`}
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-4 md:pt-0">
                     {genres.map((genre, index) => (
                       <div
                         key={index}
@@ -337,7 +373,7 @@ export const AddManga = (props: Props) => {
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden max-w-screen-xl drop-shadow-sm border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   mainContent: `col-start-2`,
   label: `text-dusk-main dark:text-dawn-main text-xl w-full block font-semibold`,
   input: `w-full p-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg`,

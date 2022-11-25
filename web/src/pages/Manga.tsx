@@ -154,7 +154,7 @@ export const Manga = (props: Props) => {
                 <span className='w-full md:w-[80%]'>{manga?.title}</span>
                 <span className="text-xl hidden md:inline-block font-medium">{manga?.author}</span>
               </div>
-              <div className="md:p-4 pb-14">
+              <div className="pb-24 md:p-4 md:pb-14">
                 <div className="flex">
                   <div className="w-full max-w-[170px] md:max-w-[225px]">
                     <img

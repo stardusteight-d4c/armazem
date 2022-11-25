@@ -26,6 +26,7 @@ const initialState: InitialState = {
   requestEditProfile: false,
   minimizeSidebar: false,
   activeReview: '',
+  loading: '',
 }
 
 const saveThemeToLocalStorage = (themeState: any) => {
@@ -96,6 +97,9 @@ const ArmazemSlice = createSlice({
     handleOpenModal: (state, action) => {
       state.openModal = action.payload
     },
+    handleLoading: (state, action) => {
+      state.loading = action.payload
+    },
     handleActiveReview: (state, action) => {
       state.activeReview = action.payload
     },
@@ -141,6 +145,7 @@ export const {
   askToRequestEditProfile,
   handleMinimizeSidebar,
   handleActiveReview,
+  handleLoading,
 } = ArmazemSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>

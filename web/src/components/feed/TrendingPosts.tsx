@@ -1,17 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TrendingPost } from './integrate/TrendingPost'
 import { motion } from 'framer-motion'
+import { topRatedPost } from '../../services/api-routes'
+import axios from 'axios'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { handleLoading } from '../../store'
 
-interface Props {
-  topRatedPosts: any
-}
+interface Props {}
 
-export const TrendingPosts = ({ topRatedPosts }: Props) => {
-  const [previewPostCarouselWidth, setPreviewPostCarouselWidth] = useState(0)
-  const [onDragPreviewPost, setOnDragPreviewPost] = useState(0)
-  const [click, setClick] = useState<any>()
+export const TrendingPosts = (props: Props) => {
+  const [previewPostCarouselWidth, setPreviewPostCarouselWidth] =
+    useState<number>(0)
+  const [onDragPreviewPost, setOnDragPreviewPost] = useState<number>(0)
+  const [topRatedPosts, setTopRatedPosts] = useState<[Post] | []>([])
 
-  // CAROUSEL FRAMER MOTION
+  useEffect(() => {
+    ;(async () => {
+      const { data } = await axios.get(topRatedPost)
+      if (data.status === true) {
+        setTopRatedPosts(data.posts)
+      }
+    })()
+  }, [])
+
   const previewPostCarousel =
     useRef() as React.MutableRefObject<HTMLInputElement>
   useEffect(() => {
@@ -24,9 +35,7 @@ export const TrendingPosts = ({ topRatedPosts }: Props) => {
 
   return (
     <section>
-      <h2 className="text-2xl md:flex items-center gap-x-2 pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
-        Trending posts
-      </h2>
+      <h2 className={style.title}>Trending posts</h2>
       <div className="w-full">
         <motion.div
           whileTap={{ cursor: 'grabbing' }}
@@ -46,7 +55,7 @@ export const TrendingPosts = ({ topRatedPosts }: Props) => {
               ))}
             </>
           ) : (
-            <div className="flex w-full items-center justify-center my-8 text-2xl">
+            <div className={style.noContent}>
               There are no trending posts yet
             </div>
           )}
@@ -54,4 +63,9 @@ export const TrendingPosts = ({ topRatedPosts }: Props) => {
       </div>
     </section>
   )
+}
+
+const style = {
+  title: `text-2xl md:flex items-center gap-x-2 pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold`,
+  noContent: `flex w-full items-center justify-center my-8 text-2xl`,
 }

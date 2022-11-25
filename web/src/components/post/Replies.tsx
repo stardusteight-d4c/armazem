@@ -116,14 +116,14 @@ export const Replies = ({
     <>
       {toUsername !== null && (
         <div className="flex relative p-2 my-1 text-dusk-main dark:text-dawn-main items-start gap-3">
-          {index < repliesLength - 1 && (
-            <div className="h-[110%] left-[29px] -z-10 absolute w-[1px] bg-black/20 dark:bg-white/20" />
-          )}
+          {/* {index < repliesLength - 1 && (
+            <div className="h-56 z-50 left-[29px]  absolute w-[500px] bg-black/20 dark:bg-white/20" />
+          )} */}
           <Link to={`/${userByMetadata.username}`}>
             <img
               src={userByMetadata.user_img}
               alt=""
-              className="w-11 h-11 cursor-pointer border border-black/20 dark:border-white/20 object-cover"
+              className="w-11 h-11  min-w-[44px] cursor-pointer border border-black/20 dark:border-white/20 object-cover"
             />
           </Link>
           <div className="flex flex-col w-full ">
@@ -159,7 +159,7 @@ export const Replies = ({
               )}
             </span>
             <div>
-              <div className="flex items-center py-2 space-x-2 justify-end w-full">
+              <div className="flex items-center py-2 space-x-2 justify-start md:justify-end w-full">
                 <i
                   onClick={() => {
                     activeItem === reply?._id
@@ -168,7 +168,7 @@ export const Replies = ({
                   }}
                   className={`${
                     activeItem === reply?._id && '!text-prime-blue'
-                  } ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                  } ri-message-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 shadow-sm rounded-sm text-lg cursor-pointer`}
                 />
                 {userByMetadata._id === currentUser?._id && (
                   <>
@@ -176,17 +176,17 @@ export const Replies = ({
                       onClick={handleActiveItemEditOnClick}
                       className={`${
                         activeItem === reply._id + 'EDIT' && '!text-prime-blue'
-                      } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                      } ri-edit-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 shadow-sm rounded-sm text-lg cursor-pointer`}
                     />
                     <div className="relative">
                       <i
                         onClick={handleActiveItemDeleteOnClick}
                         className={`${
                           activeItem === reply._id + 'DELETE' && '!text-red'
-                        } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`}
+                        } ri-delete-bin-2-fill border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 shadow-sm rounded-sm text-lg cursor-pointer text-dusk-main dark:text-dusk-weak`}
                       />
                       {activeItem === reply._id + 'DELETE' && (
-                        <div className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[27px] -bottom-[70px]">
+                        <div className="shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[27px] -bottom-[70px]">
                           <a
                             onClick={() => removeReply()}
                             className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
@@ -212,7 +212,7 @@ export const Replies = ({
                 transition={{ duration: 0.5 }}
                 animate={{ opacity: 1, x: 0 }}
               >
-                <div className="flex gap-x-2 mt-2">
+                <div className="flex -ml-[55px] md:ml-0 gap-x-2 mt-2">
                   <img
                     src={currentUser?.user_img}
                     alt=""
