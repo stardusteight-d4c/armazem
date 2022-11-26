@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion, PanInfo } from 'framer-motion'
-import { CardManga } from './integrate/CardManga'
+import { CardManga } from '../CardManga'
 import axios from 'axios'
 import { mostRead } from '../../services/api-routes'
 
@@ -41,8 +41,8 @@ export const MostRead = () => {
         Most read mangas
       </h2>
       <motion.div {...dragAnimate}>
-        {mangas.map((manga) => (
-          <CardManga manga={manga} />
+        {mangas.map((manga, index) => (
+          <CardManga key={index} manga={manga} />
         ))}
       </motion.div>
     </section>

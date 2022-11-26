@@ -31,16 +31,14 @@ export const Dropdown = ({
             {children}
           </Menu.Button>
           <Menu.Items className={style.items + position}>
-            {items.map((item) => (
-              <>
+            {items.map((item, index) => (
+              <Menu.Item key={index}>
                 {item && (
-                  <Menu.Item>
-                    <a onClick={item.function} className={style.item}>
-                      {item.item}
-                    </a>
-                  </Menu.Item>
+                  <a onClick={item.function} className={style.item}>
+                    {item.item}
+                  </a>
                 )}
-              </>
+              </Menu.Item>
             ))}
           </Menu.Items>
         </div>

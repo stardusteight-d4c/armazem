@@ -67,7 +67,7 @@ export const TrendingPost = ({ postId }: Props) => {
   }
 
   const handleSharePost = async () => {
-    if (!isSharedPosts) {
+    if (!isSharedPost) {
       await axios
         .put(sharePost, {
           postId: post?._id,
@@ -104,7 +104,7 @@ export const TrendingPost = ({ postId }: Props) => {
   const sharedPosts = currentAccount?.sharedPosts?.map(
     (postShared: { id: string }) => postShared.id
   )
-  const isSharedPosts = currentAccount && sharedPosts?.includes(post?._id)
+  const isSharedPost = currentAccount && sharedPosts?.includes(post?._id)
 
   if (loading || !post) {
     return <></>
@@ -161,13 +161,13 @@ export const TrendingPost = ({ postId }: Props) => {
         <>
           <div
             onClick={handleSharePost}
-            className={`${isSharedPosts && 'text-orange'} ${
+            className={`${isSharedPost && 'text-orange'} ${
               style.shareContainer
             }`}
           >
             <i className={style.shareIcon} />
             <span className="text-lg hidden md:inline-block">
-              {isSharedPosts ? 'Shared' : 'Share'}{' '}
+              {isSharedPost ? 'Shared' : 'Share'}{' '}
             </span>
           </div>
         </>

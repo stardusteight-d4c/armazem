@@ -21,8 +21,6 @@ export const LastUpdates = (props: Props) => {
     })()
   }, [])
 
-  console.log('lastUpdates', lastUpdates)
-
   return (
     <>
       {lastUpdates.length > 0 && (

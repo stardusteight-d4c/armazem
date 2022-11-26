@@ -1,7 +1,7 @@
 export { Button } from './Button'
 export { SwitchTheme } from './SwitchTheme'
 
-export { CardManga } from './feed/integrate/CardManga'
+export { CardManga } from './CardManga'
 export { TrendingPosts } from './feed/TrendingPosts'
 
 export { Navbar } from './menu/Navbar'

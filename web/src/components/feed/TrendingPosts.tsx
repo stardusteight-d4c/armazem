@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Key, useEffect, useRef, useState } from 'react'
 import { TrendingPost } from './integrate/TrendingPost'
 import { motion, PanInfo } from 'framer-motion'
 import { topRatedPost } from '../../services/api-routes'
@@ -36,8 +36,8 @@ export const TrendingPosts = () => {
 
   const rendersTrendingPosts = () =>
     topRatedPosts.length > 0 ? (
-      topRatedPosts.map((post: { _id: string }) => (
-        <TrendingPost postId={post._id} />
+      topRatedPosts.map((post: { _id: string }, index: Key) => (
+        <TrendingPost key={index} postId={post._id} />
       ))
     ) : (
       <div className={style.noContent}>There are no trending posts yet</div>
