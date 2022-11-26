@@ -11,10 +11,10 @@ export const TrendingPosts = () => {
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(topRatedPost)
-      if (data.status === true) {
-        setTopRatedPosts(data.posts)
-      }
+      await axios
+        .get(topRatedPost)
+        .then(({ data }) => setTopRatedPosts(data.posts))
+        .catch((error) => console.log(error.toJSON()))
     })()
   }, [])
 
@@ -36,7 +36,9 @@ export const TrendingPosts = () => {
 
   const rendersTrendingPosts = () =>
     topRatedPosts.length > 0 ? (
-      topRatedPosts.map((post: any) => <TrendingPost postId={post._id} />)
+      topRatedPosts.map((post: { _id: string }) => (
+        <TrendingPost postId={post._id} />
+      ))
     ) : (
       <div className={style.noContent}>There are no trending posts yet</div>
     )

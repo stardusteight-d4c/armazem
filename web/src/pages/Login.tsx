@@ -6,9 +6,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useAppDispatch } from '../store/hooks'
 import { clearAuthSession, clearCurrentUser } from '../store'
 
-interface Props {}
-
-export const Login = (props: Props) => {
+export const Login = () => {
   const [signIn, setSignIn] = useState<boolean>(true)
   const dispatch = useAppDispatch()
 

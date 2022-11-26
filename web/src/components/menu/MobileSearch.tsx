@@ -19,7 +19,6 @@ export const MobileSearch = (props: Props) => {
     setScrollPosition(position)
   }
 
-  console.log(scrollPosition);
   
 
   useEffect(() => {

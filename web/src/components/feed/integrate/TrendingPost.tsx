@@ -1,18 +1,22 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import {
+  postMetadataById,
+  likePost,
+  unlikedPost,
+  sharePost,
+  unsharePost,
+} from '../../../services/api-routes'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { Link } from '../../Link'
+import { success } from '../../Toasters'
+import { getCurrentUserAccount } from '../../../store/reducers/current-user-data'
 
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
-import {
-  likePost,
-  postMetadataById,
-  unlikedPost,
-} from '../../../services/api-routes'
-import { useAppSelector } from '../../../store/hooks'
-import { Link } from '../../Link'
+
 timeago.register('en_short', en_short)
 
 interface Props {
@@ -22,127 +26,160 @@ interface Props {
 export const TrendingPost = ({ postId }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
-  const [post, setPost] = useState<any>([])
+  const [post, setPost] = useState<Post | null>(null)
   const [authorUser, setAuthorUser] = useState<User>()
   const [loading, setLoading] = useState<boolean>(true)
+  const [requestAgain, setRequestAgain] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     postId &&
       (async () => {
-        const { data } = await axios.get(`${postMetadataById}/${postId}`)
-        if (data.status === true) {
-          setPost(data.post)
-          setAuthorUser(data.authorUser)
-          setLoading(false)
-        }
+        await axios
+          .get(`${postMetadataById}/${postId}`)
+          .then(({ data }) => {
+            setPost(data.post)
+            setAuthorUser(data.authorUser)
+            setLoading(false)
+          })
+          .catch((error) => console.log(error.toJSON()))
       })()
-  }, [postId])
+  }, [postId, requestAgain])
 
   const handleLikePost = async () => {
     if (likedByUser()) {
-      await axios.post(unlikedPost, {
-        userId: currentUser?._id,
-        postId: post?._id,
-      })
+      await axios
+        .put(unlikedPost, {
+          userId: currentUser?._id,
+          postId: post?._id,
+        })
+        .then(() => setRequestAgain(!requestAgain))
+        .catch((error) => console.log(error.toJSON()))
     } else {
-      await axios.post(likePost, {
-        userId: currentUser?._id,
-        postId: post?._id,
-      })
+      await axios
+        .put(likePost, {
+          userId: currentUser?._id,
+          postId: post?._id,
+        })
+        .then(() => setRequestAgain(!requestAgain))
+        .catch((error) => console.log(error.toJSON()))
+    }
+  }
+
+  const handleSharePost = async () => {
+    if (!isSharedPosts) {
+      await axios
+        .put(sharePost, {
+          postId: post?._id,
+          accountId: currentUser?.account,
+        })
+        .then(async ({ data }) => {
+          success(data.msg)
+          await dispatch(getCurrentUserAccount())
+        })
+        .catch((error) => console.log(error.toJSON()))
+    } else {
+      await axios
+        .put(unsharePost, {
+          postId: post?._id,
+          accountId: currentUser?.account,
+        })
+        .then(async ({ data }) => {
+          success(data.msg)
+          await dispatch(getCurrentUserAccount())
+        })
+        .catch((error) => console.log(error.toJSON()))
     }
   }
 
   const likedByUser = () => {
     if (post && currentUser) {
-      const verificationResult = post?.likes.map(
-        (like: { by: string | undefined }) => {
-          if (like.by == currentUser?._id) {
-            return true
-          } else {
-            return false
-          }
-        }
+      const verificationResult = post?.likes.map((like: { by: string }) =>
+        like.by === currentUser?._id ? true : false
       )
       return verificationResult.includes(true)
     }
   }
 
   const sharedPosts = currentAccount?.sharedPosts?.map(
-    (postShared: any) => postShared.id
+    (postShared: { id: string }) => postShared.id
   )
   const isSharedPosts = currentAccount && sharedPosts?.includes(post?._id)
 
-  if (loading) {
+  if (loading || !post) {
     return <></>
   }
 
-  // deixar like dinâmico e separar responsabilidade de renderizações das 'actions/social' pois possuem maior lógica de renderização
-  return (
-    <motion.article className={style.wrapper}>
-      <div>
-        <Link
-          to={`/${authorUser?.username}`}
-          className={style.authorFlexContainer}
-        >
-          <div className={style.authorInfo}>
-            <img className={style.authorImg} src={authorUser?.user_img} />
-            <span className={style.authorName}>{authorUser?.name}</span>
-          </div>
-          <TimeAgo datetime={post.createdAt} locale="en_short" />
-        </Link>
-        <Link to={`/post/${post._id}`}>
-          <h2 className={style.postTitle}>{post.title}</h2>
-          <p className={style.postBody}>{post.body}</p>
-        </Link>
-      </div>
-      <div>
-        <div className={style.divider} />
-        <div className={style.postActionsFlexContainer}>
-          <div className={style.firstSectionContainer}>
-            <div onClick={handleLikePost} className={style.likeContainer}>
-              <i
-                className={`${
-                  likedByUser() ? style.likedIcon : style.likeIcon
-                }`}
-              />
-              <span className="text-lg">
-                {post.likes.length}{' '}
-                {post.likes.length <= 1 ? (
-                  <div className="inline-block">Like</div>
-                ) : (
-                  <div className="inline-block">Likes</div>
-                )}
-              </span>
-            </div>
-            <div className={style.discussionContainer}>
-              <i className={style.discussionIcon} />
-              <span className="text-lg">
-                {post.discussions.length}{' '}
-                {post.discussions.length <= 1 ? (
-                  <div className="inline-block">Discussion</div>
-                ) : (
-                  <div className="inline-block">Discussions</div>
-                )}
-              </span>
-            </div>
-          </div>
-          {currentUser?._id !== authorUser?._id && (
-            <>
-              {isSharedPosts ? (
-                <div className="text-orange flex items-center">
-                  <i className="ri-share-box-line pr-1 text-xl" />
-                  <span className="text-lg hidden md:inline-block">Shared</span>
-                </div>
-              ) : (
-                <div className="flex items-center ">
-                  <i className="ri-share-box-line pr-1 text-xl" />
-                  <span className="text-lg hidden md:inline-block">Share</span>
-                </div>
-              )}
-            </>
-          )}
+  const rendersContent = () => (
+    <div>
+      <Link
+        to={`/${authorUser?.username}`}
+        className={style.authorFlexContainer}
+      >
+        <div className={style.authorInfo}>
+          <img className={style.authorImg} src={authorUser?.user_img} />
+          <span className={style.authorName}>{authorUser?.name}</span>
+        </div>
+        <TimeAgo datetime={post.createdAt} locale="en_short" />
+      </Link>
+      <Link to={`/post/${post._id}`}>
+        <h2 className={style.postTitle}>{post.title}</h2>
+        <p className={style.postBody}>{post.body}</p>
+      </Link>
+    </div>
+  )
+
+  const rendersPostState = () => (
+    <div className={style.postActionsFlexContainer}>
+      <div className={style.firstSectionContainer}>
+        <div onClick={handleLikePost} className={style.likeContainer}>
+          <i
+            className={`${likedByUser() ? style.likedIcon : style.likeIcon}`}
+          />
+          <span className="text-lg">
+            {post.likes.length}{' '}
+            {post.likes.length <= 1 ? (
+              <span className="inline-block">Like</span>
+            ) : (
+              <span className="inline-block">Likes</span>
+            )}
+          </span>
+        </div>
+        <div className={style.discussionContainer}>
+          <i className={style.discussionIcon} />
+          <span className="text-lg">
+            {post.discussions.length}{' '}
+            {post.discussions.length <= 1 ? (
+              <div className="inline-block">Discussion</div>
+            ) : (
+              <div className="inline-block">Discussions</div>
+            )}
+          </span>
         </div>
       </div>
+      {currentUser?._id !== authorUser?._id && (
+        <>
+          <div
+            onClick={handleSharePost}
+            className={`${isSharedPosts && 'text-orange'} ${
+              style.shareContainer
+            }`}
+          >
+            <i className={style.shareIcon} />
+            <span className="text-lg hidden md:inline-block">
+              {isSharedPosts ? 'Shared' : 'Share'}{' '}
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  )
+
+  return (
+    <motion.article className={style.wrapper}>
+      {rendersContent()}
+      <div className={style.divider} />
+      {rendersPostState()}
     </motion.article>
   )
 }
@@ -155,7 +192,7 @@ const style = {
   authorName: `font-medium text-xl text-dusk-main dark:text-dawn-main`,
   postTitle: `font-semibold w-full truncate text-xl my-1 inline-block text-dusk-main dark:text-dawn-main`,
   postBody: `line-clamp-4 break-words`,
-  divider: `h-[1px] w-full my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20`,
+  divider: `h-[1px] mt-auto w-full my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20`,
   postActionsFlexContainer: `flex items-center justify-between text-dusk-main dark:text-dawn-main`,
   firstSectionContainer: `flex items-center gap-x-5`,
   likeContainer: `flex md:w-[84px] items-center cursor-pointer`,
@@ -163,4 +200,6 @@ const style = {
   likedIcon: `ri-heart-3-fill text-prime-blue text-xl pr-1`,
   discussionContainer: `flex items-center`,
   discussionIcon: `ri-discuss-line pr-1 text-xl`,
+  shareContainer: `cursor-pointer flex items-center`,
+  shareIcon: `ri-share-box-line pr-1 text-xl`,
 }
