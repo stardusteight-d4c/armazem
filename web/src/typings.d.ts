@@ -93,8 +93,8 @@ interface Manga {
   genres: array
   score: [
     {
-      userId: String
-      score: Number
+      userId: string
+      score: number
     }
   ]
   readers: Array

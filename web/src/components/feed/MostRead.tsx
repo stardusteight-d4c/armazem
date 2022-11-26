@@ -1,46 +1,46 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, PanInfo } from 'framer-motion'
 import { CardManga } from './integrate/CardManga'
 import axios from 'axios'
 import { mostRead } from '../../services/api-routes'
 
-interface Props {}
-
-export const MostRead = (props: Props) => {
-  const [cardCarouselWidth, setCardCarouselWidth] = useState(0)
+export const MostRead = () => {
+  const [cardSliderWidth, setCardSliderWidth] = useState(0)
   const [onDrag, setOnDrag] = useState(0)
-  const [mangas, setMangas] = useState([])
+  const [mangas, setMangas] = useState<[Manga] | []>([])
 
-  const cardCarousel = useRef() as React.MutableRefObject<HTMLInputElement>
+  const cardSlider = useRef() as React.MutableRefObject<HTMLInputElement>
   useEffect(() => {
-    cardCarousel.current &&
-      setCardCarouselWidth(
-        cardCarousel.current.scrollWidth - cardCarousel.current.offsetWidth
+    cardSlider.current &&
+      setCardSliderWidth(
+        cardSlider.current.scrollWidth - cardSlider.current.offsetWidth
       )
   }, [onDrag])
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(mostRead)
-      if (data.status === true) {
-        setMangas(data.mangas)
-      }
+      await axios
+        .get(mostRead)
+        .then(({ data }) => setMangas(data.mangas))
+        .catch((error) => console.log(error.toJSON()))
     })()
   }, [])
+
+  const dragAnimate = {
+    drag: 'x' as 'x',
+    ref: cardSlider,
+    onDrag: (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) =>
+      setOnDrag(info.offset.x),
+    dragConstraints: { right: 0, left: -cardSliderWidth },
+    className: 'flex items-center gap-x-5',
+  }
 
   return (
     <section>
       <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
         Most read mangas
       </h2>
-      <motion.div
-        whileTap={{ cursor: 'grabbing' }}
-        drag="x"
-        ref={cardCarousel}
-        onDrag={(_event, info) => setOnDrag(info.offset.x)}
-        dragConstraints={{ right: 0, left: -cardCarouselWidth }}
-        className="flex items-center gap-x-5 "
-      >
+      <motion.div {...dragAnimate}>
         {mangas.map((manga) => (
           <CardManga manga={manga} />
         ))}

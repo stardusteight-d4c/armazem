@@ -326,7 +326,7 @@ export const randomMangasByGenre = async (req, res, next) => {
 
 export const mostRead = async (req, res, next) => {
   try {
-    const mangas = await Manga.aggregate([
+    const mostReads = await Manga.aggregate([
       {
         $set: {
           readers: {
@@ -341,12 +341,19 @@ export const mostRead = async (req, res, next) => {
       },
     ]).limit(10)
 
+    const mangas = mostReads.map((mostRead) => ({
+      cover: mostRead.cover,
+      uid: mostRead.uid,
+      score: mostRead.score,
+      title: mostRead.title,
+    }))
+
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
     next(error)
     return res.status(500).json({
       status: false,
-      msg: 'An error occurred while querying the most read mangas',
+      msg: error.message,
     })
   }
 }

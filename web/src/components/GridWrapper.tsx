@@ -27,12 +27,13 @@ export const GridWrapper = ({ children, loading }: Props) => {
   }
 
   const handleLoadingData = () => {
-    return loading ? (
-      <div className={loader.wrapper}>
-        <Loader className={loader.loader} />
-      </div>
-    ) : (
-      children
+    return (
+      loading && (
+        <div className={loader.wrapper}>
+          <Loader className={loader.loader} />
+          <span className="-z-50 absolute">{children}</span>
+        </div>
+      )
     )
   }
 
@@ -44,6 +45,7 @@ export const GridWrapper = ({ children, loading }: Props) => {
         <MobileSearch />
         <MobileNav />
         <>{handleLoadingData()}</>
+        {children}
       </div>
     </div>
   )
@@ -55,6 +57,6 @@ const style = {
 }
 
 const loader = {
-  wrapper: `w-full h-screen -mt-28 flex items-center justify-center`,
+  wrapper: `w-full h-screen -mt-28 flex items-center justify-center relative`,
   loader: `border-black dark:border-white !w-16 !h-16 !border-[8px]`,
 }
