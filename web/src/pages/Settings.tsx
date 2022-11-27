@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks'
 import bcryptjs from 'bcryptjs'
 import { useNavigate } from 'react-router-dom'
 import { MobileNav } from '../components/menu'
-import { MobileSearch } from '../components/menu/MobileSearch'
+import { MobileSearch } from '../components/menu/integrate/MobileSearch'
 
 interface Props {}
 

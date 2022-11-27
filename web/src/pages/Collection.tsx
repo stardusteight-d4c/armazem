@@ -6,7 +6,7 @@ import { Card } from '../components/collection/Card'
 import { Dropdown } from '../components/Dropdown'
 import { Loader } from '../components/Loader'
 import { MobileNav } from '../components/menu'
-import { MobileSearch } from '../components/menu/MobileSearch'
+import { MobileSearch } from '../components/menu/integrate/MobileSearch'
 import {
   mangaByGenre,
   mangaByGenreAndTitle,

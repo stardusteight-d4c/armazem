@@ -3,12 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { userData } from '../../../services/api-routes'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { RecentConnectionOnline } from './RecentConnectionOnline'
-import {
-  clearAuthSession,
-  clearCurrentUser,
-  handleMinimizeSidebar,
-} from '../../../store'
+import { clearAuthSession, clearCurrentUser } from '../../../store'
 import useWindowDimensions from '../../../hooks/useWindowDimensions'
 import { motion } from 'framer-motion'
 
@@ -24,11 +19,7 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const [connections, setConnections] = useState<[User] | any>([])
-  const minimizeSidebar = useAppSelector(
-    (state) => state.armazem.minimizeSidebar
-  )
   const dispatch = useAppDispatch()
-  const { height, width } = useWindowDimensions()
   const adminRole = import.meta.env.VITE_ADMIN_ROLE
   const [disableHookEffect, setDisableHookEffect] = useState(false)
 

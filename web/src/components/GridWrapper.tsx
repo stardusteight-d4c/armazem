@@ -2,7 +2,7 @@ import React from 'react'
 import { useAppSelector } from '../store/hooks'
 import { Loader } from './Loader'
 import { MobileNav, Navbar, Sidebar } from './menu'
-import { MobileSearch } from './menu/MobileSearch'
+import { MobileSearch } from './menu/integrate/MobileSearch'
 
 interface Props {
   children: React.ReactNode

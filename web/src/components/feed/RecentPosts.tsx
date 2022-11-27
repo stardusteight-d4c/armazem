@@ -23,7 +23,6 @@ export const RecentPosts = () => {
             setEndRecentPosts(true)
           }
           setPage((page) => page + 1)
-
           setRecentPostsI([
             ...(recentPostsI !== undefined ? recentPostsI : []),
             ...(data.posts !== undefined ? data.posts.slice(0, 2) : []),

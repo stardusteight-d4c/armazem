@@ -11,7 +11,7 @@ import {
 } from '../components'
 import { Loader } from '../components/Loader'
 import { MobileNav } from '../components/menu'
-import { MobileSearch } from '../components/menu/MobileSearch'
+import { MobileSearch } from '../components/menu/integrate/MobileSearch'
 import { removeConnection, userData } from '../services/api-routes'
 import { askToRequestAgain } from '../store'
 import { useAppDispatch, useAppSelector } from '../store/hooks'

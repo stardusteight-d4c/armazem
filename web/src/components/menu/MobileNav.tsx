@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { SwitchTheme } from '../SwitchTheme'
-import { MobileNotifications } from './integrate/Notifications'
+import { Notifications } from './integrate/Notifications'
 
 export const MobileNav = () => {
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ export const MobileNav = () => {
         className={style.newPostIcon}
         onClick={() => dispatch(handleOpenModal('PostInput'))}
       />
-      <MobileNotifications />
+      <Notifications isMobile={true} />
       <SwitchTheme />
       <i
         onClick={() => dispatch(handleOpenModal('ChatMobile'))}

@@ -108,7 +108,6 @@ export const RecentPost = ({ post }: Props) => {
 
   useEffect(() => {
     const verificationResult = arrLikesCopy.map((like: { by: string }) => {
-      console.log('like.by', like.by)
       if (like.by === currentUser?._id) {
         return true
       } else {

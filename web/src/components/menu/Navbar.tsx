@@ -12,9 +12,11 @@ import { Dropdown } from '../Dropdown'
 import { Search } from './integrate/Search'
 import { MobileMenu } from './integrate/MobileMenu'
 import { AnimatePresence } from 'framer-motion'
-import { DesktopNotifications } from './integrate/Notifications'
+import { Notifications } from './integrate/Notifications'
 
-export const Navbar = () => {
+interface Props {}
+
+export const Navbar = (props: Props) => {
   const navigate = useNavigate()
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const dispatch = useAppDispatch()
@@ -102,7 +104,9 @@ export const Navbar = () => {
           onClick={() => dispatch(handleOpenModal('Chat'))}
           className={style.messagesIcon}
         />
-        <DesktopNotifications />
+        <i className={style.notificationsContainer}>
+          <Notifications />
+        </i>
         <i
           title="Settings"
           onClick={() => navigate('/settings')}
@@ -143,6 +147,7 @@ const style = {
   switchTheme: `hidden md:block`,
   newPostIcon: `ri-article-line hidden md:block  text-3xl p-2 cursor-pointer`,
   messagesIcon: `ri-question-answer-line hidden md:block text-3xl p-2 cursor-pointer`,
+  notificationsContainer: `hidden md:inline-block not-italic`,
   settingsIcon: `ri-settings-2-line hidden md:block text-3xl p-2 cursor-pointer transition duration-1000 transform hover:rotate-[360deg]`,
   accountDesktopContainer: `hidden md:block`,
   accountDesktopImg: `w-12 h-12 rounded-md cursor-pointer`,

@@ -20,7 +20,7 @@ import { askToRequestAgain } from '../store'
 import { ConnectionStatus } from '../components/ConnectionStatus'
 import { PageNotFound } from './PageNotFound'
 import { io } from 'socket.io-client'
-import { MobileSearch } from '../components/menu/MobileSearch'
+import { MobileSearch } from '../components/menu/integrate/MobileSearch'
 import { MobileNav } from '../components/menu'
 
 interface Props {

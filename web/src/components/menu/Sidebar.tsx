@@ -1,13 +1,9 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { userData } from '../../services/api-routes'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { RecentConnectionOnline } from './integrate/RecentConnectionOnline'
-import { handleMinimizeSidebar } from '../../store'
-import useWindowDimensions from '../../hooks/useWindowDimensions'
-import { motion } from 'framer-motion'
-import { MobileMenu } from './integrate/MobileMenu'
+import { useAppSelector } from '../../store/hooks'
+import { SidebarItem } from './integrate/SidebarItem'
 
 interface Props {}
 
@@ -20,9 +16,6 @@ export const Sidebar = (props: Props) => {
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
   )
-  const dispatch = useAppDispatch()
-  const [openMobileMenu, setOpenMobileMenu] = useState(false)
-  const { height, width } = useWindowDimensions()
   const adminRole = import.meta.env.VITE_ADMIN_ROLE
 
   useEffect(() => {
@@ -39,140 +32,77 @@ export const Sidebar = (props: Props) => {
     }
   }, [])
 
+  const menuItems = {
+    newFeed: {
+      to: '/',
+      name: 'New feed',
+      activeIcon: 'ri-lightbulb-flash-fill',
+      inactiveIcon: 'ri-lightbulb-flash-line',
+    },
+    myAccount: {
+      to: `/${currentUser?.username}`,
+      name: 'My account',
+      activeIcon: 'ri-account-pin-box-fill',
+      inactiveIcon: 'ri-account-pin-box-line',
+    },
+    connections: {
+      to: '/connections',
+      name: 'Connections',
+      activeIcon: 'ri-link-unlink',
+      inactiveIcon: 'ri-link',
+    },
+    collection: {
+      to: '/collection',
+      name: 'Collection',
+      activeIcon: 'ri-book-3-fill',
+      inactiveIcon: 'ri-book-3-line',
+    },
+    myList: {
+      to: '/MyList',
+      name: 'My List',
+      activeIcon: 'ri-book-mark-fill',
+      inactiveIcon: 'ri-book-mark-line',
+    },
+    addManga: {
+      to: '/addManga',
+      name: 'Add manga',
+      activeIcon: 'ri-add-box-fill',
+      inactiveIcon: 'ri-add-box-line',
+    },
+  }
+
   return (
     <aside
-      className={`${
-        minimizeSidebar && '!px-2 pl-[1.2px]'
-      } scrollbar-hide hidden md:block relative min-h-screen pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 md:col-span-1 md:row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong`}
+      className={`${minimizeSidebar && '!px-2 pl-[1.2px]'} ${style.wrapper}`}
     >
       <Link
         to="/"
-        className={`${
-          minimizeSidebar && '!mb-10 !mt-8'
-        } flex cursor-pointer items-center justify-center mt-6 mb-8 gap-x-2`}
+        className={`${minimizeSidebar && '!mb-10 !mt-8'} ${
+          style.logoContainer
+        }`}
       >
-        <i className="ri-server-fill text-3xl text-fill-strong dark:text-fill-weak" />
-        {!minimizeSidebar && (
-          <h1 className="text-4xl font-inter text-fill-strong dark:text-fill-weak font-bold">
-            Armazem
-          </h1>
-        )}
+        <i className={style.logoIcon} />
+        {!minimizeSidebar && <h1 className={style.armazem}>Armazem</h1>}
       </Link>
       <div>
-      
         <ul className="space-y-2">
-          <Link
-            to="/"
-            className={`flex max-w-full min-h-full cursor-pointer rounded-xl  items-center justify-start p-4 hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
-              path === '/' && 'bg-prime-blue mx-auto text-white'
-            }`}
-          >
-            <i
-              className={`text-2xl ${
-                path === '/'
-                  ? 'ri-lightbulb-flash-fill'
-                  : 'ri-lightbulb-flash-line'
-              }`}
-            />
-            {!minimizeSidebar && (
-              <span className="font-medium text-lg">New feed</span>
-            )}
-          </Link>
-          <Link
-            to={`/${currentUser?.username}`}
-            className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
-              path === `/${currentUser?.username}` && 'bg-prime-blue text-white'
-            }`}
-          >
-            <i
-              className={`ri-account-pin-box-fill text-2xl ${
-                path === `/${currentUser?.username}`
-                  ? 'ri-account-pin-box-fill'
-                  : 'ri-account-pin-box-line'
-              }`}
-            />
-            {!minimizeSidebar && (
-              <span className="font-medium text-lg">My account</span>
-            )}
-          </Link>
-          <Link
-            to="/connections"
-            className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4 hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
-              path === `/connections` && 'bg-prime-blue text-white'
-            }`}
-          >
-            {/* <i className="ri-link text-2xl" /> */}
-            <i
-              className={`text-2xl ${
-                path === `/connections` ? 'ri-link-unlink' : 'ri-link'
-              }`}
-            />
-            {!minimizeSidebar && (
-              <span className="font-medium text-lg">Connections</span>
-            )}
-          </Link>
-          <Link
-            to="/collection"
-            className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
-              path === `/collection` && 'bg-prime-blue text-white'
-            }`}
-          >
-            <i
-              className={`text-2xl ${
-                path === `/collection` ? 'ri-book-3-fill' : 'ri-book-3-line'
-              }`}
-            />
-            {!minimizeSidebar && (
-              <span className="font-medium text-lg">Collection</span>
-            )}
-          </Link>
-          <Link
-            to="/MyList"
-            className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
-              path === `/MyList` && 'bg-prime-blue text-white'
-            }`}
-          >
-            <i
-              className={`text-2xl ${
-                path === `/MyList` ? 'ri-book-mark-fill' : 'ri-book-mark-line'
-              }`}
-            />
-            {!minimizeSidebar && (
-              <span className="font-medium text-lg">My list</span>
-            )}
-          </Link>
+          <SidebarItem {...menuItems.newFeed} />
+          <SidebarItem {...menuItems.myAccount} />
+          <SidebarItem {...menuItems.connections} />
+          <SidebarItem {...menuItems.collection} />
+          <SidebarItem {...menuItems.myList} />
           {currentUser?.role && currentUser.role === adminRole && (
-            <Link
-              to="/addManga"
-              title="Add new work to database"
-              className={`flex w-full cursor-pointer rounded-xl items-center justify-start p-4  hover:transition-all hover:duration-200 hover:brightness-125 gap-4 ${
-                path === `/addManga` && 'bg-prime-purple text-white'
-              }`}
-            >
-              <i
-                className={`text-2xl ${
-                  path === `/addManga` ? 'ri-add-box-fill' : 'ri-add-box-line'
-                }`}
-              />
-              {!minimizeSidebar && (
-                <span className="font-medium text-lg">Add manga</span>
-              )}
-            </Link>
+            <SidebarItem {...menuItems.addManga} />
           )}
         </ul>
       </div>
-      <div className="h-[1px] w-[full] my-8 bg-dawn-weak/20 dark:bg-dusk-weak/20" />
-      {!minimizeSidebar && (
-        <div>
-          <ul className="space-y-5">
-            {connections.map(
-              (connection: User, index: React.Key | null | undefined) => (
-                <RecentConnectionOnline key={index} connection={connection} />
-              )
-            )}
-          </ul>
-        </div>
-      )}
     </aside>
   )
+}
+
+const style = {
+  wrapper: `scrollbar-hide hidden md:block relative min-h-screen pb-10 z-10 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 md:col-span-1 md:row-start-1 col-start-1  text-dusk-main dark:text-dawn-main px-4 bg-fill-weak dark:bg-fill-strong`,
+  logoContainer: `flex cursor-pointer items-center justify-center mt-6 mb-8 gap-x-2`,
+  logoIcon: `ri-server-fill text-3xl text-fill-strong dark:text-fill-weak`,
+  armazem: `text-4xl font-inter text-fill-strong dark:text-fill-weak font-bold`,
 }

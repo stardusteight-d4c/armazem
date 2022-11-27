@@ -22,7 +22,7 @@ import { Review } from '../components/manga/Review'
 import { MangaStatus } from '../components/manga/MangaStatus'
 import { MangaInfo } from '../components/manga/MangaInfo'
 import { MangaMetaInfos } from '../components/manga/MangaMetaInfos'
-import { MobileSearch } from '../components/menu/MobileSearch'
+import { MobileSearch } from '../components/menu/integrate/MobileSearch'
 import { MobileNav } from '../components/menu'
 
 interface Props {}
