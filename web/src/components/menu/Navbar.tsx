@@ -114,7 +114,7 @@ export const Navbar = (props: Props) => {
         />
 
         <div className={style.accountDesktopContainer}>
-          <Dropdown title="Account" space="space-y-14" items={accountItems}>
+          <Dropdown title="Account" space="space-y-12" items={accountItems}>
             <img
               referrerPolicy="no-referrer"
               src={currentUser?.user_img}
@@ -124,6 +124,7 @@ export const Navbar = (props: Props) => {
         </div>
         <div className={style.accountMobileContainer}>
           <img
+            onClick={() => navigate(`${currentUser?.username}`)}
             referrerPolicy="no-referrer"
             src={currentUser?.user_img}
             className={style.accountMobileImg}

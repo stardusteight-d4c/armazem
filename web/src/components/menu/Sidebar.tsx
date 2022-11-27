@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { userData } from '../../services/api-routes'
 import { useAppSelector } from '../../store/hooks'
 import { SidebarItem } from './integrate/SidebarItem'
@@ -8,8 +8,6 @@ import { SidebarItem } from './integrate/SidebarItem'
 interface Props {}
 
 export const Sidebar = (props: Props) => {
-  const location = useLocation()
-  const path = location.pathname
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const [connections, setConnections] = useState<[User] | any>([])
