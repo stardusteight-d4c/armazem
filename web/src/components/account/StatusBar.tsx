@@ -9,7 +9,7 @@ import Item from '../mylist/Item'
 import StatusItems from './StatusItems'
 
 interface Props {
-  userMetadata: User
+  userMetadata: User | null
 }
 
 let bar_width = '21.15%'

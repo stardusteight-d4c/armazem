@@ -29,10 +29,13 @@ export const GridWrapper = ({ children, loading }: Props) => {
   const handleLoadingData = () => {
     return (
       loading && (
-        <div className={loader.wrapper}>
-          <Loader className={loader.loader} />
+        <section className={loader.wrapper}>
+          {/* Children loads while loading */}
           <span className="-z-50 absolute">{children}</span>
-        </div>
+          <div className={loader.container}>
+            <Loader className={loader.loader} />
+          </div>
+        </section>
       )
     )
   }
@@ -57,6 +60,7 @@ const style = {
 }
 
 const loader = {
-  wrapper: `w-full h-screen -mt-28 flex items-center justify-center relative`,
+  wrapper: `h-[200vh] relative overflow-hidden`,
+  container: `w-full h-screen -mt-28 flex items-center justify-center relative`,
   loader: `border-black dark:border-white !w-16 !h-16 !border-[8px]`,
 }

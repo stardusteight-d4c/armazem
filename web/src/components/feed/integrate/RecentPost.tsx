@@ -78,7 +78,7 @@ export const RecentPost = ({ post }: Props) => {
 
   setTimeout(() => {
     setLoading(false)
-  }, 1000)
+  }, 500)
 
   const handleSharePost = async () => {
     if (!isSharedPost) {

@@ -39,10 +39,6 @@ export const Sidebar = (props: Props) => {
     }
   }, [])
 
-
-
-  const isTabletOrMobile = width < 600
-
   return (
     <aside
       className={`${
