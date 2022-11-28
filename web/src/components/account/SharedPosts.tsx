@@ -4,7 +4,7 @@ import { sharedPosts } from '../../services/api-routes'
 import { handleOpenModal } from '../../store'
 import { useAppDispatch } from '../../store/hooks'
 import { Button } from '../Button'
-import { SharedPostCard } from './SharedPostCard'
+import { SharedPost } from './integrate/SharedPost'
 
 interface Props {
   userMetadata: User
@@ -35,7 +35,7 @@ export const SharedPosts = ({ userMetadata }: Props) => {
         <>
       <div className="flex flex-col gap-y-5">
         {sharedPostsData.slice(0,3).reverse().map((post, index) => (
-          <SharedPostCard key={index} post={post} />
+          <SharedPost key={index} post={post} />
         ))}
       </div>
       <div className="flex items-center justify-center">

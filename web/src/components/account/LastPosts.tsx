@@ -7,7 +7,7 @@ import {
 import { askToRequestAgain, handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { Button } from '../Button'
-import { LastPost } from './LastPost'
+import { LastPost } from './integrate/LastPost'
 
 interface Props {
   userMetadata: User

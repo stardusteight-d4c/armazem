@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { askToRequestAgain, askToRequestEditProfile, handleOpenModal } from '../../store'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { Button } from '../Button'
+import { askToRequestAgain, askToRequestEditProfile, handleOpenModal } from '../../../store'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { Button } from '../../Button'
 import axios from 'axios'
-import { updateProfileImage } from '../../services/api-routes'
+import { updateProfileImage } from '../../../services/api-routes'
 
 interface Props {}
 

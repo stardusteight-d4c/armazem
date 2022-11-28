@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { updatesMangaList } from '../../services/api-routes'
 import { useAppSelector } from '../../store/hooks'
-import { LastUpdate } from './LastUpdate'
+import { LastUpdate } from './integrate/LastUpdate'
 
 interface Props {}
 

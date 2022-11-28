@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useAppSelector } from '../../store/hooks'
+import { useAppSelector } from '../../../store/hooks'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -8,10 +8,10 @@ import {
   deleteComment,
   updateComment,
   userData,
-} from '../../services/api-routes'
-import { Button } from '../Button'
-import { Loader } from '../Loader'
-import { error, success } from '../Toasters'
+} from '../../../services/api-routes'
+import { Button } from '../../Button'
+import { Loader } from '../../Loader'
+import { error, success } from '../../Toasters'
 
 timeago.register('en_short', en_short)
 

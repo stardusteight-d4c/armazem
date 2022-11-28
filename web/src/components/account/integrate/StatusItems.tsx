@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { memo, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { mangaByUid } from '../../services/api-routes'
-import { Loader } from '../Loader'
+import { mangaByUid } from '../../../services/api-routes'
+import { Loader } from '../../Loader'
 
 interface Props {
   item: any

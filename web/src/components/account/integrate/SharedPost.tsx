@@ -1,9 +1,9 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { userData } from '../../services/api-routes'
-import { askToRequestAgain } from '../../store'
-import { useAppDispatch } from '../../store/hooks'
+import { userData } from '../../../services/api-routes'
+import { askToRequestAgain } from '../../../store'
+import { useAppDispatch } from '../../../store/hooks'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -14,7 +14,7 @@ interface Props {
   post: Post
 }
 
-export const SharedPostCard = ({ post }: Props) => {
+export const SharedPost = ({ post }: Props) => {
   const [authorPost, setAuthorPost] = useState<User>()
 
   useEffect(() => {

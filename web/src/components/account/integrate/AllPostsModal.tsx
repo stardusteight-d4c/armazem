@@ -4,14 +4,14 @@ import {
   askToRequestAgain,
   handleOpenModal,
   handleUserMetadata,
-} from '../../store'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+} from '../../../store'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import axios from 'axios'
 import {
   dataByUsername,
   postByPagination,
   searchUserPostByTitle,
-} from '../../services/api-routes'
+} from '../../../services/api-routes'
 import { Link } from 'react-router-dom'
 
 interface Props {}

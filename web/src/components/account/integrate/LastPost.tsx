@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
 import axios from 'axios'
-import { likePost, unlikedPost } from '../../services/api-routes'
+import { likePost, unlikedPost } from '../../../services/api-routes'
 import { Menu } from '@headlessui/react'
 
 timeago.register('en_short', en_short)

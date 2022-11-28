@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
 import { GridWrapper } from '../components/GridWrapper'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import axios from 'axios'
+import { dataByUsername } from '../services/api-routes'
+import { useParams } from 'react-router-dom'
+import { handleUserMetadata } from '../store'
 import {
+  Comments,
   Favorites,
   Header,
   LastPosts,
   LastUpdates,
   SharedPosts,
   StatusBar,
-} from '../components'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
-import axios from 'axios'
-import { dataByUsername } from '../services/api-routes'
-import { useParams } from 'react-router-dom'
-import { Comments } from '../components/account/Comments'
-import { handleUserMetadata } from '../store'
+} from '../components/account'
 
 export const Account = () => {
   const dispatch = useAppDispatch()

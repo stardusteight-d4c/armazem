@@ -33,14 +33,8 @@ export const Navbar = (props: Props) => {
   }
 
   const accountItems = [
-    {
-      item: 'Account',
-      function: () => navigate(`/${currentUser?.username}`),
-    },
-    {
-      item: 'Logout',
-      function: () => handleLogout(),
-    },
+    { item: 'Account', function: () => navigate(`/${currentUser?.username}`) },
+    { item: 'Logout', function: () => handleLogout() },
   ]
 
   const html = document.querySelector('html')

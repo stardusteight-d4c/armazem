@@ -16,6 +16,11 @@ export const Notifications = ({ isMobile }: Props) => {
   const [prevNotifyLength, setPrevNotifyLength] = useState<number | string>(0)
 
   useEffect(() => {
+    const notifyLength = localStorage.getItem('notifyLength')
+    notifyLength && setPrevNotifyLength(notifyLength)
+  }, [])
+
+  useEffect(() => {
     if (currentAccount._id) {
       ;(async () => {
         const { data } = await axios.get(

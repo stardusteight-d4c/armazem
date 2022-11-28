@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { handleOpenModal } from '../../store'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { handleOpenModal } from '../../../store'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import axios from 'axios'
 import {
   searchSharedPostByTitle,
   sharedPostByPagination,
   userData,
-} from '../../services/api-routes'
+} from '../../../services/api-routes'
 
 interface Props {}
 

@@ -54,23 +54,19 @@ export const Header = ({ userMetadata, currentAccount }: Props) => {
           <div className={style.nameStatusContainer}>
             <h2 className={style.name}>{userMetadata.name}</h2>
             {userMetadata._id !== currentUser?._id && (
-              <div>
-                <ConnectionStatus
-                  userMetadata={userMetadata}
-                  currentAccount={currentAccount}
-                />
-              </div>
+              <ConnectionStatus
+                userMetadata={userMetadata}
+                currentAccount={currentAccount}
+              />
             )}
           </div>
           <div className={style.usernameActivityContainer}>
-            <>
-              @{userMetadata?.username}{' '}
-              {handleLastActivity() <= 65 ? (
-                <div title="Online" className={style.online} />
-              ) : (
-                <div title="Offline" className={style.offline} />
-              )}
-            </>
+            @{userMetadata?.username}{' '}
+            {handleLastActivity() <= 65 ? (
+              <div title="Online" className={style.online} />
+            ) : (
+              <div title="Offline" className={style.offline} />
+            )}
           </div>
         </div>
       </div>

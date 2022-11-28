@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { askToRequestAgain, handleOpenModal, handleUserMetadata } from '../../store'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { Button } from '../Button'
+import { askToRequestAgain, handleOpenModal, handleUserMetadata } from '../../../store'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { Button } from '../../Button'
 import axios from 'axios'
-import { error, success } from '../Toasters'
-import { updateCoverImage } from '../../services/api-routes'
+import { error, success } from '../../Toasters'
+import { updateCoverImage } from '../../../services/api-routes'
 import { Toaster } from 'react-hot-toast'
 
 interface Props {}
