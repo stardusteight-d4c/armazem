@@ -7,17 +7,15 @@ import { LastUpdate } from './integrate/LastUpdate'
 interface Props {}
 
 export const LastUpdates = (props: Props) => {
-  const [lastUpdates, setLastUpdates] = useState([])
+  const [lastUpdates, setLastUpdates] = useState<[Listed] | []>([])
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(
-        `${updatesMangaList}/${userMetadata?.account}`
-      )
-      if (data.status === true) {
-        setLastUpdates(data.updates)
-      }
+      await axios
+        .get(`${updatesMangaList}/${userMetadata?.account}`)
+        .then(({ data }) => setLastUpdates(data.updates))
+        .catch((error) => console.log(error.toJSON()))
     })()
   }, [])
 
@@ -25,16 +23,19 @@ export const LastUpdates = (props: Props) => {
     <>
       {lastUpdates.length > 0 && (
         <section>
-          <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
-            Last updates
-          </h2>
-          <div className="flex flex-col gap-y-5">
-            {lastUpdates.map((update) => (
-              <LastUpdate lastUpdate={update} />
+          <h2 className={style.title}>Last updates</h2>
+          <div className={style.container}>
+            {lastUpdates.map((update, index: React.Key) => (
+              <LastUpdate key={index} lastUpdate={update} />
             ))}
           </div>
         </section>
       )}
     </>
   )
+}
+
+const style = {
+  title: `text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold`,
+  container: `flex flex-col gap-y-5`,
 }

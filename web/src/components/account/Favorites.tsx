@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CardManga } from '../CardManga'
-import { motion } from 'framer-motion'
+import { motion, PanInfo } from 'framer-motion'
 import { useAppSelector } from '../../store/hooks'
 import { mangaFavorites } from '../../services/api-routes'
 import axios from 'axios'
@@ -8,13 +8,13 @@ import axios from 'axios'
 interface Props {}
 
 export const Favorites = (props: Props) => {
-  const [favoritesWidth, setFavoritesCarouselWidth] = useState(0)
-  const [onDragFavorites, setOnDragFavorites] = useState(0)
+  const [cardSliderWidth, setCardSliderWidth] = useState(0)
+  const [onDrag, setOnDrag] = useState(0)
   const userMetadata: User | null = useAppSelector(
     (state) => state.armazem.userMetadata
   )
-
   const [favorites, setFavorites] = useState([])
+  const cardSlider = useRef() as React.MutableRefObject<HTMLInputElement>
 
   useEffect(() => {
     if (userMetadata) {
@@ -23,54 +23,52 @@ export const Favorites = (props: Props) => {
           `${mangaFavorites}/${userMetadata?.account}`
         )
         if (data.status === true) {
-          console.log(data);
-          
           setFavorites(data.mangas)
         }
       })()
     }
   }, [userMetadata])
 
-  // CAROUSEL FRAMER MOTION
-  const favoritesCarousel = useRef() as React.MutableRefObject<HTMLInputElement>
   useEffect(() => {
-    favoritesCarousel.current &&
-      setFavoritesCarouselWidth(
-        favoritesCarousel.current.scrollWidth -
-          favoritesCarousel.current.offsetWidth
+    cardSlider.current &&
+      setCardSliderWidth(
+        cardSlider.current.scrollWidth - cardSlider.current.offsetWidth
       )
-  }, [onDragFavorites])
+  }, [onDrag])
 
+  const dragAnimate = {
+    drag: 'x' as 'x',
+    ref: cardSlider,
+    onDrag: (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) =>
+      setOnDrag(info.offset.x),
+    dragConstraints: { right: 0, left: -cardSliderWidth },
+    className: 'flex items-center gap-x-5',
+  }
 
   return (
     <section>
-      <h2 className="text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold">
-        Favorites
-      </h2>
-      <motion.div
-        drag="x"
-        whileTap={{ cursor: 'grabbing' }}
-        ref={favoritesCarousel}
-        onDrag={(_event, info) => setOnDragFavorites(info.offset.x)}
-        dragConstraints={{ right: 0, left: -favoritesWidth }}
-        className="flex items-center gap-x-5 "
-      >
+      <h2 className={style.title}>Favorites</h2>
+      <motion.div {...dragAnimate}>
         {favorites.length > 0 ? (
           <>
             {favorites.map((favorite, index) => (
               <CardManga
                 manga={favorite}
                 key={index}
-                className="!min-w-[200px] !max-w-[180px] !h-[290px]"
+                className={style.cardMangaOverwriteStyles}
               />
             ))}
           </>
         ) : (
-          <div className="flex w-full items-center justify-center text-2xl my-8">
-            No favorites yet
-          </div>
+          <div className={style.noFavorites}>No favorites yet</div>
         )}
       </motion.div>
     </section>
   )
+}
+
+const style = {
+  title: `text-2xl pb-4 pt-12 text-dusk-main dark:text-dawn-main font-bold`,
+  cardMangaOverwriteStyles: `!min-w-[200px] !max-w-[180px] !h-[290px]`,
+  noFavorites: `flex w-full items-center justify-center text-2xl my-8`,
 }

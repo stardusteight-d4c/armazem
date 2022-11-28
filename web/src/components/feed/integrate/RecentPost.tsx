@@ -14,6 +14,7 @@ import { getCurrentUserAccount } from '../../../store/reducers/current-user-data
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
+import { Link } from 'react-router-dom'
 timeago.register('en_short', en_short)
 
 interface Props {
@@ -125,20 +126,22 @@ export const RecentPost = ({ post }: Props) => {
   return (
     <article className={style.wrapper}>
       <div>
-        <div className={style.authorContainer}>
+        <Link to={`/${authorUser?.username}`} className={style.authorContainer}>
           <img src={authorUser?.user_img} className={style.authorImage} />
           <h3 className={style.postedBy}>
             Posted by @{authorUser?.username}{' '}
             <TimeAgo datetime={post.createdAt} />
           </h3>
-        </div>
-        <h2 className={style.title}>{post.title}</h2>
-        <p className={style.body}>{post.body}</p>
+        </Link>
+        <Link to={`/post/${post._id}`}>
+          <h2 className={style.title}>{post.title}</h2>
+          <p className={style.body}>{post.body}</p>
+        </Link>
       </div>
       <div>
         <div className={style.divider} />
         <div className={style.postActionsFlexContainer}>
-          <div className={style.firstSectionContainer}>
+          <div className={style.likeDiscussionContainer}>
             <div onClick={handleLikePost} className={style.likeContainer}>
               <i className={likedByUser ? style.likedIcon : style.likeIcon} />
               <span className="text-lg">
@@ -177,14 +180,14 @@ export const RecentPost = ({ post }: Props) => {
 
 const style = {
   wrapper: `p-4 inline-block max-h-fit bg-dusk-weak/10 h-fit border border-dawn-weak/20 dark:border-dusk-weak/20 w-full`,
-  authorContainer: `flex items-center gap-x-2`,
+  authorContainer: `flex items-center gap-x-2 cursor-pointers`,
   authorImage: `w-8 h-8 rounded-md`,
   postedBy: `font-medium text-dawn-weak line-clamp-2`,
   title: `font-semibold break-all line-clamp-2 text-xl my-1`,
   body: `line-clamp-[10] font-inter break-all break-words whitespace-pre-wrap`,
   divider: `h-[1px] w-full my-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20`,
   postActionsFlexContainer: `flex items-center justify-between text-dusk-main dark:text-dawn-main`,
-  firstSectionContainer: `flex items-center gap-x-5`,
+  likeDiscussionContainer: `flex items-center gap-x-5`,
   likeContainer: `flex w-[84px] items-center cursor-pointer`,
   likeIcon: `ri-heart-3-line text-xl pr-1`,
   likedIcon: `ri-heart-3-fill text-prime-blue text-xl pr-1`,

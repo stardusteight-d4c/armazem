@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { banners } from './integrate/banners-data'
 
-export const Hero = () => {
+interface Props {}
+
+export const Hero = (props: Props) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [index, setIndex] = useState<number>(0)
   const delay = 3500

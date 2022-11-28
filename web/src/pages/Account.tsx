@@ -15,12 +15,14 @@ import {
   StatusBar,
 } from '../components/account'
 
-export const Account = () => {
+interface Props {}
+
+export const Account = (props: Props) => {
   const dispatch = useAppDispatch()
   const { username } = useParams()
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
-  const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
+  const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
 
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -43,22 +45,27 @@ export const Account = () => {
     currentAccount.user !== undefined && userMetadata !== null && username
 
   if (!dataLoaded) {
-    return
+    return <></>
   }
 
   return (
     <GridWrapper loading={loading}>
-      <main className="w-screen md:w-full">
-        <Header userMetadata={userMetadata} currentAccount={currentAccount} />
-        <div className="mt-6 md:mt-0 p-2 md:p-4 pb-16 md:pb-14">
-          <StatusBar userMetadata={userMetadata} />
+      <main className={style.mainWrapper}>
+        <Header />
+        <div className={style.accountFeed}>
+          <StatusBar />
           <Favorites />
-          <LastPosts userMetadata={userMetadata} />
-          <SharedPosts userMetadata={userMetadata} />
+          <LastPosts />
+          <SharedPosts />
           <LastUpdates />
-          <Comments userMetadata={userMetadata} />
+          <Comments />
         </div>
       </main>
     </GridWrapper>
   )
+}
+
+const style = {
+  mainWrapper: `w-screen md:w-full`,
+  accountFeed: `mt-6 md:mt-0 p-2 md:p-4 pb-16 mb-7 md:mb-0 md:pb-14`,
 }

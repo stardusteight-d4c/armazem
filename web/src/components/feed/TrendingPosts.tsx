@@ -4,7 +4,9 @@ import { motion, PanInfo } from 'framer-motion'
 import { topRatedPost } from '../../services/api-routes'
 import axios from 'axios'
 
-export const TrendingPosts = () => {
+interface Props {}
+
+export const TrendingPosts = (props: Props) => {
   const [trendingSliderWidth, setTrendingSliderWidth] = useState<number>(0)
   const [onDragTrendingPost, setOnDragTrendingPost] = useState<number>(0)
   const [topRatedPosts, setTopRatedPosts] = useState<[Post] | []>([])

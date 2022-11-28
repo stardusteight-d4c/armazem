@@ -6,10 +6,10 @@ import { useAppSelector } from '../../store/hooks'
 interface Props {}
 
 export const StatusBar = (props: Props) => {
-  const [listed, setListed] = useState<any>([])
-  const [reading, setReading] = useState<any>()
-  const [completed, setCompleted] = useState<any>()
-  const [planToRead, setPlanToRead] = useState<any>()
+  const [listed, setListed] = useState<[Listed] | []>([])
+  const [reading, setReading] = useState<[Listed] | []>([])
+  const [completed, setCompleted] = useState<[Listed] | []>([])
+  const [planToRead, setPlanToRead] = useState<[Listed] | []>([])
   const [loading, setLoading] = useState(true)
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
 
@@ -19,8 +19,6 @@ export const StatusBar = (props: Props) => {
         const { data } = await axios.get(
           `${mangaListedByAccountId}/${userMetadata?.account}`
         )
-        console.log(data);
-        
         if (data.status === true) {
           setListed(data.mangas)
           setReading(

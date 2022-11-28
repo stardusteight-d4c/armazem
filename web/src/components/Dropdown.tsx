@@ -24,7 +24,7 @@ export const Dropdown = ({
   position,
 }: Props) => {
   return (
-    <div className="relative">
+    <div onClick={(e) =>  e.stopPropagation()} className="relative">
       <Menu>
         <div className={style.wrapperMenuButtonAndItems + space}>
           <Menu.Button title={title} className={style.menuButton}>

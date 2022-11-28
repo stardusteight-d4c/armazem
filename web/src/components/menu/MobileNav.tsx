@@ -4,7 +4,9 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { SwitchTheme } from '../SwitchTheme'
 import { Notifications } from './integrate/Notifications'
 
-export const MobileNav = () => {
+interface Props {}
+
+export const MobileNav = (props: Props) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const openModal = useAppSelector((state) => state.armazem.openModal)

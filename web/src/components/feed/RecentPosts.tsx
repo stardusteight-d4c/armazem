@@ -3,7 +3,9 @@ import { RecentPost } from './integrate/RecentPost'
 import axios from 'axios'
 import { recentPostsWithPagination } from '../../services/api-routes'
 
-export const RecentPosts = () => {
+interface Props {}
+
+export const RecentPosts = (props: Props) => {
   const [page, setPage] = useState(1)
   const [recentPostsI, setRecentPostsI] = useState<[Post] | any>([])
   const [recentPostsII, setRecentPostsII] = useState<[Post] | any>([])

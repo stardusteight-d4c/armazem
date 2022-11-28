@@ -4,12 +4,14 @@ import { CardManga } from '../CardManga'
 import axios from 'axios'
 import { mostRead } from '../../services/api-routes'
 
-export const MostRead = () => {
+interface Props {}
+
+export const MostRead = (props: Props) => {
   const [cardSliderWidth, setCardSliderWidth] = useState(0)
   const [onDrag, setOnDrag] = useState(0)
   const [mangas, setMangas] = useState<[Manga] | []>([])
-
   const cardSlider = useRef() as React.MutableRefObject<HTMLInputElement>
+
   useEffect(() => {
     cardSlider.current &&
       setCardSliderWidth(

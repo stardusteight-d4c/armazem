@@ -1,9 +1,7 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { userData } from '../../../services/api-routes'
-import { askToRequestAgain } from '../../../store'
-import { useAppDispatch } from '../../../store/hooks'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
@@ -19,37 +17,41 @@ export const SharedPost = ({ post }: Props) => {
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(`${userData}/${post?.by}`)
-      setAuthorPost(data.user)
+      await axios
+        .get(`${userData}/${post?.by}`)
+        .then(({ data }) => setAuthorPost(data.user))
+        .catch((error) => console.log(error.toJSON()))
     })()
   }, [])
 
   return (
-    <article className="w-full cursor-pointer  h-fit  text-[#707070] dark:text-[#9B9B9B] bg-fill-weak dark:bg-fill-strong">
-      <div className="flex items-center justify-between">
-        <Link
-          to={`/${authorPost?.username}`}
-          className="flex items-center gap-3"
-        >
+    <article className={style.wrapper}>
+      <div className={style.postMetadataContainer}>
+        <Link to={`/${authorPost?.username}`} className={style.authorContainer}>
           <img
             src={authorPost?.user_img}
-            alt=""
-            className="w-12 h-12 object-cover"
+            alt="author/img"
+            className={style.authorImg}
           />
-          <span className="font-medium text-xl text-dusk-main dark:text-dawn-main">
-            {authorPost?.name}
-          </span>
+          <span className={style.authorName}>{authorPost?.name}</span>
         </Link>
         <TimeAgo datetime={post.createdAt} locale="en_short" />
       </div>
       <Link to={`/post/${post?._id}`}>
         <div>
-          <h2 className="font-semibold text-xl py-2 text-dusk-main dark:text-dawn-main">
-            {post?.title}
-          </h2>
+          <h2 className={style.title}>{post?.title}</h2>
         </div>
         <p>{post?.body}</p>
       </Link>
     </article>
   )
+}
+
+const style = {
+  wrapper: `w-full cursor-pointer h-fit text-neutral-weak dark:text-neutral-main bg-fill-weak dark:bg-fill-strong`,
+  postMetadataContainer: `flex items-center justify-between`,
+  authorContainer: `flex items-center gap-3`,
+  authorImg: `w-12 h-12 object-cover`,
+  authorName: `font-medium text-xl text-dusk-main dark:text-dawn-main`,
+  title: `font-semibold text-xl py-2 text-dusk-main dark:text-dawn-main`,
 }

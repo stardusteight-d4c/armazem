@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import { Hero, MostRead, TrendingPosts, RecentPosts } from '../components/feed'
 import { GridWrapper } from '../components/GridWrapper'
 
-export const Feed = () => {
+interface Props {}
+
+export const Feed = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {

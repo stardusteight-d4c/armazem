@@ -2,14 +2,17 @@ import { handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { ConnectionStatus } from '../ConnectionStatus'
 
-interface Props {
-  userMetadata: User
-  currentAccount: Account
-}
+interface Props {}
 
-export const Header = ({ userMetadata, currentAccount }: Props) => {
+export const Header = ({}: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
+  const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const dispatch = useAppDispatch()
+
+  if (!userMetadata) {
+    return <></>
+  }
 
   const handleLastActivity = () => {
     const isActivity = Number(
@@ -82,7 +85,7 @@ const style = {
   userImgContainer: `w-fit mx-auto md:mx-0 relative`,
   userImg: `w-28 h-28 md:w-40 md:h-40 bg-fill-weak dark:bg-fill-strong p-2 object-cover mx-auto md:ml-4 -mt-[60px] md:-mt-[85px]`,
   editUserImg: `ri-edit-2-fill transition-all duration-200 hover:brightness-125 flex justify-center items-center p-2 drop-shadow-md rounded-full text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong w-8 h-8 md:w-10 md:h-10 text-xl absolute z-20 -top-2 -right-2 cursor-pointer`,
-  userMetadataContainer: `absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:-bottom-1 md:left-44`,
+  userMetadataContainer: `absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:-bottom-1 md:left-[180px]`,
   nameStatusContainer: `flex flex-col md:flex-row items-center gap-x-2`,
   name: `text-3xl w-[80vw] md:w-fit line-clamp-1 text-center md:text-4xl font-semibold text-black dark:text-white`,
   usernameActivityContainer: `flex items-center justify-center md:justify-start gap-x-2 text-lg`,

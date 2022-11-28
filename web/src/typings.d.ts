@@ -47,10 +47,16 @@ interface Account {
   requestsReceived: [{ from: string }]
   requestsSent: [{ to: string }]
   connections: [{ with: string }]
-  mangaList: [
-    { chapRead: string; mangaUid: string; score: string; status: string }
-  ]
+  mangaList: [Listed]
   favorites: [string]
+}
+
+interface Listed {
+  chapRead: string
+  mangaUid: string
+  score: string
+  status: string
+  date: Date
 }
 
 interface Posts {
