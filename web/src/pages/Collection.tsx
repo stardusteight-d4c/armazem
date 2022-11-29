@@ -1,12 +1,8 @@
-import { Menu } from '@headlessui/react'
 import axios from 'axios'
-import { Key, useEffect, useState } from 'react'
-import { Navbar, Sidebar } from '../components'
+import { useEffect, useState } from 'react'
 import { Card } from '../components/collection/Card'
 import { Dropdown } from '../components/Dropdown'
-import { Loader } from '../components/Loader'
-import { MobileNav } from '../components/menu'
-import { MobileSearch } from '../components/menu/integrate/MobileSearch'
+import { GridWrapper } from '../components/GridWrapper'
 import {
   mangaByGenre,
   mangaByGenreAndTitle,
@@ -23,7 +19,6 @@ export const Collection = (props: Props) => {
     (state) => state.armazem.minimizeSidebar
   )
   const [mangas, setMangas] = useState<[Manga] | any>()
-  const [loading, setLoading] = useState(true)
   const [term, setTerm] = useState('')
   const [filterValue, setFilterValue] = useState<string>('All')
   const [all, setAll] = useState<boolean>(true)
@@ -51,7 +46,6 @@ export const Collection = (props: Props) => {
             ...(data.mangas !== undefined ? data.mangas : []),
           ])
         }
-        setLoading(false)
       })()
     } else if (filterValue === 'All') {
       search(term)
@@ -65,25 +59,21 @@ export const Collection = (props: Props) => {
           `${mangaByGenreAndTitle}/${filterValue}/${term}`
         )
         setMangas(data.mangas)
-        setLoading(false)
       })()
     } else if (filterValue !== 'All') {
       ;(async () => {
         const { data } = await axios.get(`${mangaByGenre}/${filterValue}`)
         setMangas(data.mangas)
-        setLoading(false)
       })()
     }
   }, [term])
 
   useEffect(() => {
     if (filterValue !== 'All') {
-      setLoading(true)
       setAll(false)
       ;(async () => {
         const { data } = await axios.get(`${mangaByGenre}/${filterValue}`)
         setMangas(data.mangas)
-        setLoading(false)
       })()
     } else {
       setAll(true)
@@ -103,83 +93,52 @@ export const Collection = (props: Props) => {
     setPage(1)
   }
 
+  const filterItems = genresFilter.map((genre) => {
+    return {
+      item: genre,
+      function: () => setFilterValue(genre),
+    }
+  })
+
+  if (!mangas) {
+    return <></>
+  }
+
   return (
-    <div
-      className={`${style.gridContainer} ${
-        minimizeSidebar
-          ? 'grid-cols-1 md:grid-cols-18'
-          : 'grid-cols-1 md:grid-cols-5'
-      }`}
-    >
-      <Sidebar />
-      <div
-        className={`${style.mainContent} ${
-          minimizeSidebar
-            ? 'col-span-1 md:col-span-17'
-            : 'col-span-1 md:col-span-4'
-        }`}
-      >
-        <Navbar />
-        <MobileSearch />
-        <MobileNav />
-        <div className="flex w-screen gap-x-2 px-4 py-1 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20">
-          <input
-            type="text"
-            onChange={(e) => handleSearchTerm(e)}
-            placeholder="Search by title"
-            className="p-1 outline-none w-[60vw] md:w-fit focus:ring-1 focus:ring-prime-blue rounded-sm bg-transparent border border-dawn-weak/20 dark:border-dusk-weak/20"
-          />
-          <div>
-            <Menu>
-              <div className="flex flex-col space-y-10">
-                <Menu.Button>
-                  <div className="rounded-sm truncate max-w-[110px] sm:max-w-fit hover:brightness-125 transition duration-300 cursor-pointer text-lg font-semibold px-4 py-[2px] text-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20">
-                    {filterValue}
-                  </div>
-                </Menu.Button>
-                <Menu.Items className="shadow-2xl -ml-12 h-52 overflow-hidden overflow-y-scroll border border-dawn-weak/20 dark:border-dusk-weak/20 whitespace-nowrap z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong">
-                  {genresFilter.map((genre, index) => (
-                    <Menu.Item key={index}>
-                      <span
-                        onClick={() => setFilterValue(genre)}
-                        className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-                      >
-                        {genre}
-                      </span>
-                    </Menu.Item>
-                  ))}
-                </Menu.Items>
-              </div>
-            </Menu>
-          </div>
+    <GridWrapper>
+      <div className={style.wrapperContent}>
+        <input
+          type="text"
+          onChange={(e) => handleSearchTerm(e)}
+          placeholder="Search by title"
+          className={style.input}
+        />
+        <div>
+          <Dropdown title="Filter" space="space-y-10" items={filterItems}>
+            <div className={style.filter}>{filterValue}</div>
+          </Dropdown>
         </div>
-        <main>
-          <div
-            className={`${
-              minimizeSidebar
-                ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'
-                : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
-            } pb-14 grid p-4 gap-4 w-full`}
-          >
-            {!loading ? (
-              <>
-                {mangas?.map((manga: Manga, index: Key | null | undefined) => (
-                  <Card manga={manga} key={index} />
-                ))}
-              </>
-            ) : (
-              <div className="w-full col-span-5 h-screen -mt-28 flex items-center justify-center">
-                <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
-              </div>
-            )}
-          </div>
-        </main>
       </div>
-    </div>
+      <main>
+        <div
+          className={`${
+            minimizeSidebar ? style.largerGrid : style.minimizedGrid
+          } ${style.defaultContentContainer}`}
+        >
+          {mangas?.map((manga: Manga, index: React.Key) => (
+            <Card manga={manga} key={index} />
+          ))}
+        </div>
+      </main>
+    </GridWrapper>
   )
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
-  mainContent: `col-start-2`,
+  wrapperContent: `flex w-screen gap-x-2 px-4 py-1 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20`,
+  input: `p-1 outline-none w-[60vw] md:w-fit focus:ring-1 focus:ring-prime-blue rounded-sm bg-transparent border border-dawn-weak/20 dark:border-dusk-weak/20`,
+  filter: `rounded-sm truncate max-w-[110px] sm:max-w-fit hover:brightness-125 transition duration-300 cursor-pointer text-lg font-semibold px-4 py-[2px] text-prime-blue border border-dawn-weak/20 dark:border-dusk-weak/20`,
+  largerGrid: `grid-cols-2 sm:grid-cols-3 lg:grid-cols-5`,
+  minimizedGrid: `grid-cols-2 sm:grid-cols-3 lg:grid-cols-4`,
+  defaultContentContainer: 'pb-14 grid p-4 gap-4 w-full',
 }
