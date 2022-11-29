@@ -1,10 +1,10 @@
-import { Menu } from '@headlessui/react'
 import axios from 'axios'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { removeConnection } from '../../services/api-routes'
-import { askToRequestAgain } from '../../store'
+import { askToRequestAgain, handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { Dropdown } from '../Dropdown'
 
 interface Props {
   active: string
@@ -21,69 +21,75 @@ export const ConnectionsList = ({
   const dispatch = useAppDispatch()
 
   const deleteUserConnection = async (userConnection: string) => {
-    try {
-      const { data } = await axios.post(removeConnection, {
+    await axios
+      .post(removeConnection, {
         to: userConnection,
         from: currentUser?._id,
       })
-      dispatch(askToRequestAgain())
-      setTimeout(() => {
-        setRequestAgainFromConnections(true)
-      }, 200)
-    } catch (error) {
-      console.log(error)
-    }
+      .then(() => {
+        dispatch(askToRequestAgain())
+        setTimeout(() => {
+          setRequestAgainFromConnections(true)
+        }, 200)
+      })
+      .catch((error) => console.log(error.toJSON()))
   }
 
   return (
     <>
       {active === 'connections' && (
-        <div className="p-4 space-y-4">
-          {connections.map(
-            (connection: User, index: React.Key | null | undefined) => (
-              <div
-                key={index}
-                className="transition-all px-4 duration-200 cursor-pointer flex justify-between border-y border-dawn-weak/20 dark:border-dusk-weak/20 rounded-sm p-2"
+        <div className={style.wrapper}>
+          {connections.map((connection: User, index: React.Key) => (
+            <div key={index} className={style.itemContainer}>
+              <Link
+                to={`/${connection?.username}`}
+                className={style.connectionContainer}
               >
-                <Link to={`/${connection?.username}`} className="flex">
-                  <img
-                    src={connection?.user_img}
-                    alt=""
-                    className="w-14 h-14 md:w-20 md:h-20 object-cover"
-                  />
-                  <div className="flex flex-col px-2 -mt-1">
-                    <span className="text-2xl truncate w-60 md:w-96">{connection?.name}</span>
-                    <span>@{connection?.username}</span>
-                  </div>
-                </Link>
-                <div className="flex relative items-center space-x-2 justify-end">
-                  <i className="ri-message-3-line border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                  <Menu>
-                    <Menu.Button>
-                      <i className="ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                    </Menu.Button>
-                    <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[23px] -bottom-[45px]">
-                      <Menu.Item>
-                        <span
-                          className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-                          onClick={() => deleteUserConnection(connection?._id)}
-                        >
-                          Remove
-                        </span>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
-                          Cancel
-                        </span>
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Menu>
+                <img
+                  src={connection?.user_img}
+                  alt="user/img"
+                  className={style.userImg}
+                />
+                <div className={style.userInfo}>
+                  <span className={style.userName}>{connection?.name}</span>
+                  <span>@{connection?.username}</span>
                 </div>
+              </Link>
+              <div className={style.actionsContainer}>
+                <i
+                  onClick={() => dispatch(handleOpenModal('Chat'))}
+                  className={style.messageIcon}
+                />
+                <Dropdown
+                  title="Remove"
+                  space="space-y-10"
+                  items={[
+                    {
+                      item: 'Remove',
+                      function: () => deleteUserConnection(connection?._id),
+                    },
+                    { item: 'Cancel' },
+                  ]}
+                >
+                  <i className={style.deleteIcon} />
+                </Dropdown>
               </div>
-            )
-          )}
+            </div>
+          ))}
         </div>
       )}
     </>
   )
+}
+
+const style = {
+  wrapper: `p-4 space-y-4`,
+  itemContainer: `transition-all px-4 duration-200 cursor-pointer flex justify-between border-y border-dawn-weak/20 dark:border-dusk-weak/20 rounded-sm p-2`,
+  connectionContainer: `flex`,
+  userImg: `w-14 h-14 md:w-20 md:h-20 object-cover`,
+  userInfo: `flex flex-col px-2 -mt-1`,
+  userName: `text-2xl truncate w-60 md:w-96`,
+  actionsContainer: `flex relative items-center space-x-2 justify-end`,
+  messageIcon: `ri-message-3-line border border-dawn-weak/20 dark:border-dusk-weak/20 text-dusk-main dark:text-dusk-weak transition-all duration-200 w-8 h-8 flex justify-center items-center p-2 shadow-sm rounded-sm text-lg cursor-pointer`,
+  deleteIcon: `ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 w-8 h-8 flex justify-center items-center p-2 shadow-sm rounded-sm text-lg cursor-pointer`,
 }

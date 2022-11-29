@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { askToRequestAgain, handleOpenModal } from '../../store'
+import { handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import axios from 'axios'
-import {
-  addReview,
-  createPostAndAddToUserAccount,
-} from '../../services/api-routes'
+import { addReview } from '../../services/api-routes'
 import { Button } from '../Button'
 import { success } from '../Toasters'
-import { useParams } from 'react-router-dom'
 import { Overlay } from '../modals/Overlay'
 
 interface Props {}

@@ -1,20 +1,14 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import {
   AcceptList,
   ConnectionsList,
   Filter,
-  Navbar,
   PendingList,
-  Sidebar,
-} from '../components'
-import { Loader } from '../components/Loader'
-import { MobileNav } from '../components/menu'
-import { MobileSearch } from '../components/menu/integrate/MobileSearch'
-import { removeConnection, userData } from '../services/api-routes'
-import { askToRequestAgain } from '../store'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
+} from '../components/connections'
+import { GridWrapper } from '../components/GridWrapper'
+import { userData } from '../services/api-routes'
+import { useAppSelector } from '../store/hooks'
 
 interface Props {}
 
@@ -30,9 +24,6 @@ export const Connections = (props: Props) => {
   const [requestAgainFromAccept, setRequestAgainFromAccept] = useState(false)
   const [requestAgainFromConnections, setRequestAgainFromConnections] =
     useState(false)
-  const minimizeSidebar = useAppSelector(
-    (state) => state.armazem.minimizeSidebar
-  )
 
   const requestAgain =
     requestAgainFromPending ||
@@ -87,73 +78,47 @@ export const Connections = (props: Props) => {
   }, [requestAgain])
 
   return (
-    <>
-      <div
-        className={`${style.gridContainer} ${
-          minimizeSidebar
-            ? 'grid-cols-1 md:grid-cols-18'
-            : 'grid-cols-1 md:grid-cols-5'
-        }`}
-      >
-        <Sidebar />
-        <div
-          className={`${style.mainContent} ${
-            minimizeSidebar
-              ? 'col-span-1 md:col-span-17'
-              : 'col-span-1 md:col-span-4'
-          }`}
-        >
-          <Navbar />
-          <MobileSearch />
-          <MobileNav />
-          <main className="min-h-screen">
-            <Filter active={active} setActive={setActive} accept={accept} />
-            {active === 'connections' && connections.length === 0 && (
-              <div className="text-3xl mt-28 text-center h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
-                You don't have connections yet
-              </div>
-            )}
-            {connections.length !== 0 && (
-              <ConnectionsList
-                active={active}
-                connections={connections}
-                setRequestAgainFromConnections={setRequestAgainFromConnections}
-              />
-            )}
+    <GridWrapper>
+      <main className={style.mainWrapper}>
+        <Filter active={active} setActive={setActive} accept={accept} />
+        {active === 'connections' && connections.length === 0 && (
+          <div className={style.noContent}>You don't have connections yet</div>
+        )}
+        {connections.length !== 0 && (
+          <ConnectionsList
+            active={active}
+            connections={connections}
+            setRequestAgainFromConnections={setRequestAgainFromConnections}
+          />
+        )}
 
-            {active === 'pending' && pending.length === 0 && (
-              <div className="text-3xl mt-28 text-center h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
-                There are no requests sent
-              </div>
-            )}
-            {pending.length !== 0 && (
-              <PendingList
-                active={active}
-                pending={pending}
-                setRequestAgainFromPending={setRequestAgainFromPending}
-              />
-            )}
+        {active === 'pending' && pending.length === 0 && (
+          <div className={style.noContent}>There are no requests sent</div>
+        )}
+        {pending.length !== 0 && (
+          <PendingList
+            active={active}
+            pending={pending}
+            setRequestAgainFromPending={setRequestAgainFromPending}
+          />
+        )}
 
-            {active === 'accept' && accept.length === 0 && (
-              <div className="text-3xl mt-28 text-center h-full text-dusk-main dark:text-dawn-main flex items-center justify-center">
-                There are no requests received
-              </div>
-            )}
-            {accept.length !== 0 && (
-              <AcceptList
-                active={active}
-                accept={accept}
-                setRequestAgainFromAccept={setRequestAgainFromAccept}
-              />
-            )}
-          </main>
-        </div>
-      </div>
-    </>
+        {active === 'accept' && accept.length === 0 && (
+          <div className={style.noContent}>There are no requests received</div>
+        )}
+        {accept.length !== 0 && (
+          <AcceptList
+            active={active}
+            accept={accept}
+            setRequestAgainFromAccept={setRequestAgainFromAccept}
+          />
+        )}
+      </main>
+    </GridWrapper>
   )
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
-  mainContent: `col-start-2`,
+  mainWrapper: `min-h-screen`,
+  noContent: `text-3xl mt-28 text-center h-full text-dusk-main dark:text-dawn-main flex items-center justify-center`,
 }

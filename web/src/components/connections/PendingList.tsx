@@ -1,10 +1,10 @@
-import { Menu } from '@headlessui/react'
 import axios from 'axios'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { rejectConnection } from '../../services/api-routes'
 import { askToRequestAgain } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { Dropdown } from '../Dropdown'
 
 interface Props {
   active: string
@@ -21,61 +21,54 @@ export const PendingList = ({
   const dispatch = useAppDispatch()
 
   const unsendRequestConnection = async (userRequest: string) => {
-    try {
-      const { data } = await axios.post(rejectConnection, {
+    await axios
+      .post(rejectConnection, {
         to: currentUser?._id,
         from: userRequest,
       })
-      dispatch(askToRequestAgain())
-      setTimeout(() => {
-        setRequestAgainFromPending(true)
-      }, 200)
-    } catch (error) {
-      console.log(error)
-    }
+      .then(() => {
+        dispatch(askToRequestAgain())
+        setTimeout(() => {
+          setRequestAgainFromPending(true)
+        }, 200)
+      })
+      .catch((error) => console.log(error.toJSON()))
   }
 
   return (
     <>
       {active === 'pending' && (
-        <div className="p-4 space-y-4">
-          {pending.map((pending: User, index: React.Key | null | undefined) => (
-            <div
-              key={index}
-              className="transition-all px-4 duration-200 cursor-pointer flex justify-between border-y border-dawn-weak/20 dark:border-dusk-weak/20 rounded-sm p-2"
-            >
-              <Link to={`/${pending.username}`} className="flex">
+        <div className={style.wrapper}>
+          {pending.map((pending: User, index: React.Key) => (
+            <div key={index} className={style.itemContainer}>
+              <Link
+                to={`/${pending.username}`}
+                className={style.pendingContainer}
+              >
                 <img
                   src={pending.user_img}
-                  alt=""
-                  className="w-14 h-14 md:w-20 md:h-20 object-cover"
+                  alt="user/img"
+                  className={style.userImg}
                 />
-                <div className="flex flex-col px-2 -mt-1">
-                  <span className="text-2xl truncate w-60 md:w-96">{pending.name}</span>
+                <div className={style.userInfo}>
+                  <span className={style.userName}>{pending.name}</span>
                   <span>@{pending.username}</span>
                 </div>
               </Link>
-              <div className="flex relative items-center space-x-2 justify-end">
-                <Menu>
-                  <Menu.Button>
-                    <i className="ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 w-8 h-8 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer" />
-                  </Menu.Button>
-                  <Menu.Items className="drop-shadow-2xl z-50 duration-200 font-poppins font-light absolute flex flex-col text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong -right-[23px] -bottom-[45px]">
-                    <Menu.Item>
-                      <span
-                        className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer"
-                        onClick={() => unsendRequestConnection(pending._id)}
-                      >
-                        Unsend
-                      </span>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <span className="hover:bg-prime-blue hover:text-white duration-300 ease-in-out py-1 px-2 cursor-pointer">
-                        Cancel
-                      </span>
-                    </Menu.Item>
-                  </Menu.Items>
-                </Menu>
+              <div className={style.actionsContainer}>
+                <Dropdown
+                  title="Unsend"
+                  space="space-y-10"
+                  items={[
+                    {
+                      item: 'Unsend',
+                      function: () => unsendRequestConnection(pending._id),
+                    },
+                    { item: 'Cancel' },
+                  ]}
+                >
+                  <i className={style.deleteIcon} />
+                </Dropdown>
               </div>
             </div>
           ))}
@@ -83,4 +76,15 @@ export const PendingList = ({
       )}
     </>
   )
+}
+
+const style = {
+  wrapper: `p-4 space-y-4`,
+  itemContainer: `transition-all px-4 duration-200 cursor-pointer flex justify-between border-y border-dawn-weak/20 dark:border-dusk-weak/20 rounded-sm p-2`,
+  pendingContainer: `flex`,
+  userImg: `w-14 h-14 md:w-20 md:h-20 object-cover`,
+  userInfo: `flex flex-col px-2 -mt-1`,
+  userName: `text-2xl truncate w-60 md:w-96`,
+  actionsContainer: `flex relative items-center space-x-2 justify-end`,
+  deleteIcon: `ri-delete-bin-6-fill border border-dawn-weak/20 dark:border-dusk-weak/20 text-red transition-all duration-200 w-8 h-8 flex justify-center items-center p-2 shadow-sm rounded-sm text-lg cursor-pointer`,
 }
