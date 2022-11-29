@@ -1,22 +1,27 @@
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { askToRequestAgain, askToRequestEditProfile, handleOpenModal } from '../../../store'
+import {
+  askToRequestAgain,
+  handleOpenModal,
+} from '../../../store'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { Button } from '../../Button'
 import axios from 'axios'
 import { updateProfileImage } from '../../../services/api-routes'
+import { Overlay } from '../../modals/Overlay'
 
 interface Props {}
 
 export const EditProfileImageModal = (props: Props) => {
   const dispatch = useAppDispatch()
-    const [selectedFile, setSelectedFile] = useState<string | null>('')
-    const [loading, setLoading] = useState(false)
-    const filePickerRef = useRef() as React.MutableRefObject<HTMLInputElement>
-    const currentUser = useAppSelector((state) => state.armazem.currentUser)
-    const reader = new FileReader()
+  const [selectedFile, setSelectedFile] = useState<string | null>('')
+  const [loading, setLoading] = useState(false)
+  const filePickerRef = useRef() as React.MutableRefObject<HTMLInputElement>
+  const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const reader = new FileReader()
 
   const convertFileToBase64 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true)
     if (e.target.files) {
       reader.readAsDataURL(e.target.files[0])
     }
@@ -26,75 +31,71 @@ export const EditProfileImageModal = (props: Props) => {
         setSelectedFile(readerEvent.target.result as string)
       }
     }
+    setLoading(false)
   }
 
   const updateProfileImageById = async () => {
     setLoading(true)
-    const { data } = await axios.put(updateProfileImage, {
-      user_img: selectedFile,
-      id: currentUser?._id,
-    })
-    if (data.status === true) {
-      dispatch(askToRequestAgain()) 
-      dispatch(handleOpenModal(null))
-    }
-    if (data.status === false) {
-      dispatch(handleOpenModal(null))
-
-    }
+    await axios
+      .put(updateProfileImage, {
+        user_img: selectedFile,
+        id: currentUser?._id,
+      })
+      .then(() => {
+        dispatch(askToRequestAgain())
+        dispatch(handleOpenModal(null))
+      })
+      .catch((error) => console.log(error.toJSON()))
     setLoading(false)
+  }
+
+  const motionSectionProperties = {
+    initial: {
+      y: -500,
+      opacity: 0,
+      translateX: '-50%',
+      translateY: '-50%',
+    },
+    transition: { type: 'spring', duration: 0.8 },
+    animate: { y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' },
+    className: style.wrapper,
   }
 
   return (
     <>
-      <motion.div
-        onClick={() => dispatch(handleOpenModal(null))}
-        initial={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
-        animate={{ opacity: 1 }}
-        className="fixed top-0 left-0 z-40 flex items-center justify-center w-screen h-screen overflow-hidden bg-fill-strong/30"
-      />
-      {/* Colocar a overlay/backdrop como componente que aceita children*/}
-      <motion.section
-        initial={{
-          y: -500,
-          opacity: 0,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-        transition={{ type: 'spring', duration: 0.8 }}
-        animate={{ y: 0, opacity: 1, translateX: '-50%', translateY: '-50%' }}
-        className="fixed border border-dawn-weak/20 dark:border-dusk-weak/20  drop-shadow-2xl p-4 z-50 w-[95vw] md:w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
-      >
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Send a profile picture</h1>
+      <Overlay />
+      <motion.section {...motionSectionProperties}>
+        <div className={style.header}>
+          <h1 className={style.title}>Send a profile picture</h1>
           <i
             onClick={() => dispatch(handleOpenModal(null))}
-            className="ri-close-circle-fill text-4xl cursor-pointer"
+            className={style.closeIcon}
           />
         </div>
-        <div className="mt-4 flex items-center justify-center">
+        <div className={style.contentContainer}>
           <div>
             {selectedFile ? (
-              <div className="relative">
-                <img src={selectedFile} className="w-40 h-40 border border-dawn-weak/20 dark:border-dusk-weak/20" />
+              <div className={style.selectedFileContainer}>
+                <img src={selectedFile} className={style.selectedFileImg} />
                 <i
                   onClick={() => setSelectedFile(null)}
-                  className="ri-close-line dark:text-dusk-main w-10 h-10 text-dawn-main cursor-pointer dark:bg-white/50 bg-black/50 flex items-center p-2 rounded-full text-2xl absolute right-2 top-2"
+                  className={style.removeSelectedFileIcon}
                 />
                 <Button
                   title="Submit"
+                  loading={loading}
                   onClick={() => updateProfileImageById()}
-                  className="bg-prime-blue md:!w-full my-4 py-2 text-white rounded-lg"
+                  className={style.buttonSubmit}
                 />
               </div>
             ) : (
               <>
-                <div className="w-40 h-40 border border-dashed flex items-center justify-center" />
+                <div className={style.ghostSquare} />
                 <Button
                   title="Upload picture"
+                  loading={loading}
                   onClick={() => filePickerRef.current.click()}
-                  className="bg-prime-blue !w-full my-4 py-2 text-white rounded-lg"
+                  className={style.buttonUploadPicture}
                 />
               </>
             )}
@@ -113,4 +114,18 @@ export const EditProfileImageModal = (props: Props) => {
       </motion.section>
     </>
   )
+}
+
+const style = {
+  wrapper: `fixed border border-dawn-weak/20 dark:border-dusk-weak/20 shadow-md p-4 z-50 w-[95vw] md:w-[800px] text-dusk-main dark:text-dawn-main h-fit bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2`,
+  header: `flex items-center justify-between`,
+  title: `text-2xl font-semibold`,
+  closeIcon: `ri-close-circle-fill text-4xl cursor-pointer`,
+  contentContainer: `mt-4 flex items-center justify-center`,
+  selectedFileContainer: `relative`,
+  selectedFileImg: `w-40 h-40 border border-dawn-weak/20 dark:border-dusk-weak/20`,
+  removeSelectedFileIcon: `ri-close-line dark:text-dusk-main w-10 h-10 text-dawn-main cursor-pointer dark:bg-white/50 bg-black/50 flex items-center p-2 rounded-full text-2xl absolute right-2 top-2`,
+  buttonSubmit: `bg-prime-blue md:!w-full my-4 py-2 text-white rounded-lg`,
+  ghostSquare: `w-40 h-40 border border-dashed flex items-center justify-center`,
+  buttonUploadPicture: `bg-prime-blue md:!w-full my-4 py-2 text-white rounded-l`,
 }

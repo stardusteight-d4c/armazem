@@ -118,7 +118,7 @@ export const Navbar = (props: Props) => {
         </div>
         <div className={style.accountMobileContainer}>
           <img
-            onClick={() => navigate(`${currentUser?.username}`)}
+            onClick={() => navigate(`/${currentUser?.username}`)}
             referrerPolicy="no-referrer"
             src={currentUser?.user_img}
             className={style.accountMobileImg}

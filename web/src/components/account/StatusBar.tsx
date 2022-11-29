@@ -16,28 +16,28 @@ export const StatusBar = (props: Props) => {
   useEffect(() => {
     if (userMetadata) {
       ;(async () => {
-        const { data } = await axios.get(
-          `${mangaListedByAccountId}/${userMetadata?.account}`
-        )
-        if (data.status === true) {
-          setListed(data.mangas)
-          setReading(
-            data.mangas.filter(
-              (item: { status: string }) => item.status === 'Reading'
+        await axios
+          .get(`${mangaListedByAccountId}/${userMetadata?.account}`)
+          .then(({ data }) => {
+            setListed(data.mangas)
+            setReading(
+              data.mangas.filter(
+                (item: { status: string }) => item.status === 'Reading'
+              )
             )
-          )
-          setCompleted(
-            data.mangas.filter(
-              (item: { status: string }) => item.status === 'Completed'
+            setCompleted(
+              data.mangas.filter(
+                (item: { status: string }) => item.status === 'Completed'
+              )
             )
-          )
-          setPlanToRead(
-            data.mangas.filter(
-              (item: { status: string }) => item.status === 'Plan to Read'
+            setPlanToRead(
+              data.mangas.filter(
+                (item: { status: string }) => item.status === 'Plan to Read'
+              )
             )
-          )
-          setLoading(false)
-        }
+            setLoading(false)
+          })
+          .catch((error) => console.log(error.toJSON()))
       })()
     }
   }, [userMetadata])

@@ -21,6 +21,7 @@ export const Review = ({ review }: Props) => {
         <img
           src={review.authorImage}
           alt=""
+          referrerPolicy="no-referrer"
           className="w-14 h-14 object-cover"
         />
         <div className="flex flex-col pl-2">
