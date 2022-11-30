@@ -18,7 +18,7 @@ export const Collection = (props: Props) => {
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
   )
-  const [mangas, setMangas] = useState<[Manga] | any>()
+  const [mangas, setMangas] = useState<[Manga] | any>([])
   const [term, setTerm] = useState('')
   const [filterValue, setFilterValue] = useState<string>('All')
   const [all, setAll] = useState<boolean>(true)

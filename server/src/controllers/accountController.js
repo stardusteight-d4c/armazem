@@ -439,7 +439,7 @@ export const mangaFavorites = async (req, res, next) => {
       _id: {
         $in: [...mangaIds[0].favorites],
       },
-    }).select('cover uid score -_id')
+    }).select('title cover uid score -_id')
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {

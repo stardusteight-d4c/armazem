@@ -24,14 +24,6 @@ export const Account = (props: Props) => {
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
 
-  const [loading, setLoading] = useState<boolean>(true)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 200)
-  }, [])
-
   useEffect(() => {
     ;(async () => {
       await axios
@@ -49,7 +41,7 @@ export const Account = (props: Props) => {
   }
 
   return (
-    <GridWrapper loading={loading}>
+    <GridWrapper>
       <main className={style.mainWrapper}>
         <Header />
         <div className={style.accountFeed}>

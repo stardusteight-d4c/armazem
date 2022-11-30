@@ -52,9 +52,10 @@ interface Account {
 }
 
 interface Listed {
+  title: string
   chapRead: string
   mangaUid: string
-  score: string
+  score: Array<{ userId: string; score: number }>
   status: string
   date: Date
 }

@@ -14,6 +14,9 @@ interface Props {
 export const CardManga = ({ className, manga }: Props) => {
   const [avarageScore, setAvarageScore] = useState<number>()
 
+  console.log(manga);
+  
+
   const averageScore = () => {
     if (manga?.score && manga.score.length > 0) {
       const scoreArr: Number[] = []
@@ -31,7 +34,11 @@ export const CardManga = ({ className, manga }: Props) => {
   }, [manga])
 
   return (
-    <Link to={`/manga/${manga.uid}`} className={style.container}>
+    <Link
+      title={manga.title}
+      to={`/manga/${manga.uid}`}
+      className={style.container}
+    >
       <div className={style.scoreContainer}>
         <i className={style.starIcon} />
         {avarageScore ? avarageScore : 'No score'}

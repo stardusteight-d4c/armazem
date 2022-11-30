@@ -17,7 +17,10 @@ export const SidebarItem = ({ to, name, activeIcon, inactiveIcon }: Props) => {
   return (
     <Link
       to={to}
-      className={`${style.linkWrapper} ${path === to && style.activeItem}`}
+      className={`${style.linkWrapper} ${path === to && style.activeItem} ${
+        to === '/addManga' && path === '/addManga' && '!bg-prime-purple'
+      }
+      `}
     >
       <i className={`text-2xl ${path === to ? activeIcon : inactiveIcon}`} />
       {!minimizeSidebar && <span className={style.itemName}>{name}</span>}
