@@ -1,27 +1,17 @@
-import { Menu } from '@headlessui/react'
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, CardManga, Favorites, Navbar, Sidebar } from '../components'
+import { Button, CardManga, Navbar, Sidebar } from '../components'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import {
-  addMangaToFavorites,
-  addMangaToListed,
   mangaByUid,
   randomMangasByGenre,
-  removeMangaToFavorites,
-  removeMangaToListed,
   reviewsByPagination,
 } from '../services/api-routes'
 import { Loader } from '../components/Loader'
-import { error, success } from '../components/Toasters'
-import { Dropdown } from '../components/Dropdown'
-import { handleOpenModal } from '../store'
-import { Review } from '../components/manga/Review'
 import { MangaStatus } from '../components/manga/MangaStatus'
 import { MangaInfo } from '../components/manga/MangaInfo'
-import { MangaMetaInfos } from '../components/manga/MangaMetaInfos'
 import { MobileSearch } from '../components/menu/integrate/MobileSearch'
 import { MobileNav } from '../components/menu'
 
@@ -37,24 +27,17 @@ export const Manga = (props: Props) => {
   const [onDragRecommendations, setOnDragRecommendations] = useState(0)
   const [manga, setManga] = useState<Manga>()
   const [loading, setLoading] = useState<boolean>(true)
-  const [status, setStatus] = useState<string | null>(null)
-  const [listInfos, setListInfos] = useState<any>({})
-  const [mangaListed, setMangaListed] = useState<any>(null)
-  const [avarageScore, setAvarageScore] = useState<any>()
   const [recMangas, setRecMangas] = useState<any>([])
   const currentAccount = useAppSelector<Account>(
     (state) => state.armazem.currentAccount
   )
-  const dispatch = useAppDispatch()
   const [page, setPage] = useState(1)
-  const [reviews, setReviews] = useState([])
-  const [favorited, setFavorited] = useState<boolean>(false)
 
   useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${reviewsByPagination}/${uid}/${page}`)
       if (data.status === true) {
-        setReviews(data.reviews)
+        // setReviews(data.reviews)
       }
     })()
   }, [uid, page])
@@ -79,15 +62,15 @@ export const Manga = (props: Props) => {
     if (currentAccount.mangaList) {
       const listed = currentAccount.mangaList.find((o) => o.mangaUid === uid)
       if (listed) {
-        setMangaListed(listed)
-        setStatus(listed.status)
-        setListInfos({ chapRead: listed.chapRead, score: listed.score })
+        // setMangaListed(listed)
+        // setStatus(listed.status)
+        // setListInfos({ chapRead: listed.chapRead, score: listed.score })
         averageScore()
         setTimeout(() => {
           setLoading(false)
         }, 200)
       } else {
-        setMangaListed(null)
+        // setMangaListed(null)
         setTimeout(() => {
           setLoading(false)
         }, 200)
@@ -100,7 +83,7 @@ export const Manga = (props: Props) => {
       const { data } = await axios.get(`${mangaByUid}/${uid}`)
       if (data.status === true) {
         setManga(data.manga)
-        setFavorited(currentAccount.favorites.includes(data.manga._id))
+        // setFavorited(currentAccount.favorites.includes(data.manga._id))
       }
     })()
   }, [uid])
@@ -113,7 +96,7 @@ export const Manga = (props: Props) => {
         (accumulator, score) => Number(accumulator) + Number(score)
       )
       const avarage = Number(sum) / Number(scoreArr.length)
-      setAvarageScore(avarage)
+      // setAvarageScore(avarage)
     }
   }
 

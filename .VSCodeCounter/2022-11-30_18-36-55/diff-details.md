@@ -1,6 +1,6 @@
 # Diff Details
 
-Date : 2022-11-23 19:21:15
+Date : 2022-11-30 18:36:55
 
 Directory /home/sena/Documents/ANiStorage
 

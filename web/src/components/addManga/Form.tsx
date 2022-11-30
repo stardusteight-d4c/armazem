@@ -6,7 +6,7 @@ import { genres } from '../../utils/genres'
 import { Button } from '../Button'
 import { Dropdown } from '../Dropdown'
 import { error, success } from '../Toasters'
-import { Input } from './Input'
+import { Input } from './integrate/Input'
 
 interface Props {
   selectedGenres: any

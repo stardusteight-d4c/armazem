@@ -1,8 +1,5 @@
-import { Menu } from '@headlessui/react'
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, CardManga, Favorites, Navbar, Sidebar } from '../../components'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import {
@@ -14,31 +11,21 @@ import {
   removeMangaToListed,
   reviewsByPagination,
 } from '../../services/api-routes'
-import { Loader } from '../../components/Loader'
 import { error, success } from '../../components/Toasters'
-import { Dropdown } from '../../components/Dropdown'
 import { handleOpenModal } from '../../store'
 import { Review } from '../../components/manga/Review'
-import { MangaStatus } from '../../components/manga/MangaStatus'
 
 interface Props {}
 
 export const MangaInfo = (props: Props) => {
   const [showMore, setShowMore] = useState(false)
   const { id: uid } = useParams()
-  const minimizeSidebar = useAppSelector(
-    (state) => state.armazem.minimizeSidebar
-  )
-  const [recommendationWidth, setRecommendationWidth] = useState(0)
   const [onDragRecommendations, setOnDragRecommendations] = useState(0)
   const [manga, setManga] = useState<Manga>()
-  const [loading, setLoading] = useState<boolean>(true)
-  const [addToMyList, setaddToMyList] = useState<boolean>(false)
   const [status, setStatus] = useState<string | null>(null)
   const [listInfos, setListInfos] = useState<any>({})
   const [mangaListed, setMangaListed] = useState<any>(null)
   const [avarageScore, setAvarageScore] = useState<any>()
-  const [recMangas, setRecMangas] = useState<any>([])
   const currentAccount = useAppSelector<Account>(
     (state) => state.armazem.currentAccount
   )
@@ -65,14 +52,14 @@ export const MangaInfo = (props: Props) => {
           `${randomMangasByGenre}/${randomGenreFromManga}`
         )
         if (data.status === true) {
-          setRecMangas(data.mangas)
+          // setRecMangas(data.mangas)
         }
       })()
     }
   }, [uid, manga])
 
   useEffect(() => {
-    setLoading(true)
+    // setLoading(true)
     if (currentAccount.mangaList) {
       const listed = currentAccount.mangaList.find((o) => o.mangaUid === uid)
       if (listed) {
@@ -81,12 +68,12 @@ export const MangaInfo = (props: Props) => {
         setListInfos({ chapRead: listed.chapRead, score: listed.score })
         averageScore()
         setTimeout(() => {
-          setLoading(false)
+          // setLoading(false)
         }, 200)
       } else {
         setMangaListed(null)
         setTimeout(() => {
-          setLoading(false)
+          // setLoading(false)
         }, 200)
       }
     }
@@ -279,17 +266,6 @@ export const MangaInfo = (props: Props) => {
       )
     }
   }
-
-  // CAROUSEL FRAMER MOTION
-  const recommendationsCarrousel =
-    useRef() as React.MutableRefObject<HTMLInputElement>
-  useEffect(() => {
-    recommendationsCarrousel.current &&
-      setRecommendationWidth(
-        recommendationsCarrousel.current.scrollWidth -
-          recommendationsCarrousel.current.offsetWidth
-      )
-  }, [onDragRecommendations])
 
   return (
     <div className="w-full md:pl-4 cursor-default">

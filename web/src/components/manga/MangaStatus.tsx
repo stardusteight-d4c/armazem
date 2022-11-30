@@ -1,8 +1,6 @@
-import { Menu } from '@headlessui/react'
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, CardManga, Favorites, Navbar, Sidebar } from '..'
+import { Button } from '..'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import {
@@ -14,21 +12,14 @@ import {
   removeMangaToListed,
   reviewsByPagination,
 } from '../../services/api-routes'
-import { Loader } from '../Loader'
 import { error, success } from '../Toasters'
 import { Dropdown } from '../Dropdown'
-import { handleOpenModal } from '../../store'
-import { Review } from './Review'
 import { MangaMetaInfos } from './MangaMetaInfos'
 
 interface Props {}
 
 export const MangaStatus = (props: Props) => {
-  const [showMore, setShowMore] = useState(false)
   const { id: uid } = useParams()
-  const minimizeSidebar = useAppSelector(
-    (state) => state.armazem.minimizeSidebar
-  )
   const [recommendationWidth, setRecommendationWidth] = useState(0)
   const [onDragRecommendations, setOnDragRecommendations] = useState(0)
   const [manga, setManga] = useState<Manga>()
