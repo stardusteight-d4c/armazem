@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, Discussions, Navbar, Sidebar } from '../components'
 import { Loader } from '../components/Loader'
 import { error, success } from '../components/Toasters'
@@ -18,14 +18,11 @@ import {
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { askToRequestAgain } from '../store'
 import { ConnectionStatus } from '../components/ConnectionStatus'
-import { PageNotFound } from './PageNotFound'
 import { io } from 'socket.io-client'
 import { MobileSearch } from '../components/menu/integrate/MobileSearch'
 import { MobileNav } from '../components/menu'
 
-interface Props {
-  // socket: React.MutableRefObject<any>
-}
+interface Props {}
 
 export const Post = (props: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)

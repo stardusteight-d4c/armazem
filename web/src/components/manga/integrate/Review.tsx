@@ -8,37 +8,47 @@ interface Props {
 export const Review = ({ review }: Props) => {
   const dispatch = useAppDispatch()
 
+  const formatDate = (date: Date) => (
+    <>
+      {new Date(date).getFullYear()}/{new Date(date).getMonth() + 1}/
+      {new Date(date).getDate()}
+    </>
+  )
+
   return (
     <div
       onClick={() => {
         dispatch(handleOpenModal('Review'))
         dispatch(handleActiveReview(review._id))
       }}
-      className="mb-5 px-2 md:px-0 cursor-pointer border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2"
+      className={style.wrapper}
     >
-      <div className="flex">
+      <div className={style.flexContainer}>
         <img
           src={review.authorImage}
-          alt=""
+          alt="author/img"
           referrerPolicy="no-referrer"
-          className="w-14 h-14 object-cover"
+          className={style.authorImg}
         />
-        <div className="flex flex-col pl-2">
-          <div className="flex justify-between -mt-1">
-            <span className="font-semibold">@{review.authorUsername}</span>
-            <span className="text-[#707070] dark:text-[#9B9B9B]">
-              <>
-                {new Date(review.createdAt).getFullYear()}/
-                {new Date(review.createdAt).getMonth()+1}/
-                {new Date(review.createdAt).getDate()}
-              </>
-            </span>
+        <div className={style.reviewContainer}>
+          <div className={style.reviewHeadData}>
+            <span className={style.username}>@{review.authorUsername}</span>
+            <span className={style.date}>{formatDate(review.createdAt)}</span>
           </div>
-          <p className="break-all whitespace-pre-wrap line-clamp-[8]">
-            {review.review}
-          </p>
+          <p className={style.review}>{review.review}</p>
         </div>
       </div>
     </div>
   )
+}
+
+const style = {
+  wrapper: `mb-5 px-2 md:px-0 cursor-pointer border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2`,
+  flexContainer: `flex`,
+  authorImg: `w-14 h-14 object-cover`,
+  reviewContainer: `flex flex-col pl-2`,
+  reviewHeadData: `flex justify-between -mt-1`,
+  username: `font-semibold`,
+  date: `text-neutral-weak dark:text-neutral-main`,
+  review: `break-all whitespace-pre-wrap line-clamp-[8]`,
 }

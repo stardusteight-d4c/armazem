@@ -1,81 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { useEffect, useState } from 'react'
+import { useAppDispatch } from '../../store/hooks'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import {
-  addMangaToFavorites,
-  addMangaToListed,
-  mangaByUid,
-  randomMangasByGenre,
-  removeMangaToFavorites,
-  removeMangaToListed,
-  reviewsByPagination,
-} from '../../services/api-routes'
-import { error, success } from '../../components/Toasters'
+import { mangaByUid, reviewsByPagination } from '../../services/api-routes'
 import { handleOpenModal } from '../../store'
 import { Review } from './integrate/Review'
 
 interface Props {}
 
 export const MangaInfo = (props: Props) => {
-  const [showMore, setShowMore] = useState(false)
   const { id: uid } = useParams()
+  const [showMore, setShowMore] = useState(false)
   const [manga, setManga] = useState<Manga>()
-  const [avarageScore, setAvarageScore] = useState<any>()
-  const currentAccount = useAppSelector<Account>(
-    (state) => state.armazem.currentAccount
-  )
-  const dispatch = useAppDispatch()
-  const [page, setPage] = useState(1)
   const [reviews, setReviews] = useState([])
+  const [page, setPage] = useState(1)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(`${reviewsByPagination}/${uid}/${page}`)
-      if (data.status === true) {
-        setReviews(data.reviews)
-      }
+      await axios
+        .get(`${reviewsByPagination}/${uid}/${page}`)
+        .then(({ data }) => setReviews(data.reviews))
+        .catch((error) => console.log(error.toJSON()))
     })()
   }, [uid, page])
 
   useEffect(() => {
-    if (manga) {
-      const randomGenreFromManga =
-        manga?.genres[Math.floor(Math.random() * manga?.genres.length)]
-      ;(async () => {
-        const { data } = await axios.get(
-          `${randomMangasByGenre}/${randomGenreFromManga}`
-        )
-        if (data.status === true) {
-          // setRecMangas(data.mangas)
-        }
-      })()
-    }
-  }, [uid, manga])
-
-  useEffect(() => {
-    // setLoading(true)
-    if (currentAccount.mangaList) {
-      const listed = currentAccount.mangaList.find((o) => o.mangaUid === uid)
-      if (listed) {
-        averageScore()
-        setTimeout(() => {
-          // setLoading(false)
-        }, 200)
-      } else {
-        setTimeout(() => {
-          // setLoading(false)
-        }, 200)
-      }
-    }
-  }, [currentAccount, manga])
-
-  useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(`${mangaByUid}/${uid}`)
-      if (data.status === true) {
-        setManga(data.manga)
-      }
+      await axios
+        .get(`${mangaByUid}/${uid}`)
+        .then(({ data }) => setManga(data.manga))
+        .catch((error) => console.log(error.toJSON()))
     })()
   }, [uid])
 
@@ -86,62 +41,40 @@ export const MangaInfo = (props: Props) => {
       const sum = scoreArr.reduce(
         (accumulator, score) => Number(accumulator) + Number(score)
       )
-      const avarage = Number(sum) / Number(scoreArr.length)
-      setAvarageScore(avarage)
+      return Number(sum) / Number(scoreArr.length)
     }
   }
 
-  return (
-    <div className="w-full md:pl-4 cursor-default">
-      <div className="text-base px-2 md:px-0 flex items-center justify-between w-full border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2 font-medium">
-        <div className="flex items-center gap-x-2">
-          <i className="ri-star-s-fill" /> Score
-        </div>
-        <span className="text-xl font-semibold">
-          {avarageScore ? avarageScore : 'No scores yet'}
-        </span>
-      </div>
-      <div className="text-base px-2 md:px-0 flex items-center justify-between w-full border-y border-y-dawn-weak/20 dark:border-y-dusk-weak/20 py-2 font-medium">
-        <div className="flex items-center gap-x-2">
-          <i className="ri-book-3-fill" /> Readers
-        </div>
-        <span className="text-xl font-semibold">{manga?.readers.length}</span>
-      </div>
-      <div className="text-base px-2 md:px-0 flex items-center justify-between w-full py-2 font-medium">
-        Synopsis
-      </div>
-      <div className=" px-2 md:px-0">
-        <p
-          className={`${
-            showMore ? '' : 'line-clamp-4'
-          }  cursor-default break-words break-all whitespace-pre-wrap font-medium`}
-        >
+  const rendersSynopsis = () => (
+    <>
+      <div className={style.synopsisTitle}>Synopsis</div>
+      <div className={style.synopsisContainer}>
+        <p className={`${!showMore && 'line-clamp-4'} ${style.synopsis}`}>
           {manga?.synopsis}
         </p>
         <div>
           {!showMore ? (
-            <span
-              onClick={() => setShowMore(!showMore)}
-              className="font-semibold hover:underline cursor-pointer text-prime-blue"
-            >
+            <span onClick={() => setShowMore(true)} className={style.show}>
               Show more
             </span>
           ) : (
-            <span
-              onClick={() => setShowMore(!showMore)}
-              className="font-semibold hover:underline cursor-pointer text-prime-blue"
-            >
+            <span onClick={() => setShowMore(false)} className={style.show}>
               Show less
             </span>
           )}
         </div>
       </div>
-      <div className="text-base  px-2 md:px-0 border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 mt-2 flex items-center justify-between w-full py-2 font-medium">
+    </>
+  )
+
+  const rendersReviews = () => (
+    <>
+      <div className={style.reviewsContainer}>
         <span>Reviews</span>
-        <div className="space-x-2">
+        <div className={style.reviewHeader}>
           <span
             onClick={() => dispatch(handleOpenModal('AddReview'))}
-            className="text-sm hover:underline cursor-pointer text-prime-blue"
+            className={style.reviewPagination}
           >
             Add review
           </span>
@@ -150,7 +83,7 @@ export const MangaInfo = (props: Props) => {
               <span>•</span>
               <span
                 onClick={() => setPage((page) => page + 1)}
-                className="text-sm hover:underline cursor-pointer text-prime-blue"
+                className={style.reviewPagination}
               >
                 More reviews
               </span>
@@ -161,7 +94,7 @@ export const MangaInfo = (props: Props) => {
               <span>•</span>
               <span
                 onClick={() => setPage((page) => page - 1)}
-                className="text-sm hover:underline cursor-pointer text-prime-blue"
+                className={style.reviewPagination}
               >
                 Return
               </span>
@@ -177,15 +110,52 @@ export const MangaInfo = (props: Props) => {
         </>
       )}
       {reviews.length === 0 && page === 1 && (
-        <div className="flex items-center justify-center text-3xl my-14">
-          No reviews yet
-        </div>
+        <span className={style.spanNoReview}>No reviews yet</span>
       )}
       {reviews.length === 0 && page !== 1 && (
-        <div className="flex items-center justify-center text-3xl my-14">
-          End of results
-        </div>
+        <span className={style.spanNoReview}>End of results</span>
       )}
+    </>
+  )
+
+  return (
+    <div className={style.wrapper}>
+      <div className={style.scoreContainer}>
+        <div className={style.spanContainer}>
+          <i className={style.starIcon} />
+          <span>Score</span>
+        </div>
+        <span className={style.counter}>
+          {averageScore() || 'No scores yet'}
+        </span>
+      </div>
+      <div className={style.readersContainer}>
+        <div className={style.spanContainer}>
+          <i className={style.bookIcon} />
+          <span>Readers</span>
+        </div>
+        <span className={style.counter}>{manga?.readers.length}</span>
+      </div>
+      {rendersSynopsis()}
+      {rendersReviews()}
     </div>
   )
+}
+
+const style = {
+  wrapper: `w-full md:pl-4 cursor-default`,
+  scoreContainer: `text-base px-2 md:px-0 flex items-center justify-between w-full border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2 font-medium`,
+  spanContainer: `flex items-center gap-x-2`,
+  starIcon: `ri-star-s-fill`,
+  readersContainer: `text-base px-2 md:px-0 flex items-center justify-between w-full border-y border-y-dawn-weak/20 dark:border-y-dusk-weak/20 py-2 font-medium`,
+  bookIcon: `ri-book-3-fill`,
+  counter: `text-xl font-semibold`,
+  synopsisTitle: `text-base px-2 md:px-0 flex items-center justify-between w-full py-2 font-medium`,
+  synopsisContainer: `px-2 md:px-0`,
+  synopsis: `cursor-default break-words break-all whitespace-pre-wrap font-medium`,
+  show: `font-semibold hover:underline cursor-pointer text-prime-blue`,
+  reviewsContainer: `text-base px-2 md:px-0 border-t border-t-dawn-weak/20 dark:border-t-dusk-weak/20 mt-2 flex items-center justify-between w-full py-2 font-medium`,
+  reviewHeader: `space-x-2`,
+  reviewPagination: `text-sm hover:underline cursor-pointer text-prime-blue`,
+  spanNoReview: `flex items-center justify-center text-3xl my-14`,
 }

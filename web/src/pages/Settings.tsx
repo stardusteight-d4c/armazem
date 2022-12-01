@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Button, Navbar, Sidebar } from '../components'
+import { Button } from '../components'
 import { validateEmail } from '../components/login/integrate/validate-form'
 import { error, success } from '../components/Toasters'
 import {
@@ -10,11 +10,11 @@ import {
   deleteAccount,
   sendTokenChangeEmailVerification,
 } from '../services/api-routes'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { useAppSelector } from '../store/hooks'
 import bcryptjs from 'bcryptjs'
 import { useNavigate } from 'react-router-dom'
-import { MobileNav } from '../components/menu'
-import { MobileSearch } from '../components/menu/integrate/MobileSearch'
+import { GridWrapper } from '../components/GridWrapper'
+import { Input } from '../components/settings/Input'
 
 interface Props {}
 
@@ -40,11 +40,6 @@ export const Settings = (props: Props) => {
   const [confirmDeleteAccount, setConfirmDeleteAccount] =
     useState<boolean>(false)
   const navigate = useNavigate()
-  const minimizeSidebar = useAppSelector(
-    (state) => state.armazem.minimizeSidebar
-  )
-
-  // definir loading para sent email to
 
   function handleToken(event: React.ChangeEvent<HTMLInputElement>) {
     const newEmailValue = event.target.value
@@ -194,285 +189,248 @@ export const Settings = (props: Props) => {
     })
   }
 
-  return (
-    <div
-      className={`${style.gridContainer} ${
-        minimizeSidebar
-        ? 'grid-cols-1 md:grid-cols-18'
-        : 'grid-cols-1 md:grid-cols-5'
-      }`}
-    >
-      <Sidebar />
-      <div
-        className={`${style.mainContent} ${
-        minimizeSidebar
-            ? 'col-span-1 md:col-span-17'
-            : 'col-span-1 md:col-span-4'
-        }`}
-      >
-        <Navbar />
-        <MobileSearch />
-        <MobileNav />
-        <main>
-          <div className="p-4 pb-24 md:pb-14">
-            <h2 className="text-2xl flex items-center gap-x-2 pb-1 mb-4 border-b border-dawn-weak/20 dark:border-dusk-weak/20 font-bold">
-              Settings
-            </h2>
-            <div className="md:flex w-full items-center justify-between md:pr-28">
-              <h2 className="text-xl flex items-center gap-x-2 pb-1 mb-4 font-bold">
-                Change password
-              </h2>
-              <div className="w-full md:w-[50%] flex flex-col gap-y-5">
-                {currentUser?.password ? (
-                  <>
-                    <div>
-                      <label htmlFor="currentPassword" className={style.label}>
-                        Current password
-                      </label>
-                      <input
-                        type="password"
-                        id="currentPassword"
-                        onChange={(e) => handleChangePassword(e)}
-                        required
-                        value={changePassword.currentPassword}
-                        maxLength={50}
-                        placeholder="Current password"
-                        className={`${style.input} placeholder:text-sm text-xl`}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="newPassword" className={style.label}>
-                        New password
-                      </label>
-                      <input
-                        type="password"
-                        id="newPassword"
-                        onChange={(e) => handleChangePassword(e)}
-                        required
-                        value={changePassword.newPassword}
-                        maxLength={50}
-                        placeholder="New password"
-                        className={`${style.input} placeholder:text-sm text-xl`}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="confirmPassword" className={style.label}>
-                        Confirm password
-                      </label>
-                      <input
-                        type="password"
-                        id="confirmPassword"
-                        value={changePassword.confirmPassword}
-                        onChange={(e) => handleChangePassword(e)}
-                        required
-                        maxLength={50}
-                        placeholder="Confirm password"
-                        className={`${style.input} placeholder:text-sm text-xl`}
-                      />
-                    </div>
-                    <Button
-                      type="submit"
-                      title="Submit"
-                      onClick={handleSubmitChangePassword}
-                      className="bg-prime-blue md:!w-[50%] -mt-2"
-                    />
-                  </>
-                ) : (
-                  <span className="text-base mx-auto w-fit md:mx-0 text-center md:text-left md:my-8 text-dusk-weak">
-                    Your account was created using the{' '}
-                    <a
-                      href="https://cloud.google.com/identity-platform/docs/web/google"
-                      target="_blank"
-                      className="text-prime-blue hover:underline"
-                    >
-                      google provider
-                    </a>
-                    , so you don't have a password defined. Don't worry, even
-                    without a password your account remains protected.
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="md:flex w-full items-center justify-between pt-10 md:pr-28">
-              <div className="md:w-[45%]">
-                <h2 className="text-xl flex items-center gap-x-2 font-bold">
-                  Change email
-                </h2>
-                {!currentUser?.password && (
-                  <span className="text-sm text-dusk-weak md:pb-0">
-                    You authenticated via google provider, so only gmail email
-                    addresses will be allowed.
-                  </span>
-                )}
-              </div>
-              <div className="md:w-[50%] mt-5 md:mt-0 flex flex-col gap-y-5">
-                <div>
-                  <label htmlFor="newEmail" className={style.label}>
-                    New email
-                  </label>
-                  <div>
-                    <input
-                      type="text"
-                      id="newEmail"
-                      onChange={(e) => {
-                        handleChangeEmail(e)
-                        handleToken(e)
-                      }}
-                      value={changeEmail.newEmail}
-                      required
-                      maxLength={50}
-                      placeholder="New email"
-                      className={`${style.input} placeholder:text-sm text-xl`}
-                    />
-                    {requestToken && (
-                      <div className="flex font-medium text-white items-center gap-x-1 cursor-pointer">
-                        <Button
-                          title="Token sent"
-                          className="py-1 px-2 mt-2 bg-green rounded-sm"
-                        />
-                      </div>
-                    )}
-                    {requestToken === false && (
-                      <div
-                        onClick={sendToken}
-                        className="flex font-medium text-white items-center gap-x-1 cursor-pointer"
-                      >
-                        <Button
-                          title={`Send token to ${changeEmail.newEmail}`}
-                          loading={loading}
-                          className="py-1 px-2 mt-2 bg-prime-blue rounded-sm"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="token" className={style.label}>
-                    Confirm token
-                  </label>
-                  <input
-                    type="text"
-                    id="confirmToken"
-                    onChange={(e) => {
-                      handleChangeEmail(e)
-                    }}
-                    value={changeEmail.confirmToken}
-                    required
-                    maxLength={50}
-                    placeholder="Paste token here"
-                    className={`${style.input} ${
-                      (isTokenValid === true && '!ring-green') ||
-                      (isTokenValid === false && '!ring-red')
-                    } placeholder:text-sm text-xl`}
-                  />
-                </div>
-                <Button
-                  onClick={handleSubmitChangeEmail}
-                  disabled={!token && !backendEmail}
-                  title="Submit"
-                  className="bg-prime-blue md:!w-[50%] -mt-2"
-                />
-              </div>
-            </div>
-            <div className="md:flex w-full items-center pt-10 justify-between md:pr-28">
-              <div className="md:w-[45%] mb-4 md:mb-0">
-                <h2 className="text-xl flex items-center gap-x-2 mb-4 md:mb-0 font-bold">
-                  Change username
-                </h2>
-                <span className="text-sm text-dusk-weak">
-                  <i className="text-red text-base">*</i> Your username is
-                  public.
-                </span>{' '}
-                <br />
-                <span className="text-sm text-dusk-weak">
-                  <i className="text-red text-base">*</i> You may only change
-                  your username once every month.
-                </span>
-                <br />
-                <span className="text-sm text-dusk-weak">
-                  <i className="text-red text-base">*</i> If you change your
-                  username, all links that used to go to your old username will
-                  no longer work.
-                </span>
-              </div>
-              <div className="md:w-[50%] flex flex-col gap-y-5">
-                <div>
-                  <label htmlFor="newUsername" className={style.label}>
-                    New username
-                  </label>
-                  <input
-                    type="text"
-                    id="newUsername"
-                    onChange={(e) =>
-                      setChangeUsername({
-                        ...changeUsername,
-                        [e.target.id]: e.target.value,
-                      })
-                    }
-                    required
-                    maxLength={50}
-                    placeholder="New username"
-                    className={`${style.input} placeholder:text-sm text-xl`}
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  title="Submit"
-                  onClick={handleSubmitChangeUsername}
-                  className="bg-prime-blue -mt-2 md:!w-[50%]"
-                />
-              </div>
-            </div>
-            <div className="md:flex w-full items-center mt-16 justify-between md:pr-28">
-              <h2 className="text-xl mb-4 md:mb-0 flex items-center gap-x-2 text-red font-bold">
-                Delete account
-              </h2>
-              <div className="md:w-[50%] flex flex-col gap-y-5">
-                <div>
-                  All account deletion requests are{' '}
-                  <strong className="text-red">permanent</strong>. You cannot
-                  reactivate a deleted account or recover any account
-                  information after requesting a deletion. This includes Armazem
-                  supporter status, manga lists, private messages, and more.
-                </div>
-                <div className="relative ">
-                  <Button
-                    type="submit"
-                    onClick={(e) => setConfirmDeleteAccount(true)}
-                    title="Delete my account"
-                    className="bg-red -mt-2 md:w-[50%] my-1"
-                  />
-                  {confirmDeleteAccount && (
-                    <div className="absolute space-x-2">
-                      <span>Really want to delete your account?</span>
-                      <span
-                        onClick={handleSubmitDeleteAccount}
-                        className="text-red font-medium cursor-pointer hover:underline"
-                      >
-                        Delete
-                      </span>
-                      <span>/</span>
-                      <span
-                        onClick={() => setConfirmDeleteAccount(false)}
-                        className="text-prime-blue font-medium cursor-pointer hover:underline"
-                      >
-                        Cancel
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
+  const inputProps = {
+    currentPassword: {
+      id: 'currentPassword',
+      label: 'Current password',
+      type: 'password',
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+        handleChangePassword(e),
+      value: changePassword.currentPassword,
+      placeholder: 'Current password',
+    },
+    newPassword: {
+      id: 'newPassword',
+      label: 'New password',
+      type: 'password',
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+        handleChangePassword(e),
+      value: changePassword.newPassword,
+      placeholder: 'New password',
+    },
+    confirmPassword: {
+      id: 'confirmPassword',
+      label: 'Confirm password',
+      type: 'password',
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+        handleChangePassword(e),
+      value: changePassword.confirmPassword,
+      placeholder: 'Confirm password',
+    },
+    newEmail: {
+      id: 'newEmail',
+      label: 'New email',
+      type: 'text',
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+        handleChangeEmail(e)
+        handleToken(e)
+      },
+      value: changeEmail.newEmail,
+      placeholder: 'New email',
+    },
+    confirmToken: {
+      id: 'confirmToken',
+      label: 'Confirm token',
+      type: 'text',
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+        handleChangeEmail(e)
+      },
+      value: changeEmail.confirmToken,
+      placeholder: 'Paste token here',
+      className:
+        (isTokenValid === true && '!ring-green') ||
+        (isTokenValid === false && '!ring-red'),
+    },
+    newUsername: {
+      id: 'newUsername',
+      label: 'New username',
+      type: 'text',
+      maxLength: 50,
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+        setChangeUsername({
+          ...changeUsername,
+          [e.target.id]: e.target.value,
+        }),
+      placeholder: 'New username',
+    },
+  }
+
+  const rendersChangePassword = () => (
+    <section className={style.sectionContainer}>
+      <h2 className={style.sectionTitle}>Change password</h2>
+      <div className={style.wrapperChangePassword}>
+        {currentUser?.password ? (
+          <div className="space-y-5">
+            <Input {...inputProps.currentPassword} />
+            <Input {...inputProps.newPassword} />
+            <div>
+              <Button
+                type="submit"
+                title="Submit"
+                onClick={handleSubmitChangePassword}
+                className={style.buttonSubmit}
+              />
             </div>
           </div>
-        </main>
+        ) : (
+          <span className={style.notPassword}>
+            Your account was created using the{' '}
+            <a
+              href="https://cloud.google.com/identity-platform/docs/web/google"
+              target="_blank"
+              className={style.link}
+            >
+              google provider
+            </a>
+            , so you don't have a password defined. Don't worry, even without a
+            password your account remains protected.
+          </span>
+        )}
       </div>
-    </div>
+    </section>
+  )
+
+  const rendersChangeEmail = () => (
+    <section className={style.sectionContainer}>
+      <div className="md:w-[45%]">
+        <h2 className={style.sectionTitle}>Change email</h2>
+        {!currentUser?.password && (
+          <span className={style.spanOnlyGmailAddresses}>
+            You authenticated via google provider, so only gmail email addresses
+            will be allowed.
+          </span>
+        )}
+      </div>
+      <div className={style.wrapperChangeEmail}>
+        <div>
+          <Input {...inputProps.newEmail} />
+          {requestToken && (
+            <Button title="Token sent" className={style.tokenSent} />
+          )}
+          {requestToken === false && (
+            <Button
+              onClick={sendToken}
+              title={`Send token to ${changeEmail.newEmail}`}
+              loading={loading}
+              className={style.sendToken}
+            />
+          )}
+        </div>
+        <Input {...inputProps.confirmToken} />
+        <Button
+          onClick={handleSubmitChangeEmail}
+          disabled={!token && !backendEmail}
+          title="Submit"
+          className={style.buttonSubmit}
+        />
+      </div>
+    </section>
+  )
+
+  const rendersChangeUsername = () => (
+    <section className={style.sectionContainer}>
+      <div className={style.changeUsernameInfoContainer}>
+        <h2 className={style.sectionTitle}>Change username</h2>
+        <span className={style.span}>
+          <i className={style.alert}>*</i> Your username is public.
+        </span>{' '}
+        <br />
+        <span className={style.span}>
+          <i className={style.alert}>*</i> You may only change your username
+          once every month.
+        </span>
+        <br />
+        <span className={style.span}>
+          <i className={style.alert}>*</i> If you change your username, all
+          links that used to go to your old username will no longer work.
+        </span>
+      </div>
+      <div className={style.changeUsernameInputContainer}>
+        <Input {...inputProps.newUsername} />
+        <Button
+          type="submit"
+          title="Submit"
+          onClick={handleSubmitChangeUsername}
+          className={style.buttonSubmit}
+        />
+      </div>
+    </section>
+  )
+
+  const rendersDeleteAccount = () => (
+    <section className={style.sectionContainer}>
+      <h2 className={style.sectionTitle + ' text-red'}>Delete account</h2>
+      <div className={style.wrapperDeleteAccount}>
+        <div>
+          All account deletion requests are{' '}
+          <strong className="text-red">permanent</strong>. You cannot reactivate
+          a deleted account or recover any account information after requesting
+          a deletion. This includes Armazem supporter status, manga lists,
+          private messages, and more.
+        </div>
+        <div className="relative">
+          <Button
+            type="submit"
+            onClick={(e) => setConfirmDeleteAccount(true)}
+            title="Delete my account"
+            className={style.buttonDelete}
+          />
+          {confirmDeleteAccount && (
+            <div className={style.spanContainer}>
+              <span>Really want to delete your account?</span>
+              <span
+                onClick={handleSubmitDeleteAccount}
+                className={style.spanConfirmDelete}
+              >
+                Delete
+              </span>
+              <span>/</span>
+              <span
+                onClick={() => setConfirmDeleteAccount(false)}
+                className={style.spanCanelDelete}
+              >
+                Cancel
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+
+  return (
+    <GridWrapper>
+      <main className={style.wrapper}>
+        <h1 className={style.title}>Settings</h1>
+        {rendersChangePassword()}
+        {rendersChangeEmail()}
+        {rendersChangeUsername()}
+        {rendersDeleteAccount()}
+      </main>
+    </GridWrapper>
   )
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
-  mainContent: `col-start-2`,
-  label: `text-dusk-main pb-1 dark:text-dawn-main text-lg md:text-xl w-full block font-semibold`,
-  input: `w-full p-4 bg-layer-light dark:bg-layer-heavy text-sm placeholder:text-dusk-weak outline-none focus:ring-[2px] focus:ring-prime-purple rounded-lg`,
+  wrapper: `p-4 pb-24 md:pb-14 space-y-14`,
+  title: `text-2xl flex items-center gap-x-2 pb-1 mb-4 border-b border-dawn-weak/20 dark:border-dusk-weak/20 font-bold`,
+  sectionContainer: `md:flex w-full items-center justify-between md:pr-28`,
+  sectionTitle: `text-xl font-bold`,
+  wrapperChangePassword: `w-full md:w-[50%] flex flex-col mt-5 md:mt-0`,
+  buttonSubmit: `bg-prime-blue md:!w-[50%] -mt-2`,
+  notPassword: `text-base w-fit md:my-8 text-dusk-weak`,
+  link: `text-prime-blue hover:underline`,
+  spanOnlyGmailAddresses: `text-sm text-dusk-weak md:pb-0`,
+  wrapperChangeEmail: `md:w-[50%] mt-5 md:mt-0 flex flex-col gap-y-5`,
+  tokenSent: `py-1 px-2 mt-2 bg-green rounded-sm`,
+  sendToken: `py-1 px-2 mt-2 bg-prime-blue rounded-sm`,
+  changeUsernameInfoContainer: `md:w-[45%] mb-4 md:mb-0`,
+  span: `text-sm text-dusk-weak`,
+  alert: `text-red text-base`,
+  changeUsernameInputContainer: `md:w-[50%] flex flex-col gap-y-5`,
+  wrapperDeleteAccount: `md:w-[50%] flex flex-col gap-y-5`,
+  buttonDelete: `bg-red -mt-2 md:w-[50%] my-1`,
+  spanContainer: `absolute space-x-2`,
+  spanConfirmDelete: `text-red font-medium cursor-pointer hover:underline`,
+  spanCanelDelete: `text-prime-blue font-medium cursor-pointer hover:underline`,
 }
