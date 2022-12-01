@@ -1,108 +1,104 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '..'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { useAppSelector } from '../../store/hooks'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import {
   addMangaToFavorites,
   addMangaToListed,
   mangaByUid,
-  randomMangasByGenre,
   removeMangaToFavorites,
   removeMangaToListed,
-  reviewsByPagination,
 } from '../../services/api-routes'
 import { error, success } from '../Toasters'
 import { Dropdown } from '../Dropdown'
-import { MangaMetaInfos } from './MangaMetaInfos'
+import { MangaMetadata } from './integrate/MangaMetadata'
 
 interface Props {}
 
 export const MangaStatus = (props: Props) => {
   const { id: uid } = useParams()
-  const [recommendationWidth, setRecommendationWidth] = useState(0)
-  const [onDragRecommendations, setOnDragRecommendations] = useState(0)
   const [manga, setManga] = useState<Manga>()
-  const [loading, setLoading] = useState<boolean>(true)
-  const [addToMyList, setaddToMyList] = useState<boolean>(false)
+  const [addToMyList, setAddToMyList] = useState<boolean>(false)
   const [status, setStatus] = useState<string | null>(null)
   const [listInfos, setListInfos] = useState<any>({})
   const [mangaListed, setMangaListed] = useState<any>(null)
-  const [avarageScore, setAvarageScore] = useState<any>()
-  const [recMangas, setRecMangas] = useState<any>([])
   const currentAccount = useAppSelector<Account>(
     (state) => state.armazem.currentAccount
   )
-  const dispatch = useAppDispatch()
-  const [page, setPage] = useState(1)
-  const [reviews, setReviews] = useState([])
   const [favorited, setFavorited] = useState<boolean>(false)
+
+  if (!currentAccount) {
+    return <></>
+  }
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get(`${reviewsByPagination}/${uid}/${page}`)
-      if (data.status === true) {
-        setReviews(data.reviews)
+      if (currentAccount.favorites) {
+        await axios
+          .get(`${mangaByUid}/${uid}`)
+          .then(({ data }) => {
+            setManga(data.manga)
+            setFavorited(currentAccount.favorites.includes(data.manga._id))
+          })
+          .catch((error) => console.log(error.toJSON()))
       }
     })()
-  }, [uid, page])
+  }, [currentAccount])
 
   useEffect(() => {
-    if (manga) {
-      const randomGenreFromManga =
-        manga?.genres[Math.floor(Math.random() * manga?.genres.length)]
-      ;(async () => {
-        const { data } = await axios.get(
-          `${randomMangasByGenre}/${randomGenreFromManga}`
-        )
-        if (data.status === true) {
-          setRecMangas(data.mangas)
-        }
-      })()
-    }
-  }, [uid, manga])
-
-  useEffect(() => {
-    setLoading(true)
     if (currentAccount.mangaList) {
       const listed = currentAccount.mangaList.find((o) => o.mangaUid === uid)
       if (listed) {
         setMangaListed(listed)
         setStatus(listed.status)
         setListInfos({ chapRead: listed.chapRead, score: listed.score })
-        averageScore()
-        setTimeout(() => {
-          setLoading(false)
-        }, 200)
       } else {
         setMangaListed(null)
-        setTimeout(() => {
-          setLoading(false)
-        }, 200)
       }
     }
   }, [currentAccount, manga])
 
-  useEffect(() => {
-    ;(async () => {
-      const { data } = await axios.get(`${mangaByUid}/${uid}`)
-      if (data.status === true) {
-        setManga(data.manga)
-        setFavorited(currentAccount.favorites.includes(data.manga._id))
+  const handleFavorites = async () => {
+    if (currentAccount?.favorites.length < 10) {
+      if (!favorited) {
+        await axios
+          .post(addMangaToFavorites, {
+            accountId: currentAccount._id,
+            mangaId: manga?._id,
+          })
+          .then(({ data }) => success(data.msg))
+          .catch((error) => console.log(error.toJSON()))
       }
-    })()
-  }, [uid])
-
-  function averageScore() {
-    if (manga?.score && manga.score.length > 0) {
-      const scoreArr: Number[] = []
-      manga?.score.map((score) => scoreArr.push(score.score))
-      const sum = scoreArr.reduce(
-        (accumulator, score) => Number(accumulator) + Number(score)
-      )
-      const avarage = Number(sum) / Number(scoreArr.length)
-      setAvarageScore(avarage)
+    } else {
+      error('10 favorites have already been added')
     }
+    if (favorited) {
+      await axios
+        .post(removeMangaToFavorites, {
+          accountId: currentAccount._id,
+          mangaId: manga?._id,
+        })
+        .then(({ data }) => success(data.msg))
+        .catch((error) => console.log(error.toJSON()))
+    }
+  }
+
+  const handleRemove = async () => {
+    await axios
+      .post(removeMangaToListed, {
+        accountId: currentAccount._id,
+        mangaUid: manga?.uid,
+      })
+      .then(({ data }) => success(data.msg))
+      .catch((error) => console.log(error.toJSON()))
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setListInfos({
+      ...listInfos,
+      [event.target.id]: event.target.value,
+    })
   }
 
   function handleValidation() {
@@ -141,50 +137,7 @@ export const MangaStatus = (props: Props) => {
     return true
   }
 
-  const handleFavorites = async () => {
-    if (currentAccount.favorites.length < 10) {
-      if (!favorited) {
-        const { data } = await axios.post(addMangaToFavorites, {
-          accountId: currentAccount._id,
-          mangaId: manga?._id,
-        })
-        if (data.status === true) {
-          success(data.msg)
-        }
-      }
-    } else {
-      error('10 favorites have already been added')
-    }
-
-    if (favorited) {
-      const { data } = await axios.post(removeMangaToFavorites, {
-        accountId: currentAccount._id,
-        mangaId: manga?._id,
-      })
-      if (data.status === true) {
-        success(data.msg)
-      }
-    }
-  }
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setListInfos({
-      ...listInfos,
-      [event.target.id]: event.target.value,
-    })
-  }
-
-  const handleRemove = async () => {
-    const { data } = await axios.post(removeMangaToListed, {
-      accountId: currentAccount._id,
-      mangaUid: manga?.uid,
-    })
-    if (data.status === true) {
-      success(data.msg)
-    }
-  }
-
-  const chooseStatus = [
+  const chooseStatusItems = [
     manga?.chapters !== '???' && {
       item: 'Completed',
       function: () => setStatus('Completed'),
@@ -199,7 +152,7 @@ export const MangaStatus = (props: Props) => {
     },
   ]
 
-  const removeFromListed = [
+  const removeFromListedItems = [
     {
       item: 'Remove',
       function: handleRemove,
@@ -216,200 +169,199 @@ export const MangaStatus = (props: Props) => {
     }
     if (handleValidation()) {
       if (status === 'Plan to Read') {
-        const listData = {
-          mangaUid: manga!.uid,
-          status,
-          date: new Date(),
-        }
+        await axios
+          .post(addMangaToListed, {
+            accountId: currentAccount._id,
+            data: {
+              mangaUid: manga!.uid,
+              status,
+              date: new Date(),
+            },
+          })
+          .then(({ data }) => success(data.msg))
+          .catch((error) => console.log(error.toJSON()))
         setListInfos({})
-        const { data } = await axios.post(addMangaToListed, {
-          accountId: currentAccount._id,
-          data: listData,
-        })
-        if (data.status === true) {
-          success(data.msg)
-        }
       } else {
-        const listData = {
-          mangaUid: manga!.uid,
-          ...listInfos,
-          status,
-          date: new Date(),
-        }
-        const { data } = await axios.post(addMangaToListed, {
-          accountId: currentAccount._id,
-          data: listData,
-        })
-        if (data.status === true) {
-          success(data.msg)
-        }
+        await axios
+          .post(addMangaToListed, {
+            accountId: currentAccount._id,
+            data: {
+              mangaUid: manga!.uid,
+              ...listInfos,
+              status,
+              date: new Date(),
+            },
+          })
+          .then(({ data }) => success(data.msg))
+          .catch((error) => console.log(error.toJSON()))
       }
     }
   }
 
-  function renderStatus() {
-    if (status === null) {
-      return <span className="text-red">Undefined</span>
-    } else {
-      return (
+  const rendersListedStatusHeader = () => (
+    <div className={style.listedStatusContainer}>
+      {mangaListed && mangaListed.status !== 'Plan to Read' ? (
+        <div title="Listed" className={style.listedIcon} />
+      ) : (
+        <div title="Not listed" className={style.notListedIcon} />
+      )}
+      {mangaListed && mangaListed.status !== 'Plan to Read' && (
+        <>
+          {favorited ? (
+            <div
+              onClick={handleFavorites}
+              title="Remove to favorites"
+              className={style.favoritedIcon}
+            />
+          ) : (
+            <>
+              {currentAccount.favorites.length < 10 ? (
+                <div
+                  onClick={handleFavorites}
+                  title="Add to favorites"
+                  className={style.notFavoritedIcon}
+                />
+              ) : (
+                <div
+                  onClick={handleFavorites}
+                  title="Maximum limit reached"
+                  className={style.maxFavoritedIcon}
+                />
+              )}
+            </>
+          )}
+        </>
+      )}
+    </div>
+  )
+
+  const rendersStatus = () =>
+    status === null ? (
+      <span className="text-red">Undefined</span>
+    ) : (
+      <span
+        className={`${
+          (status === 'Completed' && 'text-prime-blue') ||
+          (status === 'Reading' && 'text-green') ||
+          (status === 'Plan to Read' && 'text-dusk-main')
+        }`}
+      >
+        {status}
+      </span>
+    )
+
+  const rendersEditStatus = () => (
+    <form onSubmit={handleSubmit}>
+      {mangaListed ? (
+        <h3 className={style.editStatusTitle}>Edit status</h3>
+      ) : (
         <span
-          className={`${
-            (status === 'Completed' && 'text-prime-blue') ||
-            (status === 'Reading' && 'text-green') ||
-            (status === 'Plan to Read' && 'text-dusk-main')
-          }`}
+          onClick={() => setAddToMyList(false)}
+          className={style.cancelEdit}
         >
-          {status}
+          Cancel
         </span>
-      )
-    }
-  }
-
-  // CAROUSEL FRAMER MOTION
-  const recommendationsCarrousel =
-    useRef() as React.MutableRefObject<HTMLInputElement>
-  useEffect(() => {
-    recommendationsCarrousel.current &&
-      setRecommendationWidth(
-        recommendationsCarrousel.current.scrollWidth -
-          recommendationsCarrousel.current.offsetWidth
-      )
-  }, [onDragRecommendations])
-
-  return (
-    <div className="w-fit mt-4 md:mt-0 mr-auto ml-3 md:ml-0 md:mr-0  md:w-full ">
-      <div className="md:max-w-[225px] flex items-center gap-x-2">
-        {mangaListed && mangaListed.status !== 'Plan to Read' ? (
-          <div
-            title="Listed"
-            className="ri-bookmark-fill text-prime-blue cursor-pointer"
-          />
-        ) : (
-          <div title="Not listed" className="ri-bookmark-line cursor-pointer" />
-        )}
-        {mangaListed && mangaListed.status !== 'Plan to Read' && (
+      )}
+      <div className={style.editStatusContainer}>
+        <div className={style.statContainer}>
+          <span>Status:</span>
+          <Dropdown
+            space="space-y-6"
+            title="Choose status"
+            items={chooseStatusItems}
+          >
+            {rendersStatus()}
+          </Dropdown>
+        </div>
+        {status !== 'Plan to Read' && (
           <>
-            {favorited ? (
-              <div
-                onClick={handleFavorites}
-                title="Remove to favorites"
-                className="ri-star-fill text-prime-purple cursor-pointer"
-              />
-            ) : (
-              <>
-                {currentAccount.favorites.length < 10 ? (
-                  <div
-                    onClick={handleFavorites}
-                    title="Add to favorites"
-                    className="ri-star-line cursor-pointer"
-                  />
-                ) : (
-                  <div
-                    onClick={handleFavorites}
-                    title="Maximum limit reached"
-                    className="ri-star-fill text-dusk-weak cursor-pointer"
-                  />
-                )}
-              </>
-            )}
+            <div className={style.statContainer}>
+              <span>Chap. Read:</span>
+              <div className={style.inputContainer}>
+                <input
+                  onChange={(e) => handleChange(e)}
+                  type="text"
+                  id="chapRead"
+                  value={
+                    status === 'Completed'
+                      ? manga?.chapters
+                      : listInfos.chapRead
+                  }
+                  placeholder="???"
+                  maxLength={4}
+                  className={style.input}
+                />
+                <span>/</span>
+                {manga?.chapters}
+              </div>
+            </div>
+            <div className={style.statContainer}>
+              <span>Your Score:</span>
+              <div className={style.inputContainer}>
+                <input
+                  type="text"
+                  id="score"
+                  onChange={(e) => handleChange(e)}
+                  maxLength={2}
+                  placeholder={listInfos.score ? listInfos.score : '???'}
+                  className={style.input}
+                />
+              </div>
+            </div>
           </>
         )}
-      </div>
-      {mangaListed || addToMyList ? (
-        <form onSubmit={handleSubmit}>
-          {mangaListed ? (
-            <h3 className="text-xl font-medium mt-2">Edit status</h3>
-          ) : (
-            <span
-              onClick={() => setaddToMyList(false)}
-              className="text-sm hover:underline font-medium cursor-pointer text-red"
+        <div className={style.submitFormButtonsContainer}>
+          <Button title="Submit" type="submit" className={style.submitButton} />
+          {mangaListed && (
+            <Dropdown
+              title="Remove from list"
+              position="-bottom-[68px]"
+              items={removeFromListedItems}
             >
-              Cancel
-            </span>
+              <div className={style.removeButtonDropdown}>Remove</div>
+            </Dropdown>
           )}
-          <div className="flex flex-col gap-y-1 border-t-4 border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2">
-            <div className="flex justify-between text-base">
-              <span>Status:</span>
-              <Dropdown
-                space="space-y-6"
-                title="Choose status"
-                items={chooseStatus}
-              >
-                {renderStatus()}
-              </Dropdown>
-            </div>
-            {status !== 'Plan to Read' && (
-              <>
-                <div className="flex justify-between text-base">
-                  <span className="mr-1 md:mr-0">Chap. Read:</span>
-                  <div className="flex items-center gap-x-1">
-                    <input
-                      onChange={(e) => handleChange(e)}
-                      type="text"
-                      id="chapRead"
-                      value={
-                        status === 'Completed'
-                          ? manga?.chapters
-                          : listInfos.chapRead
-                      }
-                      placeholder="???"
-                      maxLength={4}
-                      className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
-                    />
-                    <span>/</span>
-                    {manga?.chapters}
-                  </div>
-                </div>
-                <div className="flex justify-between text-base">
-                  <span>Your Score:</span>
-                  <div className="flex items-center gap-x-1">
-                    <input
-                      type="text"
-                      id="score"
-                      onChange={(e) => handleChange(e)}
-                      maxLength={2}
-                      placeholder={listInfos.score ? listInfos.score : '???'}
-                      className="w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50"
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-            <div className="flex gap-x-2">
-              <Button
-                title="Submit"
-                type="submit"
-                className="bg-prime-blue mt-1 !rounded-sm !px-2 !py-1"
-              />
-              {mangaListed && (
-                <Dropdown
-                  title="Remove from list"
-                  position="-bottom-[68px]"
-                  items={removeFromListed}
-                >
-                  <Button
-                    title="Remove"
-                    type="button"
-                    className="bg-red mt-1 !rounded-sm !px-2 !py-1"
-                  />
-                </Dropdown>
-              )}
-            </div>
-          </div>
-        </form>
-      ) : (
-        <div className="w-[180px] flex items-center gap-x-2">
-          <span
-            onClick={() => setaddToMyList(true)}
-            className="text-sm hover:underline font-medium cursor-pointer text-prime-blue"
-          >
-            Add to my list
-          </span>
         </div>
-      )}
+      </div>
+    </form>
+  )
+
+  const rendersAddToMyList = () => (
+    <div className={style.addToMyListContainer}>
+      <span onClick={() => setAddToMyList(true)} className={style.addToMyList}>
+        Add to my list
+      </span>
+    </div>
+  )
+
+  return (
+    <div className={style.wrapper}>
+      {rendersListedStatusHeader()}
+      {mangaListed || addToMyList ? rendersEditStatus() : rendersAddToMyList()}
       <div className="hidden md:inline-block w-full">
-        <MangaMetaInfos manga={manga} />
+        <MangaMetadata manga={manga} />
       </div>
     </div>
   )
+}
+
+const style = {
+  wrapper: `w-fit mt-4 md:mt-0 md:w-full`,
+  listedStatusContainer: `md:max-w-[225px] flex items-center gap-x-2`,
+  listedIcon: `ri-bookmark-fill text-prime-blue cursor-pointer`,
+  notListedIcon: `ri-bookmark-line cursor-pointer`,
+  favoritedIcon: `ri-star-fill text-prime-purple cursor-pointer`,
+  notFavoritedIcon: `ri-star-line cursor-pointer`,
+  maxFavoritedIcon: `ri-star-fill text-dusk-weak cursor-pointer`,
+  editStatusTitle: `text-xl font-medium mt-2`,
+  cancelEdit: `text-sm hover:underline font-medium cursor-pointer text-red`,
+  editStatusContainer: `flex flex-col gap-y-1 border-t-4 border-t-dawn-weak/20 dark:border-t-dusk-weak/20 py-2`,
+  statContainer: `flex justify-between gap-x-2 text-base`,
+  inputContainer: `flex items-center gap-x-1`,
+  input: `w-[50px] h-[18px] focus:placeholder:text-dusk-main/50 dark:focus:placeholder:text-dawn-main/50 placeholder:text-dusk-main dark:placeholder:text-dawn-main text-center outline-none bg-transparent rounded-sm border border-prime-blue/50`,
+  submitFormButtonsContainer: `flex gap-x-2`,
+  submitButton: `bg-prime-blue mt-1 !rounded-sm !px-2 !py-1`,
+  removeButtonDropdown: `bg-red mt-1 font-semibold text-white rounded-sm px-2 py-1`,
+  addToMyListContainer: `w-[180px] flex items-center gap-x-2`,
+  addToMyList: `text-sm hover:underline font-medium cursor-pointer text-prime-blue`,
 }

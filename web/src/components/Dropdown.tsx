@@ -24,7 +24,7 @@ export const Dropdown = ({
   position,
 }: Props) => {
   return (
-    <div onClick={(e) =>  e.stopPropagation()} className="relative">
+    <div onClick={(e) => e.stopPropagation()} className="relative">
       <Menu>
         <div className={style.wrapperMenuButtonAndItems + space}>
           <Menu.Button title={title} className={style.menuButton}>
@@ -32,13 +32,15 @@ export const Dropdown = ({
           </Menu.Button>
           <Menu.Items className={style.items + position}>
             {items.map((item, index) => (
-              <Menu.Item key={index}>
+              <>
                 {item && (
-                  <a onClick={item.function} className={style.item}>
-                    {item.item}
-                  </a>
+                  <Menu.Item key={index}>
+                    <a onClick={item.function} className={style.item}>
+                      {item.item}
+                    </a>
+                  </Menu.Item>
                 )}
-              </Menu.Item>
+              </>
             ))}
           </Menu.Items>
         </div>

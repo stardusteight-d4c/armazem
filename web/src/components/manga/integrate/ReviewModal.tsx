@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { handleOpenModal } from '../../store'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { handleOpenModal } from '../../..//store'
+import { useAppDispatch, useAppSelector } from '../../..//store/hooks'
 import axios from 'axios'
-import { review } from '../../services/api-routes'
-import { Overlay } from '../modals/Overlay'
+import { review } from '../../../services/api-routes'
+import { Overlay } from '../../modals/Overlay'
 
 interface Props {}
 

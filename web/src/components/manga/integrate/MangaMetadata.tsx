@@ -4,7 +4,7 @@ interface Props {
   manga: Manga | undefined
 }
 
-export const MangaMetaInfos = ({manga}: Props) => {
+export const MangaMetadata = ({ manga }: Props) => {
   return (
     <div className="md:w-full">
       <h3 className="text-xl font-medium mt-2">Information</h3>
@@ -24,8 +24,8 @@ export const MangaMetaInfos = ({manga}: Props) => {
         <div className="flex flex-col">
           <span>Genres:</span>
           <span className="text-xs font-medium p-1 border-b border-l rounded-sm border-dawn-weak/20 dark:border-dusk-weak/20">
-            {manga?.genres.map((genre: string) => (
-              <div>{genre}</div>
+            {manga?.genres.map((genre: string, index: React.Key) => (
+              <div key={index}>{genre}</div>
             ))}
           </span>
         </div>

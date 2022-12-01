@@ -1,6 +1,5 @@
-import React from 'react'
-import { handleActiveReview, handleOpenModal } from '../../store'
-import { useAppDispatch } from '../../store/hooks'
+import { handleActiveReview, handleOpenModal } from '../../../store'
+import { useAppDispatch } from '../../../store/hooks'
 
 interface Props {
   review: any

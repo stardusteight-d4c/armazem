@@ -1,46 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Button, CardManga, Navbar, Sidebar } from '../components'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import {
-  mangaByUid,
-  randomMangasByGenre,
-  reviewsByPagination,
-} from '../services/api-routes'
-import { Loader } from '../components/Loader'
-import { MangaStatus } from '../components/manga/MangaStatus'
-import { MangaInfo } from '../components/manga/MangaInfo'
-import { MobileSearch } from '../components/menu/integrate/MobileSearch'
-import { MobileNav } from '../components/menu'
+import { mangaByUid, randomMangasByGenre } from '../services/api-routes'
+import { GridWrapper } from '../components/GridWrapper'
+import { MangaInfo, MangaStatus, Recommendations } from '../components/manga'
 
 interface Props {}
 
 export const Manga = (props: Props) => {
-  const [showMore, setShowMore] = useState(false)
   const { id: uid } = useParams()
-  const minimizeSidebar = useAppSelector(
-    (state) => state.armazem.minimizeSidebar
-  )
-  const [recommendationWidth, setRecommendationWidth] = useState(0)
-  const [onDragRecommendations, setOnDragRecommendations] = useState(0)
   const [manga, setManga] = useState<Manga>()
-  const [loading, setLoading] = useState<boolean>(true)
   const [recMangas, setRecMangas] = useState<any>([])
-  const currentAccount = useAppSelector<Account>(
-    (state) => state.armazem.currentAccount
-  )
-  const [page, setPage] = useState(1)
-
-  useEffect(() => {
-    ;(async () => {
-      const { data } = await axios.get(`${reviewsByPagination}/${uid}/${page}`)
-      if (data.status === true) {
-        // setReviews(data.reviews)
-      }
-    })()
-  }, [uid, page])
 
   useEffect(() => {
     if (manga) {
@@ -58,144 +28,78 @@ export const Manga = (props: Props) => {
   }, [uid, manga])
 
   useEffect(() => {
-    setLoading(true)
-    if (currentAccount.mangaList) {
-      const listed = currentAccount.mangaList.find((o) => o.mangaUid === uid)
-      if (listed) {
-        // setMangaListed(listed)
-        // setStatus(listed.status)
-        // setListInfos({ chapRead: listed.chapRead, score: listed.score })
-        averageScore()
-        setTimeout(() => {
-          setLoading(false)
-        }, 200)
-      } else {
-        // setMangaListed(null)
-        setTimeout(() => {
-          setLoading(false)
-        }, 200)
-      }
-    }
-  }, [currentAccount, manga])
-
-  useEffect(() => {
     ;(async () => {
       const { data } = await axios.get(`${mangaByUid}/${uid}`)
       if (data.status === true) {
         setManga(data.manga)
-        // setFavorited(currentAccount.favorites.includes(data.manga._id))
       }
     })()
   }, [uid])
 
-  function averageScore() {
-    if (manga?.score && manga.score.length > 0) {
-      const scoreArr: Number[] = []
-      manga?.score.map((score) => scoreArr.push(score.score))
-      const sum = scoreArr.reduce(
-        (accumulator, score) => Number(accumulator) + Number(score)
-      )
-      const avarage = Number(sum) / Number(scoreArr.length)
-      // setAvarageScore(avarage)
-    }
-  }
+  const handleDesktopLayout = (type: 'status' | 'info') => (
+    <>
+      {type === 'status' ? (
+        <div className={style.desktop}>
+          <MangaStatus />
+        </div>
+      ) : (
+        <div className={style.desktop}>
+          <MangaInfo />
+        </div>
+      )}
+    </>
+  )
 
-  // CAROUSEL FRAMER MOTION
-  const recommendationsCarrousel =
-    useRef() as React.MutableRefObject<HTMLInputElement>
-  useEffect(() => {
-    recommendationsCarrousel.current &&
-      setRecommendationWidth(
-        recommendationsCarrousel.current.scrollWidth -
-          recommendationsCarrousel.current.offsetWidth
-      )
-  }, [onDragRecommendations])
+  const handleMobileLayout = (type: 'status' | 'info') => (
+    <>
+      {type === 'status' ? (
+        <div className={`${style.mobile} w-fit h-fit`}>
+          <MangaStatus />
+        </div>
+      ) : (
+        <div className={`${style.mobile} w-screen`}>
+          <MangaInfo />
+        </div>
+      )}
+    </>
+  )
 
   return (
-    <div
-      className={`${style.gridContainer} ${
-        minimizeSidebar
-          ? 'grid-cols-1 md:grid-cols-18'
-          : 'grid-cols-1 md:grid-cols-5'
-      }`}
-    >
-      <Sidebar />
-      <div
-        className={`${style.mainContent} ${
-          minimizeSidebar
-            ? 'col-span-1 md:col-span-17'
-            : 'col-span-1 md:col-span-4'
-        }`}
-      >
-        <Navbar />
-        <MobileSearch />
-        <MobileNav />
-        <main className="w-screen md:w-full">
-          {!loading ? (
-            <>
-              <div className="py-2 cursor-default px-2 md:px-4 flex items-center justify-between bg-prime-blue text-fill-weak text-2xl font-semibold">
-                <span className='w-full md:w-[80%]'>{manga?.title}</span>
-                <span className="text-xl hidden md:inline-block font-medium">{manga?.author}</span>
-              </div>
-              <div className="pb-24 md:p-4 md:pb-14">
-                <div className="flex">
-                  <div className="w-full max-w-[170px] md:max-w-[225px]">
-                    <img
-                      src={manga?.cover}
-                      className="w-full h-full max-w-[170px] max-h-[225px] md:max-w-[225px] md:max-h-[300px]"
-                    />
-                    <div className="hidden md:inline-block w-full">
-                      <MangaStatus />
-                    </div>
-                    <div className="md:hidden inline-block w-screen">
-                      <MangaInfo />
-                    </div>
-                  </div>
-                  <div className="hidden md:inline-block w-full">
-                    <MangaInfo />
-                  </div>
-                  <div className="md:hidden inline-block w-full h-fit">
-                    <MangaStatus />
-                  </div>
-                </div>
-                <section className="px-2 md:px-0">
-                  <h2 className="text-2xl pb-4 text-dusk-main dark:text-dawn-main font-bold">
-                    Recommendations
-                  </h2>
-                  <motion.div
-                    drag="x"
-                    ref={recommendationsCarrousel}
-                    onDrag={(_event, info) =>
-                      setOnDragRecommendations(info.offset.x)
-                    }
-                    dragConstraints={{ right: 0, left: -recommendationWidth }}
-                    className="flex items-center gap-x-5 "
-                  >
-                    {recMangas.map(
-                      (manga: any, index: React.Key | null | undefined) => (
-                        <CardManga
-                          manga={manga}
-                          key={index}
-                          className="!min-w-[200px] !max-w-[180px] !h-[290px]"
-                        />
-                      )
-                    )}
-                  </motion.div>
-                </section>
-              </div>
-            </>
-          ) : (
-            <div className="w-full col-span-5 h-screen -mt-28 flex items-center justify-center">
-              <Loader className="border-black dark:border-white !w-16 !h-16 !border-[8px]" />
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+    <GridWrapper>
+      <main className={style.wrapperMainContent}>
+        <header className={style.header}>
+          <span className={style.title}>{manga?.title}</span>
+          <span className={style.author}>{manga?.author}</span>
+        </header>
+        <div className={style.wrapperMangaInfos}>
+          <div className={style.flexContainer}>
+            <section className={style.firstSection}>
+              <img src={manga?.cover} className={style.mangaCover} />
+              {handleDesktopLayout('status')}
+              {handleMobileLayout('info')}
+            </section>
+            <section className={style.secondSection}>
+              {handleDesktopLayout('info')}
+              {handleMobileLayout('status')}
+            </section>
+          </div>
+          <Recommendations recMangas={recMangas} />
+        </div>
+      </main>
+    </GridWrapper>
   )
 }
 
 const style = {
-  gridContainer: `grid overflow-hidden lg:max-w-screen-xl border-x border-x-dawn-weak/20 dark:border-x-dusk-weak/20 mx-auto overflow-x-hidden text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
-  mainContent: `col-start-2`,
+  wrapperMainContent: `w-screen md:w-full`,
+  header: `py-2 cursor-default px-2 md:px-4 flex items-center justify-between bg-prime-blue text-fill-weak text-2xl font-semibold`,
+  title: `w-full md:w-[80%]`,
+  author: `text-xl hidden md:inline-block font-medium`,
+  wrapperMangaInfos: `pb-24 md:p-4 md:pb-14`,
+  flexContainer: `flex`,
+  firstSection: `w-full max-w-[170px] md:max-w-[225px]`,
+  mangaCover: `w-full h-full max-w-[170px] max-h-[225px] md:max-w-[225px] md:max-h-[300px]`,
+  secondSection: `w-fit mx-auto`,
+  desktop: `hidden md:inline-block w-full`,
+  mobile: `md:hidden inline-block`,
 }
