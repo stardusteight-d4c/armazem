@@ -1,6 +1,6 @@
 import Message from '../models/messageModel.js'
 
-export const addMessage = async (req, res, next) => {
+export const addMessage = async (req, res) => {
   try {
     const { from, to, message } = req.body
     const data = await Message.create({
@@ -14,11 +14,15 @@ export const addMessage = async (req, res, next) => {
     if (data) return res.json({ msg: 'Message added successfully.' })
     return res.json({ msg: 'Failed to add message to the database' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const allMessages = async (req, res, next) => {
+export const allMessages = async (req, res) => {
   try {
     const { from, to } = req.query
     const messages = await Message.find({
@@ -34,11 +38,15 @@ export const allMessages = async (req, res, next) => {
     })
     return res.json(projectMessages)
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const lastMessage = async (req, res, next) => {
+export const lastMessage = async (req, res) => {
   try {
     const { from, to } = req.query
     const messagesOfSender = await Message.find({
@@ -50,6 +58,10 @@ export const lastMessage = async (req, res, next) => {
     const lastMessagReceived = messagesOfSender.slice(-1)
     return res.json(lastMessagReceived)
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }

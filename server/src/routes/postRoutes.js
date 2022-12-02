@@ -30,7 +30,7 @@ router.post('/addNewReply', addNewReply)
 router.get('/repliesOfDiscussion/:discussionId', repliesOfDiscussion)
 router.post('/updateDiscussion', updateDiscussion)
 router.post('/updateReply', updateReply)
-router.post('/deleteDiscussion', deleteDiscussion) // colocar os métodos adequados
+router.post('/deleteDiscussion', deleteDiscussion)
 router.post('/deleteReply', deleteReply)
 router.put('/likePost', likePost)
 router.put('/unlikedPost', unlikedPost)

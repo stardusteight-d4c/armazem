@@ -16,6 +16,10 @@ export const activeUser = async (req, res, next) => {
       .status(200)
       .json({ status: true })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }

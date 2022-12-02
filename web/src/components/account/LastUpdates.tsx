@@ -17,7 +17,7 @@ export const LastUpdates = (props: Props) => {
         .then(({ data }) => setLastUpdates(data.updates))
         .catch((error) => console.log(error.toJSON()))
     })()
-  }, [])
+  }, [userMetadata])
 
   return (
     <>

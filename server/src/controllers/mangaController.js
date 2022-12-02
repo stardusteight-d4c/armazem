@@ -36,11 +36,10 @@ export const addManga = async (req, res, next) => {
         .json({ status: true, msg: 'New manga added to the database' })
     }
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error adding new manga to database',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
@@ -54,7 +53,11 @@ export const searchByTitle = async (req, res, next) => {
 
     return res.json({ mangas })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -71,7 +74,11 @@ export const mangaByPagination = async (req, res, next) => {
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -83,7 +90,11 @@ export const mangaByUid = async (req, res, next) => {
 
     return res.status(200).json({ status: true, manga })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -94,7 +105,11 @@ export const mangaByGenre = async (req, res, next) => {
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -110,7 +125,11 @@ export const mangaByGenreAndTitle = async (req, res, next) => {
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -212,7 +231,11 @@ export const addMangaToListed = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Operation performed successfully' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -246,7 +269,11 @@ export const removeMangaToListed = async (req, res, next) => {
 
     return res.status(200).json({ status: true, msg: 'Successfully removed' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -272,7 +299,11 @@ export const addReview = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'The review has been added' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -285,7 +316,11 @@ export const reviewsByPagination = async (req, res, next) => {
 
     return res.status(200).json({ status: true, reviews })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -297,7 +332,11 @@ export const review = async (req, res, next) => {
 
     return res.status(200).json({ status: true, review })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -320,7 +359,11 @@ export const randomMangasByGenre = async (req, res, next) => {
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -350,7 +393,7 @@ export const mostRead = async (req, res, next) => {
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
       status: false,
       msg: error.message,

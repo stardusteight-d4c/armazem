@@ -8,22 +8,45 @@ import Reply from '../models/replyModel.js'
 import Discussion from '../models/discussionModel.js'
 import Review from '../models/reviewModel.js'
 
-export const accountDataByUserId = async (req, res, next) => {
-  try {
-    const userId = req.params.id
-    const userAccountRef = await User.findById(userId).select('account')
-    const account = await Account.findById(userAccountRef.account)
-    return res.status(200).json({ account, status: true, msg: 'Account found' })
-  } catch (error) {
-    console.error(error.message)
-    return res.status(500).json({
-      status: false,
-      msg: error.message,
+export const accountDataByUserId = async (req, res) => {
+  const userId = req.params.id
+  
+  // just testing other ways
+  await User.findById(userId)
+    .select('account')
+    .then(async (result) => {
+      await Account.findById(result.account)
+        .then((account) =>
+          res.status(200).json({ account, status: true, msg: 'Account found' })
+        )
+        .catch((error) => console.error(error.message))
     })
-  }
+    .catch((error) => {
+      console.error(error.message)
+      return res.status(500).json({
+        status: false,
+        msg: error.message,
+      })
+    })
 }
 
-export const sendRequest = async (req, res, next) => {
+// export const accountDataByUserId = async (req, res) => {
+//   try {
+//     const userId = req.params.id
+//     const userAccountRef = await User.findById(userId).select('account')
+//     const account = await Account.findById(userAccountRef.account)
+//     return res.status(200).json({ account, status: true, msg: 'Account found' })
+
+//   } catch (error) {
+//     console.error(error.message)
+//     return res.status(500).json({
+//       status: false,
+//       msg: error.message,
+//     })
+//   }
+// }
+
+export const sendRequest = async (req, res) => {
   const { to, from } = req.body
   try {
     const toUserRef = await User.findById(to)
@@ -65,12 +88,15 @@ export const sendRequest = async (req, res, next) => {
         .json({ status: false, msg: 'Request has already been sent' })
     }
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
-  return res.json({ status: true })
 }
 
-export const addConnection = async (req, res, next) => {
+export const addConnection = async (req, res) => {
   const { to, from } = req.body
   try {
     const toUserRef = await User.findById(to)
@@ -106,15 +132,20 @@ export const addConnection = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+
     return res
       .status(200)
       .json({ status: true, msg: 'Operation performed successfully' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const rejectConnection = async (req, res, next) => {
+export const rejectConnection = async (req, res) => {
   const { to, from } = req.body
   try {
     const toAccountRef = await User.findById(to).select('account')
@@ -135,15 +166,20 @@ export const rejectConnection = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+
     return res
       .status(200)
       .json({ status: true, msg: 'Operation performed successfully' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const removeConnection = async (req, res, next) => {
+export const removeConnection = async (req, res) => {
   const { to, from } = req.body
   try {
     const toAccountRef = await User.findById(to).select('account')
@@ -164,15 +200,20 @@ export const removeConnection = async (req, res, next) => {
       },
       { safe: true, multi: false }
     )
+
     return res
       .status(200)
       .json({ status: true, msg: 'Operation performed successfully' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const sharedPosts = async (req, res, next) => {
+export const sharedPosts = async (req, res) => {
   try {
     const { accountId } = req.body
 
@@ -191,11 +232,15 @@ export const sharedPosts = async (req, res, next) => {
 
     return res.status(200).json({ status: true, sharedPosts })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const lastFivePostsOfAccount = async (req, res, next) => {
+export const lastFivePostsOfAccount = async (req, res) => {
   try {
     const accountId = req.params.id
     const postsData = await Account.findById(accountId).select('posts')
@@ -214,11 +259,15 @@ export const lastFivePostsOfAccount = async (req, res, next) => {
       lastPosts,
     })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const postByPagination = async (req, res, next) => {
+export const postByPagination = async (req, res) => {
   try {
     const userId = req.params.userId
     const page = req.params.page
@@ -232,24 +281,33 @@ export const postByPagination = async (req, res, next) => {
 
     return res.status(200).json({ status: true, posts })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const searchUserPostByTitle = async (req, res, next) => {
+export const searchUserPostByTitle = async (req, res) => {
   try {
     const { searchTerm, userId } = req.body
     const posts = await Post.find({
       by: userId,
       title: { $regex: new RegExp(searchTerm, 'i') },
     }).limit(2)
+
     return res.json({ posts })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const sharedPostByPagination = async (req, res, next) => {
+export const sharedPostByPagination = async (req, res) => {
   try {
     const accountId = req.params.accountId
     const page = req.params.page
@@ -261,7 +319,6 @@ export const sharedPostByPagination = async (req, res, next) => {
 
     const sharedPostsIds = []
     sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post))
-
     const sharedPosts = await Promise.all(
       sharedPostsIds
         .map(async (id) => await Post.find({ _id: id.id }))
@@ -275,24 +332,24 @@ export const sharedPostByPagination = async (req, res, next) => {
     const sharedPostsPaginate = paginate(sharedPosts, 2, page)
     const posts = []
     sharedPostsPaginate.map((post) => posts.push(post[0]))
-
     return res.status(200).json({ status: true, posts })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const searchSharedPostByTitle = async (req, res, next) => {
+export const searchSharedPostByTitle = async (req, res) => {
   try {
     const { searchTerm, accountId } = req.body
-
     const sharedPostsRef = await Account.findById(accountId).select(
       'sharedPosts'
     )
-
     const sharedPostsIds = []
     sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post))
-
     const searchResult = await Promise.all(
       sharedPostsIds
         .map(
@@ -304,17 +361,19 @@ export const searchSharedPostByTitle = async (req, res, next) => {
         )
         .reverse()
     )
-
     const posts = []
     searchResult.map((post) => post.length > 0 && posts.push(post[0]))
-
     return res.json({ posts })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const addComment = async (req, res, next) => {
+export const addComment = async (req, res) => {
   try {
     const { accountId, userId, comment } = req.body
     const accountComment = await Comment.create({
@@ -333,11 +392,15 @@ export const addComment = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Comment made successfully' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const accountComments = async (req, res, next) => {
+export const accountComments = async (req, res) => {
   try {
     const accountId = req.params.accountId
     const commentsIds = await Account.findById(accountId).select('comments')
@@ -350,14 +413,17 @@ export const accountComments = async (req, res, next) => {
     )
     return res.status(200).json({ status: true, comments })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
-export const updateComment = async (req, res, next) => {
+export const updateComment = async (req, res) => {
   try {
     const { commentId, body } = req.body
-
     await Comment.findByIdAndUpdate(
       commentId,
       {
@@ -370,15 +436,15 @@ export const updateComment = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Comment edited successfully' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: error.message,
     })
   }
 }
 
-export const deleteComment = async (req, res, next) => {
+export const deleteComment = async (req, res) => {
   try {
     const { commentId } = req.body
 
@@ -388,51 +454,49 @@ export const deleteComment = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Comment successfully deleted' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: error.message,
     })
   }
 }
 
-export const addMangaToFavorites = async (req, res, next) => {
+export const addMangaToFavorites = async (req, res) => {
   try {
     const { mangaId, accountId } = req.body
-
     await Account.findByIdAndUpdate(accountId, {
       $addToSet: { favorites: mangaId },
     })
 
     return res.status(200).json({ status: true, msg: 'Add to favorites' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: error.message,
     })
   }
 }
 
-export const removeMangaToFavorites = async (req, res, next) => {
+export const removeMangaToFavorites = async (req, res) => {
   try {
     const { mangaId, accountId } = req.body
-
     await Account.findByIdAndUpdate(accountId, {
       $pull: { favorites: mangaId },
     })
 
     return res.status(200).json({ status: true, msg: 'Removed to favorites' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: error.message,
     })
   }
 }
 
-export const mangaFavorites = async (req, res, next) => {
+export const mangaFavorites = async (req, res) => {
   try {
     const accountId = req.params.accountId
     const mangaIds = await Account.find({ _id: accountId }).select(
@@ -447,34 +511,33 @@ export const mangaFavorites = async (req, res, next) => {
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: error.message,
     })
   }
 }
 
-export const mangaListedByAccountId = async (req, res, next) => {
+export const mangaListedByAccountId = async (req, res) => {
   try {
     const accountId = req.params.accountId
     const mangasListed = await Account.find({ _id: accountId }).select(
       'mangaList -_id'
     )
-
     const mangas = mangasListed[0].mangaList
 
     return res.status(200).json({ status: true, mangas })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
-      status: true,
-      msg: 'Error',
+      status: false,
+      msg: error.message,
     })
   }
 }
 
-export const updatesMangaList = async (req, res, next) => {
+export const updatesMangaList = async (req, res) => {
   try {
     const accountId = req.params.accountId
     const activities = await Account.find({ _id: accountId })
@@ -485,7 +548,7 @@ export const updatesMangaList = async (req, res, next) => {
 
     return res.status(200).json({ status: true, updates })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
       status: false,
       msg: error.message,
@@ -493,7 +556,7 @@ export const updatesMangaList = async (req, res, next) => {
   }
 }
 
-export const notifications = async (req, res, next) => {
+export const notifications = async (req, res) => {
   try {
     const accountId = req.params.accountId
 
@@ -502,13 +565,13 @@ export const notifications = async (req, res, next) => {
 
     const mergeArr = [...general, ...direct]
 
-    const notifications = mergeArr.sort((current, next) => {
+    const notifications = mergeArr.sort((current) => {
       return new Date(next.createdAt) - new Date(current.createdAt)
     })
 
     return res.status(200).json({ status: true, notifications })
   } catch (error) {
-    next(error)
+    console.error(error.message)
     return res.status(500).json({
       status: false,
       msg: error.message,
@@ -516,7 +579,7 @@ export const notifications = async (req, res, next) => {
   }
 }
 
-export const deleteAccount = async (req, res, next) => {
+export const deleteAccount = async (req, res) => {
   try {
     const { userId, accountId } = req.query
 
@@ -551,20 +614,6 @@ export const deleteAccount = async (req, res, next) => {
             })
         )
       ))
-
-    // TEST
-    // // const postId = '637b683de494c8c0492d60b0'
-    // // postId &&
-    // //   (await Account.updateMany(null, {
-    // //     $pullAll: {
-    // //       sharedPosts: [{ id: postId  }],
-    // //     },
-    // //   }))
-
-    // const id1 = mongoose.Types.ObjectId('637b7ab69b9f43264f630797')
-    // const id2 = mongoose.Types.ObjectId('637b7a349b9f43264f630629')
-    // const id3 = mongoose.Types.ObjectId('637b682fe494c8c0492d60ad')
-    // const discussionIds = [id1, id2, id3]
 
     discussionIds &&
       (await Reply.updateMany(null, {

@@ -15,7 +15,7 @@ import {
   Settings,
 } from './pages'
 import { PrivateRouteAddManga } from './services/PrivateRoutes'
-import { activeUser, authorization } from './services/api-routes'
+import { activeUser, authorization, dataByUsername } from './services/api-routes'
 import {
   getCurrentUserAccount,
   getUserData,

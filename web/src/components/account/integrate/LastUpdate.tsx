@@ -23,7 +23,7 @@ export const LastUpdate = ({ lastUpdate }: Props) => {
         .then(({ data }) => setManga(data.manga))
         .catch((error) => console.log(error.toJSON()))
     })()
-  }, [lastUpdate])
+  }, [lastUpdate, userMetadata])
 
   return (
     <div className={style.wrapper}>
