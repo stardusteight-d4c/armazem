@@ -281,8 +281,8 @@ const style = {
   shareIcon: `ri-share-box-line pr-1 text-2xl`,
   spanText: `text-xl`,
   shareSpanContainer: `flex items-center w-full cursor-pointer`,
-  editSpanContainer: `text-prime-blue flex items-center cursor-pointer`,
+  editSpanContainer: `flex items-center cursor-pointer`,
   editIcon: `ri-edit-2-fill p-1 text-2xl`,
-  deleteSpanContainer: `text-red flex relative items-center cursor-pointer`,
+  deleteSpanContainer: `flex relative items-center cursor-pointer`,
   deleteIcon: `ri-delete-bin-2-fill p-1 text-2xl`,
 }

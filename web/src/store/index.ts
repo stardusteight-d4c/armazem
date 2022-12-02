@@ -1,5 +1,4 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
-import { Action } from '@remix-run/router'
 import {
   getCurrentUserAccount,
   getUserData,
@@ -44,8 +43,6 @@ const saveMenuStatusToLocalStorage = (menuState: any) => {
     console.warn(e)
   }
 }
-
-// pegar dados do usuário através do asyncthunk
 
 const ArmazemSlice = createSlice({
   name: 'ArmazemSlice',

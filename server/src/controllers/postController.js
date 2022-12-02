@@ -25,7 +25,6 @@ export const createPostAndAddToUserAccount = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post created successfully' })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'Error creating post',
@@ -51,11 +50,10 @@ export const postMetadataById = async (req, res, next) => {
       authorUser,
     })
   } catch (error) {
-    next(error)
-    return res.status(404).json({
+    console.error(error.message)
+    return res.status(500).json({
       status: false,
-      msg: 'Post not found',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
@@ -93,8 +91,7 @@ export const addNewDiscussion = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'New discussion started successfully' })
   } catch (error) {
-    next(error)
-    console.error(error.message);
+    console.error(error.message)
     return res.status(500).json({
       status: false,
       msg: 'There was an error adding a new discussion',
@@ -114,8 +111,7 @@ export const discussionsByPostId = async (req, res, next) => {
       discussions,
     })
   } catch (error) {
-    next(error)
-    return res.status(404).json({
+    return res.status(500).json({
       status: true,
       msg: 'Error getting discussions',
       error: error.message,
@@ -141,7 +137,6 @@ export const updateDiscussion = async (req, res, next) => {
       msg: 'Update done successfully',
     })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'There was an error updating the discussion',
@@ -176,7 +171,6 @@ export const deleteDiscussion = async (req, res, next) => {
       msg: 'Delete done successfully',
     })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'There was an error deleting the discussion',
@@ -205,7 +199,6 @@ export const addNewReply = async (req, res, next) => {
       msg: 'New reply added',
     })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'Error adding reply',
@@ -232,7 +225,6 @@ export const updateReply = async (req, res, next) => {
       msg: 'Reply updated',
     })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'Error editing reply',
@@ -267,7 +259,6 @@ export const deleteReply = async (req, res, next) => {
       msg: 'Deleted reply',
     })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'Error deleting reply',
@@ -285,7 +276,6 @@ export const repliesOfDiscussion = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Replies acquired successfully', replies })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'Error searching for replies',
@@ -309,7 +299,6 @@ export const likePost = async (req, res, next) => {
 
     return res.status(200).json({ status: true })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'Error adding like',
@@ -331,7 +320,6 @@ export const unlikedPost = async (req, res, next) => {
 
     return res.status(200).json({ status: true })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'Error removing like',
@@ -355,7 +343,6 @@ export const updatePost = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post edited successfully' })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'There was an error editing',
@@ -392,7 +379,6 @@ export const deletePost = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post successfully removed' })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'There was an error removing',
@@ -416,7 +402,6 @@ export const sharePost = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post shared successfully' })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'There was an error sharing',
@@ -439,7 +424,6 @@ export const unsharePost = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post removed from shares' })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'There was an error unshare',
@@ -490,7 +474,6 @@ export const topRatedPost = async (req, res, next) => {
 
     return res.status(200).json({ status: true, posts })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'An error occurred while querying the most rated posts',
@@ -510,7 +493,6 @@ export const recentPostsWithPagination = async (req, res, next) => {
 
     return res.status(200).json({ status: true, posts })
   } catch (error) {
-    next(error)
     return res.status(500).json({
       status: false,
       msg: 'An error occurred while querying recent posts',

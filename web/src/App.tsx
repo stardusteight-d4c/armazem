@@ -100,25 +100,25 @@ export const App = (props: Props) => {
             }
             setTimeout(() => {
               setLoading(false)
-            }, 5000)
+            }, 1000)
           } else {
             navigate('/login')
             setTimeout(() => {
               setLoading(false)
-            }, 5000)
+            }, 1000)
           }
         } catch (err) {
           console.error(err)
           navigate('/login')
           setTimeout(() => {
             setLoading(false)
-          }, 5000)
+          }, 1000)
         }
       })()
     } else {
       setTimeout(() => {
         setLoading(false)
-      }, 5000)
+      }, 1000)
       navigate('/login')
     }
   }, [session, requestAgain])
@@ -160,14 +160,6 @@ export const App = (props: Props) => {
       ? (html.style.overflow = 'hidden')
       : (html.style.overflow = 'auto')
   }
-
-  // não permitir espaços no username
-
-  // Deixar o componente da página com o loader, só settar para falso quando seus filhos carregarem
-  // Assim toda informação aparece de uma vez, o menu permanece e o usúario não verá os componentes
-  // filhos carregando. (mandar o um state pros filhos, sei lá)
-
-  // todas consultar com post fazer com get utilizando query params
 
   return (
     <>

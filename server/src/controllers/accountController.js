@@ -15,7 +15,11 @@ export const accountDataByUserId = async (req, res, next) => {
     const account = await Account.findById(userAccountRef.account)
     return res.status(200).json({ account, status: true, msg: 'Account found' })
   } catch (error) {
-    next(error)
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
   }
 }
 
@@ -594,7 +598,7 @@ export const deleteAccount = async (req, res, next) => {
     await Manga.updateMany(
       null,
       {
-        $pull: { readers: accountId  },
+        $pull: { readers: accountId },
       },
       { safe: true, multi: false }
     )

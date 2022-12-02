@@ -40,24 +40,22 @@ export const Post = (props: Props) => {
 
   useEffect(() => {
     ;(async () => {
-      if (!post) {
-        setLoading(true)
-      }
-      try {
-        const [{ data: postData }, { data: discussionsData }] =
-          await Promise.all([
-            axios.get(`${postMetadataById}/${postId}`),
-            axios.get(`${discussionsByPostId}/${postId}`),
-          ])
-        if (postData.status === true && discussionsData.status === true) {
-          setAuthorUser(postData.authorUser)
-          setPost(postData.post)
-          setDiscussions(discussionsData.discussions)
-          setLoading(false)
-        }
-      } catch (error) {
-        setNotFound(true)
-      }
+      await Promise.all([
+        axios.get(`${postMetadataById}/${postId}`),
+        axios.get(`${discussionsByPostId}/${postId}`),
+      ])
+        .then(([{ data: postData }, { data: discussionsData }]) => {
+          if (postData.status === true && discussionsData.status === true) {
+            setAuthorUser(postData.authorUser)
+            setPost(postData.post)
+            setDiscussions(discussionsData.discussions)
+            setLoading(false)
+          }
+        })
+        .catch((error) => {
+          console.log(error.toJSON())
+          setNotFound(true)
+        })
     })()
   }, [requestAgain])
 
@@ -74,14 +72,10 @@ export const Post = (props: Props) => {
     </div>
   )
 
-  if (!post || !authorUser) {
-    return <></>
-  }
-
   return (
     <GridWrapper>
       <main className={style.wrapperMain}>
-        {loading ? (
+        {loading || !post || !authorUser ? (
           rendersGettingData()
         ) : (
           <>
@@ -116,7 +110,7 @@ const style = {
   discussionsWrapper: `space-y-10 md:px-4`,
   discussionContainer: `flex flex-col`,
   loader: `border-black dark:border-white !w-16 !h-16 !border-[8px]`,
-  postNotFoundContainer: 'flex flex-col gap-y-2 items-center justify-center',
+  postNotFoundContainer: `flex flex-col gap-y-2 items-center justify-center`,
   warningIcon: `ri-error-warning-line text-red text-7xl`,
   spanPostNotFound: `font-semibold text-3xl`,
 }

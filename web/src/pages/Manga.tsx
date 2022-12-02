@@ -64,28 +64,39 @@ export const Manga = (props: Props) => {
     </>
   )
 
+  const MangaNotFound = () => (
+    <div className={style.mangaNotFoundContainer}>
+      <i className={style.warningIcon} />
+      <span className={style.spanMangaNotFound}>Manga Not Found</span>
+    </div>
+  )
+
   return (
     <GridWrapper>
-      <main className={style.wrapperMainContent}>
-        <header className={style.header}>
-          <span className={style.title}>{manga?.title}</span>
-          <span className={style.author}>{manga?.author}</span>
-        </header>
-        <div className={style.wrapperMangaInfos}>
-          <div className={style.flexContainer}>
-            <section className={style.firstSection}>
-              <img src={manga?.cover} className={style.mangaCover} />
-              {handleDesktopLayout('status')}
-              {handleMobileLayout('info')}
-            </section>
-            <section className={style.secondSection}>
-              {handleDesktopLayout('info')}
-              {handleMobileLayout('status')}
-            </section>
+      {!manga ? (
+        <MangaNotFound />
+      ) : (
+        <main className={style.wrapperMainContent}>
+          <header className={style.header}>
+            <span className={style.title}>{manga?.title}</span>
+            <span className={style.author}>{manga?.author}</span>
+          </header>
+          <div className={style.wrapperMangaInfos}>
+            <div className={style.flexContainer}>
+              <section className={style.firstSection}>
+                <img src={manga?.cover} className={style.mangaCover} />
+                {handleDesktopLayout('status')}
+                {handleMobileLayout('info')}
+              </section>
+              <section className={style.secondSection}>
+                {handleDesktopLayout('info')}
+                {handleMobileLayout('status')}
+              </section>
+            </div>
+            <Recommendations recMangas={recMangas} />
           </div>
-          <Recommendations recMangas={recMangas} />
-        </div>
-      </main>
+        </main>
+      )}
     </GridWrapper>
   )
 }
@@ -102,4 +113,7 @@ const style = {
   secondSection: `w-fit mx-auto`,
   desktop: `hidden md:inline-block w-full`,
   mobile: `md:hidden inline-block`,
+  mangaNotFoundContainer: `flex flex-col h-full -mt-14 gap-y-2 items-center justify-center`,
+  warningIcon: `ri-error-warning-line text-red text-7xl`,
+  spanMangaNotFound: `font-semibold text-3xl`,
 }

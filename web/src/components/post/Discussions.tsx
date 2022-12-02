@@ -142,7 +142,7 @@ export const Discussions = ({
             value={editValue}
             maxLength={255}
             onChange={(e) => setEditValue(e.target.value)}
-            className={style.editInputTextArea}
+            className={style.editInputTextarea}
           />
           <div className={style.buttonEditContainer}>
             <Button
@@ -159,13 +159,13 @@ export const Discussions = ({
     </>
   )
 
-  useEffect(() => {
-    if (activeItem === deleteId) {
-      document.body.addEventListener('click', () => {
-        setActiveItem('')
-      })
-    }
-  }, [deleteId])
+  const handleDeleteActiveItem = () => {
+    setActiveItem('')
+    document.body.removeEventListener('click', handleDeleteActiveItem, false)
+  }
+
+  activeItem === deleteId &&
+    document.body.addEventListener('click', handleDeleteActiveItem, false)
 
   const rendersDiscussionActions = () => (
     <div className={style.discussionActionsContainer}>
@@ -210,6 +210,45 @@ export const Discussions = ({
     </div>
   )
 
+  const rendersSendReply = () => (
+    <>
+      {discussion?._id === activeItem && (
+        <motion.section
+          initial={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.5 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          <div className={style.replyContainer}>
+            <img
+              src={currentUser?.user_img}
+              alt="user/img"
+              className={style.replyUserImg}
+            />
+            <textarea
+              maxLength={255}
+              onChange={(e) => setReply(e.target.value)}
+              placeholder={`Reply to ${authorDiscussion?.username}`}
+              className={style.replyInputTextarea}
+            />
+          </div>
+          <div className={style.buttonReplyContainer}>
+            <Button
+              title="Reply"
+              onClick={() =>
+                handleAddNewReply(
+                  discussion._id,
+                  currentUser?._id,
+                  authorDiscussion?._id
+                )
+              }
+              className={style.buttonReply}
+            />
+          </div>
+        </motion.section>
+      )}
+    </>
+  )
+
   return (
     <>
       <div className={style.wrapper}>
@@ -233,41 +272,7 @@ export const Discussions = ({
           </div>
           {rendersDiscussionBodyAndEdit()}
           {rendersDiscussionActions()}
-
-          {discussion?._id === activeItem && (
-            <motion.section
-              initial={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.5 }}
-              animate={{ opacity: 1, x: 0 }}
-            >
-              <div className="flex -ml-[55px] md:ml-0 gap-x-2 mt-2">
-                <img
-                  src={currentUser?.user_img}
-                  alt=""
-                  className="w-12 h-12 rounded-sm border border-dawn-weak/20 dark:border-dusk-weak/20 object-cover"
-                />
-                <textarea
-                  maxLength={255}
-                  onChange={(e) => setReply(e.target.value)}
-                  placeholder={`Reply to ${authorDiscussion?.username}`}
-                  className="w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] border border-prime-blue p-2 outline-none"
-                />
-              </div>
-              <div className="flex justify-end ">
-                <Button
-                  title="Reply"
-                  onClick={() =>
-                    handleAddNewReply(
-                      discussion._id,
-                      currentUser?._id,
-                      authorDiscussion?._id
-                    )
-                  }
-                  className="!bg-prime-blue my-2 px-4 py-2 !w-fit"
-                />
-              </div>
-            </motion.section>
-          )}
+          {rendersSendReply()}
         </div>
       </div>
       {replies.map((reply, index) => (
@@ -288,19 +293,24 @@ export const Discussions = ({
 
 const style = {
   wrapper: `flex relative bg-dawn-weak/10 dark:bg-dusk-weak/10 p-2 text-dusk-main dark:text-dawn-main items-start gap-3`,
-  linkedReplies: `h-[110%] top-3 left-[29px] z-10 absolute w-[2px] bg-black/20 dark:bg-white/20`,
-  userImg: `w-11 h-11 min-w-[44px] z-20 rounded-sm border border-black/20 dark:border-white/20 object-cover`,
-  discussionContainer: `flex flex-col w-full`,
+  linkedReplies: `h-[100%] top-3 z-0 left-[29px] absolute w-[2px] bg-black/20 dark:bg-white/20`,
+  userImg: `w-11 h-11 min-w-[44px] absolute z-20 rounded-sm border border-black/20 dark:border-white/20 object-cover`,
+  discussionContainer: `flex flex-col w-full ml-[40px]`,
   headContainer: `flex justify-between items-center`,
   username: `font-medium text-lg font-inter -mt-1 text-dusk-main dark:text-dawn-main`,
   editContainer: `flex flex-col`,
-  editInputTextArea: `p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-blue border max-h-48 min-h-[100px] text-dusk-main/90 dark:text-dawn-main/90`,
+  editInputTextarea: `p-1 mt-1 text-lg outline-none bg-dusk-weak/5 border-prime-blue border max-h-48 min-h-[100px] text-dusk-main/90 dark:text-dawn-main/90`,
   buttonEditContainer: `flex justify-end`,
   buttonEdit: `!bg-prime-blue my-2 px-4 py-2 !w-fit`,
   body: `pr-2 break-all text-lg text-dusk-main/90 dark:text-dawn-main/90`,
   discussionActionsContainer: `flex items-center text-dusk-main dark:text-dusk-weak py-2 space-x-2 justify-start md:justify-end w-full`,
-  action: `border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 drop-shadow-sm rounded-sm text-lg cursor-pointer`,
+  action: `border border-dawn-weak/20 dark:border-dusk-weak/20 transition-all duration-200 hover:brightness-125 w-5 h-5 flex justify-center items-center p-2 shadow-sm rounded-sm text-lg cursor-pointer`,
   replyIcon: `ri-message-2-fill`,
   editIcon: `ri-edit-2-fill`,
-  deleteIcon: `ri-delete-bin-2-fill`,
+  deleteIcon: `ri-delete-bin-2-fill text-dusk-main dark:text-dusk-weak`,
+  replyContainer: `flex -ml-[55px] md:ml-0 gap-x-2 mt-2`,
+  replyUserImg: `w-12 h-12 rounded-sm border z-20 border-dawn-weak/20 dark:border-dusk-weak/20 object-cover`,
+  replyInputTextarea: `w-full max-h-[180px] placeholder:text-lg placeholder:text-fill-strong/50 dark:placeholder:text-fill-weak/50 bg-transparent min-h-[80px] border border-prime-blue p-2 outline-none`,
+  buttonReplyContainer: `flex justify-end`,
+  buttonReply: `!bg-prime-blue my-2 px-4 py-2 !w-fit`,
 }

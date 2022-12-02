@@ -36,23 +36,30 @@ export const Account = (props: Props) => {
   const dataLoaded =
     currentAccount.user !== undefined && userMetadata !== null && username
 
-  if (!dataLoaded) {
-    return <></>
-  }
+  const AccountNotFound = () => (
+    <div className={style.accountNotFoundContainer}>
+      <i className={style.warningIcon} />
+      <span className={style.spanAccountNotFound}>Account Not Found</span>
+    </div>
+  )
 
   return (
     <GridWrapper>
-      <main className={style.mainWrapper}>
-        <Header />
-        <div className={style.accountFeed}>
-          <StatusBar />
-          <Favorites />
-          <LastPosts />
-          <SharedPosts />
-          <LastUpdates />
-          <Comments />
-        </div>
-      </main>
+      {!dataLoaded ? (
+        <AccountNotFound />
+      ) : (
+        <main className={style.mainWrapper}>
+          <Header />
+          <div className={style.accountFeed}>
+            <StatusBar />
+            <Favorites />
+            <LastPosts />
+            <SharedPosts />
+            <LastUpdates />
+            <Comments />
+          </div>
+        </main>
+      )}
     </GridWrapper>
   )
 }
@@ -60,4 +67,7 @@ export const Account = (props: Props) => {
 const style = {
   mainWrapper: `w-screen md:w-full`,
   accountFeed: `mt-6 md:mt-0 p-2 md:p-4 pb-16 mb-7 md:mb-0 md:pb-14`,
+  accountNotFoundContainer: `flex flex-col h-full -mt-14 gap-y-2 items-center justify-center`,
+  warningIcon: `ri-error-warning-line text-red text-7xl`,
+  spanAccountNotFound: `font-semibold text-3xl`,
 }
