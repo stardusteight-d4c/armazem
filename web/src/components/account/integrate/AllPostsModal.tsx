@@ -71,7 +71,7 @@ export const AllPostsModal = (props: Props) => {
     )
   }
 
-  const motionSectionProperties = {
+  const motionProps = {
     initial: {
       y: -500,
       opacity: 0,
@@ -86,7 +86,7 @@ export const AllPostsModal = (props: Props) => {
   return (
     <>
       <Overlay />
-      <motion.section {...motionSectionProperties}>
+      <motion.section {...motionProps}>
         <div className={style.header}>
           <h1 className={style.title}>All posts</h1>
           <i

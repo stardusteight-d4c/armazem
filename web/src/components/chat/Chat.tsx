@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { addMessage, allMessages } from '../../services/api-routes'
 import { useAppSelector } from '../../store/hooks'
 import { error } from '../Toasters'
@@ -9,7 +9,7 @@ interface Props {
   currentChat: any
 }
 
-export const ChatContainer = ({ currentChat }: Props) => {
+export const Chat = ({ currentChat }: Props) => {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<any>([])
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
@@ -35,8 +35,6 @@ export const ChatContainer = ({ currentChat }: Props) => {
     // setMessages(msgs)
   }
 
-  console.log(messages)
-
   useEffect(() => {
     ;(async () => {
       const response = await axios.get(allMessages, {
@@ -51,29 +49,36 @@ export const ChatContainer = ({ currentChat }: Props) => {
 
   return (
     <>
-      <div className="w-screen md:w-full flex items-center gap-x-2 px-4 bg-dawn-weak/20 dark:bg-dusk-weak/20 h-[78px]">
-        <img src={currentChat.user_img} className="w-14 h-14 rounded-sm" />
-        <div className="text-lg font-medium">{currentChat.username}</div>
+      <div className={style.wrapper}>
+        <img src={currentChat.user_img} className={style.userImg} />
+        <div className={style.username}>{currentChat.username}</div>
       </div>
-      <div className="p-2 overflow-hidden overflow-y-scroll break-all w-full h-[90vh] pb-28 md:h-[410px]">
+      <div className={style.messagesContainer}>
         {messages.map((message: any) => (
           <Messages message={message} currentChat={currentChat} />
         ))}
       </div>
-      <div className="absolute bg-fill-weak dark:bg-fill-strong  mt-auto flex items-center bottom-0 w-full p-2">
+      <div className={style.inputContainer}>
         <input
+          type="text"
           onChange={(e) => setMessage(e.target.value)}
           maxLength={300}
-          type="text"
-          className="bg-transparent w-full px-4 py-2 focus:!border-prime-blue outline-none border border-dawn-weak/20 dark:border-dusk-weak/20"
+          className={style.input}
         />
-        <button
-          onClick={handleSendMsg}
-          className="bg-prime-blue py-2 px-4 border font-medium text-white border-prime-blue"
-        >
+        <button onClick={handleSendMsg} className={style.buttonSubmit}>
           Submit
         </button>
       </div>
     </>
   )
+}
+
+const style = {
+  wrapper: `w-screen md:w-full flex items-center gap-x-2 px-4 bg-dawn-weak/20 dark:bg-dusk-weak/20 h-[78px]`,
+  userImg: `w-14 h-14 rounded-sm`,
+  username: `text-lg font-medium`,
+  messagesContainer: `p-2 overflow-hidden overflow-y-scroll break-all w-full h-[90vh] pb-28 md:h-[410px]`,
+  inputContainer: `absolute bg-fill-weak dark:bg-fill-strong  mt-auto flex items-center bottom-0 w-full p-2`,
+  input: `bg-transparent w-full px-4 py-2 focus:!border-prime-blue outline-none border border-dawn-weak/20 dark:border-dusk-weak/20`,
+  buttonSubmit: `bg-prime-blue py-2 px-4 border font-medium text-white border-prime-blue`,
 }

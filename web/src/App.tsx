@@ -30,14 +30,14 @@ import { Loader } from './components/Loader'
 import {
   AddReviewModal,
   AllPostsModal,
-  ChatModal,
+  DesktopChatModal,
   EditCoverImageModal,
   EditProfileImageModal,
+  MobileChatModal,
   PostInputModal,
   ReviewModal,
   SharedPostsModal,
 } from './components/modals'
-import { MobileChatModal } from './components/chat/MobileChatModal'
 
 interface Props {}
 
@@ -140,7 +140,7 @@ export const App = (props: Props) => {
       case 'Review':
         return <ReviewModal />
       case 'Chat':
-        return <ChatModal />
+        return <DesktopChatModal />
       case 'ChatMobile':
         return <MobileChatModal />
     }

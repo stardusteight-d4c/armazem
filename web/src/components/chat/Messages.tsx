@@ -1,4 +1,3 @@
-import React from 'react'
 import { useAppSelector } from '../../store/hooks'
 
 interface Props {
@@ -12,24 +11,33 @@ export const Messages = ({ message, currentChat }: Props) => {
   return (
     <>
       {message.fromSelf ? (
-        <div className="flex justify-end">
+        <div className={style.fromSelfContainer}>
           <div>
-            <div className="text-right">@{currentUser?.username}</div>
-            <div className="bg-dawn-weak/20 dark:bg-dusk-weak/20 ml-auto  p-2 w-fit h-fi rounded-sm my-2">
-              {message.message}
+            <div className={style.fromSelfUsername}>
+              @{currentUser?.username}
             </div>
+            <div className={style.fromSelfMessage}>{message.message}</div>
           </div>
         </div>
       ) : (
-        <div className="flex justify-start w-full">
+        <div className={style.receivedContainer}>
           <div>
-            <div className="text-left">@{currentChat.username}</div>
-            <div className="bg-dawn-weak/20 dark:bg-dusk-weak/20 p-2 max-w-full h-fi rounded-sm my-2">
-              {message.message}
+            <div className={style.receivedUsername}>
+              @{currentChat.username}
             </div>
+            <div className={style.receivedMessage}>{message.message}</div>
           </div>
         </div>
       )}
     </>
   )
+}
+
+const style = {
+  fromSelfContainer: `flex justify-end`,
+  fromSelfUsername: `text-right`,
+  fromSelfMessage: `bg-dawn-weak/20 dark:bg-dusk-weak/20 ml-auto  p-2 w-fit h-fi rounded-sm my-2`,
+  receivedContainer: `flex justify-start w-full`,
+  receivedUsername: `text-left`,
+  receivedMessage: `bg-dawn-weak/20 dark:bg-dusk-weak/20 p-2 max-w-full h-fi rounded-sm my-2`,
 }

@@ -39,7 +39,7 @@ export const AddReviewModal = (props: Props) => {
 
   const disabledButton = reviewLength < 100
 
-  const motionSectionProperties = {
+  const motionProps = {
     initial: {
       y: -500,
       opacity: 0,
@@ -54,7 +54,7 @@ export const AddReviewModal = (props: Props) => {
   return (
     <>
       <Overlay />
-      <motion.section {...motionSectionProperties}>
+      <motion.section {...motionProps}>
         <div className={style.header}>
           <h1 className={style.title}>Add review</h1>
           <i

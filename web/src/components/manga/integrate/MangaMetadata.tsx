@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface Props {
-  manga: Manga
+  manga: Manga | undefined
 }
 
 export const MangaMetadata = ({ manga }: Props) => {

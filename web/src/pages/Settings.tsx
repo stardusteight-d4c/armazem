@@ -41,10 +41,17 @@ export const Settings = (props: Props) => {
     useState<boolean>(false)
   const navigate = useNavigate()
 
-  function handleToken(event: React.ChangeEvent<HTMLInputElement>) {
+  useEffect(() => {
+    ;(async () => {
+      if (token) {
+        setIsTokenValid(bcryptjs.compareSync(changeEmail.confirmToken, token))
+      }
+    })()
+  }, [changeEmail.confirmToken])
+
+  const handleToken = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newEmailValue = event.target.value
     const isGmailAddress = newEmailValue.match(/gmail.com/)
-
     if (validateEmail(newEmailValue) && !currentUser?.password) {
       if (!isGmailAddress) {
         newEmailValue.match(/.com/) && error('Email is not a gmail address')
@@ -55,7 +62,6 @@ export const Settings = (props: Props) => {
     } else {
       setRequestToken(undefined)
     }
-
     if (currentUser?.password) {
       if (validateEmail(newEmailValue)) {
         setRequestToken(false)
@@ -65,15 +71,7 @@ export const Settings = (props: Props) => {
     }
   }
 
-  useEffect(() => {
-    ;(async () => {
-      if (token) {
-        setIsTokenValid(bcryptjs.compareSync(changeEmail.confirmToken, token))
-      }
-    })()
-  }, [changeEmail.confirmToken])
-
-  async function sendToken() {
+  const sendToken = async () => {
     setLoading(true)
     const { data } = await axios.post(sendTokenChangeEmailVerification, {
       userId: currentUser?._id,
@@ -91,7 +89,7 @@ export const Settings = (props: Props) => {
     }
   }
 
-  async function handleSubmitChangePassword() {
+  const handleSubmitChangePassword = async () => {
     if (changePassword.newPassword.length < 8) {
       error('Password must contain at least 8 characters')
       return false
@@ -116,7 +114,7 @@ export const Settings = (props: Props) => {
     }
   }
 
-  async function handleSubmitChangeEmail() {
+  const handleSubmitChangeEmail = async () => {
     if (!isTokenValid) {
       error('Invalid token')
       return false
@@ -126,53 +124,57 @@ export const Settings = (props: Props) => {
       return false
     }
     if (validateEmail(changeEmail.newEmail)) {
-      const { data } = await axios.post(changeUserEmail, {
-        userId: currentUser?._id,
-        newEmail: changeEmail.newEmail,
-      })
-      if (data.status === true) {
-        success(data.msg)
-        setChangeEmail({
-          newEmail: '',
-          confirmToken: '',
+      await axios
+        .post(changeUserEmail, {
+          userId: currentUser?._id,
+          newEmail: changeEmail.newEmail,
         })
-        setBackendEmail(null)
-        setToken(null)
-        setRequestToken(undefined)
-      }
+        .then(({ data }) => {
+          success(data.msg)
+          setChangeEmail({
+            newEmail: '',
+            confirmToken: '',
+          })
+        })
+        .catch((error) => console.log(error.toJSON()))
+        .finally(() => {
+          setBackendEmail(null)
+          setToken(null)
+          setRequestToken(undefined)
+        })
     }
   }
 
-  async function handleSubmitChangeUsername() {
-    const { data } = await axios.post(changeUserUsername, {
-      username: changeUsername.newUsername,
-      userId: currentUser?._id,
-    })
-    if (data.status === true) {
-      success(data.msg)
-      setChangeUsername({
-        newUsername: '',
-      })
-    } else if (data.status === false) {
-      error(data.msg)
-    }
-  }
-
-  async function handleSubmitDeleteAccount() {
-    const { data } = await axios.delete(deleteAccount, {
-      params: {
+  const handleSubmitChangeUsername = async () => {
+    await axios
+      .post(changeUserUsername, {
+        username: changeUsername.newUsername,
         userId: currentUser?._id,
-        accountId: currentUser?.account,
-      },
-    })
-    if (data.status === true) {
-      success(data.msg)
-      localStorage.removeItem('session')
-      localStorage.removeItem('menu')
-      navigate('/login')
-    } else if (data.status === false) {
-      error(data.msg)
-    }
+      })
+      .then(({ data }) => {
+        success(data.msg)
+        setChangeUsername({
+          newUsername: '',
+        })
+      })
+      .catch((error) => console.log(error.toJSON()))
+  }
+
+  const handleSubmitDeleteAccount = async () => {
+    await axios
+      .delete(deleteAccount, {
+        params: {
+          userId: currentUser?._id,
+          accountId: currentUser?.account,
+        },
+      })
+      .then(({ data }) => {
+        success(data.msg)
+        localStorage.removeItem('session')
+        localStorage.removeItem('menu')
+        navigate('/login')
+      })
+      .catch((error) => console.log(error.toJSON()))
   }
 
   const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {

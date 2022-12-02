@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { askToRequestAgain, handleOpenModal } from '../../store'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { askToRequestAgain, handleOpenModal } from '../../../store'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import axios from 'axios'
-import { createPostAndAddToUserAccount } from '../../services/api-routes'
-import { Button } from '../Button'
-import { success } from '../Toasters'
-import { Overlay } from '../modals/Overlay'
+import { createPostAndAddToUserAccount } from '../../../services/api-routes'
+import { Button } from '../../Button'
+import { success } from '../../Toasters'
+import { Overlay } from '../../modals/Overlay'
 
 interface Props {}
 
@@ -52,7 +52,7 @@ export const PostInputModal = (props: Props) => {
   const disabledButton =
     postMetadata.body.length < 50 || postMetadata.title.length < 10
 
-  const motionSectionProperties = {
+  const motionProps = {
     initial: {
       y: -500,
       opacity: 0,
@@ -67,7 +67,7 @@ export const PostInputModal = (props: Props) => {
   return (
     <>
       <Overlay />
-      <motion.section {...motionSectionProperties}>
+      <motion.section {...motionProps}>
         <div className={style.header}>
           <h1 className={style.title}>New post</h1>
           <i

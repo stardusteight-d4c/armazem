@@ -5,17 +5,16 @@ import {
   deleteReply,
   updateReply,
   userData,
-} from '../../services/api-routes'
+} from '../../../services/api-routes'
 import TimeAgo from 'timeago-react'
 import * as timeago from 'timeago.js'
 import en_short from 'timeago.js/lib/lang/en_short'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { Button } from '../Button'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { Button } from '../../Button'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Menu } from '@headlessui/react'
-import { error, success } from '../Toasters'
-import { askToRequestAgain } from '../../store'
+import { error, success } from '../../Toasters'
+import { askToRequestAgain } from '../../../store'
 
 timeago.register('en_short', en_short)
 
@@ -116,14 +115,14 @@ export const Replies = ({
     <>
       {toUsername !== null && (
         <div className="flex relative p-2 my-1 text-dusk-main dark:text-dawn-main items-start gap-3">
-          {/* {index < repliesLength - 1 && (
-            <div className="h-56 z-50 left-[29px]  absolute w-[500px] bg-black/20 dark:bg-white/20" />
-          )} */}
+          {index < repliesLength - 1 && (
+            <div className="h-[110%] z-10 left-[29px]  absolute w-[2px] bg-black/20 dark:bg-white/20" />
+          )}
           <Link to={`/${userByMetadata.username}`}>
             <img
               src={userByMetadata.user_img}
               alt=""
-              className="w-11 h-11  min-w-[44px] cursor-pointer border border-black/20 dark:border-white/20 object-cover"
+              className="w-11 rounded-sm h-11 z-20 min-w-[44px] cursor-pointer border border-black/20 dark:border-white/20 object-cover"
             />
           </Link>
           <div className="flex flex-col w-full ">

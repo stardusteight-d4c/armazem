@@ -9,7 +9,7 @@ import { Overlay } from '../modals/Overlay'
 
 interface Props {}
 
-export const MobileChatModal = (props: Props) => {
+export const DesktopChatModal = (props: Props) => {
   const dispatch = useAppDispatch()
   const [connections, setConnections] = useState<[User] | any>([])
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
@@ -45,38 +45,24 @@ export const MobileChatModal = (props: Props) => {
     <>
       <Overlay />
       <motion.section {...motionProps}>
-        <div className={style.nav}>
-          {currentChat && (
-            <i
-              onClick={() => setCurrentChat(undefined)}
-              className={style.arrowLeftIcon}
-            />
-          )}
-          <i
-            onClick={() => dispatch(handleOpenModal(null))}
-            className={style.closeIcon}
-          />
-        </div>
         {connections.length > 0 ? (
           <>
-            {!currentChat && (
-              <section className={style.connectionsContainer}>
-                {connections.map((connection: any) => (
-                  <>
-                    <div
-                      onClick={() => setCurrentChat(connection)}
-                      className={style.connection}
-                    >
-                      {connection.username}
-                    </div>
-                  </>
-                ))}
-              </section>
-            )}
-            {currentChat && (
+            <section className={style.connectionsContainer}>
+              {connections.map((connection: any) => (
+                <div
+                  onClick={() => setCurrentChat(connection)}
+                  className={style.connection}
+                >
+                  {connection.username}
+                </div>
+              ))}
+            </section>
+            {currentChat ? (
               <section className={style.chatContainer}>
                 <Chat currentChat={currentChat} />
               </section>
+            ) : (
+              <div className={style.noChat}>No chat was selected</div>
             )}
           </>
         ) : (
@@ -96,15 +82,12 @@ export const MobileChatModal = (props: Props) => {
 }
 
 const style = {
-  wrapper: `fixed flex flex-col items-start overflow-hidden border border-dawn-weak/20 dark:border-dusk-weak/20 drop-shadow-2xl z-50 w-screen h-screen text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2`,
-  nav: `flex w-full items-center p-2 justify-between`,
-  arrowLeftIcon: `ri-arrow-left-circle-line text-2xl cursor-pointer`,
-  closeIcon: `ri-close-circle-fill text-2xl cursor-pointer ml-auto`,
-  connectionsContainer: `relative h-full overflow-hidden overflow-y-scroll py-8 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20`,
-  connection: `text-lg cursor-pointer w-screen truncate font-medium p-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20`,
-  chatContainer: `overflow-hidden`,
-  noChat: `flex min-w-[200px] items-center justify-center text-2xl my-8`,
-  noConnections: `flex text-center mt-24 flex-col min-w-[200px] col-span-7 items-center justify-center text-2xl`,
-  spanText: 'text-4xl',
+  wrapper: `fixed grid grid-cols-7 overflow-hidden border border-dawn-weak/20 dark:border-dusk-weak/20 shadow-md z-50 w-[1000px] h-[546px] text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2`,
+  connectionsContainer: `col-span-2 overflow-hidden overflow-y-scroll p-8 border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20`,
+  connection: `text-lg cursor-pointer w-[219px] truncate font-medium py-2 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20`,
+  chatContainer: `col-start-3 relative col-span-5 overflow-hidden`,
+  noChat: `flex min-w-[200px] col-span-5 items-center justify-center text-2xl my-8`,
+  noConnections: `flex flex-col min-w-[200px] col-span-7 items-center justify-center text-2xl my-8`,
+  spanText: `text-4xl`,
   goBackLink: `hover:underline text-prime-blue mt-1 cursor-pointer`,
 }

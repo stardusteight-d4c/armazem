@@ -403,6 +403,7 @@ export const deletePost = async (req, res, next) => {
 export const sharePost = async (req, res, next) => {
   try {
     const { postId, accountId } = req.body
+
     await Account.findByIdAndUpdate(
       accountId,
       {
