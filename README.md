@@ -169,3 +169,184 @@ export const postMetadataById = async (req, res) => {
 }
 ```
 
+<br />
+
+## API RESTful | Representational State Transfer 
+
+The RESTful API `is an interface that two computer systems use to exchange information securely over the internet`. Most business applications need to communicate with other internal and third-party applications to perform various tasks. For example, to generate monthly paychecks, your internal accounting system needs to share data with your customer's banking system in order to automate invoicing and communicate with an internal timesheet application. RESTful APIs support this exchange of information because they follow `secure, reliable and efficient software communication standards`.
+
+### What is an API?
+
+`An application programming interface (API) defines the rules you need to follow to communicate with other software systems`. Developers expose or create APIs so that other applications can communicate with their applications programmatically. For example, the timesheet application exposes an API that requests an employee's full name and a date range. Upon receipt of this information, it processes the employee's timesheet internally and returns the number of hours worked in that date range.
+
+`You can think of a Web API as a gateway between clients and resources on the Web.`
+
+#### Customers
+
+`Clients are users who want to access information from the Web`. The client can be a person or a software system using the API. For example, developers can write programs that access weather data from a weather system. Or you can access the same data from your browser when visiting the weather website directly.
+
+#### Resources
+
+`Resources are the information that different applications provide to their clients`. Resources can be images, videos, texts, numbers or any type of data. `The machine that provides the resource to the client is also called the server`. Organizations use APIs to share resources and deliver web services while maintaining security, control and authentication. Additionally, APIs help determine which clients have access to specific internal resources.
+
+
+### What is REST?
+
+A representational state transfer (REST) ​​`is a software architecture that imposes conditions on how an API should work`. REST was initially created as a guideline for managing communication in a complex network like the internet. You can use REST-based architecture to enable reliable, high-performance communication at scale. `You can implement and modify it easily, bringing cross-platform visibility and portability to any API system`.
+
+API developers can design APIs using many different architectures. APIs that follow the REST architecture style are called REST APIs. Web services that implement REST architecture are called RESTful web services. The term RESTful API generally refers to RESTful web APIs. However, `you may use the terms REST API and RESTful API interchangeably`.
+
+The following are some of the principles of the REST architecture style.
+
+#### Uniform interface
+
+The uniform interface is fundamental to the design of any RESTful web service. `Indicates that the server transfers information in standard format`. The formatted resource is called a REST representation. This format may differ from the internal representation of the resource in the server application. For example, the server might store data as text but send it in an HTML representation format.
+
+The uniform interface imposes four architectural constraints:
+
+ - Requests must identify resources. They do this using a uniform resource identifier.
+ - Customers have enough information in the resource representation to modify or delete the resource if they choose. The server meets this condition by sending metadata that best describes the resource.
+ - Clients receive information on how to further process the representation. The server does this by sending self-describing messages that contain metadata about how the client can best use it.
+ - Customers receive information about all other related resources they need to complete a task. The server does this by sending hyperlinks in the representation so that clients can dynamically discover more resources.
+ 
+#### Stateless
+
+In REST architecture, `statelessness refers to a method of communication in which the server completes each client request independently of all previous requests`. Clients can request resources in any order, and each request is stateless or isolated from other requests. This REST API design restriction implies that the server can fully understand and fulfill the request every time.
+
+#### Layered system
+
+In a layered system architecture, `the client can connect to other authorized intermediaries between the client and the server and still receive responses from the server`. Servers can also pass requests to other servers. You can design your RESTful web service to run on multiple servers with multiple layers such as security, application, and business logic working together to fulfill client requests. These layers remain invisible to the client.
+
+#### Storage capacity
+
+RESTful web services `enable caching, which is the process of storing some responses on the client or in an intermediary to improve the server's response time`. For example, let's say you visit a website that has common header and footer images on every page. Every time you visit a new page on the website, the server must resend the same images. To avoid this, the client caches or stores these images after the first response and then uses the images directly from the cache. RESTful web services control caching using API responses that define themselves as cacheable or non-cacheable.
+
+#### Code on demand
+
+In the REST architectural style, `servers can temporarily extend or customize client functionality by offloading software programming code to the client`. For example, when you fill out a registration form on any website, your browser will immediately highlight mistakes it has made, such as incorrect phone numbers. It can do this because of the code sent by the server.
+
+### What are the benefits of RESTful APIs?
+
+#### Scalability
+
+Systems that implement REST APIs can scale efficiently because REST optimizes client-server interactions. Statelessness removes the load from the server, because the server does not need to retain information from previous client requests. Well-managed caching partially or completely eliminates some client-server interactions. All these features allow for scalability without causing communication bottlenecks that reduce performance.
+
+#### Flexibility
+
+RESTful web services allow complete separation of the client from the server. They simplify and decouple various server components so that each part can evolve independently. Platform or technology changes in the server application do not affect the client application. The ability to layer application functions further increases flexibility. For example, developers can make changes to the database layer without rewriting application logic.
+
+#### Independence
+
+REST APIs are independent of the technology used. You can write client and server applications in many programming languages ​​without affecting the API design. It is also possible to change the underlying technology on both sides without affecting communication.
+
+### How do RESTful APIs work?
+
+The basic function of a RESTful API is the same as browsing the internet. `The client contacts the server using the API when it requires a resource. API developers explain how the client should use REST API in the server application's API documentation. These are the general steps for any REST API call:
+
+1. The client sends a request to the server. The client follows the API documentation to format the request in a way that the server understands.
+2. The server authenticates the client and confirms that the client has the right to make this request.
+3. The server receives the request and processes it internally.
+4. The server returns a response to the client. The response contains information that indicates to the client whether the request was successful. The response also includes information requested by the customer.
+
+REST API request and response details vary slightly depending on how the API developers design the API.
+
+
+### What does the RESTful API client request contain?
+
+RESTful APIs require requests to contain the following key components:
+
+#### Unique resource identifier
+
+`The server identifies each resource with unique resource identifiers`. For REST services, the server typically performs resource identification using a `uniform resource locator (URL). The URL specifies the path to the `resource. A URL is similar to the website address that you type into your browser to visit any web page. The URL is also called the `request endpoint` and it clearly tells the server what the client requires.
+
+##### Method
+
+Developers often implement RESTful APIs using the `Hypertext Transfer Protocol (HTTP)`. An HTTP method tells the server what it needs to do with the resource. Following are four common HTTP methods:
+
+###### GET
+
+Clients use GET to access resources located at the specified URL on the server. They can cache GET requests and send parameters in the RESTful API request to instruct the server to filter data before sending.
+
+###### POST
+
+Clients use POST to send data to the server. They include the data representation with the request. If they send the same POST request multiple times, they will create the same resource multiple times.
+
+###### PUT
+
+Clients use PUT to update existing resources on the server. Unlike POST, sending the same PUT request multiple times in a RESTful web service has the same result.
+
+###### DELETE
+
+Clients use the DELETE request to remove the resource. A DELETE request can change the state of the server. However, if the user does not have proper authentication, the request will fail.
+
+##### HTTP headers
+
+`The request headers are the metadata exchanged between the client and the server`. For example, the request header indicates the format of the request and response, provides information about the status of the request, and so on.
+
+###### Data
+
+REST API requests can include data for POST, PUT, and other HTTP methods to work successfully.
+
+###### Parameters
+
+`RESTful API requests can include parameters that give the server more detail about what needs to be done`. Following are some different types of parameter.
+
+ - `path` parameters that specify URL details.
+ - `query` parameters that request more information about the resource.
+ - `cookies` parameters that quickly authenticate clients.
+ 
+### What are RESTful API authentication methods?
+
+`A RESTful web service must authenticate requests before sending a response. Authentication is the process of verifying one's identity. For example, you can prove your identity by showing an ID card or driver's license. Likewise, RESTful service clients must prove their identity to the server to establish trust.
+
+The RESTful API has four common authentication methods:
+
+#### HTTP Authentication
+
+HTTP defines some authentication schemes that you can use directly when implementing the REST API. These are two such schemes:
+
+##### Basic Authentication
+
+In basic authentication, `the client sends the username and password in the request header`. It encodes them with base64, which is an encoding technique that converts the pair into a string of 64 characters for secure transmission.
+
+##### Bearer Authentication
+
+`The term bearer authentication refers to the process of giving the token bearer access control`. The bearer token is typically an encrypted string that the server generates in response to a login request. The client sends the token in request headers to access resources.
+
+#### API keys
+
+API keys are another option for REST API authentication. `In this approach, the server assigns a unique generated value to an initiating client`. Whenever the client tries to access resources, it uses the unique API key to verify itself. API keys are less secure because the client needs to transmit the key, which makes it vulnerable to network theft.
+
+#### OAuth
+
+`OAuth combines passwords and tokens for highly secure login access to any system`. First, the server requests a password and then an additional token to complete the authorization process. It can verify the token at any time and also over time with specific scope and longevity.
+
+
+### What does the RESTful API server response contain?
+
+REST principles require that the server response contain the following key components:
+
+#### Status line
+
+The status line contains a three-digit status code that communicates the success or failure of the request. For example, codes 2XX indicate success, but codes 4XX and 5XX indicate errors. 3XX codes indicate URL redirection.
+
+The following are some common status codes.
+
+ - <strong>200</strong>: generic success response
+ - <strong>201</strong>: POST method success response
+ - <strong>400</strong>: Bad request that the server cannot process
+ - <strong>404</strong>: resource not found
+
+#### Message body
+
+The body of the response contains the resource representation. The server selects an appropriate representation format based on what the request headers contain. Clients can request information in `XML` or `JSON` formats, which define how the data is written in plain text. For example, if the client asks for the name and age of a person named John, the server will return a JSON representation like this:
+
+
+ - `'{"name":"John", "age":30}'`
+
+
+#### Headers
+
+The response also contains headers or metadata about the response. They provide more context about the response and include information such as server, encoding, date, and content type.
+
+*<i>aws.amazon.com/what-is/restful-api/?nc1=h_ls</i> <br />
