@@ -102,7 +102,7 @@ export default mongoose.model('Post', postSchema)
  - <strong>View Layer</strong>:
  
 ```jsx
-// web/src/pages/post.jsx
+// web/src/pages/Post.jsx
 
 export const Post = (props: Props) => {
   return (
