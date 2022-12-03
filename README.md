@@ -11,7 +11,7 @@
 :arrow_right: Model-View-Controller (MVC) | Architectural Pattern for Software Projects <br /> 
 :arrow_right: API RESTful | Representational State Transfer <br /> 
 :arrow_right: JSON Web Token (JWT) and Authentication <br /> 
-:arrow_right: JSON (JavaScript Object Notation)
+:arrow_right: JSON (JavaScript Object Notation) <br /> 
 :arrow_right: Nodemailer - Email submissions <br /> 
 :arrow_right: useEffect | Handling Requests and Reacting to Data Changes with Side Effects <br /> 
 
