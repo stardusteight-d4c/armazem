@@ -47,7 +47,7 @@ export const Article = ({ post, authorUser }: Props) => {
 
   const editPost = async () => {
     await axios
-      .post(updatePost, {
+      .put(updatePost, {
         postId: post?._id,
         body: editValue,
       })
@@ -89,9 +89,11 @@ export const Article = ({ post, authorUser }: Props) => {
 
   const removePost = async () => {
     await axios
-      .post(deletePost, {
-        postId: post?._id,
-        accountId: currentUser?.account,
+      .delete(deletePost, {
+        params: {
+          postId: post?._id,
+          accountId: currentUser?.account,
+        },
       })
       .then(({ data }) => {
         success(data.msg)

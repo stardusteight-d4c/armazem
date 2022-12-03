@@ -2,7 +2,7 @@ import express from 'express'
 import {
   addNewDiscussion,
   addNewReply,
-  createPostAndAddToUserAccount,
+  createPost,
   deleteDiscussion,
   deletePost,
   deleteReply,
@@ -22,20 +22,20 @@ import {
 
 const router = express.Router()
 
-router.post('/createPostAndAddToUserAccount', createPostAndAddToUserAccount)
+router.post('/createPost', createPost)
 router.get('/postMetadataById/:id', postMetadataById)
 router.post('/addNewDiscussion', addNewDiscussion)
 router.get('/discussionsByPostId/:postId', discussionsByPostId)
 router.post('/addNewReply', addNewReply)
 router.get('/repliesOfDiscussion/:discussionId', repliesOfDiscussion)
-router.post('/updateDiscussion', updateDiscussion)
-router.post('/updateReply', updateReply)
-router.post('/deleteDiscussion', deleteDiscussion)
-router.post('/deleteReply', deleteReply)
+router.put('/updateDiscussion', updateDiscussion)
+router.put('/updateReply', updateReply)
+router.delete('/deleteDiscussion', deleteDiscussion)
+router.delete('/deleteReply', deleteReply)
 router.put('/likePost', likePost)
 router.put('/unlikedPost', unlikedPost)
-router.post('/updatePost', updatePost)
-router.post('/deletePost', deletePost)
+router.put('/updatePost', updatePost)
+router.delete('/deletePost', deletePost)
 router.put('/sharePost', sharePost)
 router.put('/unsharePost', unsharePost)
 router.get('/topRatedPost', topRatedPost)

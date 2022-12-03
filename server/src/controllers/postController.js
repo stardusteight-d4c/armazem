@@ -5,7 +5,7 @@ import Discussion from '../models/discussionModel.js'
 import Reply from '../models/replyModel.js'
 import Notification from '../models/notificationModel.js'
 
-export const createPostAndAddToUserAccount = async (req, res, next) => {
+export const createPost = async (req, res) => {
   try {
     const { title, body, userId } = req.body
     const post = await Post.create({
@@ -25,15 +25,15 @@ export const createPostAndAddToUserAccount = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post created successfully' })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error creating post',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const postMetadataById = async (req, res, next) => {
+export const postMetadataById = async (req, res) => {
   try {
     const postId = req.params.id
     const post = await Post.findById(postId)
@@ -58,7 +58,7 @@ export const postMetadataById = async (req, res, next) => {
   }
 }
 
-export const addNewDiscussion = async (req, res, next) => {
+export const addNewDiscussion = async (req, res) => {
   try {
     const { postId, userId, body } = req.body
     const discussion = await Discussion.create({
@@ -94,13 +94,12 @@ export const addNewDiscussion = async (req, res, next) => {
     console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'There was an error adding a new discussion',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const discussionsByPostId = async (req, res, next) => {
+export const discussionsByPostId = async (req, res) => {
   try {
     const postId = req.params.postId
     const discussions = await Discussion.find({ post: postId })
@@ -111,15 +110,15 @@ export const discussionsByPostId = async (req, res, next) => {
       discussions,
     })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
-      status: true,
-      msg: 'Error getting discussions',
-      error: error.message,
+      status: false,
+      msg: error.message,
     })
   }
 }
 
-export const updateDiscussion = async (req, res, next) => {
+export const updateDiscussion = async (req, res) => {
   try {
     const { discussionId, body } = req.body
     await Discussion.findByIdAndUpdate(
@@ -137,17 +136,17 @@ export const updateDiscussion = async (req, res, next) => {
       msg: 'Update done successfully',
     })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'There was an error updating the discussion',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const deleteDiscussion = async (req, res, next) => {
+export const deleteDiscussion = async (req, res) => {
   try {
-    const { discussionId, postId } = req.body
+    const { discussionId, postId } = req.query
     await Discussion.findByIdAndDelete(discussionId)
     await Reply.deleteMany({ discussion: discussionId })
     const updatedDiscussions = await Discussion.find({ post: postId }).select(
@@ -171,15 +170,15 @@ export const deleteDiscussion = async (req, res, next) => {
       msg: 'Delete done successfully',
     })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'There was an error deleting the discussion',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const addNewReply = async (req, res, next) => {
+export const addNewReply = async (req, res) => {
   try {
     const { discussionId, sender, receiver, body } = req.body
     const reply = await Reply.create({
@@ -199,15 +198,15 @@ export const addNewReply = async (req, res, next) => {
       msg: 'New reply added',
     })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error adding reply',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const updateReply = async (req, res, next) => {
+export const updateReply = async (req, res) => {
   try {
     const { replyId, body } = req.body
     await Reply.findByIdAndUpdate(
@@ -225,17 +224,17 @@ export const updateReply = async (req, res, next) => {
       msg: 'Reply updated',
     })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error editing reply',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const deleteReply = async (req, res, next) => {
+export const deleteReply = async (req, res) => {
   try {
-    const { replyId, discussionId } = req.body
+    const { replyId, discussionId } = req.query
     await Reply.findByIdAndDelete(replyId)
     const updatedReplies = await Reply.find({
       discussion: discussionId,
@@ -259,15 +258,15 @@ export const deleteReply = async (req, res, next) => {
       msg: 'Deleted reply',
     })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error deleting reply',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const repliesOfDiscussion = async (req, res, next) => {
+export const repliesOfDiscussion = async (req, res) => {
   try {
     const discussionId = req.params.discussionId
     const replies = await Reply.find({ discussion: discussionId })
@@ -276,15 +275,15 @@ export const repliesOfDiscussion = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Replies acquired successfully', replies })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error searching for replies',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const likePost = async (req, res, next) => {
+export const likePost = async (req, res) => {
   try {
     const { userId, postId } = req.body
     await Post.findByIdAndUpdate(
@@ -299,15 +298,15 @@ export const likePost = async (req, res, next) => {
 
     return res.status(200).json({ status: true })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error adding like',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const unlikedPost = async (req, res, next) => {
+export const unlikedPost = async (req, res) => {
   try {
     const { userId, postId } = req.body
     await Post.findByIdAndUpdate(
@@ -320,15 +319,15 @@ export const unlikedPost = async (req, res, next) => {
 
     return res.status(200).json({ status: true })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'Error removing like',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const updatePost = async (req, res, next) => {
+export const updatePost = async (req, res) => {
   try {
     const { postId, body } = req.body
     await Post.findByIdAndUpdate(
@@ -343,17 +342,17 @@ export const updatePost = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post edited successfully' })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'There was an error editing',
-      error: error.message,
+      msg: error.message,
     })
   }
 }
 
-export const deletePost = async (req, res, next) => {
+export const deletePost = async (req, res) => {
   try {
-    const { postId, accountId } = req.body
+    const { postId, accountId } = req.query
     const repliesRef = await Discussion.find({ post: postId }).select('replies')
 
     const replies = []
@@ -379,14 +378,15 @@ export const deletePost = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post successfully removed' })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'There was an error removing',
+      msg: error.message,
     })
   }
 }
 
-export const sharePost = async (req, res, next) => {
+export const sharePost = async (req, res) => {
   try {
     const { postId, accountId } = req.body
 
@@ -402,14 +402,15 @@ export const sharePost = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post shared successfully' })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'There was an error sharing',
+      msg: error.message,
     })
   }
 }
 
-export const unsharePost = async (req, res, next) => {
+export const unsharePost = async (req, res) => {
   try {
     const { postId, accountId } = req.body
     await Account.findByIdAndUpdate(
@@ -424,14 +425,15 @@ export const unsharePost = async (req, res, next) => {
       .status(200)
       .json({ status: true, msg: 'Post removed from shares' })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'There was an error unshare',
+      msg: error.message,
     })
   }
 }
 
-export const topRatedPost = async (req, res, next) => {
+export const topRatedPost = async (req, res) => {
   try {
     // Sorting with two fields returns the error:
     // MongoServerError: Executor error during find command :: caused by :: cannot sort with keys that are parallel arrays
@@ -474,14 +476,15 @@ export const topRatedPost = async (req, res, next) => {
 
     return res.status(200).json({ status: true, posts })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'An error occurred while querying the most rated posts',
+      msg: error.message,
     })
   }
 }
 
-export const recentPostsWithPagination = async (req, res, next) => {
+export const recentPostsWithPagination = async (req, res) => {
   try {
     const page = req.params.page
     const skip = (page - 1) * 4
@@ -493,9 +496,10 @@ export const recentPostsWithPagination = async (req, res, next) => {
 
     return res.status(200).json({ status: true, posts })
   } catch (error) {
+    console.error(error.message)
     return res.status(500).json({
       status: false,
-      msg: 'An error occurred while querying recent posts',
+      msg: error.message,
     })
   }
 }

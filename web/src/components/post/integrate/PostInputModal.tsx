@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { askToRequestAgain, handleOpenModal } from '../../../store'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import axios from 'axios'
-import { createPostAndAddToUserAccount } from '../../../services/api-routes'
+import { createPost } from '../../../services/api-routes'
 import { Button } from '../../Button'
 import { success } from '../../Toasters'
 import { Overlay } from '../../modals/Overlay'
@@ -32,10 +32,10 @@ export const PostInputModal = (props: Props) => {
     setPostTextLength(postMetadata?.body?.length || 0)
   }, [postMetadata.body])
 
-  const createPost = async () => {
+  const handleCreatePost = async () => {
     setLoading(true)
     await axios
-      .post(createPostAndAddToUserAccount, {
+      .post(createPost, {
         title: postMetadata.title,
         body: postMetadata.body,
         userId: currentUser?._id,
@@ -117,7 +117,7 @@ export const PostInputModal = (props: Props) => {
             loading={loading}
             disabled={disabledButton}
             title="Submit"
-            onClick={() => createPost()}
+            onClick={() => handleCreatePost()}
             className={style.buttonSubmit}
           />
         </div>

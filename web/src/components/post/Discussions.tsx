@@ -99,7 +99,7 @@ export const Discussions = ({
     if (editValue === discussion.body) {
       error('No change detected')
     } else {
-      const { data } = await axios.post(updateDiscussion, {
+      const { data } = await axios.put(updateDiscussion, {
         discussionId: discussion._id,
         body: editValue,
       })
@@ -112,9 +112,11 @@ export const Discussions = ({
   }
 
   const removeDiscussion = async () => {
-    const { data } = await axios.post(deleteDiscussion, {
-      discussionId: discussion._id,
-      postId: discussion.post,
+    const { data } = await axios.delete(deleteDiscussion, {
+      params: {
+        discussionId: discussion._id,
+        postId: discussion.post,
+      },
     })
     if (data.status === true) {
       setActiveItem('')

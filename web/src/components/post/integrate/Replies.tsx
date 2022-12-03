@@ -85,7 +85,7 @@ export const Replies = ({
       error('No change detected')
     } else {
       await axios
-        .post(updateReply, {
+        .put(updateReply, {
           replyId: reply._id,
           body: editValue,
         })
@@ -106,9 +106,11 @@ export const Replies = ({
 
   const removeReply = async () => {
     await axios
-      .post(deleteReply, {
-        discussionId: reply.discussion,
-        replyId: reply._id,
+      .delete(deleteReply, {
+        params: {
+          discussionId: reply.discussion,
+          replyId: reply._id,
+        },
       })
       .then(({ data }) => {
         setActiveItem('')

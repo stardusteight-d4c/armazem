@@ -47,24 +47,24 @@ export const notifications = `${hostServer}/api/account/notifications` // [GET -
 export const deleteAccount = `${hostServer}/api/account/deleteAccount` // [DELETE -> query] ?userId=<userId>&accountId=<accountId>
 
 // POST
-export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`
-export const postMetadataById = `${hostServer}/api/post/postMetadataById` // /:id
-export const addNewDiscussion = `${hostServer}/api/post/addNewDiscussion`
-export const discussionsByPostId = `${hostServer}/api/post/discussionsByPostId` // /:postId
-export const addNewReply = `${hostServer}/api/post/addNewReply`
-export const repliesOfDiscussion = `${hostServer}/api/post/repliesOfDiscussion` // :discussionId
-export const updateDiscussion = `${hostServer}/api/post/updateDiscussion`
-export const updateReply = `${hostServer}/api/post/updateReply`
-export const deleteDiscussion = `${hostServer}/api/post/deleteDiscussion`
-export const deleteReply = `${hostServer}/api/post/deleteReply`
-export const likePost = `${hostServer}/api/post/likePost`
-export const unlikedPost = `${hostServer}/api/post/unlikedPost`
-export const updatePost = `${hostServer}/api/post/updatePost`
-export const deletePost = `${hostServer}/api/post/deletePost`
-export const sharePost = `${hostServer}/api/post/sharePost`
-export const unsharePost = `${hostServer}/api/post/unsharePost`
-export const topRatedPost = `${hostServer}/api/post/topRatedPost`
-export const recentPostsWithPagination = `${hostServer}/api/post/recentPostsWithPagination` // /:page
+export const createPost = `${hostServer}/api/post/createPost` // [POST -> body] {title, body, userId}
+export const postMetadataById = `${hostServer}/api/post/postMetadataById` // [GET -> params] /:id
+export const addNewDiscussion = `${hostServer}/api/post/addNewDiscussion` // [POST -> body] {postId, userId, body}
+export const discussionsByPostId = `${hostServer}/api/post/discussionsByPostId` // [GET -> params] /:postId
+export const addNewReply = `${hostServer}/api/post/addNewReply` // [POST -> body] -> {discussionId, sender, receiver, body}
+export const repliesOfDiscussion = `${hostServer}/api/post/repliesOfDiscussion` // [GET -> params] /:discussionId
+export const updateDiscussion = `${hostServer}/api/post/updateDiscussion` // [PUT -> body] {discussionId, body}
+export const updateReply = `${hostServer}/api/post/updateReply` // [PUT -> body] {replyId, body}
+export const deleteDiscussion = `${hostServer}/api/post/deleteDiscussion` // [DELETE -> query] ?postId=<postId>&discussionId=<discussionId>
+export const deleteReply = `${hostServer}/api/post/deleteReply` // [DELETE -> query] ?discussionId=<discussionId>&replyId=<replyId>
+export const likePost = `${hostServer}/api/post/likePost` // [PUT -> body] {userId, postId}
+export const unlikedPost = `${hostServer}/api/post/unlikedPost` // [PUT -> body] {userId, postId}
+export const updatePost = `${hostServer}/api/post/updatePost` // [PUT -> body] {postId, body}
+export const deletePost = `${hostServer}/api/post/deletePost` // [DELETE -> query] ?postId=<postId>&accountId=<accountId>
+export const sharePost = `${hostServer}/api/post/sharePost` // [PUT -> body] {postId, accountId}
+export const unsharePost = `${hostServer}/api/post/unsharePost` // [PUT -> body] {postId, accountId}
+export const topRatedPost = `${hostServer}/api/post/topRatedPost` // [GET]
+export const recentPostsWithPagination = `${hostServer}/api/post/recentPostsWithPagination` // [GET -> params] /:page
 
 // MANGA
 export const addManga = `${hostServer}/api/manga/addManga`
