@@ -81,9 +81,7 @@ export const Collection = (props: Props) => {
   }, [filterValue])
 
   const search = async (query: string) => {
-    const { data } = await axios.post(searchByTitle, {
-      query,
-    })
+    const { data } = await axios.get(`${searchByTitle}/${query}`)
     setMangas(data.mangas)
   }
 

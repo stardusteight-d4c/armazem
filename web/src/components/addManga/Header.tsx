@@ -17,9 +17,7 @@ export const Header = ({
 }: Props) => {
   const search = async (term: string) => {
     if (term !== '') {
-      const { data } = await axios.post(searchByTitle, {
-        query: term,
-      })
+      const { data } = await axios.get(`${searchByTitle}/${term}`)
       setSearchResults(data.mangas)
     } else {
       setSearchResults(null)

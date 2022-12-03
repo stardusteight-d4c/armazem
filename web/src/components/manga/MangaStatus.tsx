@@ -88,9 +88,11 @@ export const MangaStatus = (props: Props) => {
 
   const handleRemove = async () => {
     await axios
-      .post(removeMangaToListed, {
-        accountId: currentAccount._id,
-        mangaUid: manga?.uid,
+      .delete(removeMangaToListed, {
+        params: {
+          accountId: currentAccount._id,
+          mangaUid: manga?.uid,
+        },
       })
       .then(({ data }) => success(data.msg))
       .catch((error) => console.log(error.toJSON()))
@@ -172,7 +174,7 @@ export const MangaStatus = (props: Props) => {
     if (handleValidation()) {
       if (status === 'Plan to Read') {
         await axios
-          .post(addMangaToListed, {
+          .put(addMangaToListed, {
             accountId: currentAccount._id,
             data: {
               mangaUid: manga!.uid,
@@ -185,7 +187,7 @@ export const MangaStatus = (props: Props) => {
         setListInfos({})
       } else {
         await axios
-          .post(addMangaToListed, {
+          .put(addMangaToListed, {
             accountId: currentAccount._id,
             data: {
               mangaUid: manga!.uid,

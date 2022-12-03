@@ -4,7 +4,7 @@ import Review from '../models/reviewModel.js'
 import Notification from '../models/notificationModel.js'
 import ShortUniqueId from 'short-unique-id'
 
-export const addManga = async (req, res, next) => {
+export const addManga = async (req, res) => {
   try {
     const { data } = req.body
     const uid = new ShortUniqueId({ length: 10 })
@@ -44,9 +44,9 @@ export const addManga = async (req, res, next) => {
   }
 }
 
-export const searchByTitle = async (req, res, next) => {
+export const searchByTitle = async (req, res) => {
   try {
-    const query = req.body.query
+    const query = req.params.query
     const mangas = await Manga.find({
       title: { $regex: new RegExp(query, 'i') },
     }).limit(5)
@@ -61,7 +61,7 @@ export const searchByTitle = async (req, res, next) => {
   }
 }
 
-export const mangaByPagination = async (req, res, next) => {
+export const mangaByPagination = async (req, res) => {
   try {
     const page = req.params.page
     const skip = (page - 1) * 10
@@ -82,7 +82,7 @@ export const mangaByPagination = async (req, res, next) => {
   }
 }
 
-export const mangaByUid = async (req, res, next) => {
+export const mangaByUid = async (req, res) => {
   try {
     const uid = req.params.uid
 
@@ -98,7 +98,7 @@ export const mangaByUid = async (req, res, next) => {
   }
 }
 
-export const mangaByGenre = async (req, res, next) => {
+export const mangaByGenre = async (req, res) => {
   try {
     const genre = req.params.genre
     const mangas = await Manga.find({ genres: genre }).select('uid cover -_id')
@@ -113,7 +113,7 @@ export const mangaByGenre = async (req, res, next) => {
   }
 }
 
-export const mangaByGenreAndTitle = async (req, res, next) => {
+export const mangaByGenreAndTitle = async (req, res) => {
   try {
     const genre = req.params.genre
     const title = req.params.title
@@ -133,7 +133,7 @@ export const mangaByGenreAndTitle = async (req, res, next) => {
   }
 }
 
-export const addMangaToListed = async (req, res, next) => {
+export const addMangaToListed = async (req, res) => {
   try {
     const { accountId, data } = req.body
 
@@ -239,9 +239,9 @@ export const addMangaToListed = async (req, res, next) => {
   }
 }
 
-export const removeMangaToListed = async (req, res, next) => {
+export const removeMangaToListed = async (req, res) => {
   try {
-    const { accountId, mangaUid } = req.body
+    const { accountId, mangaUid } = req.query
 
     await Account.findByIdAndUpdate(
       accountId,
@@ -277,7 +277,7 @@ export const removeMangaToListed = async (req, res, next) => {
   }
 }
 
-export const addReview = async (req, res, next) => {
+export const addReview = async (req, res) => {
   try {
     const { from, by, review, authorImage, authorUsername } = req.body
     const reviewDoc = await Review.create({
@@ -307,7 +307,7 @@ export const addReview = async (req, res, next) => {
   }
 }
 
-export const reviewsByPagination = async (req, res, next) => {
+export const reviewsByPagination = async (req, res) => {
   try {
     const { uid, page } = req.params
     const skip = (page - 1) * 3
@@ -324,7 +324,7 @@ export const reviewsByPagination = async (req, res, next) => {
   }
 }
 
-export const review = async (req, res, next) => {
+export const review = async (req, res) => {
   try {
     const id = req.params.id
 
@@ -340,7 +340,7 @@ export const review = async (req, res, next) => {
   }
 }
 
-export const randomMangasByGenre = async (req, res, next) => {
+export const randomMangasByGenre = async (req, res) => {
   try {
     const genre = req.params.genre
 
@@ -367,7 +367,7 @@ export const randomMangasByGenre = async (req, res, next) => {
   }
 }
 
-export const mostRead = async (req, res, next) => {
+export const mostRead = async (req, res) => {
   try {
     const mostReads = await Manga.aggregate([
       {

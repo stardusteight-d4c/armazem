@@ -67,21 +67,21 @@ export const topRatedPost = `${hostServer}/api/post/topRatedPost` // [GET]
 export const recentPostsWithPagination = `${hostServer}/api/post/recentPostsWithPagination` // [GET -> params] /:page
 
 // MANGA
-export const addManga = `${hostServer}/api/manga/addManga`
-export const searchByTitle = `${hostServer}/api/manga/searchByTitle`
-export const mangaByPagination = `${hostServer}/api/manga/mangaByPagination` // :page
-export const mangaByUid = `${hostServer}/api/manga/mangaByUid`
-export const mangaByGenre = `${hostServer}/api/manga/mangaByGenre` // /:genre
-export const mangaByGenreAndTitle = `${hostServer}/api/manga/mangaByGenreAndTitle` // /:genre /:title
-export const addMangaToListed = `${hostServer}/api/manga/addMangaToListed`
-export const removeMangaToListed = `${hostServer}/api/manga/removeMangaToListed`
-export const addReview = `${hostServer}/api/manga/addReview`
-export const reviewsByPagination = `${hostServer}/api/manga/reviewsByPagination` // /:uid/:page
-export const review = `${hostServer}/api/manga/review` // /:id
-export const randomMangasByGenre = `${hostServer}/api/manga/randomMangasByGenre` // /:genre
-export const mostRead = `${hostServer}/api/manga/mostRead`
+export const addManga = `${hostServer}/api/manga/addManga` // [POST -> body] {data}
+export const searchByTitle = `${hostServer}/api/manga/searchByTitle` // [GET -> params] /:query
+export const mangaByPagination = `${hostServer}/api/manga/mangaByPagination` // [GET -> params] // :page
+export const mangaByUid = `${hostServer}/api/manga/mangaByUid` // [GET -> params] /:uid
+export const mangaByGenre = `${hostServer}/api/manga/mangaByGenre` // [GET -> params] /:genre
+export const mangaByGenreAndTitle = `${hostServer}/api/manga/mangaByGenreAndTitle` // [GET -> params] /:genre/:title
+export const addMangaToListed = `${hostServer}/api/manga/addMangaToListed` // [PUT -> body] {accountId, data}
+export const removeMangaToListed = `${hostServer}/api/manga/removeMangaToListed` // [DELETE -> query] ?accountId=<accountId>&mangaUid=<mangaUid>
+export const addReview = `${hostServer}/api/manga/addReview` // [POST -> body] {from, by, review, authorImage, authorUsername}
+export const reviewsByPagination = `${hostServer}/api/manga/reviewsByPagination` // [GET -> params] /:uid/:page
+export const review = `${hostServer}/api/manga/review` // [GET -> params] /:id
+export const randomMangasByGenre = `${hostServer}/api/manga/randomMangasByGenre` // [GET -> params] /:genre
+export const mostRead = `${hostServer}/api/manga/mostRead` // [GET]
 
 // MESSAGE
-export const addMessage = `${hostServer}/api/message/addMessage`
-export const allMessages = `${hostServer}/api/message/allMessages` // ?to=<userId>&from=<userId>
-export const lastMessage = `${hostServer}/api/message/lastMessage`
+export const addMessage = `${hostServer}/api/message/addMessage` // [POST -> body] {from, to, message}
+export const allMessages = `${hostServer}/api/message/allMessages` // [GET -> query] ?to=<userId>&from=<userId>
+export const lastMessage = `${hostServer}/api/message/lastMessage` // [GET -> query] ?to=<userId>&from=<userId>

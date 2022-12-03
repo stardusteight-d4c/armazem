@@ -23,9 +23,7 @@ export const Search = (props: Props) => {
         .catch((error) => console.log(error.toJSON()))
     } else if (activeFilter === 'Manga') {
       await axios
-        .post(searchByTitle, {
-          query,
-        })
+        .get(`${searchByTitle}/${query}`)
         .then(({ data }) => setMangaSearch(data.mangas))
         .catch((error) => console.log(error.toJSON()))
     }
