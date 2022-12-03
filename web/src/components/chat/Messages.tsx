@@ -2,7 +2,7 @@ import { useAppSelector } from '../../store/hooks'
 
 interface Props {
   message: any
-  currentChat: any
+  currentChat: User
 }
 
 export const Messages = ({ message, currentChat }: Props) => {

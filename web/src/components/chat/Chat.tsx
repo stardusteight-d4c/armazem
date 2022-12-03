@@ -1,18 +1,42 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { addMessage, allMessages } from '../../services/api-routes'
+import React, { useEffect, useRef, useState } from 'react'
+import { io } from 'socket.io-client'
+import { addMessage, allMessages, hostServer } from '../../services/api-routes'
 import { useAppSelector } from '../../store/hooks'
 import { error } from '../Toasters'
 import { Messages } from './Messages'
 
 interface Props {
-  currentChat: any
+  currentChat: User
 }
 
 export const Chat = ({ currentChat }: Props) => {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<any>([])
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const [newMessage, setNewMessage] = useState<boolean>(false)
+  const socket = useRef<any>()
+  const scrollRef = useRef<null | any | HTMLDivElement>()
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  socket.current = io(hostServer)
+
+  useEffect(() => {
+    if (currentChat) {
+      socket.current.emit('enter-chat', {
+        userId: currentUser?._id,
+      })
+    }
+  }, [currentUser, currentChat])
+
+  socket.current.on('chat-update', (data: any) => {
+    if (data.status === true) {
+      setNewMessage(true)
+    }
+  })
 
   const handleSendMsg = async () => {
     if (message.length > 0) {
@@ -24,15 +48,11 @@ export const Chat = ({ currentChat }: Props) => {
     } else {
       error('There are no messages to send')
     }
-    // socket.current.emit('send-msg', {
-    //   to: currentChat._id,
-    //   from: currentUser._id,
-    //   message: msg,
-    // })
-
-    // const msgs = [...messages]
-    // msgs.push({ fromSelf: true, message: msg })
-    // setMessages(msgs)
+    setMessage('')
+    setNewMessage(true)
+    socket.current.emit('chat-update', {
+      to: currentChat._id,
+    })
   }
 
   useEffect(() => {
@@ -45,7 +65,8 @@ export const Chat = ({ currentChat }: Props) => {
       })
       setMessages(response.data)
     })()
-  }, [currentChat])
+    setNewMessage(false)
+  }, [currentChat, newMessage])
 
   return (
     <>
@@ -54,8 +75,10 @@ export const Chat = ({ currentChat }: Props) => {
         <div className={style.username}>{currentChat.username}</div>
       </div>
       <div className={style.messagesContainer}>
-        {messages.map((message: any) => (
-          <Messages message={message} currentChat={currentChat} />
+        {messages.map((message: any, index: React.Key) => (
+          <div ref={scrollRef}  key={index}>
+            <Messages message={message} currentChat={currentChat} />
+          </div>
         ))}
       </div>
       <div className={style.inputContainer}>
@@ -63,6 +86,7 @@ export const Chat = ({ currentChat }: Props) => {
           type="text"
           onChange={(e) => setMessage(e.target.value)}
           maxLength={300}
+          value={message}
           className={style.input}
         />
         <button onClick={handleSendMsg} className={style.buttonSubmit}>

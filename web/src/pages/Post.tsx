@@ -34,7 +34,6 @@ export const Post = (props: Props) => {
     if (currentUser !== null && postId) {
       socket.current.emit('enter-post', {
         postId,
-        userId: currentUser._id,
       })
     }
   }, [postId])
