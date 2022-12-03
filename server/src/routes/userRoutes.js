@@ -20,12 +20,12 @@ router.put('/updateCoverImage', updateCoverImage)
 router.put('/updateProfileImage', updateProfileImage)
 router.post('/searchUsersByQuery', searchUsersByQuery)
 router.post('/middleware/activeUser/:userId', activeUser)
-router.post('/changeUserPassword', changeUserPassword)
-router.post('/changeUserEmail', changeUserEmail)
+router.put('/changeUserPassword', changeUserPassword)
+router.put('/changeUserEmail', changeUserEmail)
 router.post(
   '/sendTokenChangeEmailVerification',
   sendTokenChangeEmailVerification
 )
-router.post('/changeUserUsername', changeUserUsername)
+router.put('/changeUserUsername', changeUserUsername)
 
 export { router }

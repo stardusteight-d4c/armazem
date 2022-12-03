@@ -97,7 +97,7 @@ export const Settings = (props: Props) => {
       error('Passwords do not match')
       return false
     }
-    const { data } = await axios.post(changeUserPassword, {
+    const { data } = await axios.put(changeUserPassword, {
       userId: currentUser?._id,
       currentPassword: changePassword.currentPassword,
       newPassword: changePassword.newPassword,
@@ -125,7 +125,7 @@ export const Settings = (props: Props) => {
     }
     if (validateEmail(changeEmail.newEmail)) {
       await axios
-        .post(changeUserEmail, {
+        .put(changeUserEmail, {
           userId: currentUser?._id,
           newEmail: changeEmail.newEmail,
         })
@@ -147,7 +147,7 @@ export const Settings = (props: Props) => {
 
   const handleSubmitChangeUsername = async () => {
     await axios
-      .post(changeUserUsername, {
+      .put(changeUserUsername, {
         username: changeUsername.newUsername,
         userId: currentUser?._id,
       })

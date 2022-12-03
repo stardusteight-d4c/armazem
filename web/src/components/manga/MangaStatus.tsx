@@ -75,9 +75,11 @@ export const MangaStatus = (props: Props) => {
     }
     if (favorited) {
       await axios
-        .post(removeMangaToFavorites, {
-          accountId: currentAccount._id,
-          mangaId: manga?._id,
+        .delete(removeMangaToFavorites, {
+          params: {
+            accountId: currentAccount._id,
+            mangaId: manga?._id,
+          },
         })
         .then(({ data }) => success(data.msg))
         .catch((error) => console.log(error.toJSON()))

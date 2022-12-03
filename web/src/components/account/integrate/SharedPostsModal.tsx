@@ -39,9 +39,11 @@ export const SharedPostsModal = (props: Props) => {
   const searchByTerm = async () => {
     if (searchTerm.length >= 3) {
       await axios
-        .post(searchSharedPostByTitle, {
-          accountId: userMetadata?.account,
-          searchTerm: searchTerm,
+        .get(searchSharedPostByTitle, {
+          params: {
+            accountId: userMetadata?.account,
+            searchTerm: searchTerm,
+          },
         })
         .then(({ data }) => setPosts(data.posts))
         .catch((error) => console.log(error.toJSON()))

@@ -65,7 +65,7 @@ export const Comment = ({
       error('No change detected')
     } else {
       await axios
-        .post(updateComment, {
+        .put(updateComment, {
           commentId: comment._id,
           body: editValue,
         })
@@ -80,8 +80,10 @@ export const Comment = ({
 
   const removeComment = async () => {
     await axios
-      .post(deleteComment, {
-        commentId: comment._id,
+      .delete(deleteComment, {
+        params: {
+          commentId: comment._id,
+        },
       })
       .then(({ data }) => {
         success(data.msg)

@@ -38,9 +38,11 @@ export const AllPostsModal = (props: Props) => {
   const searchByTerm = async () => {
     if (searchTerm.length >= 3) {
       axios
-        .post(searchUserPostByTitle, {
-          searchTerm: searchTerm,
-          userId: userMetadata?._id,
+        .get(searchUserPostByTitle, {
+          params: {
+            searchTerm: searchTerm,
+            userId: userMetadata?._id,
+          },
         })
         .then(({ data }) => setPosts(data.posts))
         .catch((error) => console.log(error.toJSON()))

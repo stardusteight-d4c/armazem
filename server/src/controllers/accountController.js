@@ -10,7 +10,7 @@ import Review from '../models/reviewModel.js'
 
 export const accountDataByUserId = async (req, res) => {
   const userId = req.params.id
-  
+
   // just testing other ways
   await User.findById(userId)
     .select('account')
@@ -146,10 +146,12 @@ export const addConnection = async (req, res) => {
 }
 
 export const rejectConnection = async (req, res) => {
-  const { to, from } = req.body
+  const { to, from } = req.params
   try {
     const toAccountRef = await User.findById(to).select('account')
     const fromAccountRef = await User.findById(from).select('account')
+
+    console.log(to, from)
 
     // Delete request
     await Account.findByIdAndUpdate(
@@ -180,7 +182,8 @@ export const rejectConnection = async (req, res) => {
 }
 
 export const removeConnection = async (req, res) => {
-  const { to, from } = req.body
+  const { to, from } = req.query
+
   try {
     const toAccountRef = await User.findById(to).select('account')
     const fromAccountRef = await User.findById(from).select('account')
@@ -215,7 +218,7 @@ export const removeConnection = async (req, res) => {
 
 export const sharedPosts = async (req, res) => {
   try {
-    const { accountId } = req.body
+    const accountId = req.params.accountId
 
     const sharedPostsRef = await Account.findById(accountId).select(
       'sharedPosts'
@@ -291,7 +294,7 @@ export const postByPagination = async (req, res) => {
 
 export const searchUserPostByTitle = async (req, res) => {
   try {
-    const { searchTerm, userId } = req.body
+    const { searchTerm, userId } = req.query
     const posts = await Post.find({
       by: userId,
       title: { $regex: new RegExp(searchTerm, 'i') },
@@ -344,10 +347,12 @@ export const sharedPostByPagination = async (req, res) => {
 
 export const searchSharedPostByTitle = async (req, res) => {
   try {
-    const { searchTerm, accountId } = req.body
+    const { accountId, searchTerm } = req.query
+
     const sharedPostsRef = await Account.findById(accountId).select(
       'sharedPosts'
     )
+
     const sharedPostsIds = []
     sharedPostsRef.sharedPosts.map((post) => sharedPostsIds.push(post))
     const searchResult = await Promise.all(
@@ -355,7 +360,7 @@ export const searchSharedPostByTitle = async (req, res) => {
         .map(
           async (id) =>
             await Post.find({
-              _id: id,
+              _id: id.id,
               title: { $regex: new RegExp(searchTerm, 'i') },
             })
         )
@@ -446,7 +451,7 @@ export const updateComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
   try {
-    const { commentId } = req.body
+    const { commentId } = req.query
 
     await Comment.findByIdAndDelete(commentId)
 
@@ -481,7 +486,7 @@ export const addMangaToFavorites = async (req, res) => {
 
 export const removeMangaToFavorites = async (req, res) => {
   try {
-    const { mangaId, accountId } = req.body
+    const { mangaId, accountId } = req.query
     await Account.findByIdAndUpdate(accountId, {
       $pull: { favorites: mangaId },
     })
@@ -566,7 +571,7 @@ export const notifications = async (req, res) => {
     const mergeArr = [...general, ...direct]
 
     const notifications = mergeArr.sort((current) => {
-      return new Date(next.createdAt) - new Date(current.createdAt)
+      return new Date(current.createdAt) - new Date(current.createdAt)
     })
 
     return res.status(200).json({ status: true, notifications })

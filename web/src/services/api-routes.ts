@@ -23,28 +23,28 @@ export const sendTokenChangeEmailVerification = `${hostServer}/api/user/sendToke
 export const changeUserUsername = `${hostServer}/api/user/changeUserUsername`
 
 // ACCOUNT
-export const sendRequest = `${hostServer}/api/account/sendRequest`
-export const accountDataByUserId = `${hostServer}/api/account/accountDataByUserId` // /:id
-export const addConnection = `${hostServer}/api/account/addConnection`
-export const rejectConnection = `${hostServer}/api/account/rejectConnection`
-export const removeConnection = `${hostServer}/api/account/removeConnection`
-export const sharedPosts = `${hostServer}/api/account/sharedPosts`
+export const sendRequest = `${hostServer}/api/account/sendRequest` // [POST -> body] {to, from}
+export const addConnection = `${hostServer}/api/account/addConnection` // [POST -> BODY] {to, from}
+export const accountDataByUserId = `${hostServer}/api/account/accountDataByUserId` // [GET -> params] /:id
+export const rejectConnection = `${hostServer}/api/account/rejectConnection` // [DELETE -> params] /:to/:from
+export const removeConnection = `${hostServer}/api/account/removeConnection` // [DELETE -> query] ?to=<userWith>&from=<currentUser>
+export const sharedPosts = `${hostServer}/api/account/sharedPosts` // [GET -> params] /:accountId
 export const lastFivePostsOfAccount = `${hostServer}/api/account/lastFivePostsOfAccount` // /:id
-export const postByPagination = `${hostServer}/api/account/postByPagination` // /:userId/:page
-export const searchUserPostByTitle = `${hostServer}/api/account/searchUserPostByTitle`
-export const sharedPostByPagination = `${hostServer}/api/account/sharedPostByPagination` // /:accountId/:page
-export const searchSharedPostByTitle = `${hostServer}/api/account/searchSharedPostByTitle`
-export const addComment = `${hostServer}/api/account/addComment`
-export const updateComment = `${hostServer}/api/account/updateComment`
-export const accountComments = `${hostServer}/api/account/accountComments` // /:accountId
-export const deleteComment = `${hostServer}/api/account/deleteComment`
-export const addMangaToFavorites = `${hostServer}/api/account/addMangaToFavorites` 
-export const removeMangaToFavorites = `${hostServer}/api/account/removeMangaToFavorites` 
-export const mangaFavorites = `${hostServer}/api/account/mangaFavorites` // /:accountId
-export const mangaListedByAccountId = `${hostServer}/api/account/mangaListedByAccountId` // /:accountId
-export const updatesMangaList = `${hostServer}/api/account/updatesMangaList` // /:accountId
-export const notifications = `${hostServer}/api/account/notifications` // [params] /:accountId
-export const deleteAccount = `${hostServer}/api/account/deleteAccount` // [query] ?userId=<userId>&accountId=<accountId>
+export const postByPagination = `${hostServer}/api/account/postByPagination` // [GET -> params] /:userId/:page
+export const searchUserPostByTitle = `${hostServer}/api/account/searchUserPostByTitle` // [GET -> query] ?userId=<userId>&searchTerm=<postTitle>
+export const sharedPostByPagination = `${hostServer}/api/account/sharedPostByPagination` // [GET -> params] /:accountId/:page
+export const searchSharedPostByTitle = `${hostServer}/api/account/searchSharedPostByTitle` // [GET -> query] ?accountId=<accountId>&searchTerm=<postTitle>
+export const addComment = `${hostServer}/api/account/addComment` // [POST -> body] {accountId, userId, comment}
+export const updateComment = `${hostServer}/api/account/updateComment` // [PUT -> body] {commentId, body}
+export const accountComments = `${hostServer}/api/account/accountComments` // [GET -> params] /:accountId
+export const deleteComment = `${hostServer}/api/account/deleteComment` // [DELETE -> query] ?commentId=<commentId>
+export const addMangaToFavorites = `${hostServer}/api/account/addMangaToFavorites` // [POST -> body] {mangaId, accountId}
+export const removeMangaToFavorites = `${hostServer}/api/account/removeMangaToFavorites` // [DELETE -> query] ?accountId=<accountId>&mangaId=<mangaId>
+export const mangaFavorites = `${hostServer}/api/account/mangaFavorites` // [GET -> params] /:accountId
+export const mangaListedByAccountId = `${hostServer}/api/account/mangaListedByAccountId` // [GET -> params] /:accountId
+export const updatesMangaList = `${hostServer}/api/account/updatesMangaList` // [GET -> params] /:accountId
+export const notifications = `${hostServer}/api/account/notifications` // [GET -> params] /:accountId
+export const deleteAccount = `${hostServer}/api/account/deleteAccount` // [DELETE -> query] ?userId=<userId>&accountId=<accountId>
 
 // POST
 export const createPostAndAddToUserAccount = `${hostServer}/api/post/createPostAndAddToUserAccount`
@@ -70,16 +70,16 @@ export const recentPostsWithPagination = `${hostServer}/api/post/recentPostsWith
 export const addManga = `${hostServer}/api/manga/addManga`
 export const searchByTitle = `${hostServer}/api/manga/searchByTitle`
 export const mangaByPagination = `${hostServer}/api/manga/mangaByPagination` // :page
-export const mangaByUid = `${hostServer}/api/manga/mangaByUid` 
+export const mangaByUid = `${hostServer}/api/manga/mangaByUid`
 export const mangaByGenre = `${hostServer}/api/manga/mangaByGenre` // /:genre
 export const mangaByGenreAndTitle = `${hostServer}/api/manga/mangaByGenreAndTitle` // /:genre /:title
-export const addMangaToListed = `${hostServer}/api/manga/addMangaToListed` 
-export const removeMangaToListed = `${hostServer}/api/manga/removeMangaToListed` 
-export const addReview = `${hostServer}/api/manga/addReview` 
+export const addMangaToListed = `${hostServer}/api/manga/addMangaToListed`
+export const removeMangaToListed = `${hostServer}/api/manga/removeMangaToListed`
+export const addReview = `${hostServer}/api/manga/addReview`
 export const reviewsByPagination = `${hostServer}/api/manga/reviewsByPagination` // /:uid/:page
 export const review = `${hostServer}/api/manga/review` // /:id
 export const randomMangasByGenre = `${hostServer}/api/manga/randomMangasByGenre` // /:genre
-export const mostRead = `${hostServer}/api/manga/mostRead` 
+export const mostRead = `${hostServer}/api/manga/mostRead`
 
 // MESSAGE
 export const addMessage = `${hostServer}/api/message/addMessage`

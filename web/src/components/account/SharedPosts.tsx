@@ -19,9 +19,7 @@ export const SharedPosts = ({}: Props) => {
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.post(sharedPosts, {
-        accountId: userMetadata.account,
-      })
+      const { data } = await axios.get(`${sharedPosts}/${userMetadata.account}`)
       if (data.status === true) {
         setSharedPostsData(data.sharedPosts)
       }

@@ -46,9 +46,11 @@ export const ConnectionStatus = ({ userMetadata, currentAccount }: Props) => {
 
   const deleteUserConnection = async () => {
     await axios
-      .post(removeConnection, {
-        to: userMetadata._id,
-        from: currentUser?._id,
+      .delete(removeConnection, {
+        params: {
+          to: userMetadata._id,
+          from: currentUser?._id,
+        },
       })
       .then(async () => {
         await dispatch(getCurrentUserAccount())
@@ -58,10 +60,7 @@ export const ConnectionStatus = ({ userMetadata, currentAccount }: Props) => {
 
   const rejectRequestConnection = async () => {
     await axios
-      .post(rejectConnection, {
-        to: userMetadata._id,
-        from: currentUser?._id,
-      })
+      .delete(`${rejectConnection}/${userMetadata._id}/${currentUser?._id}`)
       .then(async () => {
         await dispatch(getCurrentUserAccount())
       })
@@ -70,10 +69,7 @@ export const ConnectionStatus = ({ userMetadata, currentAccount }: Props) => {
 
   const unsendRequestConnection = async () => {
     await axios
-      .post(rejectConnection, {
-        to: currentUser?._id,
-        from: userMetadata._id,
-      })
+      .delete(`${rejectConnection}/${currentUser?._id}/${userMetadata._id}`)
       .then(async () => {
         await dispatch(getCurrentUserAccount())
       })
@@ -197,5 +193,5 @@ export const ConnectionStatus = ({ userMetadata, currentAccount }: Props) => {
 }
 
 const style = {
-  space: `space-y-6`
+  space: `space-y-6`,
 }

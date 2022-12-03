@@ -23,18 +23,20 @@ export const Account = (props: Props) => {
   const userMetadata = useAppSelector((state) => state.armazem.userMetadata)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
   const requestAgain = useAppSelector((state) => state.armazem.requestAgain)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
+    setLoading(true)
     ;(async () => {
       await axios
         .get(`${dataByUsername}/${username}`)
         .then(({ data }) => dispatch(handleUserMetadata(data.user)))
         .catch((error) => console.log(error.toJSON()))
+        .finally(() => setLoading(false))
     })()
   }, [username, requestAgain])
 
-  const dataLoaded =
-    currentAccount.user !== undefined && userMetadata !== null && username
+  const dataLoaded = currentAccount.user !== undefined && userMetadata !== null
 
   const AccountNotFound = () => (
     <div className={style.accountNotFoundContainer}>
@@ -44,7 +46,7 @@ export const Account = (props: Props) => {
   )
 
   return (
-    <GridWrapper>
+    <GridWrapper loading={loading}>
       {!dataLoaded ? (
         <AccountNotFound />
       ) : (
