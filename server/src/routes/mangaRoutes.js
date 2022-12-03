@@ -13,7 +13,7 @@ import {
   review,
   reviewsByPagination,
   searchByTitle,
-} from '../controllers/mangaController'
+} from '../controllers/mangaController.js'
 
 const router = express.Router()
 

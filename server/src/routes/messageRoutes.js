@@ -1,7 +1,7 @@
 import express from 'express'
 import {
   addMessage, allMessages, lastMessage,
-} from '../controllers/messageController'
+} from '../controllers/messageController.js'
 
 const router = express.Router()
 

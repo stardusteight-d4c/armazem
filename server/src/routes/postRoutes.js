@@ -18,7 +18,7 @@ import {
   updateDiscussion,
   updatePost,
   updateReply,
-} from '../controllers/postController'
+} from '../controllers/postController.js'
 
 const router = express.Router()
 

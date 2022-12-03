@@ -7,8 +7,8 @@ import {
   register,
   registerGoogleAccount,
   verifyEmailAddress,
-} from '../controllers/authController'
-import { checkSession } from '../middlewares/authorization'
+} from '../controllers/authController.js'
+import { checkSession } from '../middlewares/authorization.js'
 
 const router = express.Router()
 

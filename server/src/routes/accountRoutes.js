@@ -22,7 +22,7 @@ import {
   sharedPosts,
   updateComment,
   updatesMangaList,
-} from '../controllers/accountController'
+} from '../controllers/accountController.js'
 
 const router = express.Router()
 

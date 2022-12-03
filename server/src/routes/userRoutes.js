@@ -9,8 +9,8 @@ import {
   updateProfileImage,
   userById,
   userByUsername,
-} from '../controllers/userController'
-import { activeUser } from '../middlewares/active-user'
+} from '../controllers/userController.js'
+import { activeUser } from '../middlewares/active-user.js'
 
 const router = express.Router()
 

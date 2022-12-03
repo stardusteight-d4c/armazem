@@ -1,4 +1,4 @@
-import { io } from './http'
+import { io } from './http.js'
 
 io.on('connection', (socket) => {
   socket.on('enter-post', (data) => {
