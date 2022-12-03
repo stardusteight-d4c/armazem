@@ -279,6 +279,7 @@ export const Discussions = ({
       </div>
       {replies.map((reply, index) => (
         <Replies
+          socket={socket}
           editValue={editValue}
           setEditValue={setEditValue}
           key={index}

@@ -2,15 +2,22 @@ import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Loader } from '../components/Loader'
-import { discussionsByPostId, postMetadataById } from '../services/api-routes'
-import { useAppSelector } from '../store/hooks'
+import {
+  discussionsByPostId,
+  hostServer,
+  postMetadataById,
+} from '../services/api-routes'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { GridWrapper } from '../components/GridWrapper'
 import { Article, DiscussionInput, Discussions } from '../components/post'
+import { askToRequestAgain } from '../store'
+import { io } from 'socket.io-client'
 
 interface Props {}
 
 export const Post = (props: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const dispatch = useAppDispatch()
   const { id: postId } = useParams()
   const [loading, setLoading] = useState(true)
   const [authorUser, setAuthorUser] = useState<User>()
@@ -21,22 +28,22 @@ export const Post = (props: Props) => {
   const [notFound, setNotFound] = useState<boolean>(false)
   const socket = useRef<any>()
 
-  // socket.current = io('http://localhost:5000')
+  socket.current = io(hostServer)
 
-  // useEffect(() => {
-  //   if (currentUser !== null && postId) {
-  //     socket.current.emit('enter-post', {
-  //       postId,
-  //       userId: currentUser._id,
-  //     })
-  //   }
-  // }, [postId])
+  useEffect(() => {
+    if (currentUser !== null && postId) {
+      socket.current.emit('enter-post', {
+        postId,
+        userId: currentUser._id,
+      })
+    }
+  }, [postId])
 
-  // socket.current.on('post-update', (data: any) => {
-  //   if (data.status === true) {
-  //     dispatch(askToRequestAgain())
-  //   }
-  // })
+  socket.current.on('post-update', (data: any) => {
+    if (data.status === true) {
+      dispatch(askToRequestAgain())
+    }
+  })
 
   useEffect(() => {
     ;(async () => {
@@ -80,7 +87,7 @@ export const Post = (props: Props) => {
         ) : (
           <>
             <Article post={post} authorUser={authorUser} />
-            <DiscussionInput discussions={discussions} />
+            <DiscussionInput discussions={discussions} socket={socket} />
             <div className={style.discussionsWrapper}>
               {discussions
                 .slice(0)

@@ -9,14 +9,14 @@ import { askToRequestAgain } from '../../store'
 
 interface Props {
   discussions: any
+  socket: React.MutableRefObject<any>
 }
 
-export const DiscussionInput = ({ discussions }: Props) => {
+export const DiscussionInput = ({ discussions, socket }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const { id: postId } = useParams()
   const [postComment, setPostComment] = useState<any>({ body: '' })
   const dispatch = useAppDispatch()
-  const socket = useRef<any>()
 
   const handleChange = (
     event:

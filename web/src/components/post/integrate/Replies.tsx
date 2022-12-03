@@ -12,7 +12,7 @@ import en_short from 'timeago.js/lib/lang/en_short'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { Button } from '../../Button'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { error, success } from '../../Toasters'
 import { askToRequestAgain } from '../../../store'
 import { Dropdown } from '../../Dropdown'
@@ -20,6 +20,7 @@ import { Dropdown } from '../../Dropdown'
 timeago.register('en_short', en_short)
 
 interface Props {
+  socket: React.MutableRefObject<any>
   reply: any
   repliesLength: any
   index: number
@@ -30,6 +31,7 @@ interface Props {
 }
 
 export const Replies = ({
+  socket,
   reply,
   editValue,
   setEditValue,
@@ -39,6 +41,7 @@ export const Replies = ({
   index,
 }: Props) => {
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const { id: postId } = useParams()
   const [userByMetadata, setUserByMetadata] = useState<any>()
   const [toUsername, setToUsername] = useState(null)
   const [replyUser, setReplyUser] = useState('')
@@ -74,6 +77,10 @@ export const Replies = ({
       })
       .then(({ data }) => {
         setActiveItem('')
+        socket.current.emit('post-update', {
+          postId,
+          userId: currentUser?._id,
+        })
         success(data.msg)
         dispatch(askToRequestAgain())
       })
