@@ -84,7 +84,9 @@ export const addNewDiscussion = async (req, res) => {
       infos: [discussionAuthor.username, postId],
     }
 
-    postAuthorUser !== userId &&
+    console.log(postAuthorUser.by.toString(), userId)
+
+    postAuthorUser.by.toString() !== userId &&
       (await Notification.create({ ...newDiscussion }))
 
     return res

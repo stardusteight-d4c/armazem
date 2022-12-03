@@ -570,8 +570,8 @@ export const notifications = async (req, res) => {
 
     const mergeArr = [...general, ...direct]
 
-    const notifications = mergeArr.sort((current) => {
-      return new Date(current.createdAt) - new Date(current.createdAt)
+    const notifications = mergeArr.sort((current, next) => {
+      return new Date(next.createdAt) - new Date(current.createdAt)
     })
 
     return res.status(200).json({ status: true, notifications })
