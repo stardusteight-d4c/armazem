@@ -40,9 +40,7 @@ export const SignUp = ({ signIn, setSignIn }: Props) => {
     ;(async () => {
       if (user.metadata) {
         const email = user.email
-        const { data } = await axios.post(verifyEmailAddress, {
-          email,
-        })
+        const { data } = await axios.get(`${verifyEmailAddress}/${email}`)
         if (data.status === true) {
           error(data.msg)
           setEmailAvailable(false)
