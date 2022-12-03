@@ -1,14 +1,14 @@
 export const hostServer = import.meta.env.VITE_SERVER
 
 // AUTH
-export const verifyUsername = `${hostServer}/api/auth/verifyUsername`
-export const emailConfirmation = `${hostServer}/api/auth/emailConfirmation`
-export const register = `${hostServer}/api/auth/register`
-export const registerGoogleAccount = `${hostServer}/api/auth/registerGoogleAccount`
-export const login = `${hostServer}/api/auth/login`
-export const verifyEmailAddress = `${hostServer}/api/auth/verifyEmailAddress`
-export const loginByGoogleProvider = `${hostServer}/api/auth/loginByGoogleProvider`
-export const authorization = `${hostServer}/api/auth/middleware/checkSession`
+export const verifyUsername = `${hostServer}/api/auth/verifyUsername` // [GET -> params] /:username
+export const emailConfirmation = `${hostServer}/api/auth/emailConfirmation` // [PUT -> body] {name, email}
+export const verifyEmailAddress = `${hostServer}/api/auth/verifyEmailAddress` // [GET -> params] /:email
+export const register = `${hostServer}/api/auth/register` // [POST -> body] {name, email, username, password}
+export const registerGoogleAccount = `${hostServer}/api/auth/registerGoogleAccount` // [POST -> body]  {name, email, username, image}
+export const login = `${hostServer}/api/auth/login` // [PUT -> body] {username, password}
+export const loginByGoogleProvider = `${hostServer}/api/auth/loginByGoogleProvider` // [PUT -> body] {email, id}
+export const authorization = `${hostServer}/api/auth/middleware/checkSession` // [PUT -> headers] Authorization: rawToken,
 
 // USER
 export const userData = `${hostServer}/api/user` // /:id
@@ -29,7 +29,7 @@ export const accountDataByUserId = `${hostServer}/api/account/accountDataByUserI
 export const rejectConnection = `${hostServer}/api/account/rejectConnection` // [DELETE -> params] /:to/:from
 export const removeConnection = `${hostServer}/api/account/removeConnection` // [DELETE -> query] ?to=<userWith>&from=<currentUser>
 export const sharedPosts = `${hostServer}/api/account/sharedPosts` // [GET -> params] /:accountId
-export const lastFivePostsOfAccount = `${hostServer}/api/account/lastFivePostsOfAccount` // /:id
+export const lastFivePostsOfAccount = `${hostServer}/api/account/lastFivePostsOfAccount` // [GET -> params] /:id
 export const postByPagination = `${hostServer}/api/account/postByPagination` // [GET -> params] /:userId/:page
 export const searchUserPostByTitle = `${hostServer}/api/account/searchUserPostByTitle` // [GET -> query] ?userId=<userId>&searchTerm=<postTitle>
 export const sharedPostByPagination = `${hostServer}/api/account/sharedPostByPagination` // [GET -> params] /:accountId/:page

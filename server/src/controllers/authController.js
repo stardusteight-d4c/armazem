@@ -7,7 +7,7 @@ import { sendEmailVerification } from '../services/nodemailer.js'
 
 export const verifyUsername = async (req, res) => {
   try {
-    const { username } = req.body
+    const username = req.params.username
     const findUsername = await User.findOne({ username })
 
     if (findUsername) {
@@ -60,7 +60,7 @@ export const emailConfirmation = async (req, res) => {
 
 export const verifyEmailAddress = async (req, res) => {
   try {
-    const { email } = req.body
+    const email = req.params.email
     const user = await User.findOne({ email }).select('-password -account')
 
     if (user) {

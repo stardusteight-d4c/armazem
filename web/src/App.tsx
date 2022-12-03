@@ -15,7 +15,11 @@ import {
   Settings,
 } from './pages'
 import { PrivateRouteAddManga } from './services/PrivateRoutes'
-import { activeUser, authorization, dataByUsername } from './services/api-routes'
+import {
+  activeUser,
+  authorization,
+  dataByUsername,
+} from './services/api-routes'
 import {
   getCurrentUserAccount,
   getUserData,
@@ -86,7 +90,7 @@ export const App = (props: Props) => {
       ;(async () => {
         try {
           const rawToken = JSON.parse(session)
-          const { data } = await axios.post(authorization, null, {
+          const { data } = await axios.put(authorization, null, {
             headers: {
               Authorization: rawToken,
             },

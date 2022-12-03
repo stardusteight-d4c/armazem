@@ -23,9 +23,7 @@ export const handleUsernameValidation = async (
   registerValues: RegisterValues
 ) => {
   const { username } = registerValues
-  const { data } = await axios.post(verifyUsername, {
-    username,
-  })
+  const { data } = await axios.get(`${verifyUsername}/${username}`)
   if (data.status === true) {
     return true
   } else {

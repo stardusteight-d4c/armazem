@@ -12,13 +12,13 @@ import { checkSession } from '../middlewares/authorization'
 
 const router = express.Router()
 
-router.post('/verifyUsername', verifyUsername)
-router.post('/emailConfirmation', emailConfirmation)
+router.get('/verifyUsername/:username', verifyUsername)
+router.put('/emailConfirmation', emailConfirmation)
+router.get('/verifyEmailAddress/:email', verifyEmailAddress)
 router.post('/register', register)
-router.post('/login', login)
 router.post('/registerGoogleAccount', registerGoogleAccount)
-router.post('/verifyEmailAddress', verifyEmailAddress)
-router.post('/loginByGoogleProvider', loginByGoogleProvider)
-router.post('/middleware/checkSession', checkSession)
+router.put('/login', login)
+router.put('/loginByGoogleProvider', loginByGoogleProvider)
+router.put('/middleware/checkSession', checkSession)
 
 export { router }

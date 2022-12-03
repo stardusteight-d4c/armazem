@@ -30,14 +30,12 @@ export const SignIn = ({ setSignIn }: Props) => {
     ;(async () => {
       if (user.metadata) {
         const email = user.email
-        const { data } = await axios.post(verifyEmailAddress, {
-          email,
-        })
+        const { data } = await axios.get(`${verifyEmailAddress}/${email}`)
         data.status === false && error('Email does not exist, try sign up')
         if (data.status === true) {
           const email = data.user.email
           const id = data.user._id
-          const { data: authData } = await axios.post(loginByGoogleProvider, {
+          const { data: authData } = await axios.put(loginByGoogleProvider, {
             email,
             id,
           })
@@ -55,7 +53,7 @@ export const SignIn = ({ setSignIn }: Props) => {
     try {
       if (handleValidation()) {
         const { username, password } = registerValues
-        const { data } = await axios.post(login, {
+        const { data } = await axios.put(login, {
           username,
           password,
         })
@@ -127,13 +125,13 @@ export const SignIn = ({ setSignIn }: Props) => {
           className="mt-2 bg-prime-purple"
         />
         <span className={style.alternativeSignIn}>Or continue with</span>
-      <Button
-        type="button"
-        onClick={() => signInWithGoogle(setUser)}
-        title="Google"
-        className="bg-prime-blue"
+        <Button
+          type="button"
+          onClick={() => signInWithGoogle(setUser)}
+          title="Google"
+          className="bg-prime-blue"
         />
-        </div>
+      </div>
     </motion.form>
   )
 }

@@ -114,7 +114,12 @@ export const Collection = (props: Props) => {
           className={style.input}
         />
         <div>
-          <Dropdown title="Filter" space="space-y-10" items={filterItems}>
+          <Dropdown
+            title="Filter"
+            space="space-y-10"
+            items={filterItems}
+            position="!h-[225px] overflow-hidden overflow-y-scroll"
+          >
             <div className={style.filter}>{filterValue}</div>
           </Dropdown>
         </div>
