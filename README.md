@@ -14,5 +14,7 @@
 :arrow_right: JSON (JavaScript Object Notation) <br /> 
 :arrow_right: Nodemailer - Email submissions <br /> 
 :arrow_right: useEffect | Handling Requests and Reacting to Data Changes with Side Effects <br /> 
+:arrow_right: Toggle Theme with Tailwind & Redux
+
 
 
