@@ -30,7 +30,7 @@ export const ConfirmEmail = ({ setProceedToConfirmEmail, setToken }: Props) => {
       setLoading(true)
       const { email, firstName, lastName } = registerValues
       const name = firstName + ' ' + lastName
-      const { data } = await axios.post(emailConfirmation, {
+      const { data } = await axios.put(emailConfirmation, {
         name,
         email,
       })
