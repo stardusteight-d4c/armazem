@@ -11,16 +11,16 @@ export const loginByGoogleProvider = `${hostServer}/api/auth/loginByGoogleProvid
 export const authorization = `${hostServer}/api/auth/middleware/checkSession` // [PUT -> headers] Authorization: rawToken,
 
 // USER
-export const userData = `${hostServer}/api/user` // /:id
-export const dataByUsername = `${hostServer}/api/user/username` // /:username
-export const updateCoverImage = `${hostServer}/api/user/updateCoverImage`
-export const updateProfileImage = `${hostServer}/api/user/updateProfileImage`
-export const searchUsersByQuery = `${hostServer}/api/user/searchUsersByQuery`
-export const activeUser = `${hostServer}/api/user/middleware/activeUser` // /:userId
-export const changeUserPassword = `${hostServer}/api/user/changeUserPassword`
-export const changeUserEmail = `${hostServer}/api/user/changeUserEmail`
-export const sendTokenChangeEmailVerification = `${hostServer}/api/user/sendTokenChangeEmailVerification`
-export const changeUserUsername = `${hostServer}/api/user/changeUserUsername`
+export const userData = `${hostServer}/api/user` // [GET -> params] /:id
+export const dataByUsername = `${hostServer}/api/user/username` // [GET -> params] /:username
+export const updateCoverImage = `${hostServer}/api/user/updateCoverImage` // [PUT -> body] {id, cover_img}
+export const updateProfileImage = `${hostServer}/api/user/updateProfileImage` // [PUT -> body] {id, user_img}
+export const searchUsersByQuery = `${hostServer}/api/user/searchUsersByQuery` // [GET -> params] /:query
+export const activeUser = `${hostServer}/api/user/middleware/activeUser` // [POST -> params] /:userId
+export const changeUserPassword = `${hostServer}/api/user/changeUserPassword` // [PUT -> body]  {userId, currentPassword, newPassword}
+export const changeUserEmail = `${hostServer}/api/user/changeUserEmail` // [PUT -> body] {userId, newEmail}
+export const sendTokenChangeEmailVerification = `${hostServer}/api/user/sendTokenChangeEmailVerification` // [POST -> body] {userId, email}
+export const changeUserUsername = `${hostServer}/api/user/changeUserUsername` // [PUT -> body] {username, userId}
 
 // ACCOUNT
 export const sendRequest = `${hostServer}/api/account/sendRequest` // [POST -> body] {to, from}

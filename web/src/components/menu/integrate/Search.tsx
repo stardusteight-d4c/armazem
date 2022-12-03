@@ -18,9 +18,7 @@ export const Search = (props: Props) => {
   const search = async (query: string) => {
     if (activeFilter === 'User') {
       await axios
-        .post(searchUsersByQuery, {
-          query,
-        })
+        .get(`${searchUsersByQuery}/${query}`)
         .then(({ data }) => setUsersSearch([data.users]))
         .catch((error) => console.log(error.toJSON()))
     } else if (activeFilter === 'Manga') {

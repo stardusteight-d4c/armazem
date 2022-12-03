@@ -69,7 +69,7 @@ export const App = (props: Props) => {
     if (currentUser?._id !== undefined) {
       handleTimeout()
       ;(async () => {
-        await axios.post(`${activeUser}/${currentUser?._id}`)
+        await axios.put(`${activeUser}/${currentUser?._id}`)
       })()
       setLoading(false)
     }

@@ -33,7 +33,7 @@ export const userByUsername = async (req, res) => {
 
 export const searchUsersByQuery = async (req, res) => {
   try {
-    const query = req.body.query
+    const query = req.params.query
     const users = await User.findOne({
       username: { $regex: new RegExp(query, 'i') },
     })

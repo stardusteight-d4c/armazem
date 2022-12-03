@@ -84,8 +84,8 @@ export const addNewDiscussion = async (req, res, next) => {
       infos: [discussionAuthor.username, postId],
     }
 
-    // se ser o próprio autor do post não notificar...
-    await Notification.create({ ...newDiscussion })
+    postAuthorUser !== userId &&
+      (await Notification.create({ ...newDiscussion }))
 
     return res
       .status(200)
