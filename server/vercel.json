@@ -1,6 +1,6 @@
 {
   "version": 2,
   "name": "armazem-server",
-  "builds": [{ "src": "app.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/app.js" }]
+  "builds": [{ "src": "/src/server.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "/src/server.js" }]
 }
