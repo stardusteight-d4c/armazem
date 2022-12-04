@@ -570,3 +570,90 @@ export const App = (props: Props) => {
 
 *<i>npmjs.com/package/jsonwebtoken</i> <br />
 
+<br />
+
+## JSON (JavaScript Object Notation)
+
+In computing, JavaScript Object Notation (JSON) is a compact, independent, open-standard format for simple and fast data exchange (parsing) between systems, specified by Douglas Crockford in 2000, which `uses human-readable text in the attribute format -value (self-descriptive nature)`. That is, a model for transmitting information in text format, widely used in web services that uses representational state transfer (REST) ​​and AJAX applications, replacing the use of XML. The standard was specified in 2000 and defined in 2013 in two competing standards, RFC7159 and ECMA-404. In 2017 RFC8259 replaced 7159 and ECMA-404 was revised.
+
+JSON is a programming language-independent data exchange format `derived from JavaScript`. But as of 2017 many programming languages ​​have included code to generate and parse data in JSON format and also convert to language objects. `The official internet media type (MIME) for JSON is application/json` and JSON filenames use the .json extension.
+
+### Description
+
+The `simplicity of JSON has helped popularize its use`, especially as an alternative to XML over AJAX. One of the advantages over XML as a data interchange format is the ease of writing a JSON parser, even in JavaScript, simply using the eval() function. Due to the presence of this JavaScript feature in all current web browsers.
+
+In practice, the development and performance arguments of the parser are rarely revealed, due to the security system in the use of eval() in addition to the increasing integration of XML processing in web browsers. For this reason JSON is typically used in environments where the size of the data stream between client and server is extremely important, where the source of the data can be explicitly trusted (favoring its use by Google, Yahoo, etc., serving millions of users) and where loss of client-side XSLT processing capabilities for data manipulation or interface generation is not a consideration.
+
+While JSON is often positioned "against" XML, it is not uncommon to see both JSON and XML being used in the same application. For example, a client-side application which integrates Google Maps data with atmospheric data via SOAP requires support for both data formats.
+
+There is growing support for JSON through the use of small third-party packages. The list of supported languages ​​includes ActionScript, C/C++, C#, ColdFusion, Java, JavaScript, OCaml, Perl, PHP, ASP 3.0, Python, Rebol, Ruby, Lua, Progress 4GL, Go Lang, Android.
+
+In December 2005, with the feature of fast data transmission, Yahoo! has started to support JSON as an option for some of its web services, as has Google.
+
+### JSON versus XML
+
+`JSON can be considered a competitor to XML in the area of ​​information exchange`. Let's look at some of the main similarities and differences between information markup models:
+
+#### Similarities:
+
+ - Represent information in text format;
+ - Have a self-descriptive nature;
+ - Both are able to represent complex information, difficult to represent in tabular format. Some examples: composite objects (objects within objects), hierarchy relationships, multivalued attributes, arrays, missing data, etc;
+ - Both can be used to transport information in AJAX applications;
+ - Both can be considered standards for data representation. XML is a W3C standard, while JSON was formalized in RFC 4627;
+ - Both are language independent. Data represented in XML and JSON can be accessed by any programming language, through specific APIs.
+
+#### Differences:
+
+ - It is not a markup language. It has no opening and closing tags;
+ - Represents information in a more compact way;
+ - Does not allow the execution of processing instructions, while it is possible in XML;
+ - It is typically intended for exchanging information, while XML has more applications. For example: there are databases in XML format and structured in native XML DBMS.
+ 
+ 
+### Data types, syntax and examples
+
+The basic data types of JSON are:
+
+ - <strong>Number</strong>: a number that can have a sign, a fractional part separated by a dot (. , as is usual in some countries) and eventually use the exponential E notation, but cannot include non-numbers like NaN. There is no distinction between integers and floating point numbers, reflecting the fact that JavaScript stores any number as double precision floating point, but other languages ​​that implement JSON may have differences in how numbers are represented.
+ - <strong>String</strong>: A string of zero or more Unicode characters. Strings are delimited by double quotes (") and support the backslash (\) as an escape character.
+ - <strong>Boolean</strong>: one of the values ​​true or false, corresponding to the logical values ​​true and false.
+ - <strong>Array</strong>: an ordered list of zero or more values, each of which can be of any type. Arrays are delimited by square brackets ([]), within which are the values, also known as elements, separated by commas. The first element is the one with index 0.
+ - <strong>Object</strong>: an unordered collection of attribute-value pairs where the attributes (or names or keys) `are strings`. As objects are intended to represent associative arrays (ECMA-404), it is recommended, but not mandatory, that each attribute be unique within an object. Objects are delimited by braces ({}) and use commas to separate each pair, whereas in the pair the attribute and value are separated by a colon (:).
+ - <strong>null</strong>: Empty or null value (not to be confused with zero) represented by the word null.
+
+Whitespace is allowed with boundaries and ignored around and between syntactic elements, but not within a string. Only four characters are treated like this: the space, the horizontal tab (TAB), the line feed (LF) and the carriage return (CR). In particular, the byte order mark must not appear in a JSON document as per the standard. JSON does not have a syntax for comments. `For data exchange in an open ecosystem, JSON must be encoded in UTF-8.`
+
+ - Example of a representation of a menu
+
+```json
+{"menu":{
+    "id": "file",
+    "value": "File",
+    "popup":{
+       "menuitem": [
+       {"value": "New", "onclick": "CreateNewDoc()"},
+       {"value": "Open", "onclick": "OpenDoc()"},
+       {"value": "Close", "onclick": "CloseDoc()"}
+      ]
+    }
+}}
+```
+
+ - The above code in JSON represented in the XML standard:
+
+```xml
+<menu id="file" value="File">
+  <popup>
+    <menuitem value="New" onclick="CreateNewDoc()" />
+    <menuitem value="Open" onclick="OpenDoc()" />
+    <menuitem value="Close" onclick="CloseDoc()" />
+  </popup>
+</menu>
+```
+
+As of 2018, all major browsers support at least the fifth edition of ECMAScript which provides a safe and fast way to decode JSON:
+
+ - `var p = JSON.parse(json_string)`
+
+*<i>en.wikipedia.org/wiki/JSON</i> <br />
