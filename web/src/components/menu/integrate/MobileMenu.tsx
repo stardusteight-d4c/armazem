@@ -107,13 +107,14 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
   }
 
   const html = document.querySelector('html')
-  useEffect(() => {
     if (html) {
+      console.log('openMobileMenu', openMobileMenu);
       openMobileMenu
         ? (html.style.overflow = 'hidden')
         : (html.style.overflow = 'auto')
     }
-  }, [openMobileMenu, html])
+
+  
 
   return (
     <>
