@@ -10,7 +10,7 @@ export const Feed = (props: Props) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
-    }, 500)
+    }, 1000)
   }, [])
 
   return (
