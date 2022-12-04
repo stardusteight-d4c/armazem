@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import useWindowDimensions from '../../../hooks/useWindowDimensions'
 import { useAppSelector } from '../../../store/hooks'
 
 interface Props {
@@ -10,6 +11,8 @@ interface Props {
 
 export const SidebarItem = ({ to, name, activeIcon, inactiveIcon }: Props) => {
   const path = location.pathname
+  const { width } = useWindowDimensions()
+  const isMobile = width < 768
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
   )
@@ -23,7 +26,9 @@ export const SidebarItem = ({ to, name, activeIcon, inactiveIcon }: Props) => {
       `}
     >
       <i className={`text-2xl ${path === to ? activeIcon : inactiveIcon}`} />
-      {!minimizeSidebar && <span className={style.itemName}>{name}</span>}
+      {!minimizeSidebar || isMobile && (
+        <span className={style.itemName}>{name}</span>
+      )}
     </Link>
   )
 }
