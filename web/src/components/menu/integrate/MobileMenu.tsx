@@ -107,11 +107,13 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
   }
 
   const html = document.querySelector('html')
-  if (html) {
-    openMobileMenu
-      ? ((html.style.overflow = 'hidden'), (html.style.maxHeight = '100vh'))
-      : (html.style.overflow = 'auto')
-  }
+  useEffect(() => {
+    if (html) {
+      openMobileMenu
+        ? ((html.style.overflow = 'hidden'), (html.style.maxHeight = '100vh'))
+        : ((html.style.overflow = 'auto'), (html.style.maxHeight = 'auto'))
+    }
+  }, [html, openMobileMenu])
 
   return (
     <>
