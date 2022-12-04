@@ -74,7 +74,7 @@ export const Navbar = (props: Props) => {
         )}
       </AnimatePresence>
       <div
-        onClick={() => setOpenMobileMenu(!openMobileMenu)}
+        onClick={() => setOpenMobileMenu(true)}
         className={style.mobileMenu}
       >
         <i className={style.menuIcon} />

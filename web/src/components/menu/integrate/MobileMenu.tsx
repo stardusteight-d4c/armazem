@@ -118,7 +118,7 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
       <motion.aside {...motionAside}>
         <header className={style.header}>
           <i
-            onClick={() => setOpenMobileMenu(!openMobileMenu)}
+            onClick={() => setOpenMobileMenu(false)}
             className={style.menuIcon}
           />
           <div className={style.logoContainer}>
