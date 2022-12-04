@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { handleOpenModal } from '../../store'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { BackToTop } from '../BackToTop'
 import { SwitchTheme } from '../SwitchTheme'
 import { Notifications } from './integrate/Notifications'
 
@@ -10,6 +12,20 @@ export const MobileNav = (props: Props) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const openModal = useAppSelector((state) => state.armazem.openModal)
+  const [scrollPosition, setScrollPosition] = useState(0)
+
+  const handleScroll = () => {
+    const position = window.pageYOffset
+    setScrollPosition(position)
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const html = document.querySelector('html')
   if (html) {
@@ -19,24 +35,29 @@ export const MobileNav = (props: Props) => {
   }
 
   return (
-    <aside className={style.wrapper}>
-      <i
-        title="New post"
-        className={style.newPostIcon}
-        onClick={() => dispatch(handleOpenModal('PostInput'))}
-      />
-      <Notifications isMobile={true} />
-      <SwitchTheme />
-      <i
-        onClick={() => dispatch(handleOpenModal('ChatMobile'))}
-        className={style.messagesIcon}
-      />
-      <i
-        title="Settings"
-        onClick={() => navigate('/settings')}
-        className={style.settingsIcons}
-      />
-    </aside>
+    <>
+      {scrollPosition > 10 && (
+        <aside className={style.wrapper}>
+          <BackToTop />
+          <i
+            title="New post"
+            className={style.newPostIcon}
+            onClick={() => dispatch(handleOpenModal('PostInput'))}
+          />
+          <Notifications isMobile={true} />
+          <SwitchTheme />
+          <i
+            onClick={() => dispatch(handleOpenModal('ChatMobile'))}
+            className={style.messagesIcon}
+          />
+          <i
+            title="Settings"
+            onClick={() => navigate('/settings')}
+            className={style.settingsIcons}
+          />
+        </aside>
+      )}
+    </>
   )
 }
 
