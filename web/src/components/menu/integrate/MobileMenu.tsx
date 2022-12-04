@@ -108,13 +108,10 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
 
   const html = document.querySelector('html')
     if (html) {
-      console.log('openMobileMenu', openMobileMenu);
       openMobileMenu
         ? (html.style.overflow = 'hidden')
         : (html.style.overflow = 'auto')
     }
-
-  
 
   return (
     <>
@@ -152,7 +149,7 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
 }
 
 const style = {
-  wrapper: `scrollbar-hide absolute md:hidden inset-0 z-50 min-h-screen pb-10  border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
+  wrapper: `scrollbar-hide fixed md:hidden inset-0 overflow-hidden z-50 min-h-screen max-h-screen pb-10  border-r border-r-dawn-weak/20 dark:border-r-dusk-weak/20 text-dusk-main dark:text-dawn-main bg-fill-weak dark:bg-fill-strong`,
   header: `bg-fill-weak w-screen lg:w-full relative dark:bg-fill-strong z-30 border-b border-b-dawn-weak/20 dark:border-b-dusk-weak/20 justify-between px-3 h-16 md:px-12 flex items-center md:hidden`,
   menuIcon: `ri-menu-2-line text-3xl p-1 cursor-pointer`,
   logoContainer: `flex items-center justify-center gap-x-2`,
