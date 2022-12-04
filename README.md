@@ -510,51 +510,51 @@ Establishing a constant connection with the access verification middleware, if t
 export const App = (props: Props) => {
   const session = localStorage.getItem('session')
 
-// SESSION MIDDLEWARE
-useEffect(() => {
-if (location.pathname === '/login' || location.pathname === '/') {
-  setLoading(true)
-}
-if (session) {
-  ;(async () => {
-    try {
-      const rawToken = JSON.parse(session)
-      const { data } = await axios.put(authorization, null, {
-        headers: {
-          Authorization: rawToken,
-        },
-      })
-      if (data.status === true) {
-        dispatch(handleAuthSession(data.session))
-        await dispatch(getUserData())
-        await dispatch(getCurrentUserAccount())
-        if (location.pathname === '/login') {
-          navigate('/')
+ // SESSION MIDDLEWARE
+ useEffect(() => {
+  if (location.pathname === '/login' || location.pathname === '/') {
+    setLoading(true)
+  }
+  if (session) {
+    ;(async () => {
+      try {
+        const rawToken = JSON.parse(session)
+        const { data } = await axios.put(authorization, null, {
+          headers: {
+            Authorization: rawToken,
+          },
+        })
+        if (data.status === true) {
+          dispatch(handleAuthSession(data.session))
+          await dispatch(getUserData())
+          await dispatch(getCurrentUserAccount())
+          if (location.pathname === '/login') {
+            navigate('/')
+          }
+          setTimeout(() => {
+            setLoading(false)
+          }, 200)
+        } else {
+          navigate('/login')
+          setTimeout(() => {
+            setLoading(false)
+          }, 200)
         }
-        setTimeout(() => {
-          setLoading(false)
-        }, 200)
-      } else {
+      } catch (err) {
+        console.error(err)
         navigate('/login')
         setTimeout(() => {
           setLoading(false)
         }, 200)
       }
-    } catch (err) {
-      console.error(err)
-      navigate('/login')
-      setTimeout(() => {
-        setLoading(false)
-      }, 200)
-    }
-  })()
-} else {
-  setTimeout(() => {
-    setLoading(false)
-  }, 200)
-  navigate('/login')
-}
-}, [session, requestAgain])
+    })()
+  } else {
+    setTimeout(() => {
+      setLoading(false)
+    }, 200)
+    navigate('/login')
+  }
+ }, [session, requestAgain])
 
  return (
     <>
