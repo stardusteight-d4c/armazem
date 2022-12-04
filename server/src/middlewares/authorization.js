@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-export const checkSession = async (req, res, next) => {
+export const checkSession = async (req, res) => {
   try {
     const sessionToken = req.headers.authorization
     const decode = jwt.verify(sessionToken, process.env.JWT_SECRET)
