@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { GridWrapper } from '../components/GridWrapper'
 import { Article, DiscussionInput, Discussions } from '../components/post'
 import { askToRequestAgain } from '../store'
-import { io } from 'socket.io-client'
+// import { io } from 'socket.io-client'
 
 interface Props {}
 
@@ -28,21 +28,21 @@ export const Post = (props: Props) => {
   const [notFound, setNotFound] = useState<boolean>(false)
   const socket = useRef<any>()
 
-  socket.current = io(hostServer)
+  // socket.current = io(hostServer)
 
-  useEffect(() => {
-    if (currentUser !== null && postId) {
-      socket.current.emit('enter-post', {
-        postId,
-      })
-    }
-  }, [postId])
+  // useEffect(() => {
+  //   if (currentUser !== null && postId) {
+  //     socket.current.emit('enter-post', {
+  //       postId,
+  //     })
+  //   }
+  // }, [postId])
 
-  socket.current.on('post-update', (data: any) => {
-    if (data.status === true) {
-      dispatch(askToRequestAgain())
-    }
-  })
+  // socket.current.on('post-update', (data: any) => {
+  //   if (data.status === true) {
+  //     dispatch(askToRequestAgain())
+  //   }
+  // })
 
   useEffect(() => {
     ;(async () => {

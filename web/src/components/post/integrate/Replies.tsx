@@ -77,10 +77,10 @@ export const Replies = ({
       })
       .then(({ data }) => {
         setActiveItem('')
-        socket.current.emit('post-update', {
-          postId,
-          userId: currentUser?._id,
-        })
+        // socket.current.emit('post-update', {
+        //   postId,
+        //   userId: currentUser?._id,
+        // })
         success(data.msg)
         dispatch(askToRequestAgain())
       })

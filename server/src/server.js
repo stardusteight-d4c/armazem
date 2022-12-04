@@ -1,5 +1,5 @@
 import { serverHttp } from "./http.js"
-import './websocket.js'
+// import './websocket.js'
 
 // STARTING SERVER
 serverHttp.listen(process.env.PORT, () => {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
-import { io } from 'socket.io-client'
+// import { io } from 'socket.io-client'
 import { addMessage, allMessages, hostServer } from '../../services/api-routes'
 import { useAppSelector } from '../../store/hooks'
 import { error } from '../Toasters'
@@ -15,28 +15,28 @@ export const Chat = ({ currentChat }: Props) => {
   const [messages, setMessages] = useState<any>([])
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const [newMessage, setNewMessage] = useState<boolean>(false)
-  const socket = useRef<any>()
+  // const socket = useRef<any>()
   const scrollRef = useRef<null | any | HTMLDivElement>()
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  socket.current = io(hostServer)
+  // socket.current = io(hostServer)
 
-  useEffect(() => {
-    if (currentChat) {
-      socket.current.emit('enter-chat', {
-        userId: currentUser?._id,
-      })
-    }
-  }, [currentUser, currentChat])
+  // useEffect(() => {
+  //   if (currentChat) {
+  //     socket.current.emit('enter-chat', {
+  //       userId: currentUser?._id,
+  //     })
+  //   }
+  // }, [currentUser, currentChat])
 
-  socket.current.on('chat-update', (data: any) => {
-    if (data.status === true) {
-      setNewMessage(true)
-    }
-  })
+  // socket.current.on('chat-update', (data: any) => {
+  //   if (data.status === true) {
+  //     setNewMessage(true)
+  //   }
+  // })
 
   const handleSendMsg = async () => {
     if (message.length > 0) {
@@ -50,9 +50,9 @@ export const Chat = ({ currentChat }: Props) => {
     }
     setMessage('')
     setNewMessage(true)
-    socket.current.emit('chat-update', {
-      to: currentChat._id,
-    })
+    // socket.current.emit('chat-update', {
+    //   to: currentChat._id,
+    // })
   }
 
   useEffect(() => {

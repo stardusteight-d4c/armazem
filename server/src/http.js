@@ -8,7 +8,7 @@ import { router as accountRoutes } from './routes/accountRoutes.js'
 import { router as postRoutes } from './routes/postRoutes.js'
 import { router as mangaRoutes } from './routes/mangaRoutes.js'
 import { router as messageRoutes } from './routes/messageRoutes.js'
-import { Server } from 'socket.io'
+// import { Server } from 'socket.io'
 import http from 'http'
 
 // ENVIRONMENT VARIABLES
@@ -53,13 +53,13 @@ mongoose
   })
 
 // INSTANTING SOCKET IO SERVER
-const io = new Server(serverHttp, {
-  cors: {
-    origin: process.env.ORIGIN,
-    methods: ['GET', 'POST'],
-    transports: ['websocket', 'polling'],
-  },
-})
+// const io = new Server(serverHttp, {
+//   cors: {
+//     origin: process.env.ORIGIN,
+//     methods: ['GET', 'POST'],
+//     transports: ['websocket', 'polling'],
+//   },
+// })
 
-export { serverHttp, io }
+export { serverHttp }
 

@@ -38,10 +38,10 @@ export const DiscussionInput = ({ discussions, socket }: Props) => {
     if (data.status === true) {
       success(data.msg)
       setPostComment({ body: '' })
-      socket.current.emit('post-update', {
-        postId,
-        userId: currentUser?._id,
-      })
+      // socket.current.emit('post-update', {
+      //   postId,
+      //   userId: currentUser?._id,
+      // })
       dispatch(askToRequestAgain())
     }
     if (data.status === false) {

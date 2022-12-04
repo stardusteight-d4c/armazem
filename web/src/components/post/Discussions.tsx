@@ -87,10 +87,10 @@ export const Discussions = ({
     if (data.status === true) {
       setActiveItem('')
       success(data.msg)
-      socket.current.emit('post-update', {
-        postId,
-        userId: currentUser?._id,
-      })
+      // socket.current.emit('post-update', {
+      //   postId,
+      //   userId: currentUser?._id,
+      // })
       dispatch(askToRequestAgain())
     }
   }
