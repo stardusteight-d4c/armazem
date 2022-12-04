@@ -106,12 +106,14 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
     className: style.wrapper,
   }
 
-  const body = document.querySelector('body')
-  if (body) {
-    openMobileMenu
-      ? (body.style.overflow = 'hidden')
-      : (body.style.overflow = 'auto')
-  }
+  const html = document.querySelector('html')
+  useEffect(() => {
+    if (html) {
+      openMobileMenu
+        ? (html.style.overflow = 'hidden')
+        : (html.style.overflow = 'auto')
+    }
+  }, [openMobileMenu, html])
 
   return (
     <>
