@@ -57,6 +57,7 @@ export const Navbar = (props: Props) => {
 
   const html = document.querySelector('html')
   useEffect(() => {
+    const html = document.querySelector('html')
     if (html) {
       openMobileMenu
         ? ((html.style.overflow = 'hidden'),
@@ -72,16 +73,9 @@ export const Navbar = (props: Props) => {
     <nav className={style.wrapper}>
       {rendersBreakMenu()}
       <AnimatePresence>
-        {openMobileMenu && (
-          <MobileMenu
-            setOpenMobileMenu={setOpenMobileMenu}
-          />
-        )}
+        {openMobileMenu && <MobileMenu setOpenMobileMenu={setOpenMobileMenu} />}
       </AnimatePresence>
-      <div
-        onClick={() => setOpenMobileMenu(true)}
-        className={style.mobileMenu}
-      >
+      <div onClick={() => setOpenMobileMenu(true)} className={style.mobileMenu}>
         <i className={style.menuIcon} />
       </div>
       <Link to="/" className={style.logoContainer}>
