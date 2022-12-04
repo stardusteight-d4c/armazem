@@ -350,3 +350,223 @@ The body of the response contains the resource representation. The server select
 The response also contains headers or metadata about the response. They provide more context about the response and include information such as server, encoding, date, and content type.
 
 *<i>aws.amazon.com/what-is/restful-api/?nc1=h_ls</i> <br />
+
+<br />
+
+## JSON Web Token (JWT) and Authentication <br /> 
+
+The JSON Web Token (JWT) `is an Internet standard for creating optionally signed and/or encrypted data whose payload contains JSON asserting some number of claims`. Tokens are signed using a private secret or public/private key.
+
+For example, a server might generate a token with the claim "logged in as administrator" and give it to a client. The client can then use this token to prove that they are logged in as an administrator. Tokens can be signed by a party's (usually the server's) private key, so that the party can later verify that the token is legitimate. If the other party, by some suitable and reliable means, is in possession of the corresponding public key, it can also verify the token's legitimacy.
+
+The tokens are designed to be compact, URL-safe, and usable, especially in a web browser `single sign-on` context. JWT claims can generally be used to pass the identity of authenticated users between an identity provider and a service provider, or any other type of claim as required by business processes.
+
+### Structure
+
+A JWT is composed of three parts, the `header`, the `payload` and the `signature`, all of which are `written in JSON, and are encoded using Base64`.
+
+The `header` specifies whether the token will be signed, and if so which algorithm is used for the signature using the mandatory `alg (algorithm)` declaration. It may also contain the optional `typ (media type)` and `cty (content type)` declarations.
+
+```json
+{
+"alg": "HS256",
+"typ": "JWT"
+}
+```
+
+The `payload` can contain any type of data relevant to the application, there are no mandatory declarations.
+
+```json
+{ 
+"sub": "1234567890",
+"name": "John Doe",
+"admin": true
+}
+```
+
+The `signature` consists of encoding and encrypting the header, payload and a secret. This field is used to prove the authenticity of a token, preventing it from being modified by a malicious agent. The statements registered for the signature are:
+
+ - <strong>iss (issuer)</strong> who created the token;
+ - <strong>sub (subject)</strong> who the token refers to;
+ - <strong>aud(audience)</strong> for whom the token is expected;
+ - <strong>exp (expiration)</strong> expiration date;
+ - <strong>nbf (not before)</strong> from when the token is valid;
+ - <strong>iat (issued at)</strong> creation date;
+ - <strong>jti (jwt id)</strong> unique identifier;
+
+*<i>en.wikipedia.org/wiki/JSON_Web_Token</i> <br />
+
+### Sessions and Authentication with jsonwebtoken
+
+ - `npm install jsonwebtoken`
+
+#### Generating token 
+
+ - `jwt.sign(payload, secretOrPrivateKey, [options, callback])`
+
+`(Asynchronous)` If a callback is supplied, the callback is called with the err or the JWT.
+`(Synchronous)` Returns the JsonWebToken as string
+
+ - `payload` could be an object literal, buffer or string representing valid JSON.
+
+*<i>Please note that `exp or any other claim is only set if the payload is an object literal`. Buffer or string payloads are not checked for JSON validity. If payload is not a buffer or a string, it will be coerced into a string using `JSON.stringify`.</i>
+
+ - `secretOrPrivateKey` is a string, buffer, or object containing either the secret for HMAC algorithms or the PEM encoded private key for RSA and ECDSA. In case of a private key with passphrase an object { key, passphrase } can be used (based on crypto documentation), in this case be sure you pass the algorithm option.
+
+###### options:
+
+ - <strong>algorithm</strong> (default: HS256)
+ - <strong>expiresIn</strong>: expressed in seconds or a string describing a time span zeit/ms.
+
+*<i>Eg: 60, `2 days`, `10h`, `7d`. A numeric value is interpreted as a seconds count. If you use a string be sure you provide the time units (days, hours, etc), otherwise milliseconds unit is used by default ("120" is equal to "120ms").</i>
+
+ - <strong>notBefore</strong>
+ - <strong>audience</strong>
+ - <strong>issuer</strong>
+ - <strong>jwtid</strong>
+ - <strong>subject</strong>
+ - <strong>noTimestamp</strong>
+ - <strong>header</strong>
+ - <strong>keyid</strong>
+ - <strong>mutatePayload</strong>: if true, the sign function will modify the payload object directly. This is useful if you need a raw reference to the payload after claims have been applied to it but before it has been encoded into a token.
+
+
+```js
+// server/src/controllers/authController.js
+
+export const register = async (req, res) => {
+  try {
+    const { name, email, username, password } = req.body
+    const hashedPassword = await brcypt.hash(password, 10)
+
+    const user = await User.create({
+      name,
+      email,
+      username,
+      password: hashedPassword,
+    })
+    const account = await Account.create({
+      user: user._id,
+    })
+    await User.findByIdAndUpdate(user._id, {
+      account: account._id,
+    })
+
+    // create a jwt from the payload that will expire in 7 days
+    const sessionToken = jwt.sign( 
+      { user_id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '7d',
+      }
+    )
+
+    // returns the session token to the client
+    return res.status(200).json({
+      status: true,
+      msg: 'The user has been registered',
+      id: user._id,
+      session: sessionToken, 
+    })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).json({
+      status: false,
+      msg: error.message,
+    })
+  }
+}
+```
+
+#### Verifying token
+
+ - `jwt.verify(token, secretOrPublicKey, [options, callback])`
+
+`(Asynchronous)` If a callback is supplied, function acts asynchronously. The callback is called with the decoded payload if the signature is valid and optional expiration, audience, or issuer are valid. If not, it will be called with the error.
+`(Synchronous)` If a callback is not supplied, function acts synchronously. Returns the payload decoded if the signature is valid and optional expiration, audience, or issuer are valid. If not, it will throw the error.
+
+ - `token` is the JsonWebToken string
+ - `secretOrPublicKey` is a string or buffer containing either the secret for HMAC algorithms, or the PEM `encoded public key` for RSA and ECDSA. If jwt.verify is called asynchronous, secretOrPublicKey can be a function that should fetch the secret or public key. 
+
+```js
+// server/src/middlewares/authorization.js
+
+export const checkSession = async (req, res) => {
+  try {
+    const sessionToken = req.headers.authorization
+    const decode = jwt.verify(sessionToken, process.env.JWT_SECRET)
+    return res.status(200).json({ status: true, session: decode })
+  } catch (error) {
+    return res.json({ status: false, msg: 'Expired or invalid token' })
+  }
+}
+```
+
+Establishing a constant connection with the access verification middleware, if the user token is no longer valid, it will redirect to the login page, the login page also checks this token, if there is a valid one, the user will be redirected for the feed.
+
+```jsx
+// web/src/App.tsx
+
+export const App = (props: Props) => {
+  const session = localStorage.getItem('session')
+
+ // SESSION MIDDLEWARE
+ useEffect(() => {
+  if (location.pathname === '/login' || location.pathname === '/') {
+    setLoading(true)
+  }
+  if (session) {
+    ;(async () => {
+      try {
+        const rawToken = JSON.parse(session)
+        const { data } = await axios.put(authorization, null, {
+          headers: {
+            Authorization: rawToken,
+          },
+        })
+        if (data.status === true) {
+          dispatch(handleAuthSession(data.session))
+          await dispatch(getUserData())
+          await dispatch(getCurrentUserAccount())
+          if (location.pathname === '/login') {
+            navigate('/')
+          }
+          setTimeout(() => {
+            setLoading(false)
+          }, 200)
+        } else {
+          navigate('/login')
+          setTimeout(() => {
+            setLoading(false)
+          }, 200)
+        }
+      } catch (err) {
+        console.error(err)
+        navigate('/login')
+        setTimeout(() => {
+          setLoading(false)
+        }, 200)
+      }
+    })()
+  } else {
+    setTimeout(() => {
+      setLoading(false)
+    }, 200)
+    navigate('/login')
+  }
+ }, [session, requestAgain])
+
+ return (
+    <>
+      {openModal && handleOpenModal(openModal)}
+      <Toaster position="top-left" />
+      <Routes>
+      // ...
+      </Routes>
+    </>
+  )
+}
+```
+
+*<i>npmjs.com/package/jsonwebtoken</i> <br />
+
