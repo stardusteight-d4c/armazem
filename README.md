@@ -726,3 +726,199 @@ export async function sendEmailVerification(email, name, token) {
 ```
 
 *<i>nodemailer.com/usage</i> <br />
+
+<br />
+
+## useEffect & Axios | Handling Requests and Reacting to Data Changes with Side Effects 
+
+useEffect is a React Hook that lets you synchronize a component with an `external system`. The useEffect Hook allows you to perform side effects in your components. Some examples of side effects are: `fetching data`, `directly updating the DOM`, and `timers`.
+
+useEffect accepts two arguments. The second argument is optional.
+
+ - `useEffect(function, dependencies?)`
+ 
+Let's use a timer as an example.
+
+```jsx
+// Use setTimeout() to count 1 second after initial render:
+
+import { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
+
+function Timer() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCount((count) => count + 1);
+    }, 1000);
+  });
+
+  return <h1>I've rendered {count} times!</h1>;
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Timer />);
+```
+
+But wait!! It keeps counting even though it should only count once!
+
+`useEffect runs on every render. That means that when the count changes, a render happens, which then triggers another effect.`
+
+This is not what we want. There are several ways to control when side effects run.
+
+We should always include the second parameter which accepts an array. We can optionally pass `dependencies` to useEffect in this array.
+
+ - <strong>1. No dependency passed</strong>:
+
+```jsx
+useEffect(() => {
+  //Runs on every render
+});
+```
+
+ - <strong>2. An empty array</strong>:
+
+```jsx
+useEffect(() => {
+  //Runs only on the first render
+}, []);
+```
+
+ - <strong>3. Props or state values</strong>:
+
+```jsx
+useEffect(() => {
+  //Runs on the first render
+  //And any time any dependency value changes
+}, [prop, state]);
+```
+
+So, to fix this issue, let's only run this effect on the initial render.
+
+```jsx
+// Only run the effect on the initial render:
+
+import { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
+
+function Timer() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCount((count) => count + 1);
+    }, 1000);
+  }, []); // <- add empty brackets here
+
+  return <h1>I've rendered {count} times!</h1>;
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Timer />);
+```
+
+```jsx
+// Here is an example of a useEffect Hook that is dependent on a variable. 
+// If the count variable updates, the effect will run again:
+
+import { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  const [calculation, setCalculation] = useState(0);
+
+  useEffect(() => {
+    setCalculation(() => count * 2);
+  }, [count]); // <- add the count variable here
+
+  return (
+    <>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount((c) => c + 1)}>+</button>
+      <p>Calculation: {calculation}</p>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Counter />);
+```
+*<i>w3schools.com/react/react_useeffect.asp</i> <br />
+
+### Axios - make HTTP requests
+
+The most common way for frontend programs to communicate with servers is through the `HTTP protocol`. You are probably familiar with the `Fetch API` and the `XMLHttpRequest` interface, which allows you to fetch resources and make HTTP requests.
+
+As with Fetch, Axios is promise-based. However, it provides a more powerful and flexible feature set.
+
+Advantages of using Axios over the native Fetch API include:
+
+ - Request and response interception
+ - Streamlined error handling
+ - Protection against XSRF
+ - Support for upload progress
+ - Response timeout
+ - The ability to cancel requests
+ - Support for older browsers
+ - Automatic JSON data transformation
+
+Axios also provides a set of shorthand methods for performing different types of requests. The methods are as follows:
+
+ - axios.request(config)
+ - axios.get(url[, config])
+ - axios.delete(url[, config])
+ - axios.head(url[, config])
+ - axios.options(url[, config])
+ - axios.post(url[, data[, config]])
+ - axios.put(url[, data[, config]])
+ - axios.patch(url[, data[, config]])
+
+`By coupling requests with the useEffect hook it is possible to control and manage these requests through their dependency array:`
+
+```tsx
+// web/src/components/feed/integrate/TrendingPost.tsx
+
+// ...
+
+interface Props {
+  postId: string
+}
+
+export const TrendingPost = ({ postId }: Props) => {
+  const currentUser = useAppSelector((state) => state.armazem.currentUser)
+  const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
+  const [post, setPost] = useState<Post | null>(null)
+  const [authorUser, setAuthorUser] = useState<User>()
+  const [loading, setLoading] = useState<boolean>(true)
+  const [requestAgain, setRequestAgain] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    postId &&
+      (async () => {
+        await axios
+          .get(`${postMetadataById}/${postId}`)
+          .then(({ data }) => {
+            setPost(data.post)
+            setAuthorUser(data.authorUser)
+            setLoading(false)
+          })
+          .catch((error) => console.log(error.toJSON()))
+      })()
+  }, [postId, requestAgain])
+
+  
+  // ...
+  return (
+    <motion.article className={style.wrapper}>
+      {rendersContent()}
+      <div className={style.divider} />
+      {rendersPostState()}
+    </motion.article>
+  )
+}
+```
+
+*<i>blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios</i> <br />
