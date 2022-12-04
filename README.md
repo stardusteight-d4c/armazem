@@ -657,3 +657,72 @@ As of 2018, all major browsers support at least the fifth edition of ECMAScript 
  - `var p = JSON.parse(json_string)`
 
 *<i>en.wikipedia.org/wiki/JSON</i> <br />
+
+<br />
+
+## Nodemailer - Email submissions 
+
+Nodemailer is a module for Node.js applications `to allow easy as cake email sending`. The project got started back in 2010 when there was no sane option to send email messages, today it is the solution most Node.js users turn to by default.
+
+### Setting it up
+
+##### Install Nodemailer from npm
+
+ - `npm install nodemailer`
+ 
+##### To send emails you need a transporter object
+
+ - `let transporter = nodemailer.createTransport(transport[, defaults])`
+ 
+###### Where
+
+ - `transporter` is going to be an object that is able to send mail;
+ - `transport` is the transport configuration object, connection url or a transport plugin instance;
+ - `defaults` is an object that defines default values for mail options.
+ 
+You have to create the transporter object only once. If you already have a transporter object you can use it to send mail as much as you like. 
+
+#### SMTP transport
+
+SMTP is the main transport in Nodemailer for delivering messages. `SMTP is also the protocol used between different email hosts, so its truly universal`. Almost every email delivery provider supports SMTP based sending, even if they mainly push their API based sending. APIs might have more features but using these also means vendor lock-in while in case of SMTP you only need to change the configuration options to replace one provider with another and you’re good to go.
+
+##### General options
+
+ - <strong>port</strong> – is the port to connect to (defaults to 587 if is secure is false or 465 if true)
+ - <strong>host</strong> – is the hostname or IP address to connect to (defaults to ‘localhost’)
+ - <strong>auth</strong> – defines authentication data (see authentication section below)
+ - <strong>authMethod</strong> – defines preferred authentication method, defaults to ‘PLAIN’
+
+
+```js
+import nodemailer from 'nodemailer'
+
+// NODEMAILER CONFIGURATION
+export async function sendEmailVerification(email, name, token) {
+  var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    host: 'smtp.ethereal.email',
+    auth: {
+      user: 'stardusteight.d4cc@gmail.com',
+      pass: '*********', // get in google Two-step verification
+    },
+  })
+
+  // SEND EMAIL WITH DEFINED TRANSPORT OBJECT
+  await transporter.sendMail({
+    subject: 'Armazem',
+    from: '"Developer at Armazem 👻" <stardusteight.d4cc@gmail.com>',
+    to: email,
+    text: `Email Confirmation - Hello, ${name}! Thank you for subscribing. Here is your confirmation code: ${token}`,
+    html: `
+      <div>
+      <h2>Email Confirmation</h2>
+      <p>Hello, ${name}!</p>
+      <p>Thank you for subscribing. Here is your confirmation code:</p>
+      <h3 style="color:black;">${token}</h3>
+      </div>`,
+  })
+}
+```
+
+*<i>nodemailer.com/usage</i> <br />
