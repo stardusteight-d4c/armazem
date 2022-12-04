@@ -104,25 +104,25 @@ export const App = (props: Props) => {
             }
             setTimeout(() => {
               setLoading(false)
-            }, 1000)
+            }, 200)
           } else {
             navigate('/login')
             setTimeout(() => {
               setLoading(false)
-            }, 1000)
+            }, 200)
           }
         } catch (err) {
           console.error(err)
           navigate('/login')
           setTimeout(() => {
             setLoading(false)
-          }, 1000)
+          }, 200)
         }
       })()
     } else {
       setTimeout(() => {
         setLoading(false)
-      }, 1000)
+      }, 200)
       navigate('/login')
     }
   }, [session, requestAgain])
