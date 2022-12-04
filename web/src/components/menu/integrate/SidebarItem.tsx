@@ -16,7 +16,7 @@ export const SidebarItem = ({ to, name, activeIcon, inactiveIcon }: Props) => {
   const minimizeSidebar = useAppSelector(
     (state) => state.armazem.minimizeSidebar
   )
-
+  
   return (
     <Link
       to={to}
@@ -26,7 +26,7 @@ export const SidebarItem = ({ to, name, activeIcon, inactiveIcon }: Props) => {
       `}
     >
       <i className={`text-2xl ${path === to ? activeIcon : inactiveIcon}`} />
-      {!minimizeSidebar || isMobile && (
+      {(!minimizeSidebar || isMobile) && (
         <span className={style.itemName}>{name}</span>
       )}
     </Link>
