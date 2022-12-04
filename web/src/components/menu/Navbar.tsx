@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SwitchTheme } from '../SwitchTheme'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
@@ -37,13 +37,6 @@ export const Navbar = (props: Props) => {
     { item: 'Logout', function: () => handleLogout() },
   ]
 
-  const html = document.querySelector('html')
-  if (html) {
-    openMobileMenu
-      ? (html.style.overflow = 'hidden')
-      : (html.style.overflow = 'auto')
-  }
-
   const rendersBreakMenu = () => (
     <>
       {minimizeSidebar ? (
@@ -62,13 +55,25 @@ export const Navbar = (props: Props) => {
     </>
   )
 
+  const html = document.querySelector('html')
+  useEffect(() => {
+    if (html) {
+      openMobileMenu
+        ? ((html.style.overflow = 'hidden'),
+          (html.style.maxHeight = '100vh'),
+          (html.style.position = 'fixed'))
+        : ((html.style.overflow = 'auto'),
+          (html.style.maxHeight = 'auto'),
+          (html.style.position = 'relative'))
+    }
+  }, [html, openMobileMenu])
+
   return (
     <nav className={style.wrapper}>
       {rendersBreakMenu()}
       <AnimatePresence>
         {openMobileMenu && (
           <MobileMenu
-            openMobileMenu={openMobileMenu}
             setOpenMobileMenu={setOpenMobileMenu}
           />
         )}

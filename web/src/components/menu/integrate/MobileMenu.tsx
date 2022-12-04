@@ -8,11 +8,10 @@ import { motion } from 'framer-motion'
 import { SidebarItem } from './SidebarItem'
 
 interface Props {
-  openMobileMenu: boolean
   setOpenMobileMenu: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
+export const MobileMenu = ({ setOpenMobileMenu }: Props) => {
   const navigate = useNavigate()
   const currentUser = useAppSelector((state) => state.armazem.currentUser)
   const currentAccount = useAppSelector((state) => state.armazem.currentAccount)
@@ -105,15 +104,6 @@ export const MobileMenu = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
     ref: wrapperRef,
     className: style.wrapper,
   }
-
-  const html = document.querySelector('html')
-  useEffect(() => {
-    if (html) {
-      openMobileMenu
-        ? ((html.style.overflow = 'hidden'), (html.style.maxHeight = '100vh'))
-        : ((html.style.overflow = 'auto'), (html.style.maxHeight = 'auto'))
-    }
-  }, [html, openMobileMenu])
 
   return (
     <>
