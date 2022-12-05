@@ -1,0 +1,230 @@
+Date : 2022-12-04 18:14:57
+Directory : /home/sena/Documents/ANiStorage
+Total : 158 files,  22886 codes, 154 comments, 1415 blanks, all 24455 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          7 |     10,399 |          0 |          7 |     10,406 |
+| TypeScript React   |         91 |      8,736 |         54 |        763 |      9,553 |
+| JavaScript         |         30 |      2,447 |         79 |        299 |      2,825 |
+| Markdown           |          1 |        653 |          0 |        272 |        925 |
+| TypeScript         |         22 |        570 |          8 |         60 |        638 |
+| HTML               |          1 |         23 |          0 |          1 |         24 |
+| PostCSS            |          1 |         22 |          2 |          5 |         29 |
+| JSON with Comments |          1 |         21 |          0 |          1 |         22 |
+| Docker             |          1 |          8 |         11 |          7 |         26 |
+| XML                |          2 |          5 |          0 |          0 |          5 |
+| Ignore             |          1 |          2 |          0 |          0 |          2 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                               |        158 |     22,886 |        154 |      1,415 |     24,455 |
+| server                                                                                          |         33 |      6,101 |         89 |        306 |      6,496 |
+| server/src                                                                                      |         28 |      2,376 |         78 |        296 |      2,750 |
+| server/src/controllers                                                                          |          6 |      1,838 |         37 |        217 |      2,092 |
+| server/src/middlewares                                                                          |          2 |         32 |          0 |          5 |         37 |
+| server/src/models                                                                               |         10 |        236 |          5 |         29 |        270 |
+| server/src/routes                                                                               |          6 |        179 |          0 |         22 |        201 |
+| server/src/services                                                                             |          1 |         48 |          3 |          5 |         56 |
+| web                                                                                             |        124 |     16,132 |         65 |        837 |     17,034 |
+| web/public                                                                                      |          1 |          4 |          0 |          0 |          4 |
+| web/src                                                                                         |        114 |      9,324 |         63 |        826 |     10,213 |
+| web/src/assets                                                                                  |          1 |          1 |          0 |          0 |          1 |
+| web/src/components                                                                              |         88 |      7,499 |         36 |        656 |      8,191 |
+| web/src/components/account                                                                      |         17 |      1,597 |          0 |        142 |      1,739 |
+| web/src/components/account/integrate                                                            |          9 |      1,058 |          0 |         86 |      1,144 |
+| web/src/components/addManga                                                                     |          4 |        322 |          0 |         21 |        343 |
+| web/src/components/addManga/integrate                                                           |          1 |         27 |          0 |          4 |         31 |
+| web/src/components/chat                                                                         |          4 |        310 |         18 |         30 |        358 |
+| web/src/components/collection                                                                   |          1 |         15 |          0 |          4 |         19 |
+| web/src/components/connections                                                                  |          5 |        342 |          0 |         24 |        366 |
+| web/src/components/feed                                                                         |          8 |        646 |          1 |         63 |        710 |
+| web/src/components/feed/integrate                                                               |          3 |        394 |          0 |         30 |        424 |
+| web/src/components/login                                                                        |          9 |        784 |          0 |         64 |        848 |
+| web/src/components/login/integrate                                                              |          6 |        493 |          0 |         40 |        533 |
+| web/src/components/manga                                                                        |          8 |        809 |          0 |         64 |        873 |
+| web/src/components/manga/integrate                                                              |          4 |        259 |          0 |         28 |        287 |
+| web/src/components/menu                                                                         |          9 |        911 |          2 |         75 |        988 |
+| web/src/components/menu/integrate                                                               |          5 |        606 |          2 |         49 |        657 |
+| web/src/components/modals                                                                       |          2 |         27 |          0 |          7 |         34 |
+| web/src/components/mylist                                                                       |          1 |         51 |          0 |          8 |         59 |
+| web/src/components/post                                                                         |          7 |      1,141 |         12 |         80 |      1,233 |
+| web/src/components/post/integrate                                                               |          3 |        474 |          4 |         34 |        512 |
+| web/src/components/settings                                                                     |          1 |         20 |          0 |          4 |         24 |
+| web/src/hooks                                                                                   |          1 |         21 |          0 |          6 |         27 |
+| web/src/pages                                                                                   |         12 |      1,187 |         15 |        105 |      1,307 |
+| web/src/services                                                                                |          3 |        104 |          6 |         14 |        124 |
+| web/src/store                                                                                   |          3 |        174 |          0 |         12 |        186 |
+| web/src/store/reducers                                                                          |          1 |         28 |          0 |          3 |         31 |
+| web/src/utils                                                                                   |          1 |         19 |          0 |          2 |         21 |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                        | language           | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /home/sena/Documents/ANiStorage/README.md                                                       | Markdown           |        653 |          0 |        272 |        925 |
+| /home/sena/Documents/ANiStorage/server/.dockerignore                                            | Ignore             |          2 |          0 |          0 |          2 |
+| /home/sena/Documents/ANiStorage/server/Dockerfile                                               | Docker             |          8 |         11 |          7 |         26 |
+| /home/sena/Documents/ANiStorage/server/package-lock.json                                        | JSON               |      3,682 |          0 |          1 |      3,683 |
+| /home/sena/Documents/ANiStorage/server/package.json                                             | JSON               |         27 |          0 |          1 |         28 |
+| /home/sena/Documents/ANiStorage/server/src/controllers/accountController.js                     | JavaScript         |        570 |         21 |         78 |        669 |
+| /home/sena/Documents/ANiStorage/server/src/controllers/authController.js                        | JavaScript         |        216 |          0 |         22 |        238 |
+| /home/sena/Documents/ANiStorage/server/src/controllers/mangaController.js                       | JavaScript         |        355 |          3 |         45 |        403 |
+| /home/sena/Documents/ANiStorage/server/src/controllers/messageController.js                     | JavaScript         |         63 |          0 |          5 |         68 |
+| /home/sena/Documents/ANiStorage/server/src/controllers/postController.js                        | JavaScript         |        444 |         13 |         51 |        508 |
+| /home/sena/Documents/ANiStorage/server/src/controllers/userController.js                        | JavaScript         |        190 |          0 |         16 |        206 |
+| /home/sena/Documents/ANiStorage/server/src/http.js                                              | JavaScript         |         39 |         16 |         11 |         66 |
+| /home/sena/Documents/ANiStorage/server/src/middlewares/active-user.js                           | JavaScript         |         22 |          0 |          3 |         25 |
+| /home/sena/Documents/ANiStorage/server/src/middlewares/authorization.js                         | JavaScript         |         10 |          0 |          2 |         12 |
+| /home/sena/Documents/ANiStorage/server/src/models/accountModel.js                               | JavaScript         |         32 |          0 |          3 |         35 |
+| /home/sena/Documents/ANiStorage/server/src/models/commentModel.js                               | JavaScript         |         10 |          0 |          3 |         13 |
+| /home/sena/Documents/ANiStorage/server/src/models/discussionModel.js                            | JavaScript         |         13 |          0 |          3 |         16 |
+| /home/sena/Documents/ANiStorage/server/src/models/mangaModel.js                                 | JavaScript         |         53 |          0 |          3 |         56 |
+| /home/sena/Documents/ANiStorage/server/src/models/messageModel.js                               | JavaScript         |         21 |          0 |          2 |         23 |
+| /home/sena/Documents/ANiStorage/server/src/models/notificationModel.js                          | JavaScript         |         12 |          5 |          3 |         20 |
+| /home/sena/Documents/ANiStorage/server/src/models/postModel.js                                  | JavaScript         |         22 |          0 |          3 |         25 |
+| /home/sena/Documents/ANiStorage/server/src/models/replyModel.js                                 | JavaScript         |         13 |          0 |          3 |         16 |
+| /home/sena/Documents/ANiStorage/server/src/models/reviewModel.js                                | JavaScript         |         15 |          0 |          3 |         18 |
+| /home/sena/Documents/ANiStorage/server/src/models/userModel.js                                  | JavaScript         |         45 |          0 |          3 |         48 |
+| /home/sena/Documents/ANiStorage/server/src/routes/accountRoutes.js                              | JavaScript         |         49 |          0 |          4 |         53 |
+| /home/sena/Documents/ANiStorage/server/src/routes/authRoutes.js                                 | JavaScript         |         21 |          0 |          4 |         25 |
+| /home/sena/Documents/ANiStorage/server/src/routes/mangaRoutes.js                                | JavaScript         |         31 |          0 |          3 |         34 |
+| /home/sena/Documents/ANiStorage/server/src/routes/messageRoutes.js                              | JavaScript         |          9 |          0 |          3 |         12 |
+| /home/sena/Documents/ANiStorage/server/src/routes/postRoutes.js                                 | JavaScript         |         41 |          0 |          4 |         45 |
+| /home/sena/Documents/ANiStorage/server/src/routes/userRoutes.js                                 | JavaScript         |         28 |          0 |          4 |         32 |
+| /home/sena/Documents/ANiStorage/server/src/server.js                                            | JavaScript         |          4 |          2 |          4 |         10 |
+| /home/sena/Documents/ANiStorage/server/src/services/nodemailer.js                               | JavaScript         |         48 |          3 |          5 |         56 |
+| /home/sena/Documents/ANiStorage/server/src/websocket.js                                         | JavaScript         |          0 |         15 |          3 |         18 |
+| /home/sena/Documents/ANiStorage/server/vercel.json                                              | JSON               |          6 |          0 |          1 |          7 |
+| /home/sena/Documents/ANiStorage/web/index.html                                                  | HTML               |         23 |          0 |          1 |         24 |
+| /home/sena/Documents/ANiStorage/web/package-lock.json                                           | JSON               |      6,630 |          0 |          1 |      6,631 |
+| /home/sena/Documents/ANiStorage/web/package.json                                                | JSON               |         40 |          0 |          1 |         41 |
+| /home/sena/Documents/ANiStorage/web/postcss.config.cjs                                          | JavaScript         |          6 |          0 |          1 |          7 |
+| /home/sena/Documents/ANiStorage/web/public/armazem.svg                                          | XML                |          4 |          0 |          0 |          4 |
+| /home/sena/Documents/ANiStorage/web/src/App.tsx                                                 | TypeScript React   |        177 |          3 |         13 |        193 |
+| /home/sena/Documents/ANiStorage/web/src/assets/react.svg                                        | XML                |          1 |          0 |          0 |          1 |
+| /home/sena/Documents/ANiStorage/web/src/components/BackToTop.tsx                                | TypeScript React   |         32 |          0 |          3 |         35 |
+| /home/sena/Documents/ANiStorage/web/src/components/Button.tsx                                   | TypeScript React   |         17 |          0 |          3 |         20 |
+| /home/sena/Documents/ANiStorage/web/src/components/CardManga.tsx                                | TypeScript React   |         52 |          0 |          7 |         59 |
+| /home/sena/Documents/ANiStorage/web/src/components/ConnectionStatus.tsx                         | TypeScript React   |        181 |          0 |         17 |        198 |
+| /home/sena/Documents/ANiStorage/web/src/components/Dropdown.tsx                                 | TypeScript React   |         52 |          0 |          6 |         58 |
+| /home/sena/Documents/ANiStorage/web/src/components/GridWrapper.tsx                              | TypeScript React   |         58 |          1 |          8 |         67 |
+| /home/sena/Documents/ANiStorage/web/src/components/Link.tsx                                     | TypeScript React   |         32 |          2 |          6 |         40 |
+| /home/sena/Documents/ANiStorage/web/src/components/Loader.tsx                                   | TypeScript React   |         16 |          0 |          3 |         19 |
+| /home/sena/Documents/ANiStorage/web/src/components/ScrollToTop.tsx                              | TypeScript React   |         10 |          0 |          4 |         14 |
+| /home/sena/Documents/ANiStorage/web/src/components/SwitchTheme.tsx                              | TypeScript React   |         44 |          0 |          6 |         50 |
+| /home/sena/Documents/ANiStorage/web/src/components/Toasters.tsx                                 | TypeScript React   |         29 |          0 |          4 |         33 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/Comments.tsx                         | TypeScript React   |        104 |          0 |          9 |        113 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/Favorites.tsx                        | TypeScript React   |         67 |          0 |          8 |         75 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/Header.tsx                           | TypeScript React   |         88 |          0 |          7 |         95 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/LastPosts.tsx                        | TypeScript React   |         78 |          0 |          8 |         86 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/LastUpdates.tsx                      | TypeScript React   |         36 |          0 |          6 |         42 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/SharedPosts.tsx                      | TypeScript React   |         58 |          0 |          7 |         65 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/StatusBar.tsx                        | TypeScript React   |        101 |          0 |         10 |        111 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/index.ts                             | TypeScript         |          7 |          0 |          1 |          8 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/AllPostsModal.tsx          | TypeScript React   |        159 |          0 |         12 |        171 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/Comment.tsx                | TypeScript React   |        178 |          0 |         16 |        194 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/EditCoverImageModal.tsx    | TypeScript React   |        124 |          0 |          8 |        132 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/EditProfileImageModal.tsx  | TypeScript React   |        124 |          0 |          8 |        132 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/LastPost.tsx               | TypeScript React   |        168 |          0 |         10 |        178 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/LastUpdate.tsx             | TypeScript React   |         50 |          0 |          6 |         56 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/SharedPost.tsx             | TypeScript React   |         51 |          0 |          7 |         58 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/SharedPostsModal.tsx       | TypeScript React   |        168 |          0 |         13 |        181 |
+| /home/sena/Documents/ANiStorage/web/src/components/account/integrate/Update.tsx                 | TypeScript React   |         36 |          0 |          6 |         42 |
+| /home/sena/Documents/ANiStorage/web/src/components/addManga/Form.tsx                            | TypeScript React   |        230 |          0 |         12 |        242 |
+| /home/sena/Documents/ANiStorage/web/src/components/addManga/Header.tsx                          | TypeScript React   |         63 |          0 |          5 |         68 |
+| /home/sena/Documents/ANiStorage/web/src/components/addManga/index.ts                            | TypeScript         |          2 |          0 |          0 |          2 |
+| /home/sena/Documents/ANiStorage/web/src/components/addManga/integrate/Input.tsx                 | TypeScript React   |         27 |          0 |          4 |         31 |
+| /home/sena/Documents/ANiStorage/web/src/components/chat/Chat.tsx                                | TypeScript React   |         80 |         18 |         11 |        109 |
+| /home/sena/Documents/ANiStorage/web/src/components/chat/DesktopChatModal.tsx                    | TypeScript React   |         87 |          0 |          7 |         94 |
+| /home/sena/Documents/ANiStorage/web/src/components/chat/Messages.tsx                            | TypeScript React   |         39 |          0 |          5 |         44 |
+| /home/sena/Documents/ANiStorage/web/src/components/chat/MobileChatModal.tsx                     | TypeScript React   |        104 |          0 |          7 |        111 |
+| /home/sena/Documents/ANiStorage/web/src/components/collection/Card.tsx                          | TypeScript React   |         15 |          0 |          4 |         19 |
+| /home/sena/Documents/ANiStorage/web/src/components/connections/AcceptList.tsx                   | TypeScript React   |        110 |          0 |          7 |        117 |
+| /home/sena/Documents/ANiStorage/web/src/components/connections/ConnectionsList.tsx              | TypeScript React   |         90 |          0 |          6 |         96 |
+| /home/sena/Documents/ANiStorage/web/src/components/connections/Filter.tsx                       | TypeScript React   |         53 |          0 |          4 |         57 |
+| /home/sena/Documents/ANiStorage/web/src/components/connections/PendingList.tsx                  | TypeScript React   |         85 |          0 |          6 |         91 |
+| /home/sena/Documents/ANiStorage/web/src/components/connections/index.ts                         | TypeScript         |          4 |          0 |          1 |          5 |
+| /home/sena/Documents/ANiStorage/web/src/components/feed/Hero.tsx                                | TypeScript React   |         60 |          0 |          7 |         67 |
+| /home/sena/Documents/ANiStorage/web/src/components/feed/MostRead.tsx                            | TypeScript React   |         46 |          0 |          7 |         53 |
+| /home/sena/Documents/ANiStorage/web/src/components/feed/RecentPosts.tsx                         | TypeScript React   |         86 |          1 |          9 |         96 |
+| /home/sena/Documents/ANiStorage/web/src/components/feed/TrendingPosts.tsx                       | TypeScript React   |         56 |          0 |          9 |         65 |
+| /home/sena/Documents/ANiStorage/web/src/components/feed/index.ts                                | TypeScript         |          4 |          0 |          1 |          5 |
+| /home/sena/Documents/ANiStorage/web/src/components/feed/integrate/RecentPost.tsx                | TypeScript React   |        186 |          0 |         13 |        199 |
+| /home/sena/Documents/ANiStorage/web/src/components/feed/integrate/TrendingPost.tsx              | TypeScript React   |        191 |          0 |         15 |        206 |
+| /home/sena/Documents/ANiStorage/web/src/components/feed/integrate/banners-data.ts               | TypeScript         |         17 |          0 |          2 |         19 |
+| /home/sena/Documents/ANiStorage/web/src/components/index.ts                                     | TypeScript         |          1 |          0 |          3 |          4 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/SignIn.tsx                             | TypeScript React   |        141 |          0 |          9 |        150 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/SignUp.tsx                             | TypeScript React   |        148 |          0 |         15 |        163 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/index.ts                               | TypeScript         |          2 |          0 |          0 |          2 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/integrate/ChooseUsername.tsx           | TypeScript React   |         95 |          0 |          7 |        102 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/integrate/ConfirmEmail.tsx             | TypeScript React   |        102 |          0 |          7 |        109 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/integrate/ConfirmVerificationToken.tsx | TypeScript React   |         88 |          0 |          7 |         95 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/integrate/Input.tsx                    | TypeScript React   |         71 |          0 |          6 |         77 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/integrate/input-data.ts                | TypeScript         |         71 |          0 |          6 |         77 |
+| /home/sena/Documents/ANiStorage/web/src/components/login/integrate/validate-form.ts             | TypeScript         |         66 |          0 |          7 |         73 |
+| /home/sena/Documents/ANiStorage/web/src/components/manga/MangaInfo.tsx                          | TypeScript React   |        152 |          0 |         10 |        162 |
+| /home/sena/Documents/ANiStorage/web/src/components/manga/MangaStatus.tsx                        | TypeScript React   |        353 |          0 |         19 |        372 |
+| /home/sena/Documents/ANiStorage/web/src/components/manga/Recommendations.tsx                    | TypeScript React   |         42 |          0 |          7 |         49 |
+| /home/sena/Documents/ANiStorage/web/src/components/manga/index.ts                               | TypeScript         |          3 |          0 |          0 |          3 |
+| /home/sena/Documents/ANiStorage/web/src/components/manga/integrate/AddReviewModal.tsx           | TypeScript React   |        106 |          0 |         10 |        116 |
+| /home/sena/Documents/ANiStorage/web/src/components/manga/integrate/MangaMetadata.tsx            | TypeScript React   |         44 |          0 |          4 |         48 |
+| /home/sena/Documents/ANiStorage/web/src/components/manga/integrate/Review.tsx                   | TypeScript React   |         49 |          0 |          6 |         55 |
+| /home/sena/Documents/ANiStorage/web/src/components/manga/integrate/ReviewModal.tsx              | TypeScript React   |         60 |          0 |          8 |         68 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/MobileNav.tsx                           | TypeScript React   |         61 |          0 |          9 |         70 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/Navbar.tsx                              | TypeScript React   |        141 |          0 |         10 |        151 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/Sidebar.tsx                             | TypeScript React   |        100 |          0 |          7 |        107 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/index.ts                                | TypeScript         |          3 |          0 |          0 |          3 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/integrate/MobileMenu.tsx                | TypeScript React   |        140 |          1 |         12 |        153 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/integrate/MobileSearch.tsx              | TypeScript React   |        137 |          0 |         12 |        149 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/integrate/Notifications.tsx             | TypeScript React   |        179 |          1 |         12 |        192 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/integrate/Search.tsx                    | TypeScript React   |        114 |          0 |          8 |        122 |
+| /home/sena/Documents/ANiStorage/web/src/components/menu/integrate/SidebarItem.tsx               | TypeScript React   |         36 |          0 |          5 |         41 |
+| /home/sena/Documents/ANiStorage/web/src/components/modals/Overlay.tsx                           | TypeScript React   |         18 |          0 |          6 |         24 |
+| /home/sena/Documents/ANiStorage/web/src/components/modals/index.ts                              | TypeScript         |          9 |          0 |          1 |         10 |
+| /home/sena/Documents/ANiStorage/web/src/components/mylist/Item.tsx                              | TypeScript React   |         51 |          0 |          8 |         59 |
+| /home/sena/Documents/ANiStorage/web/src/components/post/Article.tsx                             | TypeScript React   |        272 |          0 |         19 |        291 |
+| /home/sena/Documents/ANiStorage/web/src/components/post/DiscussionInput.tsx                     | TypeScript React   |         95 |          4 |          7 |        106 |
+| /home/sena/Documents/ANiStorage/web/src/components/post/Discussions.tsx                         | TypeScript React   |        297 |          4 |         19 |        320 |
+| /home/sena/Documents/ANiStorage/web/src/components/post/index.ts                                | TypeScript         |          3 |          0 |          1 |          4 |
+| /home/sena/Documents/ANiStorage/web/src/components/post/integrate/Header.tsx                    | TypeScript React   |         57 |          0 |          5 |         62 |
+| /home/sena/Documents/ANiStorage/web/src/components/post/integrate/PostInputModal.tsx            | TypeScript React   |        137 |          0 |         10 |        147 |
+| /home/sena/Documents/ANiStorage/web/src/components/post/integrate/Replies.tsx                   | TypeScript React   |        280 |          4 |         19 |        303 |
+| /home/sena/Documents/ANiStorage/web/src/components/settings/Input.tsx                           | TypeScript React   |         20 |          0 |          4 |         24 |
+| /home/sena/Documents/ANiStorage/web/src/hooks/useWindowDimensions.tsx                           | TypeScript React   |         21 |          0 |          6 |         27 |
+| /home/sena/Documents/ANiStorage/web/src/index.css                                               | PostCSS            |         22 |          2 |          5 |         29 |
+| /home/sena/Documents/ANiStorage/web/src/main.tsx                                                | TypeScript React   |         19 |          0 |          2 |         21 |
+| /home/sena/Documents/ANiStorage/web/src/pages/Account.tsx                                       | TypeScript React   |         68 |          0 |          8 |         76 |
+| /home/sena/Documents/ANiStorage/web/src/pages/AddManga.tsx                                      | TypeScript React   |         34 |          0 |          7 |         41 |
+| /home/sena/Documents/ANiStorage/web/src/pages/Collection.tsx                                    | TypeScript React   |        134 |          1 |         13 |        148 |
+| /home/sena/Documents/ANiStorage/web/src/pages/Connections.tsx                                   | TypeScript React   |        114 |          0 |         11 |        125 |
+| /home/sena/Documents/ANiStorage/web/src/pages/Feed.tsx                                          | TypeScript React   |         22 |          0 |          5 |         27 |
+| /home/sena/Documents/ANiStorage/web/src/pages/Login.tsx                                         | TypeScript React   |         66 |          0 |          8 |         74 |
+| /home/sena/Documents/ANiStorage/web/src/pages/Manga.tsx                                         | TypeScript React   |        110 |          0 |         10 |        120 |
+| /home/sena/Documents/ANiStorage/web/src/pages/MyList.tsx                                        | TypeScript React   |         89 |          0 |          7 |         96 |
+| /home/sena/Documents/ANiStorage/web/src/pages/PageNotFound.tsx                                  | TypeScript React   |         21 |          0 |          4 |         25 |
+| /home/sena/Documents/ANiStorage/web/src/pages/Post.tsx                                          | TypeScript React   |         98 |         14 |         11 |        123 |
+| /home/sena/Documents/ANiStorage/web/src/pages/Settings.tsx                                      | TypeScript React   |        420 |          0 |         19 |        439 |
+| /home/sena/Documents/ANiStorage/web/src/pages/index.ts                                          | TypeScript         |         11 |          0 |          2 |         13 |
+| /home/sena/Documents/ANiStorage/web/src/services/PrivateRoutes.tsx                              | TypeScript React   |         17 |          0 |          4 |         21 |
+| /home/sena/Documents/ANiStorage/web/src/services/api-routes.ts                                  | TypeScript         |         75 |          6 |          7 |         88 |
+| /home/sena/Documents/ANiStorage/web/src/services/firebase.ts                                    | TypeScript         |         12 |          0 |          3 |         15 |
+| /home/sena/Documents/ANiStorage/web/src/store/hooks.ts                                          | TypeScript         |          4 |          0 |          1 |          5 |
+| /home/sena/Documents/ANiStorage/web/src/store/index.ts                                          | TypeScript         |        142 |          0 |          8 |        150 |
+| /home/sena/Documents/ANiStorage/web/src/store/reducers/current-user-data.ts                     | TypeScript         |         28 |          0 |          3 |         31 |
+| /home/sena/Documents/ANiStorage/web/src/typings.d.ts                                            | TypeScript         |        101 |          0 |         10 |        111 |
+| /home/sena/Documents/ANiStorage/web/src/utils/genres.tsx                                        | TypeScript React   |         19 |          0 |          2 |         21 |
+| /home/sena/Documents/ANiStorage/web/src/vite-env.d.ts                                           | TypeScript         |          0 |          1 |          1 |          2 |
+| /home/sena/Documents/ANiStorage/web/tailwind.config.cjs                                         | JavaScript         |         65 |          1 |          2 |         68 |
+| /home/sena/Documents/ANiStorage/web/tsconfig.json                                               | JSON with Comments |         21 |          0 |          1 |         22 |
+| /home/sena/Documents/ANiStorage/web/tsconfig.node.json                                          | JSON               |          9 |          0 |          1 |         10 |
+| /home/sena/Documents/ANiStorage/web/vercel.json                                                 | JSON               |          5 |          0 |          1 |          6 |
+| /home/sena/Documents/ANiStorage/web/vite.config.ts                                              | TypeScript         |          5 |          1 |          2 |          8 |
+| Total                                                                                           |                    |     22,886 |        154 |      1,415 |     24,455 |
++-------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
