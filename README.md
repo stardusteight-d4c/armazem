@@ -704,7 +704,7 @@ export async function sendEmailVerification(email, name, token) {
     host: 'smtp.ethereal.email',
     auth: {
       user: 'stardusteight.d4cc@gmail.com',
-      pass: '*********', // get in google Two-step verification
+      pass: process.env.TWO_STEP_VERIF_PASS, // get in google Two-step verification
     },
   })
 
