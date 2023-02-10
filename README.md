@@ -920,5 +920,6 @@ export const TrendingPost = ({ postId }: Props) => {
   )
 }
 ```
-
 *<i>blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios</i> <br />
+
+![screen](/screens/screen-feed.png)
