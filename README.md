@@ -1,737 +1,96 @@
-# Armazem | Fully Functional Social Network
-
-![banner](banner.png)
-
-> A totally `authorial project` developed around a month and a half, its objective is to connect manga readers in which users can authenticate
-> on the platform send connection requests to each other, as well as post, like, share and discuss about certain subjects, they can also mark the
-> manga they are reading, intend to read or that they have already completed, favorite and update. There are `private routes` only available to 
-> `administrators who can insert new manga into the database`. There is chat and discussions with `two-way communication between client and server` 
-> via `websockets`. All this being supported by a `RESTful API` on the backend, and with `dynamic rendering of React components` on the frontend.
-
-:arrow_right: Model-View-Controller (MVC) | Architectural Pattern for Software Projects <br /> 
-:arrow_right: API RESTful | Representational State Transfer <br /> 
-:arrow_right: JSON Web Token (JWT) and Authentication <br /> 
-:arrow_right: JSON (JavaScript Object Notation) <br /> 
-:arrow_right: Nodemailer - Email submissions <br /> 
-:arrow_right: useEffect | Handling Requests and Reacting to Data Changes with Side Effects <br /> 
-
-<br />
-
-## Model-View-Controller (MVC) | Architectural Pattern for Software Projects
-
-MVC is a `software design pattern`, or `software architecture pattern` formulated in the 1970s, focused on code reuse and the `separation of concepts into three interconnected layers`, where `data presentation and interaction of users (front-end)` are separated from `methods that interact with the database (back-end)`. It is normally used for the development of `web applications that divide an application into parts (layers/components)`. This is done to `separate internal information representations` from the way `information is presented to the user`, leading to `efficient parallel development`.
-
 <div align="center">
-<img src="ModelViewControllerDiagram.png" width="500" />
+  <img src="logo.svg" width="250" />
 </div>
 
-*<i>A simple diagram exemplifying the relationship between <strong>Model</strong>, <strong>View</strong> and <strong>Controller</strong>. Solid lines indicate direct association and dashed lines indicate indirect association.</i> <br />
+<h1 align="center">
+ Armazem, Social Network for Manga Readers [Prototype]
+</h1>
 
-Traditionally used for `graphical user interfaces` (GUIs), this architecture has become popular for designing `web applications` and even `mobile`, `desktop` and other client applications. Popular programming languages ​​like Java, C#, Object Pascal/Delphi, Ruby, PHP, JavaScript and others have popular MVC frameworks that are currently used in web application development.
+Social network project for manga readers aims to create an online community for sharing information and recommendations about manga. Users can register through Google login and have the ability to follow other users, create and share lists of favorite manga, rate and leave comments on manga, and receive notifications.
 
-### MODEL - Model or Application Logic Layer
+The frontend of the project was developed using React, with TypeScript support for safer typing. Communication with the server is done through Axios, a library for HTTP requests. Vite was used to streamline the process of building and developing the project. For user authentication, the Firebase platform was used, with OAuth support. Application design was done with the help of TailwindCSS library and Framer Motion was used for animations.
 
-Model is the `bridge between` the `View` and `Control` layers, it `consists of the logical part of the application`, which `manages the behavior of the data through business rules, logic and functions`. This is just waiting for the function call, `which allows access to data to be collected, recorded and displayed`.
+The backend of the project was developed using Node.js, with TypeScript for safer typing. For the database, MongoDB was used through Mongoose, which provides an abstraction layer for communicating with the database. For user authentication, Json Web Tokens were used. System email confirmation was implemented using Nodemailer.
 
-It's the heart of execution, `responsible for everything the application will do from controlling layer commands on one or more data elements`, answering questions about their condition and instructions to change them. The model knows what the application wants to do and is `the main computational structure of the architecture, as it models the problem that is being solved`. Models the data and behavior behind the business process. It is only concerned with storing, manipulating and generating data. `It is a presentation-independent encapsulation of data and behavior`.
+Overall, the project aimed to create an interactive platform for manga readers, supporting the online community.
 
-### VIEW - Visualization or Presentation Layer 
+## :hammer_and_wrench: Tools
 
-View can be any `data representation output`, such as a table or a diagram. `This is where requested data from the Model is displayed`. It is possible to have multiple views of the same data, such as a bar graph for management and a tabular view for counters. `The View also triggers interactions with the user, who interacts with the Controller`. The basic example of this is a button generated by a View, which a user clicks and triggers an action on the Control.
+### Frontend
 
-It is not dedicated to knowing how the knowledge was taken or where it was obtained, it 'just shows the reference'. According to Gamma et al (2006), `”The MVC approach separates View and Model through an insertion/notification protocol (subscribe/notify). A View must ensure that its expression reflects the state of the Model. Whenever the Model's data changes, the Model changes the Views that depend on it. In response, each View is given the opportunity to modify itself”`. Adds display elements to the user: HTML, ASP, XML, Applets. It is the user interface layer. It is `used to receive data input and visually present the result`.
+* React
+* TypeScript
+* Axios
+* Vite
+* Firebase
+* OAuth
+* TailwindCSS
+* Framer Motion
 
-### CONTROLLER - Controller or Control Layer
+### Backend
 
-Control is the final component of the triad, `it mediates input and output`, `commanding the view and model to be changed appropriately as the user requests via mouse and keyboard`. The focus of the Control is the `user's action`, where the data that the user inserts or updates are manipulated, subsequently calling the Model.
+* Node.js
+* TypeScript
+* Express
+* Mongoose
+* Json Web Tokens
+* Nodemailer
 
-The Controller sends these actions to the Model and to the visualization (View) window where the necessary operations will be carried out.
-
-#### Component interaction
-
-In addition to dividing the application into three types of components, the MVC design defines the interactions between them.
-
- - The `Controller` sends commands to the model to update its state (eg editing a document). The controller can also send commands to the associated view to change the presentation of the model view (for example, scrolling through a document).
- - A `Model` stores data and notifies its associated views and controllers when there is a change in its state. These notifications allow views to produce updated output and controllers to change the set of available commands. A passive MVC implementation mounts these notifications, either because the application doesn't need them or the software platform doesn't support them.
- - The `View` generates a representation (View) of the data present in the requested model, displaying the data, whether through html or xml.
-
-#### Usage in web applications
-
-Even though it was initially developed for personal computing, MVC has been drastically adapted as an architecture for web applications in all major programming languages. Many commercial and non-commercial application frameworks were developed based on this model. Such frameworks vary in their interpretations, mainly in the way that MVC responsibilities are separated between client and server.
-
-The latest MVC web frameworks take a thin client approach that almost put the entire model, view, and controller logic on the server. In this approach, the client sends hyperlink requests or form input to the controller and then receives a complete and updated web page (or other document) from the view. The model exists entirely on the server. As client technologies matured, frameworks such as JavaScriptMVC and Backbone were created which allow MVC components to partially execute on the client (see also AJAX).
-
-`A practical case is a web application where the view is an HTML (or derivative) document generated by the application. The controller receives a GET or POST input after a user stimulus and decides how to process it, invoking domain objects to handle the business logic, and finally invoking a view to present the output.`
-
-*<i>en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller</i> <br />
-
-### Example of MVC in this Application
-
- - <strong>Model Layer</strong>:
+## :mailbox_with_mail: Utilities
  
-```js
-// server/src/models/postModel.js
-
-import mongoose, { Schema } from 'mongoose'
-
-const postSchema = new mongoose.Schema(
-  {
-    by: { type: Schema.Types.ObjectId, ref: 'User' },
-    title: {
-      type: String,
-    },
-    body: {
-      type: String,
-    },
-    likes: {
-      type: Array,
-      by: { type: Schema.Types.ObjectId, ref: 'User' },
-    },
-    discussions: {
-      type: Array,
-      discussion: { type: Schema.Types.ObjectId, ref: 'User' },
-    },
-  },
-  { timestamps: true }
-)
-
-export default mongoose.model('Post', postSchema)
-
-```
-
- - <strong>View Layer</strong>:
+### <strong>Model-View-Controller (MVC)</strong>
  
-```jsx
-// web/src/pages/Post.jsx
+Is a widely used software architecture pattern for separating an application's concerns into three main components: the model, the view, and the controller. The goal is to separate the business logic from the user interface, allowing each component to be developed and tested independently.
 
-export const Post = (props: Props) => {
-  return (
-    <GridWrapper>
-      <main className={style.wrapperMain}>
-        {loading || !post || !authorUser ? (
-          rendersGettingData()
-        ) : (
-          <>
-            <Article post={post} authorUser={authorUser} />
-            <DiscussionInput discussions={discussions} socket={socket} />
-            <div className={style.discussionsWrapper}>
-              {discussions
-                .slice(0)
-                .reverse()
-                .map((discussion: any, index: React.Key) => (
-                  <section className={style.discussionContainer} key={index}>
-                    <Discussions
-                      socket={socket}
-                      activeItem={activeItem}
-                      setActiveItem={setActiveItem}
-                      discussion={discussion}
-                      currentUser={currentUser}
-                    />
-                  </section>
-                ))}
-            </div>
-          </>
-        )}
-      </main>
-    </GridWrapper>
-  )
-}
-```
+The model is responsible for business logic and data manipulation. It represents the state of the system and the business rules that govern how data is stored, manipulated, and validated.
 
- - <strong>Controller Layer</strong>:
- 
-```js
-// server/src/controllers/postController.js
+The view is responsible for displaying data and user interaction. It is the user interface of the system and displays the information contained in the model. It is responsible for presenting and manipulating the data in a form that the user can understand.
 
-export const postMetadataById = async (req, res) => {
-  try {
-    const postId = req.params.id
-    const post = await Post.findById(postId)
-    const userRef = await Post.findById(postId).select('by')
-    const authorUser = await User.findById(userRef.by)
-    const accountRef = await User.findById(userRef.by).select('account')
-    const authorAccount = await Account.findById(accountRef.account)
+The controller is the intermediary between the model and the view. It acts as an entry point for user requests and coordinates interactions between the view and the model. It also controls the flow of the application, making the appropriate calls to the necessary components.
 
-    return res.status(200).json({
-      status: true,
-      msg: 'Post metadata successfully acquired',
-      post,
-      authorAccount,
-      authorUser,
-    })
-  } catch (error) {
-    console.error(error.message)
-    return res.status(500).json({
-      status: false,
-      msg: error.message,
-    })
-  }
-}
-```
+By separating business logic, user interface, and flow control into discrete components, the MVC pattern allows you to build more scalable, flexible, and maintainable applications. Furthermore, it allows developers to work more collaboratively and independently, as each component can be developed and tested separately.
 
-<br />
+### API RESTful (Representational State Transfer) 
 
-## API RESTful | Representational State Transfer 
+Is an architectural style for hypertext-based distributed systems. It is a design approach that establishes a series of constraints and guidelines for creating web services that are scalable, reliable, interoperable, and easy to maintain.
 
-The RESTful API `is an interface that two computer systems use to exchange information securely over the internet`. Most business applications need to communicate with other internal and third-party applications to perform various tasks. For example, to generate monthly paychecks, your internal accounting system needs to share data with your customer's banking system in order to automate invoicing and communicate with an internal timesheet application. RESTful APIs support this exchange of information because they follow `secure, reliable and efficient software communication standards`.
+RESTful services are based on the HTTP protocol, using GET, POST, PUT, DELETE methods for reading, creating, updating and deleting resources, respectively. Additionally, resources are identified using URIs (Uniform Resource Identifiers) and return data in formats such as JSON, XML, or other customer-defined formats.
 
-### What is an API?
+The term RESTful was coined by Roy Fielding in his doctoral thesis in 2000 and is based on the principle that representational state transfer is performed between the client and the server. In other words, the API is designed to be stateless, which means that each request made by the client must contain all the information needed to perform the requested action.
 
-`An application programming interface (API) defines the rules you need to follow to communicate with other software systems`. Developers expose or create APIs so that other applications can communicate with their applications programmatically. For example, the timesheet application exposes an API that requests an employee's full name and a date range. Upon receipt of this information, it processes the employee's timesheet internally and returns the number of hours worked in that date range.
+The concept of REST is often associated with the MVC (Model-View-Controller) architectural model, as the RESTful API separates the representation of data from the server, which is the model, from the client, which is the view. The controller in this case is the API itself, which handles client requests and sends appropriate responses.
 
-`You can think of a Web API as a gateway between clients and resources on the Web.`
+Overall, using a RESTful API allows developers to build highly scalable, interoperable, and maintainable applications by following a clear set of guidelines and constraints that make web service development more consistent and efficient.
 
-#### Customers
+### JSON Web Token (JWT) 
 
-`Clients are users who want to access information from the Web`. The client can be a person or a software system using the API. For example, developers can write programs that access weather data from a weather system. Or you can access the same data from your browser when visiting the weather website directly.
+Is an open standard for creating JSON-based authentication tokens that can be used to authenticate users in web applications and RESTful APIs. The JWT consists of three parts: a header, a payload and a signature. The header defines the token type and the encryption algorithm used to sign the token. The payload contains the user information such as name, email, permissions, etc. The signature is generated from a secret key that only the server knows.
 
-#### Resources
+Authentication is a process that verifies that a user is who he claims to be. In web applications and RESTful APIs, authentication is used to protect resources that should only be accessed by authenticated users. There are different types of authentication such as Basic Authentication, OAuth and JWT.
 
-`Resources are the information that different applications provide to their clients`. Resources can be images, videos, texts, numbers or any type of data. `The machine that provides the resource to the client is also called the server`. Organizations use APIs to share resources and deliver web services while maintaining security, control and authentication. Additionally, APIs help determine which clients have access to specific internal resources.
+JWT is commonly used for authentication in RESTful APIs as it is an efficient and secure method of passing authentication information between the client and the server. When a user logs in, the server creates a JWT containing the user's information and sends the token back to the client. The client stores the token in a cookie or in the browser's local storage and sends the token along with each request to the RESTful API. The server verifies that the token is valid and, if so, grants access to protected resources.
 
+### JSON (JavaScript Object Notation) 
 
-### What is REST?
+JSON (JavaScript Object Notation) is a lightweight, easy-to-read and write data format for exchanging information between systems. It is based on a subset of the JavaScript programming language, but can be used by any programming language.
 
-A representational state transfer (REST) ​​`is a software architecture that imposes conditions on how an API should work`. REST was initially created as a guideline for managing communication in a complex network like the internet. You can use REST-based architecture to enable reliable, high-performance communication at scale. `You can implement and modify it easily, bringing cross-platform visibility and portability to any API system`.
+Data in a JSON file is represented in key-value pairs, separated by commas, and enclosed in braces.
 
-API developers can design APIs using many different architectures. APIs that follow the REST architecture style are called REST APIs. Web services that implement REST architecture are called RESTful web services. The term RESTful API generally refers to RESTful web APIs. However, `you may use the terms REST API and RESTful API interchangeably`.
+### Nodemailer 
 
-The following are some of the principles of the REST architecture style.
+Nodemailer is a Node.js library that allows sending emails using various email service platforms, such as Gmail, Yahoo, Hotmail, among others, in addition to being possible to use custom SMTP servers.
 
-#### Uniform interface
+The process of sending emails using Nodemailer is simple and can be done in a few lines of code. It is only necessary to define some parameters like the recipient, subject, body of the message, and optionally, attachments.
 
-The uniform interface is fundamental to the design of any RESTful web service. `Indicates that the server transfers information in standard format`. The formatted resource is called a REST representation. This format may differ from the internal representation of the resource in the server application. For example, the server might store data as text but send it in an HTML representation format.
+In addition, it is possible to add features such as sending mass emails, scheduling sending, sending emails with a template, among others. Nodemailer also has security features such as SMTP authentication, which ensures that only authenticated users can send emails.
 
-The uniform interface imposes four architectural constraints:
+In the context of a web application, Nodemailer can be used for various purposes, such as sending registration confirmation, password recovery, sending newsletters, among others. With it, it is possible to make communication with users more efficient and personalized, improving the user experience.
 
- - Requests must identify resources. They do this using a uniform resource identifier.
- - Customers have enough information in the resource representation to modify or delete the resource if they choose. The server meets this condition by sending metadata that best describes the resource.
- - Clients receive information on how to further process the representation. The server does this by sending self-describing messages that contain metadata about how the client can best use it.
- - Customers receive information about all other related resources they need to complete a task. The server does this by sending hyperlinks in the representation so that clients can dynamically discover more resources.
- 
-#### Stateless
+## :speech_balloon: Explanations
 
-In REST architecture, `statelessness refers to a method of communication in which the server completes each client request independently of all previous requests`. Clients can request resources in any order, and each request is stateless or isolated from other requests. This REST API design restriction implies that the server can fully understand and fulfill the request every time.
+### useEffect & Axios: Handling Requests and Reacting to Data Changes with Side Effects 
 
-#### Layered system
-
-In a layered system architecture, `the client can connect to other authorized intermediaries between the client and the server and still receive responses from the server`. Servers can also pass requests to other servers. You can design your RESTful web service to run on multiple servers with multiple layers such as security, application, and business logic working together to fulfill client requests. These layers remain invisible to the client.
-
-#### Storage capacity
-
-RESTful web services `enable caching, which is the process of storing some responses on the client or in an intermediary to improve the server's response time`. For example, let's say you visit a website that has common header and footer images on every page. Every time you visit a new page on the website, the server must resend the same images. To avoid this, the client caches or stores these images after the first response and then uses the images directly from the cache. RESTful web services control caching using API responses that define themselves as cacheable or non-cacheable.
-
-#### Code on demand
-
-In the REST architectural style, `servers can temporarily extend or customize client functionality by offloading software programming code to the client`. For example, when you fill out a registration form on any website, your browser will immediately highlight mistakes it has made, such as incorrect phone numbers. It can do this because of the code sent by the server.
-
-### What are the benefits of RESTful APIs?
-
-#### Scalability
-
-Systems that implement REST APIs can scale efficiently because REST optimizes client-server interactions. Statelessness removes the load from the server, because the server does not need to retain information from previous client requests. Well-managed caching partially or completely eliminates some client-server interactions. All these features allow for scalability without causing communication bottlenecks that reduce performance.
-
-#### Flexibility
-
-RESTful web services allow complete separation of the client from the server. They simplify and decouple various server components so that each part can evolve independently. Platform or technology changes in the server application do not affect the client application. The ability to layer application functions further increases flexibility. For example, developers can make changes to the database layer without rewriting application logic.
-
-#### Independence
-
-REST APIs are independent of the technology used. You can write client and server applications in many programming languages ​​without affecting the API design. It is also possible to change the underlying technology on both sides without affecting communication.
-
-### How do RESTful APIs work?
-
-The basic function of a RESTful API is the same as browsing the internet. `The client contacts the server using the API when it requires a resource. API developers explain how the client should use REST API in the server application's API documentation. These are the general steps for any REST API call:
-
-1. The client sends a request to the server. The client follows the API documentation to format the request in a way that the server understands.
-2. The server authenticates the client and confirms that the client has the right to make this request.
-3. The server receives the request and processes it internally.
-4. The server returns a response to the client. The response contains information that indicates to the client whether the request was successful. The response also includes information requested by the customer.
-
-REST API request and response details vary slightly depending on how the API developers design the API.
-
-
-### What does the RESTful API client request contain?
-
-RESTful APIs require requests to contain the following key components:
-
-#### Unique resource identifier
-
-`The server identifies each resource with unique resource identifiers`. For REST services, the server typically performs resource identification using a `uniform resource locator (URL). The URL specifies the path to the `resource. A URL is similar to the website address that you type into your browser to visit any web page. The URL is also called the `request endpoint` and it clearly tells the server what the client requires.
-
-##### Method
-
-Developers often implement RESTful APIs using the `Hypertext Transfer Protocol (HTTP)`. An HTTP method tells the server what it needs to do with the resource. Following are four common HTTP methods:
-
-###### GET
-
-Clients use GET to access resources located at the specified URL on the server. They can cache GET requests and send parameters in the RESTful API request to instruct the server to filter data before sending.
-
-###### POST
-
-Clients use POST to send data to the server. They include the data representation with the request. If they send the same POST request multiple times, they will create the same resource multiple times.
-
-###### PUT
-
-Clients use PUT to update existing resources on the server. Unlike POST, sending the same PUT request multiple times in a RESTful web service has the same result.
-
-###### DELETE
-
-Clients use the DELETE request to remove the resource. A DELETE request can change the state of the server. However, if the user does not have proper authentication, the request will fail.
-
-##### HTTP headers
-
-`The request headers are the metadata exchanged between the client and the server`. For example, the request header indicates the format of the request and response, provides information about the status of the request, and so on.
-
-###### Data
-
-REST API requests can include data for POST, PUT, and other HTTP methods to work successfully.
-
-###### Parameters
-
-`RESTful API requests can include parameters that give the server more detail about what needs to be done`. Following are some different types of parameter.
-
- - `path` parameters that specify URL details.
- - `query` parameters that request more information about the resource.
- - `cookies` parameters that quickly authenticate clients.
- 
-### What are RESTful API authentication methods?
-
-`A RESTful web service must authenticate requests before sending a response. Authentication is the process of verifying one's identity. For example, you can prove your identity by showing an ID card or driver's license. Likewise, RESTful service clients must prove their identity to the server to establish trust.
-
-The RESTful API has four common authentication methods:
-
-#### HTTP Authentication
-
-HTTP defines some authentication schemes that you can use directly when implementing the REST API. These are two such schemes:
-
-##### Basic Authentication
-
-In basic authentication, `the client sends the username and password in the request header`. It encodes them with base64, which is an encoding technique that converts the pair into a string of 64 characters for secure transmission.
-
-##### Bearer Authentication
-
-`The term bearer authentication refers to the process of giving the token bearer access control`. The bearer token is typically an encrypted string that the server generates in response to a login request. The client sends the token in request headers to access resources.
-
-#### API keys
-
-API keys are another option for REST API authentication. `In this approach, the server assigns a unique generated value to an initiating client`. Whenever the client tries to access resources, it uses the unique API key to verify itself. API keys are less secure because the client needs to transmit the key, which makes it vulnerable to network theft.
-
-#### OAuth
-
-`OAuth combines passwords and tokens for highly secure login access to any system`. First, the server requests a password and then an additional token to complete the authorization process. It can verify the token at any time and also over time with specific scope and longevity.
-
-
-### What does the RESTful API server response contain?
-
-REST principles require that the server response contain the following key components:
-
-#### Status line
-
-The status line contains a three-digit status code that communicates the success or failure of the request. For example, codes 2XX indicate success, but codes 4XX and 5XX indicate errors. 3XX codes indicate URL redirection.
-
-The following are some common status codes.
-
- - <strong>200</strong>: generic success response
- - <strong>201</strong>: POST method success response
- - <strong>400</strong>: Bad request that the server cannot process
- - <strong>404</strong>: resource not found
-
-#### Message body
-
-The body of the response contains the resource representation. The server selects an appropriate representation format based on what the request headers contain. Clients can request information in `XML` or `JSON` formats, which define how the data is written in plain text. For example, if the client asks for the name and age of a person named John, the server will return a JSON representation like this:
-
-
- - `'{"name":"John", "age":30}'`
-
-
-#### Headers
-
-The response also contains headers or metadata about the response. They provide more context about the response and include information such as server, encoding, date, and content type.
-
-*<i>aws.amazon.com/what-is/restful-api/?nc1=h_ls</i> <br />
-
-<br />
-
-## JSON Web Token (JWT) and Authentication <br /> 
-
-The JSON Web Token (JWT) `is an Internet standard for creating optionally signed and/or encrypted data whose payload contains JSON asserting some number of claims`. Tokens are signed using a private secret or public/private key.
-
-For example, a server might generate a token with the claim "logged in as administrator" and give it to a client. The client can then use this token to prove that they are logged in as an administrator. Tokens can be signed by a party's (usually the server's) private key, so that the party can later verify that the token is legitimate. If the other party, by some suitable and reliable means, is in possession of the corresponding public key, it can also verify the token's legitimacy.
-
-The tokens are designed to be compact, URL-safe, and usable, especially in a web browser `single sign-on` context. JWT claims can generally be used to pass the identity of authenticated users between an identity provider and a service provider, or any other type of claim as required by business processes.
-
-### Structure
-
-A JWT is composed of three parts, the `header`, the `payload` and the `signature`, all of which are `written in JSON, and are encoded using Base64`.
-
-The `header` specifies whether the token will be signed, and if so which algorithm is used for the signature using the mandatory `alg (algorithm)` declaration. It may also contain the optional `typ (media type)` and `cty (content type)` declarations.
-
-```json
-{
-"alg": "HS256",
-"typ": "JWT"
-}
-```
-
-The `payload` can contain any type of data relevant to the application, there are no mandatory declarations.
-
-```json
-{ 
-"sub": "1234567890",
-"name": "John Doe",
-"admin": true
-}
-```
-
-The `signature` consists of encoding and encrypting the header, payload and a secret. This field is used to prove the authenticity of a token, preventing it from being modified by a malicious agent. The statements registered for the signature are:
-
- - <strong>iss (issuer)</strong> who created the token;
- - <strong>sub (subject)</strong> who the token refers to;
- - <strong>aud(audience)</strong> for whom the token is expected;
- - <strong>exp (expiration)</strong> expiration date;
- - <strong>nbf (not before)</strong> from when the token is valid;
- - <strong>iat (issued at)</strong> creation date;
- - <strong>jti (jwt id)</strong> unique identifier;
-
-*<i>en.wikipedia.org/wiki/JSON_Web_Token</i> <br />
-
-### Sessions and Authentication with jsonwebtoken
-
- - `npm install jsonwebtoken`
-
-#### Generating token 
-
- - `jwt.sign(payload, secretOrPrivateKey, [options, callback])`
-
-`(Asynchronous)` If a callback is supplied, the callback is called with the err or the JWT.
-`(Synchronous)` Returns the JsonWebToken as string
-
- - `payload` could be an object literal, buffer or string representing valid JSON.
-
-*<i>Please note that `exp or any other claim is only set if the payload is an object literal`. Buffer or string payloads are not checked for JSON validity. If payload is not a buffer or a string, it will be coerced into a string using `JSON.stringify`.</i>
-
- - `secretOrPrivateKey` is a string, buffer, or object containing either the secret for HMAC algorithms or the PEM encoded private key for RSA and ECDSA. In case of a private key with passphrase an object { key, passphrase } can be used (based on crypto documentation), in this case be sure you pass the algorithm option.
-
-###### options:
-
- - <strong>algorithm</strong> (default: HS256)
- - <strong>expiresIn</strong>: expressed in seconds or a string describing a time span zeit/ms.
-
-*<i>Eg: 60, `2 days`, `10h`, `7d`. A numeric value is interpreted as a seconds count. If you use a string be sure you provide the time units (days, hours, etc), otherwise milliseconds unit is used by default ("120" is equal to "120ms").</i>
-
- - <strong>notBefore</strong>
- - <strong>audience</strong>
- - <strong>issuer</strong>
- - <strong>jwtid</strong>
- - <strong>subject</strong>
- - <strong>noTimestamp</strong>
- - <strong>header</strong>
- - <strong>keyid</strong>
- - <strong>mutatePayload</strong>: if true, the sign function will modify the payload object directly. This is useful if you need a raw reference to the payload after claims have been applied to it but before it has been encoded into a token.
-
-
-```js
-// server/src/controllers/authController.js
-
-export const register = async (req, res) => {
-  try {
-    const { name, email, username, password } = req.body
-    const hashedPassword = await brcypt.hash(password, 10)
-
-    const user = await User.create({
-      name,
-      email,
-      username,
-      password: hashedPassword,
-    })
-    const account = await Account.create({
-      user: user._id,
-    })
-    await User.findByIdAndUpdate(user._id, {
-      account: account._id,
-    })
-
-    // create a jwt from the payload that will expire in 7 days
-    const sessionToken = jwt.sign( 
-      { user_id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '7d',
-      }
-    )
-
-    // returns the session token to the client
-    return res.status(200).json({
-      status: true,
-      msg: 'The user has been registered',
-      id: user._id,
-      session: sessionToken, 
-    })
-  } catch (error) {
-    console.error(error.message)
-    return res.status(500).json({
-      status: false,
-      msg: error.message,
-    })
-  }
-}
-```
-
-#### Verifying token
-
- - `jwt.verify(token, secretOrPublicKey, [options, callback])`
-
-`(Asynchronous)` If a callback is supplied, function acts asynchronously. The callback is called with the decoded payload if the signature is valid and optional expiration, audience, or issuer are valid. If not, it will be called with the error.
-`(Synchronous)` If a callback is not supplied, function acts synchronously. Returns the payload decoded if the signature is valid and optional expiration, audience, or issuer are valid. If not, it will throw the error.
-
- - `token` is the JsonWebToken string
- - `secretOrPublicKey` is a string or buffer containing either the secret for HMAC algorithms, or the PEM `encoded public key` for RSA and ECDSA. If jwt.verify is called asynchronous, secretOrPublicKey can be a function that should fetch the secret or public key. 
-
-```js
-// server/src/middlewares/authorization.js
-
-export const checkSession = async (req, res) => {
-  try {
-    const sessionToken = req.headers.authorization
-    const decode = jwt.verify(sessionToken, process.env.JWT_SECRET)
-    return res.status(200).json({ status: true, session: decode })
-  } catch (error) {
-    return res.json({ status: false, msg: 'Expired or invalid token' })
-  }
-}
-```
-
-Establishing a constant connection with the access verification middleware, if the user token is no longer valid, it will redirect to the login page, the login page also checks this token, if there is a valid one, the user will be redirected for the feed.
-
-```jsx
-// web/src/App.tsx
-
-export const App = (props: Props) => {
-  const session = localStorage.getItem('session')
-
- // SESSION MIDDLEWARE
- useEffect(() => {
-  if (location.pathname === '/login' || location.pathname === '/') {
-    setLoading(true)
-  }
-  if (session) {
-    ;(async () => {
-      try {
-        const rawToken = JSON.parse(session)
-        const { data } = await axios.put(authorization, null, {
-          headers: {
-            Authorization: rawToken,
-          },
-        })
-        if (data.status === true) {
-          dispatch(handleAuthSession(data.session))
-          await dispatch(getUserData())
-          await dispatch(getCurrentUserAccount())
-          if (location.pathname === '/login') {
-            navigate('/')
-          }
-          setTimeout(() => {
-            setLoading(false)
-          }, 200)
-        } else {
-          navigate('/login')
-          setTimeout(() => {
-            setLoading(false)
-          }, 200)
-        }
-      } catch (err) {
-        console.error(err)
-        navigate('/login')
-        setTimeout(() => {
-          setLoading(false)
-        }, 200)
-      }
-    })()
-  } else {
-    setTimeout(() => {
-      setLoading(false)
-    }, 200)
-    navigate('/login')
-  }
- }, [session, requestAgain])
-
- return (
-    <>
-      {openModal && handleOpenModal(openModal)}
-      <Toaster position="top-left" />
-      <Routes>
-      // ...
-      </Routes>
-    </>
-  )
-}
-```
-
-*<i>npmjs.com/package/jsonwebtoken</i> <br />
-
-<br />
-
-## JSON (JavaScript Object Notation)
-
-In computing, JavaScript Object Notation (JSON) is a compact, independent, open-standard format for simple and fast data exchange (parsing) between systems, specified by Douglas Crockford in 2000, which `uses human-readable text in the attribute format -value (self-descriptive nature)`. That is, a model for transmitting information in text format, widely used in web services that uses representational state transfer (REST) ​​and AJAX applications, replacing the use of XML. The standard was specified in 2000 and defined in 2013 in two competing standards, RFC7159 and ECMA-404. In 2017 RFC8259 replaced 7159 and ECMA-404 was revised.
-
-JSON is a programming language-independent data exchange format `derived from JavaScript`. But as of 2017 many programming languages ​​have included code to generate and parse data in JSON format and also convert to language objects. `The official internet media type (MIME) for JSON is application/json` and JSON filenames use the .json extension.
-
-### Description
-
-The `simplicity of JSON has helped popularize its use`, especially as an alternative to XML over AJAX. One of the advantages over XML as a data interchange format is the ease of writing a JSON parser, even in JavaScript, simply using the eval() function. Due to the presence of this JavaScript feature in all current web browsers.
-
-In practice, the development and performance arguments of the parser are rarely revealed, due to the security system in the use of eval() in addition to the increasing integration of XML processing in web browsers. For this reason JSON is typically used in environments where the size of the data stream between client and server is extremely important, where the source of the data can be explicitly trusted (favoring its use by Google, Yahoo, etc., serving millions of users) and where loss of client-side XSLT processing capabilities for data manipulation or interface generation is not a consideration.
-
-While JSON is often positioned "against" XML, it is not uncommon to see both JSON and XML being used in the same application. For example, a client-side application which integrates Google Maps data with atmospheric data via SOAP requires support for both data formats.
-
-There is growing support for JSON through the use of small third-party packages. The list of supported languages ​​includes ActionScript, C/C++, C#, ColdFusion, Java, JavaScript, OCaml, Perl, PHP, ASP 3.0, Python, Rebol, Ruby, Lua, Progress 4GL, Go Lang, Android.
-
-In December 2005, with the feature of fast data transmission, Yahoo! has started to support JSON as an option for some of its web services, as has Google.
-
-### JSON versus XML
-
-`JSON can be considered a competitor to XML in the area of ​​information exchange`. Let's look at some of the main similarities and differences between information markup models:
-
-#### Similarities:
-
- - Represent information in text format;
- - Have a self-descriptive nature;
- - Both are able to represent complex information, difficult to represent in tabular format. Some examples: composite objects (objects within objects), hierarchy relationships, multivalued attributes, arrays, missing data, etc;
- - Both can be used to transport information in AJAX applications;
- - Both can be considered standards for data representation. XML is a W3C standard, while JSON was formalized in RFC 4627;
- - Both are language independent. Data represented in XML and JSON can be accessed by any programming language, through specific APIs.
-
-#### Differences:
-
- - It is not a markup language. It has no opening and closing tags;
- - Represents information in a more compact way;
- - Does not allow the execution of processing instructions, while it is possible in XML;
- - It is typically intended for exchanging information, while XML has more applications. For example: there are databases in XML format and structured in native XML DBMS.
- 
- 
-### Data types, syntax and examples
-
-The basic data types of JSON are:
-
- - <strong>Number</strong>: a number that can have a sign, a fractional part separated by a dot (. , as is usual in some countries) and eventually use the exponential E notation, but cannot include non-numbers like NaN. There is no distinction between integers and floating point numbers, reflecting the fact that JavaScript stores any number as double precision floating point, but other languages ​​that implement JSON may have differences in how numbers are represented.
- - <strong>String</strong>: A string of zero or more Unicode characters. Strings are delimited by double quotes (") and support the backslash (\) as an escape character.
- - <strong>Boolean</strong>: one of the values ​​true or false, corresponding to the logical values ​​true and false.
- - <strong>Array</strong>: an ordered list of zero or more values, each of which can be of any type. Arrays are delimited by square brackets ([]), within which are the values, also known as elements, separated by commas. The first element is the one with index 0.
- - <strong>Object</strong>: an unordered collection of attribute-value pairs where the attributes (or names or keys) `are strings`. As objects are intended to represent associative arrays (ECMA-404), it is recommended, but not mandatory, that each attribute be unique within an object. Objects are delimited by braces ({}) and use commas to separate each pair, whereas in the pair the attribute and value are separated by a colon (:).
- - <strong>null</strong>: Empty or null value (not to be confused with zero) represented by the word null.
-
-Whitespace is allowed with boundaries and ignored around and between syntactic elements, but not within a string. Only four characters are treated like this: the space, the horizontal tab (TAB), the line feed (LF) and the carriage return (CR). In particular, the byte order mark must not appear in a JSON document as per the standard. JSON does not have a syntax for comments. `For data exchange in an open ecosystem, JSON must be encoded in UTF-8.`
-
- - Example of a representation of a menu
-
-```json
-{"menu":{
-    "id": "file",
-    "value": "File",
-    "popup":{
-       "menuitem": [
-       {"value": "New", "onclick": "CreateNewDoc()"},
-       {"value": "Open", "onclick": "OpenDoc()"},
-       {"value": "Close", "onclick": "CloseDoc()"}
-      ]
-    }
-}}
-```
-
- - The above code in JSON represented in the XML standard:
-
-```xml
-<menu id="file" value="File">
-  <popup>
-    <menuitem value="New" onclick="CreateNewDoc()" />
-    <menuitem value="Open" onclick="OpenDoc()" />
-    <menuitem value="Close" onclick="CloseDoc()" />
-  </popup>
-</menu>
-```
-
-As of 2018, all major browsers support at least the fifth edition of ECMAScript which provides a safe and fast way to decode JSON:
-
- - `var p = JSON.parse(json_string)`
-
-*<i>en.wikipedia.org/wiki/JSON</i> <br />
-
-<br />
-
-## Nodemailer - Email submissions 
-
-Nodemailer is a module for Node.js applications `to allow easy as cake email sending`. The project got started back in 2010 when there was no sane option to send email messages, today it is the solution most Node.js users turn to by default.
-
-### Setting it up
-
-##### Install Nodemailer from npm
-
- - `npm install nodemailer`
- 
-##### To send emails you need a transporter object
-
- - `let transporter = nodemailer.createTransport(transport[, defaults])`
- 
-###### Where
-
- - `transporter` is going to be an object that is able to send mail;
- - `transport` is the transport configuration object, connection url or a transport plugin instance;
- - `defaults` is an object that defines default values for mail options.
- 
-You have to create the transporter object only once. If you already have a transporter object you can use it to send mail as much as you like. 
-
-#### SMTP transport
-
-SMTP is the main transport in Nodemailer for delivering messages. `SMTP is also the protocol used between different email hosts, so its truly universal`. Almost every email delivery provider supports SMTP based sending, even if they mainly push their API based sending. APIs might have more features but using these also means vendor lock-in while in case of SMTP you only need to change the configuration options to replace one provider with another and you’re good to go.
-
-##### General options
-
- - <strong>port</strong> – is the port to connect to (defaults to 587 if is secure is false or 465 if true)
- - <strong>host</strong> – is the hostname or IP address to connect to (defaults to ‘localhost’)
- - <strong>auth</strong> – defines authentication data (see authentication section below)
- - <strong>authMethod</strong> – defines preferred authentication method, defaults to ‘PLAIN’
-
-
-```js
-import nodemailer from 'nodemailer'
-
-// NODEMAILER CONFIGURATION
-export async function sendEmailVerification(email, name, token) {
-  var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    host: 'smtp.ethereal.email',
-    auth: {
-      user: 'stardusteight.d4cc@gmail.com',
-      pass: process.env.TWO_STEP_VERIF_PASS, // get in google Two-step verification
-    },
-  })
-
-  // SEND EMAIL WITH DEFINED TRANSPORT OBJECT
-  await transporter.sendMail({
-    subject: 'Armazem',
-    from: '"Developer at Armazem 👻" <stardusteight.d4cc@gmail.com>',
-    to: email,
-    text: `Email Confirmation - Hello, ${name}! Thank you for subscribing. Here is your confirmation code: ${token}`,
-    html: `
-      <div>
-      <h2>Email Confirmation</h2>
-      <p>Hello, ${name}!</p>
-      <p>Thank you for subscribing. Here is your confirmation code:</p>
-      <h3 style="color:black;">${token}</h3>
-      </div>`,
-  })
-}
-```
-
-*<i>nodemailer.com/usage</i> <br />
-
-<br />
-
-## useEffect & Axios | Handling Requests and Reacting to Data Changes with Side Effects 
-
-useEffect is a React Hook that lets you synchronize a component with an `external system`. The useEffect Hook allows you to perform side effects in your components. Some examples of side effects are: `fetching data`, `directly updating the DOM`, and `timers`.
+useEffect is a React Hook that lets you synchronize a component with an external system. The useEffect Hook allows you to perform side effects in your components. Some examples of side effects are: fetching data, directly updating the DOM, and timers.
 
 useEffect accepts two arguments. The second argument is optional.
 
@@ -763,11 +122,11 @@ root.render(<Timer />);
 
 But wait!! It keeps counting even though it should only count once!
 
-`useEffect runs on every render. That means that when the count changes, a render happens, which then triggers another effect.`
+useEffect runs on every render. That means that when the count changes, a render happens, which then triggers another effect.
 
 This is not what we want. There are several ways to control when side effects run.
 
-We should always include the second parameter which accepts an array. We can optionally pass `dependencies` to useEffect in this array.
+We should always include the second parameter which accepts an array. We can optionally pass dependencies to useEffect in this array.
 
  - <strong>1. No dependency passed</strong>:
 
@@ -845,37 +204,14 @@ function Counter() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<Counter />);
 ```
-*<i>w3schools.com/react/react_useeffect.asp</i> <br />
 
-### Axios - make HTTP requests
+#### Axios - make HTTP requests
 
-The most common way for frontend programs to communicate with servers is through the `HTTP protocol`. You are probably familiar with the `Fetch API` and the `XMLHttpRequest` interface, which allows you to fetch resources and make HTTP requests.
+The most common way for frontend programs to communicate with servers is through the HTTP protocol. You are probably familiar with the Fetch API and the XMLHttpRequest interface, which allows you to fetch resources and make HTTP requests.
 
 As with Fetch, Axios is promise-based. However, it provides a more powerful and flexible feature set.
 
-Advantages of using Axios over the native Fetch API include:
-
- - Request and response interception
- - Streamlined error handling
- - Protection against XSRF
- - Support for upload progress
- - Response timeout
- - The ability to cancel requests
- - Support for older browsers
- - Automatic JSON data transformation
-
-Axios also provides a set of shorthand methods for performing different types of requests. The methods are as follows:
-
- - axios.request(config)
- - axios.get(url[, config])
- - axios.delete(url[, config])
- - axios.head(url[, config])
- - axios.options(url[, config])
- - axios.post(url[, data[, config]])
- - axios.put(url[, data[, config]])
- - axios.patch(url[, data[, config]])
-
-`By coupling requests with the useEffect hook it is possible to control and manage these requests through their dependency array:`
+By coupling requests with the useEffect hook it is possible to control and manage these requests through their dependency array:
 
 ```tsx
 // web/src/components/feed/integrate/TrendingPost.tsx
@@ -920,6 +256,7 @@ export const TrendingPost = ({ postId }: Props) => {
   )
 }
 ```
-*<i>blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios</i> <br />
 
 ![screen](/screens/screen-feed.png)
+
+<p align="center">Project made with :blue_heart: by <a href="https://github.com/stardusteight-d4c">Gabriel Sena</a></p>
