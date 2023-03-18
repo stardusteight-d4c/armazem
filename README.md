@@ -38,7 +38,7 @@ Overall, the project aimed to create an interactive platform for manga readers, 
 
 ## :mailbox_with_mail: Utilities
  
-### <strong>Model-View-Controller (MVC)</strong>
+### Model-View-Controller (MVC)
  
 Is a widely used software architecture pattern for separating an application's concerns into three main components: the model, the view, and the controller. The goal is to separate the business logic from the user interface, allowing each component to be developed and tested independently.
 
