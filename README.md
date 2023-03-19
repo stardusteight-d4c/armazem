@@ -33,7 +33,7 @@ Overall, the project aimed to create an interactive platform for manga readers, 
 * TypeScript
 * Express
 * Mongoose
-* Json Web Tokens
+* Json Web Token
 * Nodemailer
 
 ## :mailbox_with_mail: Utilities
