@@ -257,6 +257,6 @@ export const TrendingPost = ({ postId }: Props) => {
 }
 ```
 
-![screen](/screens/screen-feed.png)
+![screen](./screenshots/screen-feed.png)
 
 <p align="center">Project made with :blue_heart: by <a href="https://github.com/stardusteight-d4c">Gabriel Sena</a></p>
